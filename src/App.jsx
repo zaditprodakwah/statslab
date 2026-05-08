@@ -17,6 +17,10 @@ import { TahfizhModule } from './components/modules/TahfizhModule'
 import { QurbanModule } from './components/modules/QurbanModule'
 import { LiterasiModule } from './components/modules/LiterasiModule'
 import { HelpModal } from './components/common/HelpModal'
+import { PrintButton } from './components/certificate/PrintButton'
+import { CertificateView } from './components/certificate/CertificateView'
+import { SUSForm } from './components/sus/SUSForm'
+import { ResearcherPortal } from './components/researcher/ResearcherPortal'
 import { PRESET_ZISWAF, PRESET_TAHFIZH, PRESET_QURBAN, PRESET_LITERASI } from './data/presetData'
 
 // ── Dark mode init (before first paint) ──────────────────
