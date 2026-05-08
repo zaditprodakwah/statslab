@@ -21,6 +21,7 @@ import { PrintButton } from './components/certificate/PrintButton'
 import { CertificateView } from './components/certificate/CertificateView'
 import { SUSForm } from './components/sus/SUSForm'
 import { ResearcherPortal } from './components/researcher/ResearcherPortal'
+import { MissionBar } from './components/ui/MissionBar'
 import { PRESET_ZISWAF, PRESET_TAHFIZH, PRESET_QURBAN, PRESET_LITERASI } from './data/presetData'
 
 // ── Dark mode init (before first paint) ──────────────────
@@ -30,39 +31,7 @@ function initDark() {
 }
 
 // ── Toast notification ────────────────────────────────────
-function Toast({ notification, lang }) {
-  if (!notification) return null
-  const msgs = {
-    2: { id: '🎉 Level 2 Terbuka! +10 Poin. Tips: Jelajahi modul lain di sidebar!', en: '🎉 Level 2 Unlocked! +10 Points. Tips: Explore other modules!' },
-    3: { id: '🌟 Level 3 Terbuka! +20 Poin. Tips: Perhatikan angka Statistik di bawah!', en: '🌟 Level 3 Unlocked! +20 Points. Tips: Check the Stats cards below!' },
-    4: { id: '📊 Level 4 Terbuka! +20 Poin. Tips: Cari anomali data (selisih Mean/Median)!', en: '📊 Level 4 Unlocked! +20 Points. Tips: Find data anomalies!' },
-    5: { id: '🔍 Level 5 Terbuka! +50 Poin & Badge Detektif! Tips: Gunakan Skala Amanah!', en: '🔍 Level 5 Unlocked! +50 Points & Detective Badge! Tips: Use Amanah Scale!' },
-    6: { id: '🏆 Level 6 Terbuka! +50 Poin & Badge Jujur Visual! Tips: Ambil Sertifikat Anda!', en: '🏆 Level 6 Unlocked! +50 Points & Visual Integrity Badge! Tips: Get your Certificate!' },
-  }
-  const item = msgs[notification.level]?.[lang] || ''
-  
-  return (
-    <div
-      className="fixed top-24 left-1/2 -translate-x-1/2 z-[60] animate-slide-down"
-      role="status"
-      aria-live="polite"
-    >
-      <div className="bg-white dark:bg-slate-900 border-2 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)] rounded-2xl px-6 py-4 flex items-center gap-4 min-w-[320px] max-w-lg">
-        <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0 animate-pulse">
-          <span className="text-2xl">✨</span>
-        </div>
-        <div className="flex-1">
-          <p className="text-slate-900 dark:text-white font-black text-sm leading-tight uppercase tracking-tight">
-            {item.split('. ')[0]}
-          </p>
-          <p className="text-emerald-600 dark:text-emerald-400 text-xs font-bold mt-1">
-            {item.split('. ')[1]}
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
+import { Toast } from './components/ui/Toast'
 
 // ── App ───────────────────────────────────────────────────
 function AppInner() {
@@ -73,16 +42,27 @@ function AppInner() {
   const { profile, saveProfile, hasProfile } = useProfile()
   const gamify = useGamify()
 
-  // Module data persistence
+  // Module data persistence with robust error handling
   const [moduleData, setModuleData] = useState(() => {
-    const saved = localStorage.getItem('statslab_module_data')
-    if (saved) return JSON.parse(saved)
-    return {
+    const defaultData = {
       ziswaf: { items: PRESET_ZISWAF, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
       tahfizh: { items: PRESET_TAHFIZH, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
       qurban: { items: PRESET_QURBAN, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
       literasi: { items: PRESET_LITERASI, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
     }
+    try {
+      const saved = localStorage.getItem('statslab_module_data')
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        // Basic validation to ensure all expected modules exist
+        if (parsed.ziswaf && parsed.tahfizh && parsed.qurban && parsed.literasi) {
+          return parsed
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load module data:', e)
+    }
+    return defaultData
   })
 
   // Sync module data to localStorage
@@ -98,6 +78,9 @@ function AppInner() {
     }))
   }, [])
 
+  // ── Gamify Level Triggers ──────────────────────────────
+  
+  // Level 1 → 2: When any data is changed
   const handleDataChange = useCallback((id, updater) => {
     setModuleData(prev => {
       const currentItems = prev[id].items
@@ -110,13 +93,40 @@ function AppInner() {
     if (gamify.canUnlock(2)) gamify.unlockLevel(2)
   }, [gamify])
 
-  // Lvl3 unlock on module navigation (tracks first non-ziswaf visit)
+  const handleEdit = useCallback(() => { 
+    if (gamify.canUnlock(2)) gamify.unlockLevel(2) 
+  }, [gamify])
+
+  // Level 2 → 3: When a statistical card is viewed
+  const handleStatView = useCallback(() => { 
+    if (gamify.canUnlock(3)) gamify.unlockLevel(3) 
+  }, [gamify])
+  
+  // Level 3 → 4: When switching to a non-default module
   const handleModuleChange = useCallback((mod) => {
     setActiveModule(mod)
-    if (mod !== 'ziswaf' && mod !== 'certificate' && mod !== 'sus') {
-      if (gamify.canUnlock(3)) gamify.unlockLevel(3)
+    const isTabayyunModule = ['tahfizh', 'qurban', 'literasi'].includes(mod)
+    if (isTabayyunModule && gamify.canUnlock(4)) {
+      gamify.unlockLevel(4)
     }
   }, [gamify])
+
+  // Level 4 → 5: When an anomaly is confirmed (Tabayyun)
+  const handleTabayyun = useCallback((id) => { 
+    updateModuleState(id, { tabayyunConfirmed: true })
+    if (gamify.canUnlock(5)) gamify.unlockLevel(5) 
+  }, [gamify, updateModuleState])
+
+  // Level 5 → 6: When the Amanah switch is toggled (Integrity test)
+  const handleAmanah = useCallback((id, isAmanah) => {
+    const current = moduleData[id]
+    const hasSeenBias = current.hasSeenBias || !isAmanah
+    updateModuleState(id, { isAmanah, hasSeenBias })
+    
+    if (hasSeenBias && isAmanah && gamify.canUnlock(6)) {
+      gamify.unlockLevel(6)
+    }
+  }, [gamify, moduleData, updateModuleState])
 
   // Dark mode sync to <html> class
   useEffect(() => {
@@ -125,28 +135,6 @@ function AppInner() {
     else html.classList.remove('dark')
     localStorage.setItem('statslab_dark', String(isDark))
   }, [isDark])
-
-  // Handlers for gamify unlock triggers
-  const handleEdit = useCallback(() => { if (gamify.canUnlock(2)) gamify.unlockLevel(2) }, [gamify])
-  const handleStatView = useCallback(() => { if (gamify.canUnlock(4)) gamify.unlockLevel(4) }, [gamify])
-  
-  const handleTabayyun = useCallback((id) => { 
-    updateModuleState(id, { tabayyunConfirmed: true })
-    if (gamify.canUnlock(5)) gamify.unlockLevel(5) 
-  }, [gamify, updateModuleState])
-
-  const handleAmanah = useCallback((id, isAmanah) => {
-    const current = moduleData[id]
-    const hasSeenBias = current.hasSeenBias || !isAmanah
-    updateModuleState(id, { isAmanah, hasSeenBias })
-    
-    // Level 6 unlock: if they've toggled back and forth (seen bias and now back to amanah)
-    if (hasSeenBias && isAmanah) {
-      if (gamify.canUnlock(6)) gamify.unlockLevel(6)
-    }
-  }, [gamify, moduleData, updateModuleState])
-
-  // Gate: Show onboarding if no profile
   if (!hasProfile) {
     return (
       <div className={isDark ? 'dark' : ''}>
@@ -230,58 +218,60 @@ function AppInner() {
           }
         >
           <div key={activeModule} className="animate-module-entry">
-            {activeModule === 'ziswaf' && (
-              <ZiswafModule
-                data={moduleData.ziswaf.items}
-                isAmanah={moduleData.ziswaf.isAmanah}
-                tabayyunConfirmed={moduleData.ziswaf.tabayyunConfirmed}
-                setData={(items) => handleDataChange('ziswaf', items)}
-                setAmanah={(val) => handleAmanah('ziswaf', val)}
-                setTabayyunConfirmed={() => handleTabayyun('ziswaf')}
-                onEdit={handleEdit}
-                onStatView={handleStatView}
-                gamify={gamify}
-              />
-            )}
-            {activeModule === 'tahfizh' && (
-              <TahfizhModule
-                data={moduleData.tahfizh.items}
-                isAmanah={moduleData.tahfizh.isAmanah}
-                tabayyunConfirmed={moduleData.tahfizh.tabayyunConfirmed}
-                setData={(items) => handleDataChange('tahfizh', items)}
-                setAmanah={(val) => handleAmanah('tahfizh', val)}
-                setTabayyunConfirmed={() => handleTabayyun('tahfizh')}
-                onEdit={handleEdit}
-                onStatView={handleStatView}
-                gamify={gamify}
-              />
-            )}
-            {activeModule === 'qurban' && (
-              <QurbanModule
-                data={moduleData.qurban.items}
-                isAmanah={moduleData.qurban.isAmanah}
-                tabayyunConfirmed={moduleData.qurban.tabayyunConfirmed}
-                setData={(items) => handleDataChange('qurban', items)}
-                setAmanah={(val) => handleAmanah('qurban', val)}
-                setTabayyunConfirmed={() => handleTabayyun('qurban')}
-                onEdit={handleEdit}
-                onStatView={handleStatView}
-                gamify={gamify}
-              />
-            )}
-            {activeModule === 'literasi' && (
-              <LiterasiModule
-                data={moduleData.literasi.items}
-                isAmanah={moduleData.literasi.isAmanah}
-                tabayyunConfirmed={moduleData.literasi.tabayyunConfirmed}
-                setData={(items) => handleDataChange('literasi', items)}
-                setAmanah={(val) => handleAmanah('literasi', val)}
-                setTabayyunConfirmed={() => handleTabayyun('literasi')}
-                onEdit={handleEdit}
-                onStatView={handleStatView}
-                gamify={gamify}
-              />
-            )}
+            <ModuleErrorBoundary key={activeModule}>
+              {activeModule === 'ziswaf' && (
+                <ZiswafModule
+                  data={moduleData.ziswaf.items}
+                  isAmanah={moduleData.ziswaf.isAmanah}
+                  tabayyunConfirmed={moduleData.ziswaf.tabayyunConfirmed}
+                  setData={(items) => handleDataChange('ziswaf', items)}
+                  setAmanah={(val) => handleAmanah('ziswaf', val)}
+                  setTabayyunConfirmed={() => handleTabayyun('ziswaf')}
+                  onEdit={handleEdit}
+                  onStatView={handleStatView}
+                  gamify={gamify}
+                />
+              )}
+              {activeModule === 'tahfizh' && (
+                <TahfizhModule
+                  data={moduleData.tahfizh.items}
+                  isAmanah={moduleData.tahfizh.isAmanah}
+                  tabayyunConfirmed={moduleData.tahfizh.tabayyunConfirmed}
+                  setData={(items) => handleDataChange('tahfizh', items)}
+                  setAmanah={(val) => handleAmanah('tahfizh', val)}
+                  setTabayyunConfirmed={() => handleTabayyun('tahfizh')}
+                  onEdit={handleEdit}
+                  onStatView={handleStatView}
+                  gamify={gamify}
+                />
+              )}
+              {activeModule === 'qurban' && (
+                <QurbanModule
+                  data={moduleData.qurban.items}
+                  isAmanah={moduleData.qurban.isAmanah}
+                  tabayyunConfirmed={moduleData.qurban.tabayyunConfirmed}
+                  setData={(items) => handleDataChange('qurban', items)}
+                  setAmanah={(val) => handleAmanah('qurban', val)}
+                  setTabayyunConfirmed={() => handleTabayyun('qurban')}
+                  onEdit={handleEdit}
+                  onStatView={handleStatView}
+                  gamify={gamify}
+                />
+              )}
+              {activeModule === 'literasi' && (
+                <LiterasiModule
+                  data={moduleData.literasi.items}
+                  isAmanah={moduleData.literasi.isAmanah}
+                  tabayyunConfirmed={moduleData.literasi.tabayyunConfirmed}
+                  setData={(items) => handleDataChange('literasi', items)}
+                  setAmanah={(val) => handleAmanah('literasi', val)}
+                  setTabayyunConfirmed={() => handleTabayyun('literasi')}
+                  onEdit={handleEdit}
+                  onStatView={handleStatView}
+                  gamify={gamify}
+                />
+              )}
+            </ModuleErrorBoundary>
             {activeModule === 'certificate' && certificateContent}
             {activeModule === 'sus' && (
               <SUSForm
@@ -297,6 +287,9 @@ function AppInner() {
           activeModule={activeModule}
           onModuleChange={handleModuleChange}
         />
+
+        {/* Gamification Mission Guide */}
+        <MissionBar gamify={gamify} />
 
         {/* Gamification Toast — above BottomNav on mobile */}
         <Toast notification={gamify.notification} lang="id" />
@@ -320,10 +313,93 @@ function AppInner() {
   )
 }
 
+// ── Error Boundary ─────────────────────────────────────────
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true }
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error('STATSLAB CRASH:', error, errorInfo)
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-slate-900 flex items-center justify-center p-6 text-center">
+          <div className="max-w-md space-y-6">
+            <div className="w-20 h-20 bg-rose-500/20 rounded-3xl flex items-center justify-center mx-auto animate-pulse">
+              <AlertTriangle className="w-10 h-10 text-rose-500" />
+            </div>
+            <h1 className="text-3xl font-black text-white italic uppercase tracking-tighter">
+              Ops! Terjadi Kesalahan
+            </h1>
+            <p className="text-slate-400 font-medium">
+              Sistem mendeteksi adanya kegagalan runtime. Jangan panik, data kamu mungkin masih aman, namun kita perlu menyegarkan aplikasi.
+            </p>
+            <button
+              onClick={() => {
+                localStorage.clear()
+                window.location.reload()
+              }}
+              className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-2xl shadow-xl shadow-emerald-900/40 transition-all active:scale-95"
+            >
+              RESET & MULAI ULANG (RESCUE)
+            </button>
+          </div>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
+
+import React from 'react'
+import { AlertTriangle } from 'lucide-react'
+
+class ModuleErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true }
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-8 text-center glass-card border-2 border-rose-500/20 bg-rose-50/50 dark:bg-rose-900/10">
+          <AlertTriangle className="w-12 h-12 text-rose-500 mx-auto mb-4 animate-bounce" />
+          <h3 className="text-xl font-black text-slate-800 dark:text-white uppercase tracking-tighter italic">
+            Ups! Modul ini macet
+          </h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 mb-6">
+            Terjadi kegagalan saat merender data. Tenang saja, kamu bisa mereset data modul ini untuk melanjutkan.
+          </p>
+          <button
+            onClick={() => {
+              localStorage.removeItem('statslab_module_data')
+              window.location.reload()
+            }}
+            className="px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white font-black rounded-xl transition-all shadow-lg active:scale-95"
+          >
+            RESET DATA & REFRESH
+          </button>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
+
 export default function App() {
   return (
-    <LanguageProvider>
-      <AppInner />
-    </LanguageProvider>
+    <ErrorBoundary>
+      <LanguageProvider>
+        <AppInner />
+      </LanguageProvider>
+    </ErrorBoundary>
   )
 }

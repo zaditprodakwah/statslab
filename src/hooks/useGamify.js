@@ -80,6 +80,11 @@ export function useGamify() {
     })
   }, [])
 
+  const notify = useCallback((title, message, type = 'info', duration = 3000) => {
+    setNotification({ title, message, type })
+    setTimeout(() => setNotification(null), duration)
+  }, [])
+
   const canUnlock = useCallback((targetLevel) => {
     // Only the NEXT level can be unlocked
     return state.level + 1 === targetLevel
@@ -133,6 +138,7 @@ export function useGamify() {
     resetAll,
     resetProgress,
     notification,
+    notify,
     canPrintCertificate,
     BADGES,
   }

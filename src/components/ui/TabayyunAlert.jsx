@@ -16,7 +16,8 @@ export function TabayyunAlert({
   severity, 
   onDetected,
   externalConfirmed = false,
-  gamify
+  gamify,
+  isMissionTarget
 }) {
   const { t } = useLanguage()
   const [showTheory, setShowTheory] = useState(false)
@@ -46,7 +47,7 @@ export function TabayyunAlert({
   const Icon = cfg.icon
 
   return (
-    <div className={`tabayyun-alert rounded-xl border-2 ${cfg.bg} ${cfg.border} p-4 ${!confirmed ? 'animate-pulse-slow shadow-[0_0_15px_rgba(245,158,11,0.3)]' : ''}`}>
+    <div className={`tabayyun-alert rounded-xl border-2 transition-all duration-500 ${cfg.bg} ${cfg.border} p-4 ${isMissionTarget ? 'ring-4 ring-amber-500/50 animate-pulse-slow shadow-[0_0_25px_rgba(245,158,11,0.4)]' : !confirmed ? 'animate-pulse-slow shadow-[0_0_15px_rgba(245,158,11,0.3)]' : ''}`}>
       <div className="flex items-start gap-3">
         <div className={`w-10 h-10 rounded-xl ${severity === 'extreme' ? 'bg-red-500' : 'bg-amber-500'} flex items-center justify-center flex-shrink-0 shadow-lg`}>
           <Icon className="w-5 h-5 text-white" />
@@ -81,14 +82,32 @@ export function TabayyunAlert({
               {confirmed ? 'TERVERIFIKASI ✓' : isLocked ? '🔒 TERKUNCI' : 'TABAYYUN SEKARANG'}
             </button>
           </div>
-          <p className={`text-sm ${cfg.text} opacity-90 leading-relaxed`}>
+          <p className={`text-sm ${cfg.text} opacity-90 leading-relaxed font-medium`}>
             {t('tabayyun.body')}
-            {isLocked && (
-              <span className="block mt-2 text-[11px] font-bold italic opacity-75">
-                💡 Petunjuk: Selesaikan Level 1-4 untuk mengonfirmasi temuan ini dan membuka Level 5 (Detektif).
-              </span>
-            )}
           </p>
+          
+          {/* EXPERT CLUE / MISSION HINT */}
+          <div className={`mt-3 p-3 rounded-xl border flex gap-3 items-start animate-fade-in ${
+            isLocked 
+              ? 'bg-slate-100/50 border-slate-200 text-slate-500 italic' 
+              : 'bg-white/80 border-amber-200 text-amber-800 shadow-sm'
+          }`}>
+            <div className={`p-1.5 rounded-lg ${isLocked ? 'bg-slate-200' : 'bg-amber-100'}`}>
+              {isLocked ? <Info className="w-3.5 h-3.5" /> : <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />}
+            </div>
+            <div className="flex-1">
+              <span className="block text-[10px] font-black uppercase tracking-widest mb-0.5">
+                {isLocked ? 'Petunjuk Terkunci' : 'Instruksi Ahli (Level 4)'}
+              </span>
+              <span className="text-[11px] leading-tight block">
+                {isLocked 
+                  ? 'Selesaikan Level 1-4 dengan mengedit data dan mengeksplorasi modul untuk membuka fitur Konfirmasi Tabayyun ini.' 
+                  : !confirmed 
+                  ? 'Klik tombol "TABAYYUN SEKARANG" untuk memverifikasi anomali ini. Tindakan ini akan membuka Level 5 (Detektif Data).'
+                  : 'Anomali telah dikonfirmasi. Anda telah memenuhi syarat integritas data sebagai Peneliti Ahli.'}
+              </span>
+            </div>
+          </div>
           {/* Formula Evidence */}
           <div className="mt-3 p-2.5 rounded-lg bg-white/60 dark:bg-black/20 font-mono text-xs space-y-1">
             <div className="text-slate-600 dark:text-slate-300">

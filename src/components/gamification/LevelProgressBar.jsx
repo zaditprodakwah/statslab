@@ -14,14 +14,7 @@ const LEVEL_COLORS = [
   'bg-emerald-500',
 ]
 
-const UNLOCK_HINTS = {
-  1: 'Edit data tabel → Lvl 2',
-  2: 'Jelajahi modul lain → Lvl 3',
-  3: 'Klik kartu statistik → Lvl 4',
-  4: 'Konfirmasi Tabayyun → Lvl 5',
-  5: 'Toggle Skala Amanah → Lvl 6',
-  6: '🎉 Semua level tercapai!',
-}
+
 
 export function LevelProgressBar({ level, points, maxPoints = 150 }) {
   const { t } = useLanguage()
@@ -78,10 +71,9 @@ export function LevelProgressBar({ level, points, maxPoints = 150 }) {
         ))}
       </div>
 
-      {/* Next action hint */}
       <div className="text-center">
         <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium leading-tight">
-          {UNLOCK_HINTS[level] || ''}
+          {t(`gamify.missions.${level}`)}
         </p>
       </div>
     </div>

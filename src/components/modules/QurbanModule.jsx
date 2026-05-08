@@ -44,6 +44,18 @@ export function QurbanModule({
   const stats = useStats(realisasiValues)
   const tabayyun = useTabayyun(stats.mean, stats.median)
 
+  // Immediate notification on anomaly detection
+  useEffect(() => {
+    if (tabayyun.isAnomalous && !tabayyunConfirmed && gamify.notify) {
+      gamify.notify(
+        'Anomali Terdeteksi!', 
+        'Distribusi hewan qurban antar desa tidak merata. Perlu Tabayyun.', 
+        'warning',
+        5000
+      )
+    }
+  }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
+
   const chartData = {
     labels: data.map((r) => r.desa),
     datasets: [
@@ -119,12 +131,14 @@ export function QurbanModule({
           onDetected={setTabayyunConfirmed}
           externalConfirmed={tabayyunConfirmed}
           gamify={gamify}
+          isMissionTarget={gamify.level === 4}
         />
 
         <AmanahToggle 
           isAmanah={isAmanah} 
           onToggle={() => setAmanah(!isAmanah)} 
           gamify={gamify}
+          isMissionTarget={gamify.level === 5}
         />
       </div>
 
@@ -141,6 +155,7 @@ export function QurbanModule({
             columns={COLUMNS}
             onEdit={onEdit}
             moduleId="qurban"
+            gamify={gamify}
           />
         </div>
       </div>

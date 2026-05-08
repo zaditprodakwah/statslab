@@ -156,6 +156,18 @@ export const locales = {
       badgeJujurDesc: 'Memahami dan menguji manipulasi skala grafik (Amanah)',
       maxPoints: 150,
       certificateUnlock: 'Cetak sertifikat tersedia setelah Level 6',
+      missions: {
+        lvl1: "✍️ Edit setidaknya 1 baris data di tabel untuk memulai audit.",
+        lvl2: "📊 Lihat detail statistik (klik kartu Mean/Median/Modus) untuk pendalaman.",
+        lvl3: "🗺️ Jelajahi modul lain (Tahfizh/Qurban/Literasi) untuk mencari perspektif baru.",
+        lvl4: "🔍 TEMUKAN ANOMALI! Cari modul dengan peringatan 'Anomali Terdeteksi' dan klik 'TABAYYUN SEKARANG'.",
+        lvl5: "⚖️ UJI AMANAH: Aktifkan saklar 'Integritas Sumbu-Y' di modul Ziswaf untuk finalisasi.",
+        lvl6: "✨ SELAMAT! Anda telah mencapai gelar Peneliti Ahli (Mufassir Data).",
+      },
+      nextMission: "Misi Selanjutnya",
+      currentMission: "Misi Aktif",
+      missionComplete: "Misi Selesai!",
+      rank: "Pangkat",
     },
 
     // ── Certificate ───────────────────────────────────────
@@ -230,6 +242,64 @@ export const locales = {
 
     // ── Tawazun (Balance principle hint) ─────────────────
     tawazun: 'Tawazun (Keseimbangan): Jangan terburu menyimpulkan dari satu angka saja. Lihat Mean, Median, dan Modus bersama-sama!',
+
+    // ── Researcher Portal ────────────────────────────────
+    researcher: {
+      portalTitle: 'Portal Peneliti',
+      portalSubtitle: 'Research & Development Edition',
+      shieldTitle: 'RESEARCHER SHIELD',
+      shieldDesc: 'Halaman ini bersifat eksklusif untuk Peneliti Utama dan Validator Pakar. Lanjutkan untuk mengakses instrumen validasi?',
+      btnImResearcher: 'YA, SAYA PENELITI',
+      btnBackToDashboard: 'KEMBALI KE DASHBOARD',
+      navValidation: 'Validasi Ahli',
+      navMonitoring: 'Monev SUS',
+      navDocs: 'Knowledge Base',
+      navAdmin: 'Admin Tools',
+      activeResearcher: 'Peneliti Aktif',
+      unitName: 'Unit StatsLab',
+      
+      // Validation Hub
+      hubTitle: 'Panduan Validasi Instrumen',
+      hubDesc: 'Gunakan lembar ini untuk mengukur validitas media berdasarkan Indeks Aiken\'s V. Skor 1 (Sangat Kurang) sampai 5 (Sangat Layak). Draf tersimpan otomatis.',
+      hubBadge: 'STABLE',
+      btnPrint: 'CETAK LAPORAN (PDF/A4)',
+      progressLabel: 'Progress Validasi',
+      aspekLabel: 'ASPEK',
+      notesLabel: 'Catatan / Saran Revisi Strategis',
+      notesPlaceholder: 'Tuliskan masukan spesifik untuk aspek ini...',
+      btnSave: 'SIMPAN HASIL VALIDASI',
+      saveProcessing: 'MEMPROSES...',
+      saveSuccess: 'DATA TERSIMPAN!',
+      
+      // Print Template
+      printHeader: 'Lembar Validasi Instrumen Penelitian',
+      printSubheader: 'StatsLab: Dasbor Statistika Interaktif',
+      printMethod: 'Instrumen Validasi Model Pengembangan 4D (Thiagarajan, 1974)',
+      printExpertName: 'Nama Ahli',
+      printInstansi: 'Instansi',
+      printField: 'Bidang Keahlian',
+      printDate: 'Hari, Tanggal',
+      printInstruction: 'Petunjuk Pengisian: Mohon Bapak/Ibu memberikan penilaian pada butir-butir indikator di bawah ini dengan memberikan angka skor 1 s.d 5 (1: Sangat Kurang; 2: Kurang; 3: Cukup; 4: Layak; 5: Sangat Layak). Skor digital yang Anda masukkan akan tercetak secara otomatis.',
+      printTableNo: 'No',
+      printTableInd: 'Indikator Penilaian / Butir Instrumen',
+      printTableScore: 'Skor (1-5)',
+      printNoteTitle: 'Catatan/Saran Perbaikan Aspek',
+      printSignKnow: 'Mengetahui,',
+      printSignResearcher: 'Peneliti Utama',
+      printSignExpert: 'Validator Ahli,',
+      printSignId: 'NIP/NIDN',
+      printFooter: 'StatsLab Research Ecosystem • Production Build v1.0.0',
+      
+      // Admin Tools
+      adminTitle: 'Admin Tools',
+      adminDesc: 'Kendali tingkat tinggi untuk manajemen sesi penelitian.',
+      godModeTitle: 'Unlock Level 6',
+      godModeDesc: 'Instantly unlock Certificate & SUS Form',
+      nukeTitle: 'Nuke Data',
+      nukeDesc: 'Clear LocalStorage for next respondent',
+      godModeConfirm: '🚀 Aktifkan God Mode (Unlock Level 6)?\n\nIni akan membuka Sertifikat dan Form SUS secara instan untuk keperluan demonstrasi atau audit.',
+      nukeConfirm: '⚠️ HAPUS SELURUH DATA PENELITIAN?\n\nTindakan ini akan menghapus draf validator, progres siswa, dan profil. Perangkat akan kembali ke kondisi awal (Fresh Start).',
+    },
   },
 
   en: {
@@ -377,6 +447,18 @@ export const locales = {
       badgeJujurDesc: 'Understood and tested chart scale manipulation (Amanah)',
       maxPoints: 150,
       certificateUnlock: 'Certificate available after reaching Level 6',
+      missions: {
+        lvl1: "✍️ Edit at least 1 row of data in the table to begin the audit.",
+        lvl2: "📊 View statistical details (click Mean/Median/Mode cards) for deeper insight.",
+        lvl3: "🗺️ Explore other modules (Tahfizh/Qurban/Literacy) to find new perspectives.",
+        lvl4: "🔍 FIND ANOMALIES! Look for a module with 'Anomaly Detected' and click 'TABAYYUN NOW'.",
+        lvl5: "⚖️ TEST INTEGRITY: Toggle the 'Y-Axis Integrity' switch in Ziswaf module for finalization.",
+        lvl6: "✨ CONGRATULATIONS! You have reached the rank of Expert Researcher.",
+      },
+      nextMission: "Next Mission",
+      currentMission: "Current Mission",
+      missionComplete: "Mission Complete!",
+      rank: "Rank",
     },
 
     // ── Certificate ───────────────────────────────────────
@@ -451,5 +533,63 @@ export const locales = {
 
     // ── Tawazun ───────────────────────────────────────────
     tawazun: "Tawazun (Data Balance / Objectivity): Don't rush to conclusions from just one number. Look at Mean, Median, and Mode together!",
+
+    // ── Researcher Portal ────────────────────────────────
+    researcher: {
+      portalTitle: 'Researcher Portal',
+      portalSubtitle: 'Research & Development Edition',
+      shieldTitle: 'RESEARCHER SHIELD',
+      shieldDesc: 'This page is exclusive to the Principal Researcher and Expert Validators. Continue to access the validation instruments?',
+      btnImResearcher: "YES, I'M A RESEARCHER",
+      btnBackToDashboard: 'BACK TO DASHBOARD',
+      navValidation: 'Expert Validation',
+      navMonitoring: 'SUS Monitoring',
+      navDocs: 'Knowledge Base',
+      navAdmin: 'Admin Tools',
+      activeResearcher: 'Active Researcher',
+      unitName: 'StatsLab Unit',
+
+      // Validation Hub
+      hubTitle: 'Instrument Validation Guide',
+      hubDesc: "Use this sheet to measure media validity based on Aiken's V Index. Score 1 (Very Poor) to 5 (Very Eligible). Drafts are auto-saved.",
+      hubBadge: 'STABLE',
+      btnPrint: 'PRINT REPORT (PDF/A4)',
+      progressLabel: 'Validation Progress',
+      aspekLabel: 'ASPECT',
+      notesLabel: 'Strategic Notes / Revision Suggestions',
+      notesPlaceholder: 'Write specific input for this aspect...',
+      btnSave: 'SAVE VALIDATION RESULTS',
+      saveProcessing: 'PROCESSING...',
+      saveSuccess: 'DATA SAVED!',
+
+      // Print Template
+      printHeader: 'Research Instrument Validation Sheet',
+      printSubheader: 'StatsLab: Interactive Statistics Dashboard',
+      printMethod: 'Validation Instrument for 4D Development Model (Thiagarajan, 1974)',
+      printExpertName: 'Expert Name',
+      printInstansi: 'Institution',
+      printField: 'Field of Expertise',
+      printDate: 'Day, Date',
+      printInstruction: 'Instructions: Please provide an assessment on the indicator items below by giving a score of 1 to 5 (1: Very Poor; 2: Poor; 3: Fair; 4: Eligible; 5: Very Eligible). Digital scores you enter will be printed automatically.',
+      printTableNo: 'No',
+      printTableInd: 'Assessment Indicator / Instrument Item',
+      printTableScore: 'Score (1-5)',
+      printNoteTitle: 'Notes/Suggestions for Improvement of Aspect',
+      printSignKnow: 'Acknowledge,',
+      printSignResearcher: 'Principal Researcher',
+      printSignExpert: 'Expert Validator,',
+      printSignId: 'NIP/NIDN',
+      printFooter: 'StatsLab Research Ecosystem • Production Build v1.0.0',
+
+      // Admin Tools
+      adminTitle: 'Admin Tools',
+      adminDesc: 'High-level control for research session management.',
+      godModeTitle: 'Unlock Level 6',
+      godModeDesc: 'Instantly unlock Certificate & SUS Form',
+      nukeTitle: 'Nuke Data',
+      nukeDesc: 'Clear LocalStorage for next respondent',
+      godModeConfirm: '🚀 Activate God Mode (Unlock Level 6)?\n\nThis will instantly unlock the Certificate and SUS Form for demonstration or audit purposes.',
+      nukeConfirm: '⚠️ DELETE ALL RESEARCH DATA?\n\nThis action will delete validator drafts, student progress, and profiles. The device will return to initial state (Fresh Start).',
+    },
   },
-}
+};

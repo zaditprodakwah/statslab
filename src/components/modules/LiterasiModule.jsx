@@ -43,6 +43,18 @@ export function LiterasiModule({
   const stats = useStats(realisasiValues)
   const tabayyun = useTabayyun(stats.mean, stats.median)
 
+  // Immediate notification on anomaly detection
+  useEffect(() => {
+    if (tabayyun.isAnomalous && !tabayyunConfirmed && gamify.notify) {
+      gamify.notify(
+        'Anomali Terdeteksi!', 
+        'Data sirkulasi buku menunjukkan ketimpangan. Cek Outlier.', 
+        'warning',
+        5000
+      )
+    }
+  }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
+
   const chartData = {
     labels: data.map((r) => r.lembaga || r.kategori),
     datasets: [
@@ -118,12 +130,14 @@ export function LiterasiModule({
           onDetected={setTabayyunConfirmed}
           externalConfirmed={tabayyunConfirmed}
           gamify={gamify}
+          isMissionTarget={gamify.level === 4}
         />
 
         <AmanahToggle 
           isAmanah={isAmanah} 
           onToggle={() => setAmanah(!isAmanah)} 
           gamify={gamify}
+          isMissionTarget={gamify.level === 5}
         />
       </div>
 
@@ -140,6 +154,7 @@ export function LiterasiModule({
             columns={COLUMNS}
             onEdit={onEdit}
             moduleId="literasi"
+            gamify={gamify}
           />
         </div>
       </div>

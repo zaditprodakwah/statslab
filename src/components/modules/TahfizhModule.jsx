@@ -43,6 +43,18 @@ export function TahfizhModule({
   const stats = useStats(values)
   const tabayyun = useTabayyun(stats.mean, stats.median)
 
+  // Immediate notification on anomaly detection
+  useEffect(() => {
+    if (tabayyun.isAnomalous && !tabayyunConfirmed && gamify.notify) {
+      gamify.notify(
+        'Anomali Terdeteksi!', 
+        'Median data hafalan bergeser. Cek apakah ada bulan yang tidak konsisten.', 
+        'warning',
+        5000
+      )
+    }
+  }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
+
   const chartData = {
     labels: data.map((r) => r.bulan),
     datasets: [{
@@ -123,12 +135,14 @@ export function TahfizhModule({
           onDetected={setTabayyunConfirmed}
           externalConfirmed={tabayyunConfirmed}
           gamify={gamify}
+          isMissionTarget={gamify.level === 4}
         />
 
         <AmanahToggle 
           isAmanah={isAmanah} 
           onToggle={() => setAmanah(!isAmanah)} 
           gamify={gamify}
+          isMissionTarget={gamify.level === 5}
         />
       </div>
 
@@ -145,6 +159,7 @@ export function TahfizhModule({
             columns={COLUMNS}
             onEdit={onEdit}
             moduleId="tahfizh"
+            gamify={gamify}
           />
         </div>
       </div>

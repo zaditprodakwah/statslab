@@ -6,7 +6,7 @@ import { useRef, useState, useEffect } from 'react'
 import { Eye, EyeOff, Info, ChevronDown, ChevronUp, CheckCircle } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage'
 
-export function AmanahToggle({ isAmanah, onToggle, gamify }) {
+export function AmanahToggle({ isAmanah, onToggle, gamify, isMissionTarget }) {
   const { t } = useLanguage()
   const [showInfo, setShowInfo] = useState(false)
   const [feedback, setFeedback] = useState('')
@@ -29,12 +29,13 @@ export function AmanahToggle({ isAmanah, onToggle, gamify }) {
   }
 
   return (
-    <div className="glass-card p-4">
+    <div className={`glass-card p-4 transition-all duration-500 ${isMissionTarget ? 'ring-4 ring-emerald-500/50 animate-pulse-slow shadow-[0_0_25px_rgba(16,185,129,0.3)]' : ''}`}>
       <div className="flex items-start gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <span className={`text-sm font-semibold transition-colors ${isMissionTarget ? 'text-emerald-700 dark:text-emerald-400 font-black italic' : 'text-slate-700 dark:text-slate-200'}`}>
               {t('amanah.toggleLabel')}
+              {isMissionTarget && ' 🎯'}
             </span>
             <button
               onClick={() => setShowInfo(!showInfo)}
@@ -75,6 +76,8 @@ export function AmanahToggle({ isAmanah, onToggle, gamify }) {
                 ? 'bg-slate-200 dark:bg-slate-700 cursor-not-allowed grayscale'
                 : isAmanah
                 ? 'bg-emerald-500 shadow-emerald-500/40 shadow-lg'
+                : isMissionTarget 
+                ? 'bg-emerald-400/50 animate-pulse' 
                 : 'bg-slate-300 dark:bg-slate-600'
             }`}
           >

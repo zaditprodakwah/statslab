@@ -47,6 +47,18 @@ export function ZiswafModule({
   const stats = useStats(nominals)
   const tabayyun = useTabayyun(stats.mean, stats.median)
 
+  // Immediate notification on anomaly detection
+  useEffect(() => {
+    if (tabayyun.isAnomalous && !tabayyunConfirmed && gamify.notify) {
+      gamify.notify(
+        'Anomali Terdeteksi!', 
+        'Rata-rata bergeser tajam. Segera lakukan Tabayyun di modul ini.', 
+        'warning',
+        5000
+      )
+    }
+  }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
+
   const chartData = {
     labels: data.map((r) => r.kategori),
     datasets: [{
@@ -112,13 +124,15 @@ export function ZiswafModule({
           onDetected={setTabayyunConfirmed}
           externalConfirmed={tabayyunConfirmed}
           gamify={gamify}
+          isMissionTarget={gamify.level === 4}
         />
-
+        
         {/* Amanah Toggle */}
         <AmanahToggle
           isAmanah={isAmanah}
           onToggle={() => setAmanah(!isAmanah)}
           gamify={gamify}
+          isMissionTarget={gamify.level === 5}
         />
       </div>
 
@@ -145,6 +159,7 @@ export function ZiswafModule({
             columns={COLUMNS}
             onEdit={onEdit}
             moduleId="ziswaf"
+            gamify={gamify}
           />
         </div>
       </div>
