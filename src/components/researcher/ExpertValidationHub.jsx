@@ -72,7 +72,7 @@ export function ExpertValidationHub() {
               Panduan Validasi Instrumen
               <span className="px-3 py-1 bg-emerald-500 text-black text-[10px] font-black rounded-lg not-italic tracking-widest">STABLE</span>
             </h2>
-            <p className="text-slate-300 text-lg leading-relaxed font-medium max-w-3xl">
+            <p className="text-slate-200 text-lg leading-relaxed font-medium max-w-3xl">
               Gunakan lembar ini untuk mengukur validitas media berdasarkan <span className="text-emerald-400 font-bold">Indeks Aiken's V</span>. 
               Skor <span className="text-emerald-400 font-bold underline">1 (Sangat Kurang)</span> sampai <span className="text-emerald-400 font-bold underline">5 (Sangat Layak)</span>.
               Draf tersimpan otomatis. Gunakan tombol <span className="text-white font-bold">CETAK PDF</span> untuk arsip fisik.
@@ -101,10 +101,10 @@ export function ExpertValidationHub() {
         
         <button 
           onClick={handlePrint}
-          className="flex items-center gap-3 px-10 py-5 bg-white hover:bg-slate-200 text-slate-950 rounded-[2rem] font-black transition-all shadow-2xl active:scale-95"
+          className="flex items-center gap-3 px-10 py-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-[2rem] font-black transition-all shadow-2xl active:scale-95 border-2 border-emerald-400"
         >
-          <Printer className="w-6 h-6 text-emerald-600" />
-          CETAK PDF (A4)
+          <Printer className="w-6 h-6" />
+          CETAK LAPORAN (PDF/A4)
         </button>
       </div>
 
@@ -113,7 +113,7 @@ export function ExpertValidationHub() {
         <div className="border-b-4 border-slate-800 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <h1 className="text-5xl font-black text-white tracking-tighter uppercase italic">{currentIndicators.title}</h1>
-            <p className="text-slate-400 text-xl mt-3 font-semibold max-w-2xl">{currentIndicators.description}</p>
+            <p className="text-slate-200 text-xl mt-3 font-bold max-w-2xl drop-shadow-sm">{currentIndicators.description}</p>
           </div>
           <div className="flex items-center gap-4 bg-slate-900 px-6 py-4 rounded-3xl border border-slate-800 no-print">
             <div className="text-right">
@@ -147,10 +147,10 @@ export function ExpertValidationHub() {
                   <div key={ind.id} className={`glass-card-dark p-10 border-2 transition-all duration-300 ${currentScore > 0 ? 'border-emerald-500/50 bg-emerald-900/20 shadow-emerald-900/40' : 'border-slate-600 hover:border-slate-500 bg-slate-800/80 shadow-lg'}`}>
                     <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
                       <div className="flex gap-8 flex-1">
-                        <span className={`font-black text-4xl transition-colors shrink-0 ${currentScore > 0 ? 'text-emerald-400' : 'text-slate-400'}`}>
+                        <span className={`font-black text-4xl transition-colors shrink-0 ${currentScore > 0 ? 'text-emerald-400' : 'text-slate-500'}`}>
                           {String(ind.id).padStart(2, '0')}
                         </span>
-                        <p className="text-white text-xl font-extrabold leading-relaxed portal-text-crisp">{ind.text}</p>
+                        <p className="text-white text-xl font-black leading-relaxed portal-text-crisp drop-shadow-md">{ind.text}</p>
                       </div>
                       
                       <div className="flex items-center gap-3 no-print">
@@ -158,10 +158,10 @@ export function ExpertValidationHub() {
                           <button
                             key={val}
                             onClick={() => handleScoreChange(activeType, ind.id, val)}
-                            className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black text-lg transition-all border-2 ${
+                            className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black text-xl transition-all border-2 ${
                               currentScore === val
-                                ? 'bg-emerald-500 border-emerald-300 text-white shadow-2xl shadow-emerald-500/40 scale-110'
-                                : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-emerald-500/80 hover:text-emerald-300'
+                                ? 'bg-emerald-500 border-emerald-300 text-white shadow-[0_0_20px_rgba(16,185,129,0.5)] scale-110'
+                                : 'bg-slate-900 border-slate-700 text-slate-400 hover:border-emerald-500 hover:text-white'
                             }`}
                           >
                             {val}
@@ -175,17 +175,20 @@ export function ExpertValidationHub() {
             </div>
 
             {/* Suggestions Textarea */}
-            <div className="space-y-6 pt-6 bg-slate-800/50 p-10 rounded-[3rem] border-2 border-slate-600 border-dashed group-hover:border-slate-500 transition-colors no-print">
-              <label className="text-sm font-black text-slate-300 uppercase tracking-widest flex items-center gap-3">
+            <div className="space-y-6 pt-6 bg-slate-800/50 p-10 rounded-[3rem] border-2 border-slate-500 border-dashed group-hover:border-slate-400 transition-colors no-print">
+              <label className="text-sm font-black text-slate-200 uppercase tracking-widest flex items-center gap-3">
                 <FileCheck className="w-5 h-5 text-emerald-500" />
                 Catatan / Saran Revisi Strategis ({cat.name}):
               </label>
-              <textarea 
-                value={notes[`${activeType}_${cat.name}`] || ''}
-                onChange={(e) => handleNoteChange(activeType, cat.name, e.target.value)}
-                className="w-full bg-slate-900 border-2 border-slate-700 rounded-[2.5rem] p-8 text-lg text-white focus:ring-4 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all min-h-[220px] shadow-inner"
-                placeholder="Tuliskan masukan kritis untuk peningkatan kualitas instrumen..."
-              />
+              <div className="mt-4 p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+                <label className="block text-[10px] font-black text-emerald-500/70 uppercase tracking-[0.2em] mb-2 px-1">Catatan Khusus / Saran Perbaikan</label>
+                <textarea
+                  value={notes[`${activeType}_${cat.name}`] || ''}
+                  onChange={(e) => handleNoteChange(activeType, cat.name, e.target.value)}
+                  placeholder="Tuliskan masukan spesifik untuk aspek ini..."
+                  className="w-full bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all min-h-[100px]"
+                />
+              </div>
             </div>
           </div>
         ))}
@@ -195,12 +198,12 @@ export function ExpertValidationHub() {
         <button 
           onClick={handleSave}
           disabled={saveStatus !== 'idle'}
-          className={`group flex items-center gap-4 px-12 py-6 rounded-[3rem] font-black text-xl shadow-2xl transition-all active:scale-95 ${
+          className={`group flex items-center gap-4 px-12 py-6 rounded-[3rem] font-black text-xl shadow-2xl transition-all active:scale-95 border-2 ${
             saveStatus === 'saved' 
-              ? 'bg-blue-600 text-white shadow-blue-900/40' 
+              ? 'bg-blue-600 border-blue-400 text-white shadow-blue-900/60 scale-105' 
               : saveStatus === 'saving'
-              ? 'bg-slate-800 text-slate-400 cursor-wait'
-              : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/60 translate-y-0 hover:-translate-y-1'
+              ? 'bg-slate-800 border-slate-700 text-slate-400 cursor-wait'
+              : 'bg-emerald-600 border-emerald-500 hover:bg-emerald-500 text-white shadow-emerald-900/60 translate-y-0 hover:-translate-y-1'
           }`}
         >
           {saveStatus === 'saved' ? (
@@ -285,14 +288,15 @@ export function ExpertValidationHub() {
 
         <div className="mt-16 flex justify-between px-10 break-inside-avoid pt-10">
           <div className="text-center">
-            <p className="mb-24">Mengetahui, <br/> Peneliti Utama</p>
-            <p className="font-bold underline text-sm">________________________</p>
+            <p className="mb-20 text-[11px] uppercase tracking-widest font-bold">Mengetahui, <br/> Peneliti Utama</p>
+            <div className="w-48 h-px bg-black mx-auto mb-2" />
+            <p className="font-bold text-xs uppercase tracking-wider">StatsLab Lead Researcher</p>
           </div>
           <div className="text-center w-80">
-            <p className="mb-2">________________, ________________ 2026</p>
-            <p className="mb-24 font-bold">Validator Ahli,</p>
-            <p className="text-base font-bold underline leading-none">( ___________________________________ )</p>
-            <p className="text-xs mt-2 italic">NIP/NIDN: ......................................................</p>
+            <p className="mb-4 text-xs font-serif italic">________________, ________________ 2026</p>
+            <p className="mb-20 font-bold uppercase tracking-widest text-[11px]">Validator Ahli,</p>
+            <p className="text-base font-bold leading-none">( ___________________________________ )</p>
+            <p className="text-[10px] mt-3 italic text-gray-500">NIP/NIDN: ......................................................</p>
           </div>
         </div>
 

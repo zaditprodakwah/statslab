@@ -46,8 +46,12 @@ export function useGamify() {
       // 1. If already unlocked, skip
       if (prev.unlockedLevels.includes(targetLevel)) return prev
 
-      // 2. Strict sequence enforcement (skip if not current + 1)
-      if (targetLevel !== prev.level + 1) return prev
+      // 2. Strict sequence enforcement: You MUST unlock Level N before N+1
+      // Level 1 is always unlocked. To unlock Level 2, you must be at Level 1.
+      if (targetLevel !== prev.level + 1) {
+        console.warn(`Gamify: Cannot unlock Level ${targetLevel} while at Level ${prev.level}.`)
+        return prev
+      }
 
       const pts = POINTS_TABLE[targetLevel] ?? 0
       const newBadges = BADGES[targetLevel]
@@ -77,11 +81,14 @@ export function useGamify() {
   }, [])
 
   const canUnlock = useCallback((targetLevel) => {
+    // Only the NEXT level can be unlocked
     return state.level + 1 === targetLevel
   }, [state.level])
 
   const resetProgress = useCallback(() => {
     setState(DEFAULT_STATE)
+    localStorage.removeItem('statslab_progress')
+    // Clear other related states if needed
   }, [])
 
   const godMode = useCallback(() => {
@@ -111,10 +118,7 @@ export function useGamify() {
   }, [])
 
   const resetAll = useCallback(() => {
-    localStorage.removeItem('statslab_progress')
-    localStorage.removeItem('statslab_profile')
-    localStorage.removeItem('validator_draft_scores')
-    localStorage.removeItem('validator_draft_notes')
+    localStorage.clear() // More robust for fresh start
     window.location.reload()
   }, [])
 

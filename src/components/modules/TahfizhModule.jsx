@@ -14,7 +14,6 @@ import { StatCard } from '../ui/StatCard'
 import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { useStats } from '../../hooks/useStats'
 import { useTabayyun } from '../../hooks/useTabayyun'
-import { useAmanah } from '../../hooks/useAmanah'
 import { AmanahToggle } from '../ui/AmanahToggle'
 import { PRESET_TAHFIZH } from '../../data/presetData'
 import { useLanguage } from '../../hooks/useLanguage'
@@ -27,10 +26,18 @@ const COLUMNS = [
   { field: 'halaman', type: 'number', labelKey: 'halaman' },
 ]
 
-export function TahfizhModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
+export function TahfizhModule({ 
+  data, 
+  isAmanah, 
+  tabayyunConfirmed, 
+  setData, 
+  setAmanah, 
+  setTabayyunConfirmed, 
+  onEdit, 
+  onStatView,
+  gamify
+}) {
   const { t } = useLanguage()
-  const [data, setData] = useState(PRESET_TAHFIZH)
-  const { isAmanah, toggleAmanah, yMin } = useAmanah(true)
 
   const values = useMemo(() => data.map((r) => r.halaman), [data])
   const stats = useStats(values)
@@ -39,7 +46,7 @@ export function TahfizhModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
   const chartData = {
     labels: data.map((r) => r.bulan),
     datasets: [{
-      label: t('modules.tahfizh.focus'),
+      label: 'Halaman Hafalan',
       data: values,
       borderColor: 'rgba(59, 130, 246, 0.9)',
       backgroundColor: 'rgba(59, 130, 246, 0.1)',
@@ -70,7 +77,7 @@ export function TahfizhModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
     },
     scales: {
       y: {
-        min: isAmanah ? 0 : yMin,
+        min: isAmanah ? 0 : undefined,
         ticks: { stepSize: 5, font: { size: 11 } },
         grid: { color: 'rgba(0,0,0,0.05)' },
       },
@@ -90,24 +97,26 @@ export function TahfizhModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
             📊 {t('modules.tahfizh.focus')}
           </span>
           <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-            📈 {t('modules.tahfizh.chartType')}
+            Line Chart
           </span>
         </div>
       </div>
 
       {/* Educational Context */}
-      <div className="px-4 py-3 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900 text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
+      <div className="px-4 py-3 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900 text-sm text-blue-800 dark:text-blue-300 leading-relaxed shadow-sm">
         <p className="font-semibold mb-1">💡 Mengapa Median penting di sini?</p>
         <p className="text-xs text-blue-700 dark:text-blue-400">
-          Data hafalan bulanan bisa sangat fluktuatif (misal: sakit sebulan → 0 halaman). <strong>Median</strong> tidak terpengaruh oleh bulan-bulan ekstrem tersebut, sehingga lebih merepresentasikan konsistensi (<em>istiqomah</em>) yang sesungguhnya dibanding Mean. Garis kuning pada grafik menunjukkan posisi Median.
+          Data hafalan bulanan bisa sangat fluktuatif (misal: sakit sebulan → 0 halaman). <strong>Median</strong> tidak terpengaruh oleh bulan-bulan ekstrem tersebut, sehingga lebih merepresentasikan konsistensi (<em>istiqomah</em>) yang sesungguhnya dibanding Mean. Garis kuning pada grafik menunjukkan posisi Median. Jika selisih Mean & Median besar, berarti ada lonjakan atau penurunan drastis di satu bulan.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="glass-card p-4">
+          <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Tren Progres Hafalan</h3>
           <Line data={chartData} options={chartOptions} />
         </div>
         <div className="glass-card p-4">
+          <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Data Bulanan</h3>
           <DataTable
             data={data}
             setData={setData}
@@ -137,15 +146,22 @@ export function TahfizhModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
         diff={tabayyun.diff}
         threshold={tabayyun.threshold}
         severity={tabayyun.severity}
-        onDetected={onTabayyun}
+        onDetected={setTabayyunConfirmed}
+        externalConfirmed={tabayyunConfirmed}
+        gamify={gamify}
       />
 
-      <AmanahToggle isAmanah={isAmanah} onToggle={toggleAmanah} onFirstToggle={onAmanah} />
+      <AmanahToggle 
+        isAmanah={isAmanah} 
+        onToggle={() => setAmanah(!isAmanah)} 
+        gamify={gamify}
+      />
 
       {/* Tawazun hint */}
       <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
-        ⚖️ <strong>Tawazun:</strong> Perhatikan apakah garis Median (kuning) mendekati rata-rata titik data (biru). Jika jauh berbeda, data mungkin tidak seimbang. Bandingkan ketiga ukuran pemusatan untuk kesimpulan yang adil.
+        ⚖️ <strong>Tawazun:</strong> Perhatikan apakah garis Median (kuning) mendekati rata-rata titik data (biru). Jika jauh berbeda, data mungkin tidak seimbang.
       </div>
     </div>
   )
 }
+

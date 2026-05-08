@@ -35,6 +35,21 @@ export function Sidebar({ activeModule, onModuleChange, profile, gamify }) {
           <LevelProgressBar level={gamify.level} points={gamify.points} />
         </div>
 
+        {/* Current Mission - Added for clarity */}
+        <div className="px-3 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900">
+          <p className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">
+            🚀 Misi Auditor
+          </p>
+          <p className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-snug">
+            {gamify.level === 1 && "Coba edit nominal di tabel data untuk menguji sistem!"}
+            {gamify.level === 2 && "Buka modul lain di navigasi bawah untuk eksplorasi!"}
+            {gamify.level === 3 && "Klik salah satu kartu statistik (Mean/Median/Modus)!"}
+            {gamify.level === 4 && "Temukan anomali di tabel dan klik tombol konfirmasi!"}
+            {gamify.level === 5 && "Gunakan saklar 'Skala Amanah' untuk verifikasi akhir!"}
+            {gamify.level >= 6 && "Selamat! Anda telah menjadi Auditor Profesional."}
+          </p>
+        </div>
+
         {/* Modules nav */}
         <div>
           <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest px-2 mb-1.5">

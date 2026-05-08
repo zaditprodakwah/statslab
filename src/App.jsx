@@ -16,11 +16,8 @@ import { ZiswafModule } from './components/modules/ZiswafModule'
 import { TahfizhModule } from './components/modules/TahfizhModule'
 import { QurbanModule } from './components/modules/QurbanModule'
 import { LiterasiModule } from './components/modules/LiterasiModule'
-import { CertificateView } from './components/certificate/CertificateView'
-import { PrintButton } from './components/certificate/PrintButton'
-import { SUSForm } from './components/sus/SUSForm'
-import { ResearcherPortal } from './components/researcher/ResearcherPortal'
 import { HelpModal } from './components/common/HelpModal'
+import { PRESET_ZISWAF, PRESET_TAHFIZH, PRESET_QURBAN, PRESET_LITERASI } from './data/presetData'
 
 // ── Dark mode init (before first paint) ──────────────────
 function initDark() {
@@ -60,6 +57,36 @@ function AppInner() {
   const { profile, saveProfile, hasProfile } = useProfile()
   const gamify = useGamify()
 
+  // Module data persistence
+  const [moduleData, setModuleData] = useState(() => {
+    const saved = localStorage.getItem('statslab_module_data')
+    if (saved) return JSON.parse(saved)
+    return {
+      ziswaf: { items: PRESET_ZISWAF, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
+      tahfizh: { items: PRESET_TAHFIZH, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
+      qurban: { items: PRESET_QURBAN, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
+      literasi: { items: PRESET_LITERASI, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
+    }
+  })
+
+  // Sync module data to localStorage
+  useEffect(() => {
+    localStorage.setItem('statslab_module_data', JSON.stringify(moduleData))
+  }, [moduleData])
+
+  // Generic data/state updater
+  const updateModuleState = useCallback((id, updates) => {
+    setModuleData(prev => ({
+      ...prev,
+      [id]: { ...prev[id], ...updates }
+    }))
+  }, [])
+
+  const handleDataChange = useCallback((id, newItems) => {
+    updateModuleState(id, { items: newItems })
+    if (gamify.canUnlock(2)) gamify.unlockLevel(2)
+  }, [gamify, updateModuleState])
+
   // Lvl3 unlock on module navigation (tracks first non-ziswaf visit)
   const handleModuleChange = useCallback((mod) => {
     setActiveModule(mod)
@@ -79,8 +106,22 @@ function AppInner() {
   // Handlers for gamify unlock triggers
   const handleEdit = useCallback(() => { if (gamify.canUnlock(2)) gamify.unlockLevel(2) }, [gamify])
   const handleStatView = useCallback(() => { if (gamify.canUnlock(4)) gamify.unlockLevel(4) }, [gamify])
-  const handleTabayyun = useCallback(() => { if (gamify.canUnlock(5)) gamify.unlockLevel(5) }, [gamify])
-  const handleAmanah = useCallback(() => { if (gamify.canUnlock(6)) gamify.unlockLevel(6) }, [gamify])
+  
+  const handleTabayyun = useCallback((id) => { 
+    updateModuleState(id, { tabayyunConfirmed: true })
+    if (gamify.canUnlock(5)) gamify.unlockLevel(5) 
+  }, [gamify, updateModuleState])
+
+  const handleAmanah = useCallback((id, isAmanah) => {
+    const current = moduleData[id]
+    const hasSeenBias = current.hasSeenBias || !isAmanah
+    updateModuleState(id, { isAmanah, hasSeenBias })
+    
+    // Level 6 unlock: if they've toggled back and forth (seen bias and now back to amanah)
+    if (hasSeenBias && isAmanah) {
+      if (gamify.canUnlock(6)) gamify.unlockLevel(6)
+    }
+  }, [gamify, moduleData, updateModuleState])
 
   // Gate: Show onboarding if no profile
   if (!hasProfile) {
@@ -105,8 +146,15 @@ function AppInner() {
             if (data.freshStart) {
               gamify.resetProgress()
               localStorage.removeItem('statslab_progress')
+              localStorage.removeItem('statslab_module_data')
               localStorage.removeItem('validator_draft_scores')
               localStorage.removeItem('validator_draft_notes')
+              setModuleData({
+                ziswaf: { items: PRESET_ZISWAF, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
+                tahfizh: { items: PRESET_TAHFIZH, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
+                qurban: { items: PRESET_QURBAN, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
+                literasi: { items: PRESET_LITERASI, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
+              })
             }
             saveProfile(data)
           }} />
@@ -161,34 +209,54 @@ function AppInner() {
           <div key={activeModule} className="animate-module-entry">
             {activeModule === 'ziswaf' && (
               <ZiswafModule
+                data={moduleData.ziswaf.items}
+                isAmanah={moduleData.ziswaf.isAmanah}
+                tabayyunConfirmed={moduleData.ziswaf.tabayyunConfirmed}
+                setData={(items) => handleDataChange('ziswaf', items)}
+                setAmanah={(val) => handleAmanah('ziswaf', val)}
+                setTabayyunConfirmed={() => handleTabayyun('ziswaf')}
                 onEdit={handleEdit}
                 onStatView={handleStatView}
-                onTabayyun={handleTabayyun}
-                onAmanah={handleAmanah}
+                gamify={gamify}
               />
             )}
             {activeModule === 'tahfizh' && (
               <TahfizhModule
+                data={moduleData.tahfizh.items}
+                isAmanah={moduleData.tahfizh.isAmanah}
+                tabayyunConfirmed={moduleData.tahfizh.tabayyunConfirmed}
+                setData={(items) => handleDataChange('tahfizh', items)}
+                setAmanah={(val) => handleAmanah('tahfizh', val)}
+                setTabayyunConfirmed={() => handleTabayyun('tahfizh')}
                 onEdit={handleEdit}
                 onStatView={handleStatView}
-                onTabayyun={handleTabayyun}
-                onAmanah={handleAmanah}
+                gamify={gamify}
               />
             )}
             {activeModule === 'qurban' && (
               <QurbanModule
+                data={moduleData.qurban.items}
+                isAmanah={moduleData.qurban.isAmanah}
+                tabayyunConfirmed={moduleData.qurban.tabayyunConfirmed}
+                setData={(items) => handleDataChange('qurban', items)}
+                setAmanah={(val) => handleAmanah('qurban', val)}
+                setTabayyunConfirmed={() => handleTabayyun('qurban')}
                 onEdit={handleEdit}
                 onStatView={handleStatView}
-                onTabayyun={handleTabayyun}
-                onAmanah={handleAmanah}
+                gamify={gamify}
               />
             )}
             {activeModule === 'literasi' && (
               <LiterasiModule
+                data={moduleData.literasi.items}
+                isAmanah={moduleData.literasi.isAmanah}
+                tabayyunConfirmed={moduleData.literasi.tabayyunConfirmed}
+                setData={(items) => handleDataChange('literasi', items)}
+                setAmanah={(val) => handleAmanah('literasi', val)}
+                setTabayyunConfirmed={() => handleTabayyun('literasi')}
                 onEdit={handleEdit}
                 onStatView={handleStatView}
-                onTabayyun={handleTabayyun}
-                onAmanah={handleAmanah}
+                gamify={gamify}
               />
             )}
             {activeModule === 'certificate' && certificateContent}

@@ -93,16 +93,18 @@ export function DataTable({ data, setData, columns, onEdit, moduleId }) {
           ))}
         </tbody>
       </table>
-      <div className="p-2 border-t border-slate-100 dark:border-slate-800">
+      <div className="p-3 bg-slate-50 dark:bg-slate-900/40 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
         <button
           onClick={handleAddRow}
-          className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium transition-colors px-2 py-1 rounded hover:bg-emerald-50 dark:hover:bg-emerald-900/20 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-black transition-all px-3 py-1.5 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/30 focus:outline-none focus:ring-2 focus:ring-emerald-400 active:scale-95"
           tabIndex={0}
-          id={`${moduleId}-add-row`}
         >
-          <PlusCircle className="w-3.5 h-3.5" />
-          {t('table.addRow')}
+          <PlusCircle className="w-4 h-4" />
+          {t('table.addRow').toUpperCase()}
         </button>
+        <span className="text-[10px] font-bold text-slate-400 italic">
+          💡 Tips: Klik pada angka untuk mengubah data
+        </span>
       </div>
     </div>
   )

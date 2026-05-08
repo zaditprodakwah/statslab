@@ -14,7 +14,6 @@ import { StatCard } from '../ui/StatCard'
 import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { useStats } from '../../hooks/useStats'
 import { useTabayyun } from '../../hooks/useTabayyun'
-import { useAmanah } from '../../hooks/useAmanah'
 import { AmanahToggle } from '../ui/AmanahToggle'
 import { PRESET_QURBAN } from '../../data/presetData'
 import { useLanguage } from '../../hooks/useLanguage'
@@ -28,10 +27,18 @@ const COLUMNS = [
   { field: 'realisasi', type: 'number', labelKey: 'realisasi' },
 ]
 
-export function QurbanModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
+export function QurbanModule({ 
+  data, 
+  isAmanah, 
+  tabayyunConfirmed, 
+  setData, 
+  setAmanah, 
+  setTabayyunConfirmed, 
+  onEdit, 
+  onStatView,
+  gamify
+}) {
   const { t } = useLanguage()
-  const [data, setData] = useState(PRESET_QURBAN)
-  const { isAmanah, toggleAmanah, yMin } = useAmanah(true)
 
   const realisasiValues = useMemo(() => data.map((r) => r.realisasi), [data])
   const stats = useStats(realisasiValues)
@@ -66,7 +73,7 @@ export function QurbanModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
     },
     scales: {
       y: {
-        min: isAmanah ? 0 : yMin,
+        min: isAmanah ? 0 : undefined,
         ticks: { font: { size: 11 } },
         grid: { color: 'rgba(0,0,0,0.05)' },
       },
@@ -86,24 +93,26 @@ export function QurbanModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
             📊 {t('modules.qurban.focus')}
           </span>
           <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-            📊 {t('modules.qurban.chartType')}
+            Bar Chart
           </span>
         </div>
       </div>
 
       {/* Educational Context */}
-      <div className="px-4 py-3 rounded-xl bg-amber-50/60 dark:bg-amber-900/15 border border-amber-100 dark:border-amber-900 text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
+      <div className="px-4 py-3 rounded-xl bg-amber-50/60 dark:bg-amber-900/15 border border-amber-100 dark:border-amber-900 text-sm text-amber-800 dark:text-amber-300 leading-relaxed shadow-sm">
         <p className="font-semibold mb-1">💡 Mengapa Modus penting di sini?</p>
         <p className="text-xs text-amber-700 dark:text-amber-400">
-          <strong>Modus</strong> menunjukkan angka realisasi yang paling sering muncul antar desa. Jika modus rendah, berarti mayoritas desa menerima distribusi minimal — ini menandakan <strong>ketimpangan</strong>. Modus membantu kita melihat pola dominan yang mungkin tersembunyi di balik rata-rata yang "tampak baik".
+          <strong>Modus</strong> menunjukkan angka realisasi yang paling sering muncul antar desa. Jika modus rendah, berarti mayoritas desa menerima distribusi minimal — ini menandakan <strong>ketimpangan</strong>. Modus membantu kita melihat pola dominan yang mungkin tersembunyi di balik rata-rata yang "tampak baik". Dalam audit Qurban, kita mencari apakah ada desa yang ditinggalkan secara sistematis.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="glass-card p-4">
+          <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Perbandingan Target vs Realisasi</h3>
           <Bar data={chartData} options={chartOptions} />
         </div>
         <div className="glass-card p-4">
+          <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Data Distribusi Desa</h3>
           <DataTable
             data={data}
             setData={setData}
@@ -133,15 +142,22 @@ export function QurbanModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
         diff={tabayyun.diff}
         threshold={tabayyun.threshold}
         severity={tabayyun.severity}
-        onDetected={onTabayyun}
+        onDetected={setTabayyunConfirmed}
+        externalConfirmed={tabayyunConfirmed}
+        gamify={gamify}
       />
 
-      <AmanahToggle isAmanah={isAmanah} onToggle={toggleAmanah} onFirstToggle={onAmanah} />
+      <AmanahToggle 
+        isAmanah={isAmanah} 
+        onToggle={() => setAmanah(!isAmanah)} 
+        gamify={gamify}
+      />
 
       {/* Tawazun hint */}
       <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
-        ⚖️ <strong>Tawazun:</strong> Bandingkan kolom Target vs Realisasi. Apakah distribusi sudah adil? Modus membantu mengungkap ketimpangan yang rata-rata (Mean) tidak bisa tunjukkan.
+        ⚖️ <strong>Tawazun:</strong> Bandingkan kolom Target vs Realisasi. Apakah distribusi sudah adil?
       </div>
     </div>
   )
 }
+

@@ -6,12 +6,14 @@ import { useRef, useState, useEffect } from 'react'
 import { Eye, EyeOff, Info, ChevronDown, ChevronUp, CheckCircle } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage'
 
-export function AmanahToggle({ isAmanah, onToggle, onFirstToggle }) {
+export function AmanahToggle({ isAmanah, onToggle, gamify }) {
   const { t } = useLanguage()
-  const firedRef = useRef(false)
-  const statesSeen = useRef(new Set())
   const [showInfo, setShowInfo] = useState(false)
   const [feedback, setFeedback] = useState('')
+
+  // Requirement: Must be at least Level 5 to unlock Level 6
+  const isLocked = gamify && gamify.level < 5
+  const canUnlockNow = gamify && gamify.canUnlock(6)
 
   useEffect(() => {
     if (feedback) {
@@ -22,18 +24,7 @@ export function AmanahToggle({ isAmanah, onToggle, onFirstToggle }) {
 
   const handleToggle = () => {
     onToggle()
-    
-    // Add current state (after toggle) to the set
-    // Note: onToggle is async in terms of state update, so we use the inverse of isAmanah
     const newState = !isAmanah
-    statesSeen.current.add(newState ? 'amanah' : 'bias')
-
-    if (statesSeen.current.size >= 2 && !firedRef.current) {
-      firedRef.current = true
-      if (onFirstToggle) onFirstToggle()
-    }
-    
-    // Set feedback text based on the new state
     setFeedback(newState ? 'Skala Integritas (Y=0) Aktif ✓' : 'Skala Bias Aktif ✗')
   }
 
@@ -55,6 +46,11 @@ export function AmanahToggle({ isAmanah, onToggle, onFirstToggle }) {
           </div>
           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
             {t('amanah.description')}
+            {isLocked && (
+              <span className="block mt-1 text-[10px] font-bold italic opacity-75 text-amber-600 dark:text-amber-400">
+                🔒 Selesaikan Level 5 (Tabayyun) untuk membuka fitur ini.
+              </span>
+            )}
           </p>
           
           {feedback && (
@@ -67,31 +63,36 @@ export function AmanahToggle({ isAmanah, onToggle, onFirstToggle }) {
         {/* Toggle Switch */}
         <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
           <button
-            onClick={handleToggle}
+            onClick={() => !isLocked && handleToggle()}
             role="switch"
             aria-checked={isAmanah}
+            disabled={isLocked}
             tabIndex={0}
             id="amanah-toggle-btn"
             aria-label={t('amanah.toggleLabel')}
             className={`relative w-12 h-6 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 ${
-              isAmanah
+              isLocked
+                ? 'bg-slate-200 dark:bg-slate-700 cursor-not-allowed grayscale'
+                : isAmanah
                 ? 'bg-emerald-500 shadow-emerald-500/40 shadow-lg'
                 : 'bg-slate-300 dark:bg-slate-600'
             }`}
           >
             <span
               className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-all duration-300 flex items-center justify-center ${
-                isAmanah ? 'left-6' : 'left-0.5'
+                isAmanah && !isLocked ? 'left-6' : 'left-0.5'
               }`}
             >
-              {isAmanah
+              {isLocked 
+                ? <span className="text-[10px]">🔒</span>
+                : isAmanah
                 ? <Eye className="w-2.5 h-2.5 text-emerald-600" />
                 : <EyeOff className="w-2.5 h-2.5 text-slate-400" />
               }
             </span>
           </button>
-          <span className={`text-xs font-medium ${isAmanah ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'}`}>
-            {isAmanah ? t('amanah.onLabel') : t('amanah.offLabel')}
+          <span className={`text-xs font-medium ${isLocked ? 'text-slate-400' : isAmanah ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'}`}>
+            {isLocked ? 'Terkunci' : isAmanah ? t('amanah.onLabel') : t('amanah.offLabel')}
           </span>
         </div>
       </div>

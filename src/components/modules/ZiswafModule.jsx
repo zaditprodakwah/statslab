@@ -12,8 +12,6 @@ import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { AmanahToggle } from '../ui/AmanahToggle'
 import { useStats } from '../../hooks/useStats'
 import { useTabayyun } from '../../hooks/useTabayyun'
-import { useAmanah } from '../../hooks/useAmanah'
-import { PRESET_ZISWAF } from '../../data/presetData'
 import { useLanguage } from '../../hooks/useLanguage'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
@@ -32,10 +30,18 @@ const PIE_COLORS = [
   'rgba(168, 85, 247, 0.85)',
 ]
 
-export function ZiswafModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
+export function ZiswafModule({ 
+  data, 
+  isAmanah, 
+  tabayyunConfirmed, 
+  setData, 
+  setAmanah, 
+  setTabayyunConfirmed, 
+  onEdit, 
+  onStatView,
+  gamify
+}) {
   const { t } = useLanguage()
-  const [data, setData] = useState(PRESET_ZISWAF)
-  const { isAmanah, toggleAmanah } = useAmanah(true)
 
   const nominals = useMemo(() => data.map((r) => r.nominal), [data])
   const stats = useStats(nominals)
@@ -80,10 +86,9 @@ export function ZiswafModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
             📈 {t('modules.ziswaf.focus')}
           </span>
           <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-            🥧 {t('modules.ziswaf.chartType')}
+            Pie Chart
           </span>
         </div>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 italic">{t('modules.ziswaf.context')}</p>
       </div>
 
       {/* Educational Context */}
@@ -99,7 +104,7 @@ export function ZiswafModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
         {/* Pie Chart */}
         <div className="glass-card p-4">
           <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">
-            {t('modules.ziswaf.chartType')}
+            Proporsi Distribusi Dana
           </h3>
           <div className="max-w-xs mx-auto">
             <Pie data={chartData} options={chartOptions} />
@@ -142,20 +147,23 @@ export function ZiswafModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
         diff={tabayyun.diff}
         threshold={tabayyun.threshold}
         severity={tabayyun.severity}
-        onDetected={onTabayyun}
+        onDetected={setTabayyunConfirmed}
+        externalConfirmed={tabayyunConfirmed}
+        gamify={gamify}
       />
 
       {/* Amanah Toggle */}
       <AmanahToggle
         isAmanah={isAmanah}
-        onToggle={toggleAmanah}
-        onFirstToggle={onAmanah}
+        onToggle={() => setAmanah(!isAmanah)}
+        gamify={gamify}
       />
 
       {/* Tawazun hint */}
       <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
-        ⚖️ <strong>Tawazun:</strong> {t('tawazun')}
+        ⚖️ <strong>Tawazun:</strong> Keseimbangan dalam distribusi adalah kunci transparansi lembaga filantropi Islam.
       </div>
     </div>
   )
 }
+

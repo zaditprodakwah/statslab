@@ -7,10 +7,27 @@ import { useEffect, useRef, useState } from 'react'
 import { AlertTriangle, Info, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage'
 
-export function TabayyunAlert({ isAnomalous, mean, median, diff, threshold, severity, onDetected }) {
+export function TabayyunAlert({ 
+  isAnomalous, 
+  mean, 
+  median, 
+  diff, 
+  threshold, 
+  severity, 
+  onDetected,
+  externalConfirmed = false,
+  gamify
+}) {
   const { t } = useLanguage()
-  const [confirmed, setConfirmed] = useState(false)
   const [showTheory, setShowTheory] = useState(false)
+  
+  // Requirement: Must be at least Level 4 to unlock Level 5
+  const isLocked = gamify && gamify.level < 4
+  const canUnlockNow = gamify && gamify.canUnlock(5)
+  
+  // Local confirmed state is synced with prop but allows immediate UI feedback
+  const confirmed = externalConfirmed
+
   if (!isAnomalous) {
     return (
       <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-sm animate-fade-in">
@@ -41,23 +58,29 @@ export function TabayyunAlert({ isAnomalous, mean, median, diff, threshold, seve
             </h4>
             <button
               onClick={() => {
-                if (!confirmed) {
-                  setConfirmed(true)
-                  if (onDetected) onDetected()
+                if (!confirmed && onDetected && !isLocked) {
+                  onDetected()
                 }
               }}
-              disabled={confirmed}
+              disabled={confirmed || isLocked}
               className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tight shadow-sm transition-all border ${
                 confirmed 
                   ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800 cursor-default' 
+                  : isLocked
+                  ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
                   : 'bg-white dark:bg-slate-800 hover:scale-105 active:scale-95 border-amber-200 dark:border-amber-900'
               }`}
             >
-              {confirmed ? 'Temuan Dikonfirmasi ✓' : 'Konfirmasi Temuan'}
+              {confirmed ? 'Temuan Dikonfirmasi ✓' : isLocked ? '🔒 Level Belum Cukup' : 'Konfirmasi Temuan'}
             </button>
           </div>
           <p className={`text-sm ${cfg.text} opacity-90 leading-relaxed`}>
             {t('tabayyun.body')}
+            {isLocked && (
+              <span className="block mt-2 text-[11px] font-bold italic opacity-75">
+                💡 Petunjuk: Selesaikan Level 1-4 untuk mengonfirmasi temuan ini dan membuka Level 5 (Detektif).
+              </span>
+            )}
           </p>
           {/* Formula Evidence */}
           <div className="mt-3 p-2.5 rounded-lg bg-white/60 dark:bg-black/20 font-mono text-xs space-y-1">
