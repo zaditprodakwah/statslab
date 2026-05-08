@@ -20,6 +20,7 @@ import { CertificateView } from './components/certificate/CertificateView'
 import { PrintButton } from './components/certificate/PrintButton'
 import { SUSForm } from './components/sus/SUSForm'
 import { ResearcherPortal } from './components/researcher/ResearcherPortal'
+import { HelpModal } from './components/common/HelpModal'
 
 // ── Dark mode init (before first paint) ──────────────────
 function initDark() {
@@ -55,6 +56,7 @@ function AppInner() {
   const [isDark, setIsDark] = useState(initDark)
   const [activeModule, setActiveModule] = useState('ziswaf')
   const [showResearcher, setShowResearcher] = useState(false)
+  const [isHelpOpen, setIsHelpOpen] = useState(false)
   const { profile, saveProfile, hasProfile } = useProfile()
   const gamify = useGamify()
 
@@ -133,6 +135,7 @@ function AppInner() {
           isDark={isDark}
           onToggleDark={() => setIsDark((d) => !d)}
           onOpenSUS={() => setActiveModule('sus')}
+          onOpenHelp={() => setIsHelpOpen(true)}
           onMagicEntry={() => setShowResearcher(true)}
         />
 
@@ -205,6 +208,12 @@ function AppInner() {
             onExit={() => setShowResearcher(false)} 
           />
         )}
+
+        {/* Documentation Hub */}
+        <HelpModal 
+          isOpen={isHelpOpen} 
+          onClose={() => setIsHelpOpen(false)} 
+        />
       </div>
     </div>
   )

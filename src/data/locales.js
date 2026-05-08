@@ -43,6 +43,7 @@ export const locales = {
       progress: 'Progres Saya',
       certificate: 'Sertifikat',
       evalSUS: 'Evaluasi Kepraktisan',
+      help: 'Bantuan',
     },
 
     // ── Stats Labels ──────────────────────────────────────
@@ -226,6 +227,7 @@ export const locales = {
       progress: 'My Progress',
       certificate: 'Certificate',
       evalSUS: 'Usability Evaluation',
+      help: 'Help',
     },
 
     // ── Stats Labels ──────────────────────────────────────

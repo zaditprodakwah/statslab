@@ -5,10 +5,10 @@
 // Navigation on mobile handled by BottomNav
 // ============================================================
 import { useState, useRef } from 'react'
-import { Moon, Sun, Globe, ClipboardList } from 'lucide-react'
+import { Moon, Sun, Globe, ClipboardList, HelpCircle } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage'
 
-export function Header({ isDark, onToggleDark, onOpenSUS, onMagicEntry }) {
+export function Header({ isDark, onToggleDark, onOpenSUS, onOpenHelp, onMagicEntry }) {
   const { t, lang, setLang } = useLanguage()
   
   // Magic Entry Logic (5x logo clicks in 2s)
@@ -54,6 +54,15 @@ export function Header({ isDark, onToggleDark, onOpenSUS, onMagicEntry }) {
 
       {/* Right controls */}
       <div className="flex items-center gap-1.5">
+        {/* Help Button */}
+        <button
+          onClick={onOpenHelp}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        >
+          <HelpCircle className="w-3 h-3" />
+          <span className="hidden xs:inline">{t('nav.help')}</span>
+        </button>
+
         {/* SUS Evaluation Button — desktop only (mobile uses BottomNav) */}
         <button
           onClick={onOpenSUS}
