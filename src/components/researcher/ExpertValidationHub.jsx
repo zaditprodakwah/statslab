@@ -173,7 +173,7 @@ export function ExpertValidationHub() {
       </div>
 
       {/* ── Print View Template (Hidden on Screen) ────────────────── */}
-      <div id="validation-print-area" className="hidden print:block fixed inset-0 bg-white text-black p-10 font-serif z-[200]">
+      <div id="validation-print-area" className="hidden print:block bg-white text-black font-serif">
         <div className="text-center mb-10 border-b-4 border-double border-black pb-6">
           <h1 className="text-2xl font-bold uppercase leading-tight">Lembar Validasi Instrumen Penelitian</h1>
           <h2 className="text-xl font-bold uppercase mt-1">StatsLab: Dasbor Statistika Interaktif</h2>

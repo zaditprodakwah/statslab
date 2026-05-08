@@ -178,13 +178,13 @@ export function ResearcherPortal({ onExit, profile }) {
                   {
                     icon: RefreshCcw,
                     title: "Reset Protocol",
-                    desc: "Sangat penting untuk menekan tombol 'NUKE DATA' di Admin Tools sebelum memberikan perangkat uji coba ke responden berikutnya agar data penelitian tidak bias.",
+                    desc: "Sangat penting untuk menekan tombol 'NUKE DATA' di Admin Tools sebelum memberikan perangkat uji coba ke responden baru. Ini menghapus seluruh identitas, skor, dan progres level siswa agar data penelitian tidak tercampur.",
                     color: "red"
                   },
                   {
                     icon: ShieldCheck,
-                    title: "God Mode (Sidang Access)",
-                    desc: "Fitur bypass level disediakan untuk keperluan demonstrasi cepat saat sidang skripsi atau audit validator tanpa harus menyelesaikan seluruh modul."
+                    title: "God Mode (Unlock Level 6)",
+                    desc: "Fitur ini memungkinkan auditor melompati modul pembelajaran (Level 1-5) untuk langsung menguji fungsionalitas Sertifikat dan Formulir SUS di Level 6 tanpa harus mengisi kuis/latihan secara manual."
                   }
                 ].map((doc, i) => (
                   <div key={i} className={`glass-card p-6 border-slate-800 bg-slate-900/30 flex gap-6 items-start ${doc.color === 'red' ? 'border-red-500/20 bg-red-500/5' : ''}`}>
