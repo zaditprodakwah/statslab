@@ -161,6 +161,18 @@ body {
 }
 .animate-zoom-in { animation: zoomIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
+@keyframes slideDown {
+  from { opacity: 0; transform: translate(-50%, -100%); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+.animate-slide-down { animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@keyframes pulseSlow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.02); opacity: 0.95; }
+}
+.animate-pulse-slow { animation: pulseSlow 3s ease-in-out infinite; }
+
 /* ─── ENHANCED VISUALS ──────────────────────────────── */
 .glass-panel-heavy {
   @apply bg-white/70 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/40 shadow-2xl;

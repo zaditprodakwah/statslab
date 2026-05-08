@@ -33,21 +33,33 @@ function initDark() {
 function Toast({ notification, lang }) {
   if (!notification) return null
   const msgs = {
-    2: { id: '🎉 Level 2 terbuka! +10 Poin', en: '🎉 Level 2 Unlocked! +10 Points' },
-    3: { id: '🌟 Level 3 terbuka! +20 Poin', en: '🌟 Level 3 Unlocked! +20 Points' },
-    4: { id: '📊 Level 4 terbuka! +20 Poin', en: '📊 Level 4 Unlocked! +20 Points' },
-    5: { id: '🔍 Level 5 terbuka! +50 Poin & Badge Detektif!', en: '🔍 Level 5 Unlocked! +50 Points & Detective Badge!' },
-    6: { id: '🏆 Level 6 terbuka! +50 Poin & Badge Jujur Visual!', en: '🏆 Level 6 Unlocked! +50 Points & Visual Integrity Badge!' },
+    2: { id: '🎉 Level 2 Terbuka! +10 Poin. Tips: Jelajahi modul lain di sidebar!', en: '🎉 Level 2 Unlocked! +10 Points. Tips: Explore other modules!' },
+    3: { id: '🌟 Level 3 Terbuka! +20 Poin. Tips: Perhatikan angka Statistik di bawah!', en: '🌟 Level 3 Unlocked! +20 Points. Tips: Check the Stats cards below!' },
+    4: { id: '📊 Level 4 Terbuka! +20 Poin. Tips: Cari anomali data (selisih Mean/Median)!', en: '📊 Level 4 Unlocked! +20 Points. Tips: Find data anomalies!' },
+    5: { id: '🔍 Level 5 Terbuka! +50 Poin & Badge Detektif! Tips: Gunakan Skala Amanah!', en: '🔍 Level 5 Unlocked! +50 Points & Detective Badge! Tips: Use Amanah Scale!' },
+    6: { id: '🏆 Level 6 Terbuka! +50 Poin & Badge Jujur Visual! Tips: Ambil Sertifikat Anda!', en: '🏆 Level 6 Unlocked! +50 Points & Visual Integrity Badge! Tips: Get your Certificate!' },
   }
-  const msg = msgs[notification.level]?.[lang] || ''
+  const item = msgs[notification.level]?.[lang] || ''
+  
   return (
     <div
-      // Mobile: above bottom nav (bottom-20); Desktop: bottom-6
-      className="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-6 z-50 glass-card px-5 py-3 text-sm font-semibold text-emerald-700 dark:text-emerald-300 animate-bounce-soft shadow-xl max-w-xs text-center sm:text-left"
+      className="fixed top-24 left-1/2 -translate-x-1/2 z-[60] animate-slide-down"
       role="status"
       aria-live="polite"
     >
-      {msg}
+      <div className="bg-white dark:bg-slate-900 border-2 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)] rounded-2xl px-6 py-4 flex items-center gap-4 min-w-[320px] max-w-lg">
+        <div className="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0 animate-pulse">
+          <span className="text-2xl">✨</span>
+        </div>
+        <div className="flex-1">
+          <p className="text-slate-900 dark:text-white font-black text-sm leading-tight uppercase tracking-tight">
+            {item.split('. ')[0]}
+          </p>
+          <p className="text-emerald-600 dark:text-emerald-400 text-xs font-bold mt-1">
+            {item.split('. ')[1]}
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

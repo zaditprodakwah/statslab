@@ -106,6 +106,28 @@ export function QurbanModule({
         </p>
       </div>
 
+      {/* IMPACT ALERTS - MOVED UP FOR VISIBILITY */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Tabayyun Alert */}
+        <TabayyunAlert
+          isAnomalous={tabayyun.isAnomalous}
+          mean={stats.mean}
+          median={stats.median}
+          diff={tabayyun.diff}
+          threshold={tabayyun.threshold}
+          severity={tabayyun.severity}
+          onDetected={setTabayyunConfirmed}
+          externalConfirmed={tabayyunConfirmed}
+          gamify={gamify}
+        />
+
+        <AmanahToggle 
+          isAmanah={isAmanah} 
+          onToggle={() => setAmanah(!isAmanah)} 
+          gamify={gamify}
+        />
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="glass-card p-4">
           <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Perbandingan Target vs Realisasi</h3>
@@ -133,25 +155,6 @@ export function QurbanModule({
           />
         ))}
       </div>
-
-      {/* Tabayyun Alert */}
-      <TabayyunAlert
-        isAnomalous={tabayyun.isAnomalous}
-        mean={stats.mean}
-        median={stats.median}
-        diff={tabayyun.diff}
-        threshold={tabayyun.threshold}
-        severity={tabayyun.severity}
-        onDetected={setTabayyunConfirmed}
-        externalConfirmed={tabayyunConfirmed}
-        gamify={gamify}
-      />
-
-      <AmanahToggle 
-        isAmanah={isAmanah} 
-        onToggle={() => setAmanah(!isAmanah)} 
-        gamify={gamify}
-      />
 
       {/* Tawazun hint */}
       <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">

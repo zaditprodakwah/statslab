@@ -35,18 +35,31 @@ export function Sidebar({ activeModule, onModuleChange, profile, gamify }) {
           <LevelProgressBar level={gamify.level} points={gamify.points} />
         </div>
 
-        {/* Current Mission - Added for clarity */}
-        <div className="px-3 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900">
-          <p className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">
-            🚀 Misi Auditor
+        {/* Current Mission - Sharpened for Level 6 goal */}
+        <div className="px-3 py-3 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20 text-white border-none">
+          <p className="text-[10px] font-black uppercase tracking-widest mb-1.5 opacity-80">
+            🎯 MISI SAAT INI
           </p>
-          <p className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-snug">
-            {gamify.level === 1 && "Coba edit nominal di tabel data untuk menguji sistem!"}
-            {gamify.level === 2 && "Buka modul lain di navigasi bawah untuk eksplorasi!"}
-            {gamify.level === 3 && "Klik salah satu kartu statistik (Mean/Median/Modus)!"}
-            {gamify.level === 4 && "Temukan anomali di tabel dan klik tombol konfirmasi!"}
-            {gamify.level === 5 && "Gunakan saklar 'Skala Amanah' untuk verifikasi akhir!"}
-            {gamify.level >= 6 && "Selamat! Anda telah menjadi Auditor Profesional."}
+          <p className="text-[13px] font-bold leading-tight">
+            {gamify.level === 1 && "💡 Edit angka di tabel bawah untuk dapat +10 Poin!"}
+            {gamify.level === 2 && "💡 Klik tab modul lain di menu sebelah untuk +10 Poin!"}
+            {gamify.level === 3 && "💡 Cek statistik: Klik kartu Mean, Median, atau Modus!"}
+            {gamify.level === 4 && "💡 Temukan 'Anomali Data' dan klik tombol 'Tabayyun'!"}
+            {gamify.level === 5 && "💡 Aktifkan 'Skala Amanah' di bagian bawah modul!"}
+            {gamify.level >= 6 && "🏆 Misi Selesai! Anda Auditor Profesional bersertifikat."}
+          </p>
+        </div>
+
+        {/* Contextual Clue */}
+        <div className="px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+          <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">
+            🔍 PETUNJUK MODUL
+          </p>
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 italic leading-snug">
+            {activeModule === 'ziswaf' && "Fokus pada Mean: Apakah ada kategori yang dananya 'terlalu besar'?"}
+            {activeModule === 'tahfizh' && "Gunakan Median: Lihat tren hafalan tanpa terganggu bulan yang kosong."}
+            {activeModule === 'qurban' && "Cari Modus: Berapa angka realisasi yang paling sering muncul?"}
+            {activeModule === 'literasi' && "Analisis Frekuensi: Apakah distribusi buku sudah merata?"}
           </p>
         </div>
 

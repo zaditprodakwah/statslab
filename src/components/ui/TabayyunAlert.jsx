@@ -46,16 +46,23 @@ export function TabayyunAlert({
   const Icon = cfg.icon
 
   return (
-    <div className={`tabayyun-alert rounded-xl border ${cfg.bg} ${cfg.border} p-4 animate-bounce-soft`}>
+    <div className={`tabayyun-alert rounded-xl border-2 ${cfg.bg} ${cfg.border} p-4 ${!confirmed ? 'animate-pulse-slow shadow-[0_0_15px_rgba(245,158,11,0.3)]' : ''}`}>
       <div className="flex items-start gap-3">
-        <div className={`w-8 h-8 rounded-lg ${severity === 'extreme' ? 'bg-red-500' : 'bg-amber-500'} flex items-center justify-center flex-shrink-0 shadow`}>
-          <Icon className="w-4 h-4 text-white" />
+        <div className={`w-10 h-10 rounded-xl ${severity === 'extreme' ? 'bg-red-500' : 'bg-amber-500'} flex items-center justify-center flex-shrink-0 shadow-lg`}>
+          <Icon className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-4 mb-1">
-            <h4 className={`font-bold text-sm ${cfg.text}`}>
-              {t('tabayyun.title')}
-            </h4>
+            <div className="flex flex-col">
+              <h4 className={`font-black text-xs uppercase tracking-widest ${cfg.text}`}>
+                {t('tabayyun.title')}
+              </h4>
+              {!confirmed && !isLocked && (
+                <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 animate-pulse">
+                  ⚠️ BUTUH AUDIT SEGERA
+                </span>
+              )}
+            </div>
             <button
               onClick={() => {
                 if (!confirmed && onDetected && !isLocked) {
@@ -63,15 +70,15 @@ export function TabayyunAlert({
                 }
               }}
               disabled={confirmed || isLocked}
-              className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-tight shadow-sm transition-all border ${
+              className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-tight shadow-md transition-all border-2 ${
                 confirmed 
-                  ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-800 cursor-default' 
+                  ? 'bg-emerald-500 text-white border-emerald-400 cursor-default' 
                   : isLocked
                   ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-50'
-                  : 'bg-white dark:bg-slate-800 hover:scale-105 active:scale-95 border-amber-200 dark:border-amber-900'
+                  : 'bg-white dark:bg-slate-800 text-amber-600 border-amber-500 hover:bg-amber-500 hover:text-white active:scale-95'
               }`}
             >
-              {confirmed ? 'Temuan Dikonfirmasi ✓' : isLocked ? '🔒 Level Belum Cukup' : 'Konfirmasi Temuan'}
+              {confirmed ? 'TERVERIFIKASI ✓' : isLocked ? '🔒 TERKUNCI' : 'TABAYYUN SEKARANG'}
             </button>
           </div>
           <p className={`text-sm ${cfg.text} opacity-90 leading-relaxed`}>
