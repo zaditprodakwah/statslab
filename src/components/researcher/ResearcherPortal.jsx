@@ -97,11 +97,11 @@ export function ResearcherPortal({ onExit, profile }) {
             <h3 className="text-slate-500 text-[10px] font-black mb-3 uppercase tracking-widest">Peneliti Aktif</h3>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
-                <span className="text-emerald-500 font-black text-sm">{profile.name.charAt(0)}</span>
+                <span className="text-emerald-500 font-black text-sm">{profile.nama?.charAt(0) || 'R'}</span>
               </div>
               <div className="min-w-0">
-                <p className="text-white text-sm font-bold truncate">{profile.name}</p>
-                <p className="text-slate-500 text-[10px] truncate">{profile.school}</p>
+                <p className="text-white text-sm font-bold truncate">{profile.nama || 'Researcher'}</p>
+                <p className="text-slate-500 text-[10px] truncate">{profile.sekolah || 'StatsLab Unit'}</p>
               </div>
             </div>
           </div>

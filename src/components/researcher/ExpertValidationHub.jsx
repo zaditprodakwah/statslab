@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { Printer, Save, FileCheck, Info } from 'lucide-react'
 import { EXPERT_INDICATORS } from '../../data/expertIndicators'
 
@@ -197,8 +197,8 @@ export function ExpertValidationHub() {
           </thead>
           <tbody>
             {currentIndicators.categories.map((cat, cIdx) => (
-              <>
-                <tr key={`print-cat-${cIdx}`} className="bg-gray-50">
+              <Fragment key={`print-cat-group-${cIdx}`}>
+                <tr className="bg-gray-50">
                   <td colSpan={3} className="border-2 border-black p-2 font-bold uppercase">{cat.name}</td>
                 </tr>
                 {cat.indicators.map((ind) => (
@@ -216,7 +216,7 @@ export function ExpertValidationHub() {
                     <div className="italic text-gray-700">{notes[`${activeType}_${cat.name}`] || '—'}</div>
                   </td>
                 </tr>
-              </>
+              </Fragment>
             ))}
           </tbody>
         </table>
