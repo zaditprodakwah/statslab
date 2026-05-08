@@ -1,4 +1,4 @@
-# 📊 StatsLab: Antigravity Edition
+# 📊 StatsLab: V1
 
 > **Research-Grade Interactive Statistics Dashboard with Islamic Epistemology & CLT Scaffolding**
 
@@ -11,7 +11,7 @@
 
 ---
 
-## 🧠 Konteks Teoretis & Riset
+## Konteks Teoretis & Riset
 
 Aplikasi ini mengimplementasikan tiga pilar utama penelitian:
 
@@ -21,18 +21,18 @@ Aplikasi ini mengimplementasikan tiga pilar utama penelitian:
 
 ---
 
-## ✨ Fitur Unggulan
+## Fitur Unggulan
 
-### 🎮 Gamifikasi Literasi Data
+### Gamifikasi Literasi Data
 Sistem memantau progres kognitif siswa secara real-time dari Level 1 (Idiosinkratik) hingga Level 6 (Kritis-Matematis). Fitur evaluasi dan sertifikat hanya akan terbuka setelah siswa mencapai level tertinggi.
 
-### 🛡️ Researcher & Admin Hub (Built-in Instrumentation)
+### Researcher & Admin Hub (Built-in Instrumentation)
 StatsLab menyediakan "pintu rahasia" bagi peneliti untuk melakukan manajemen data tanpa mengganggu antarmuka siswa:
 - **Magic Entry:** Akses dasbor admin dengan mengklik logo StatsLab 5x berturut-turut.
 - **Monev Real-time:** Integrasi **SheetDB** untuk memantau skor kepraktisan (SUS) siswa secara langsung.
 - **Expert Validation Hub:** Lembar validasi digital untuk ahli Materi, Media, dan Agama yang siap cetak ke format PDF (A4 Formal) untuk keperluan lampiran skripsi.
 
-### 📊 Dataset Kontekstual Islami
+### Dataset Kontekstual Islami
 Menyajikan 4 modul data nyata:
 - **ZISWAF:** Analisis distribusi zakat.
 - **Mutaba'ah Tahfizh:** Tren hafalan Al-Qur'an.
@@ -41,7 +41,7 @@ Menyajikan 4 modul data nyata:
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 - **Core:** React.js 18 (Vite)
 - **Styling:** Tailwind CSS (Modern & Minimalist)
 - **Charting:** Chart.js & React-Chartjs-2
@@ -51,7 +51,7 @@ Menyajikan 4 modul data nyata:
 
 ---
 
-## 🚀 Prosedur Evaluasi (Untuk Validator & Penguji)
+## Prosedur Evaluasi (Untuk Validator & Penguji)
 
 Jika Anda adalah validator ahli atau dosen penguji:
 1. Silakan bereksplorasi di antarmuka siswa untuk menilai aspek media dan materi.
@@ -61,7 +61,7 @@ Jika Anda adalah validator ahli atau dosen penguji:
 
 ---
 
-## 💻 Instalasi Lokal
+## Instalasi Lokal
 
 ```bash
 # Clone repositori
