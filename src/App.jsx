@@ -86,10 +86,17 @@ function AppInner() {
     }))
   }, [])
 
-  const handleDataChange = useCallback((id, newItems) => {
-    updateModuleState(id, { items: newItems })
+  const handleDataChange = useCallback((id, updater) => {
+    setModuleData(prev => {
+      const currentItems = prev[id].items
+      const newItems = typeof updater === 'function' ? updater(currentItems) : updater
+      return {
+        ...prev,
+        [id]: { ...prev[id], items: newItems }
+      }
+    })
     if (gamify.canUnlock(2)) gamify.unlockLevel(2)
-  }, [gamify, updateModuleState])
+  }, [gamify])
 
   // Lvl3 unlock on module navigation (tracks first non-ziswaf visit)
   const handleModuleChange = useCallback((mod) => {
