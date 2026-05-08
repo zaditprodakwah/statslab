@@ -19,6 +19,7 @@ import { LiterasiModule } from './components/modules/LiterasiModule'
 import { CertificateView } from './components/certificate/CertificateView'
 import { PrintButton } from './components/certificate/PrintButton'
 import { SUSForm } from './components/sus/SUSForm'
+import { ResearcherPortal } from './components/researcher/ResearcherPortal'
 
 // ── Dark mode init (before first paint) ──────────────────
 function initDark() {
@@ -53,6 +54,7 @@ function Toast({ notification, lang }) {
 function AppInner() {
   const [isDark, setIsDark] = useState(initDark)
   const [activeModule, setActiveModule] = useState('ziswaf')
+  const [showResearcher, setShowResearcher] = useState(false)
   const { profile, saveProfile, hasProfile } = useProfile()
   const gamify = useGamify()
 
@@ -131,6 +133,7 @@ function AppInner() {
           isDark={isDark}
           onToggleDark={() => setIsDark((d) => !d)}
           onOpenSUS={() => setActiveModule('sus')}
+          onMagicEntry={() => setShowResearcher(true)}
         />
 
         <MainLayout
@@ -194,6 +197,14 @@ function AppInner() {
 
         {/* Gamification Toast — above BottomNav on mobile */}
         <Toast notification={gamify.notification} lang="id" />
+
+        {/* Researcher Portal Overlay */}
+        {showResearcher && (
+          <ResearcherPortal 
+            profile={profile}
+            onExit={() => setShowResearcher(false)} 
+          />
+        )}
       </div>
     </div>
   )

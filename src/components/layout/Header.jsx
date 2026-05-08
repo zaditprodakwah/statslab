@@ -4,16 +4,41 @@
 // Mobile: compact — logo + lang toggle + dark toggle only
 // Navigation on mobile handled by BottomNav
 // ============================================================
+import { useState, useRef } from 'react'
 import { Moon, Sun, Globe, ClipboardList } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage'
 
-export function Header({ isDark, onToggleDark, onOpenSUS }) {
+export function Header({ isDark, onToggleDark, onOpenSUS, onMagicEntry }) {
   const { t, lang, setLang } = useLanguage()
+  
+  // Magic Entry Logic (5x logo clicks in 2s)
+  const clickCount = useRef(0)
+  const lastClickTime = useRef(0)
+  
+  const handleLogoClick = () => {
+    const now = Date.now()
+    if (now - lastClickTime.current > 2000) {
+      clickCount.current = 1
+    } else {
+      clickCount.current += 1
+    }
+    
+    lastClickTime.current = now
+    
+    if (clickCount.current === 5) {
+      clickCount.current = 0
+      onMagicEntry?.()
+    }
+  }
 
   return (
     <header className="glass sticky top-0 z-30 px-3 sm:px-6 h-14 flex items-center justify-between no-print">
-      {/* Brand */}
-      <div className="flex items-center gap-2">
+      {/* Brand - Magic Entry Target */}
+      <div 
+        className="flex items-center gap-2 cursor-pointer select-none"
+        onClick={handleLogoClick}
+        title="StatsLab Dashboard"
+      >
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-md shadow-emerald-500/30 flex-shrink-0">
           <span className="text-white text-xs font-extrabold tracking-tighter">SL</span>
         </div>
