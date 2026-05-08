@@ -1,0 +1,221 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── DESIGN TOKENS ─────────────────────────────────── */
+:root {
+  --color-primary: #10b981;
+  --color-primary-dark: #059669;
+  --color-surface: rgba(255, 255, 255, 0.85);
+  --color-surface-card: rgba(255, 255, 255, 0.7);
+  --color-border: rgba(16, 185, 129, 0.2);
+  --color-text: #0f172a;
+  --color-text-muted: #475569;
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dark {
+  --color-surface: rgba(15, 23, 42, 0.9);
+  --color-surface-card: rgba(30, 41, 59, 0.8);
+  --color-border: rgba(16, 185, 129, 0.25);
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── BASE ───────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 50%, #e0f2fe 100%);
+  min-height: 100vh;
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.dark body {
+  background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #0c1a2e 100%);
+}
+
+/* ─── MOBILE SAFE AREA ──────────────────────────────── */
+body {
+  /* Prevent overscroll on iOS */
+  overscroll-behavior-y: none;
+}
+
+/* ─── GLASS MORPHISM ────────────────────────────────── */
+@layer components {
+  .glass {
+    background: var(--color-surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-glass);
+  }
+
+  .glass-card {
+    background: var(--color-surface-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    border-radius: 1rem;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700 text-white font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-xl border border-slate-200 dark:border-slate-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 backdrop-blur-sm;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 backdrop-blur-sm;
+  }
+
+  .stat-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .level-chip {
+    @apply px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300;
+  }
+}
+
+/* ─── SCROLLBAR ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #10b981; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #059669; }
+
+/* ─── SIDEBAR ANIMATION ─────────────────────────────── */
+.sidebar-nav-item {
+  position: relative;
+  transition: var(--transition-smooth);
+}
+.sidebar-nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--color-primary);
+  border-radius: 0 2px 2px 0;
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+.sidebar-nav-item.active::before { transform: scaleY(1); }
+
+/* ─── CERTIFICATE PRINT ─────────────────────────────── */
+@media print {
+  body * { visibility: hidden !important; }
+  #certificate-print-area,
+  #certificate-print-area * { visibility: visible !important; }
+  #certificate-print-area {
+    position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    padding: 20mm !important;
+    background: white !important;
+    color: black !important;
+    z-index: 99999;
+  }
+  .no-print { display: none !important; }
+}
+
+/* ─── DATA TABLE ────────────────────────────────────── */
+.data-table td input {
+  @apply w-full bg-transparent text-center focus:outline-none focus:ring-1 focus:ring-emerald-400 rounded px-1;
+}
+.data-table tr:hover td { background: rgba(16, 185, 129, 0.04); }
+
+/* ─── TABAYYUN ALERT ────────────────────────────────── */
+@keyframes alertPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+}
+.tabayyun-alert { animation: alertPulse 2s ease-in-out infinite; }
+
+/* ─── LEVEL PROGRESS ────────────────────────────────── */
+.level-bar-fill {
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+}
+
+/* ─── TOOLTIP ───────────────────────────────────────── */
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  @apply absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-slate-900 text-white text-xs rounded whitespace-nowrap z-50;
+}
+[data-tooltip] { @apply relative; }
+
+/* ─── BADGE GLOW ────────────────────────────────────── */
+.badge-unlocked {
+  animation: badgeGlow 3s ease-in-out infinite alternate;
+}
+@keyframes badgeGlow {
+  from { filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.6)); }
+  to { filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.9)); }
+}
+
+/* ─── BOTTOM NAV DARK MODE ──────────────────────────── */
+/* Dark override — CSS variable approach for blur+bg */
+.dark nav[aria-label="Navigasi utama"] > div {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border-top-color: rgba(51, 65, 85, 0.8) !important;
+}
+
+/* ─── FADE IN ANIMATION ─────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ─── BOUNCE SOFT ANIMATION ─────────────────────────── */
+@keyframes bounceSoft {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-6px); }
+}
+@media (min-width: 640px) {
+  @keyframes bounceSoft {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+}
+.animate-bounce-soft {
+  animation: bounceSoft 2s ease-in-out infinite;
+}
+
+/* ─── ENHANCED VISUALS ──────────────────────────────── */
+.glass-panel-heavy {
+  @apply bg-white/70 dark:bg-slate-900/80 backdrop-blur-xl border border-white/40 dark:border-slate-800/40 shadow-2xl;
+}
+
+@keyframes moduleEnter {
+  from { opacity: 0; transform: scale(0.98) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.animate-module-entry {
+  animation: moduleEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Touch targets for mobile */
+@media (max-width: 768px) {
+  .touch-target {
+    @apply min-h-[48px] min-w-[48px] flex items-center justify-center;
+  }
+}
