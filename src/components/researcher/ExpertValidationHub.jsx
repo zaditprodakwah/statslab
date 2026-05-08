@@ -42,6 +42,11 @@ export function ExpertValidationHub() {
     window.print()
   }
 
+  const handleSave = () => {
+    // Already saved via useEffect, but let's provide feedback
+    alert('✅ Hasil validasi berhasil disimpan ke draf sesi ini.')
+  }
+
   return (
     <div className="space-y-8 animate-fade-in pb-20">
       {/* Header Info for Validator */}
@@ -108,13 +113,13 @@ export function ExpertValidationHub() {
                 const currentScore = scores[scoreKey] || 0
 
                 return (
-                  <div key={ind.id} className="glass-card p-5 border-slate-800 hover:border-emerald-500/30 transition-all group">
+                  <div key={ind.id} className="glass-card-dark p-6 border-slate-800/50 hover:border-emerald-500/50 transition-all group">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                       <div className="flex gap-4 flex-1">
-                        <span className="text-slate-700 font-black text-xl group-hover:text-emerald-500/50 transition-colors">
+                        <span className="text-emerald-500/30 font-black text-2xl group-hover:text-emerald-500 transition-colors">
                           {String(ind.id).padStart(2, '0')}
                         </span>
-                        <p className="text-slate-300 text-sm font-medium leading-relaxed">{ind.text}</p>
+                        <p className="text-white text-base font-bold leading-relaxed">{ind.text}</p>
                       </div>
                       
                       <div className="flex items-center gap-1.5 no-print">
@@ -149,7 +154,7 @@ export function ExpertValidationHub() {
               <textarea 
                 value={notes[`${activeType}_${cat.name}`] || ''}
                 onChange={(e) => handleNoteChange(activeType, cat.name, e.target.value)}
-                className="w-full bg-slate-900/50 border border-slate-800 rounded-2xl p-4 text-sm text-slate-300 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all min-h-[100px]"
+                className="w-full bg-slate-900 border border-slate-800 rounded-2xl p-5 text-sm text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all min-h-[120px] shadow-inner"
                 placeholder="Tuliskan masukan Anda di sini..."
               />
             </div>
@@ -158,14 +163,17 @@ export function ExpertValidationHub() {
       </div>
 
       <div className="flex justify-end pt-10 no-print">
-        <button className="flex items-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black shadow-xl shadow-emerald-900/40 transition-all active:scale-95">
+        <button 
+          onClick={handleSave}
+          className="flex items-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black shadow-xl shadow-emerald-900/40 transition-all active:scale-95"
+        >
           <Save className="w-5 h-5" />
           SIMPAN HASIL VALIDASI
         </button>
       </div>
 
       {/* ── Print View Template (Hidden on Screen) ────────────────── */}
-      <div className="hidden print:block fixed inset-0 bg-white text-black p-10 font-serif z-[200]">
+      <div id="validation-print-area" className="hidden print:block fixed inset-0 bg-white text-black p-10 font-serif z-[200]">
         <div className="text-center mb-10 border-b-4 border-double border-black pb-6">
           <h1 className="text-2xl font-bold uppercase leading-tight">Lembar Validasi Instrumen Penelitian</h1>
           <h2 className="text-xl font-bold uppercase mt-1">StatsLab: Dasbor Statistika Interaktif</h2>
