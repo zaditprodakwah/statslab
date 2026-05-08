@@ -1,6 +1,7 @@
 // ============================================================
 // TahfizhModule — Line Chart, Focus: Median
 // Shows monthly Quran memorization progress
+// Enhanced: Tabayyun + Educational theory panel
 // ============================================================
 import { useState, useMemo } from 'react'
 import { Line } from 'react-chartjs-2'
@@ -10,7 +11,9 @@ import {
 } from 'chart.js'
 import { DataTable } from '../ui/DataTable'
 import { StatCard } from '../ui/StatCard'
+import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { useStats } from '../../hooks/useStats'
+import { useTabayyun } from '../../hooks/useTabayyun'
 import { useAmanah } from '../../hooks/useAmanah'
 import { AmanahToggle } from '../ui/AmanahToggle'
 import { PRESET_TAHFIZH } from '../../data/presetData'
@@ -24,13 +27,14 @@ const COLUMNS = [
   { field: 'halaman', type: 'number', labelKey: 'halaman' },
 ]
 
-export function TahfizhModule({ onEdit, onStatView, onAmanah }) {
+export function TahfizhModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
   const { t } = useLanguage()
   const [data, setData] = useState(PRESET_TAHFIZH)
   const { isAmanah, toggleAmanah, yMin } = useAmanah(true)
 
   const values = useMemo(() => data.map((r) => r.halaman), [data])
   const stats = useStats(values)
+  const tabayyun = useTabayyun(stats.mean, stats.median)
 
   const chartData = {
     labels: data.map((r) => r.bulan),
@@ -66,7 +70,7 @@ export function TahfizhModule({ onEdit, onStatView, onAmanah }) {
     },
     scales: {
       y: {
-        min: yMin,
+        min: isAmanah ? 0 : yMin,
         ticks: { stepSize: 5, font: { size: 11 } },
         grid: { color: 'rgba(0,0,0,0.05)' },
       },
@@ -89,6 +93,14 @@ export function TahfizhModule({ onEdit, onStatView, onAmanah }) {
             📈 {t('modules.tahfizh.chartType')}
           </span>
         </div>
+      </div>
+
+      {/* Educational Context */}
+      <div className="px-4 py-3 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900 text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
+        <p className="font-semibold mb-1">💡 Mengapa Median penting di sini?</p>
+        <p className="text-xs text-blue-700 dark:text-blue-400">
+          Data hafalan bulanan bisa sangat fluktuatif (misal: sakit sebulan → 0 halaman). <strong>Median</strong> tidak terpengaruh oleh bulan-bulan ekstrem tersebut, sehingga lebih merepresentasikan konsistensi (<em>istiqomah</em>) yang sesungguhnya dibanding Mean. Garis kuning pada grafik menunjukkan posisi Median.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -117,7 +129,23 @@ export function TahfizhModule({ onEdit, onStatView, onAmanah }) {
         ))}
       </div>
 
+      {/* Tabayyun Alert */}
+      <TabayyunAlert
+        isAnomalous={tabayyun.isAnomalous}
+        mean={stats.mean}
+        median={stats.median}
+        diff={tabayyun.diff}
+        threshold={tabayyun.threshold}
+        severity={tabayyun.severity}
+        onDetected={onTabayyun}
+      />
+
       <AmanahToggle isAmanah={isAmanah} onToggle={toggleAmanah} onFirstToggle={onAmanah} />
+
+      {/* Tawazun hint */}
+      <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
+        ⚖️ <strong>Tawazun:</strong> Perhatikan apakah garis Median (kuning) mendekati rata-rata titik data (biru). Jika jauh berbeda, data mungkin tidak seimbang. Bandingkan ketiga ukuran pemusatan untuk kesimpulan yang adil.
+      </div>
     </div>
   )
 }

@@ -83,7 +83,15 @@ export function ZiswafModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
             🥧 {t('modules.ziswaf.chartType')}
           </span>
         </div>
-        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 italic">{t('modules.ziswaf.context')}</p>
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 italic">{t('modules.ziswaf.context')}</p>
+      </div>
+
+      {/* Educational Context */}
+      <div className="px-4 py-3 rounded-xl bg-emerald-50/60 dark:bg-emerald-900/15 border border-emerald-100 dark:border-emerald-900 text-sm text-emerald-800 dark:text-emerald-300 leading-relaxed">
+        <p className="font-semibold mb-1">💡 Mengapa Mean (Rata-rata) penting di sini?</p>
+        <p className="text-xs text-emerald-700 dark:text-emerald-400">
+          <strong>Mean</strong> menghitung total dana Ziswaf dibagi jumlah kategori penerima. Jika satu kategori (misal: Fisabilillah) menerima porsi jauh lebih besar, Mean akan terangkat melebihi Median. Ini mengindikasikan <strong>distribusi tidak merata</strong> — dan di sinilah auditor harus melakukan Tabayyun.
+        </p>
       </div>
 
       {/* Chart + Table side by side */}
@@ -145,8 +153,8 @@ export function ZiswafModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
       />
 
       {/* Tawazun hint */}
-      <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-xs text-teal-700 dark:text-teal-400 leading-relaxed">
-        ⚖️ {t('tawazun')}
+      <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
+        ⚖️ <strong>Tawazun:</strong> {t('tawazun')}
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 // ============================================================
 // LiterasiModule — Horizontal Bar Chart, Focus: Modus + Freq
 // Shows library book category distribution
+// Enhanced: Tabayyun + Educational theory panel
 // ============================================================
 import { useState, useMemo } from 'react'
 import { Bar } from 'react-chartjs-2'
@@ -10,7 +11,9 @@ import {
 } from 'chart.js'
 import { DataTable } from '../ui/DataTable'
 import { StatCard } from '../ui/StatCard'
+import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { useStats } from '../../hooks/useStats'
+import { useTabayyun } from '../../hooks/useTabayyun'
 import { useAmanah } from '../../hooks/useAmanah'
 import { AmanahToggle } from '../ui/AmanahToggle'
 import { PRESET_LITERASI } from '../../data/presetData'
@@ -24,13 +27,14 @@ const COLUMNS = [
   { field: 'jumlah', type: 'number', labelKey: 'jumlah' },
 ]
 
-export function LiterasiModule({ onEdit, onStatView, onAmanah }) {
+export function LiterasiModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
   const { t } = useLanguage()
   const [data, setData] = useState(PRESET_LITERASI)
   const { isAmanah, toggleAmanah, yMin } = useAmanah(true)
 
   const jumlahValues = useMemo(() => data.map((r) => r.jumlah), [data])
   const stats = useStats(jumlahValues)
+  const tabayyun = useTabayyun(stats.mean, stats.median)
 
   // Max value category for Modus visual highlight
   const maxJumlah = Math.max(...jumlahValues)
@@ -86,7 +90,14 @@ export function LiterasiModule({ onEdit, onStatView, onAmanah }) {
             ↔ {t('modules.literasi.chartType')}
           </span>
         </div>
-        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 italic">{t('modules.literasi.context')}</p>
+      </div>
+
+      {/* Educational Context */}
+      <div className="px-4 py-3 rounded-xl bg-violet-50/60 dark:bg-violet-900/15 border border-violet-100 dark:border-violet-900 text-sm text-violet-800 dark:text-violet-300 leading-relaxed">
+        <p className="font-semibold mb-1">💡 Frekuensi & Modus dalam Literasi</p>
+        <p className="text-xs text-violet-700 dark:text-violet-400">
+          Dalam konteks perpustakaan, <strong>frekuensi peminjaman</strong> per kategori buku menunjukkan minat literasi siswa. <strong>Modus</strong> (kategori dengan frekuensi tertinggi) mengungkap kecenderungan baca yang dominan — informasi penting bagi pustakawan untuk mengalokasikan koleksi secara proporsional.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -118,7 +129,23 @@ export function LiterasiModule({ onEdit, onStatView, onAmanah }) {
         ))}
       </div>
 
+      {/* Tabayyun Alert */}
+      <TabayyunAlert
+        isAnomalous={tabayyun.isAnomalous}
+        mean={stats.mean}
+        median={stats.median}
+        diff={tabayyun.diff}
+        threshold={tabayyun.threshold}
+        severity={tabayyun.severity}
+        onDetected={onTabayyun}
+      />
+
       <AmanahToggle isAmanah={isAmanah} onToggle={toggleAmanah} onFirstToggle={onAmanah} />
+
+      {/* Tawazun hint */}
+      <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
+        ⚖️ <strong>Tawazun:</strong> Jika satu kategori buku sangat mendominasi, apakah itu positif atau justru menandakan minimnya keragaman literasi? Bandingkan Mean dan Modus untuk perspektif yang seimbang.
+      </div>
     </div>
   )
 }

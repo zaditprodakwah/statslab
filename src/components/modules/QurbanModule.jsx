@@ -1,6 +1,7 @@
 // ============================================================
 // QurbanModule — Grouped Bar Chart, Focus: Modus
 // Shows Qurban distribution target vs realization
+// Enhanced: Tabayyun + Educational theory panel
 // ============================================================
 import { useState, useMemo } from 'react'
 import { Bar } from 'react-chartjs-2'
@@ -10,7 +11,9 @@ import {
 } from 'chart.js'
 import { DataTable } from '../ui/DataTable'
 import { StatCard } from '../ui/StatCard'
+import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { useStats } from '../../hooks/useStats'
+import { useTabayyun } from '../../hooks/useTabayyun'
 import { useAmanah } from '../../hooks/useAmanah'
 import { AmanahToggle } from '../ui/AmanahToggle'
 import { PRESET_QURBAN } from '../../data/presetData'
@@ -25,13 +28,14 @@ const COLUMNS = [
   { field: 'realisasi', type: 'number', labelKey: 'realisasi' },
 ]
 
-export function QurbanModule({ onEdit, onStatView, onAmanah }) {
+export function QurbanModule({ onEdit, onStatView, onTabayyun, onAmanah }) {
   const { t } = useLanguage()
   const [data, setData] = useState(PRESET_QURBAN)
   const { isAmanah, toggleAmanah, yMin } = useAmanah(true)
 
   const realisasiValues = useMemo(() => data.map((r) => r.realisasi), [data])
   const stats = useStats(realisasiValues)
+  const tabayyun = useTabayyun(stats.mean, stats.median)
 
   const chartData = {
     labels: data.map((r) => r.desa),
@@ -62,8 +66,7 @@ export function QurbanModule({ onEdit, onStatView, onAmanah }) {
     },
     scales: {
       y: {
-        min: yMin,
-        beginAtZero: isAmanah,
+        min: isAmanah ? 0 : yMin,
         ticks: { font: { size: 11 } },
         grid: { color: 'rgba(0,0,0,0.05)' },
       },
@@ -86,7 +89,14 @@ export function QurbanModule({ onEdit, onStatView, onAmanah }) {
             📊 {t('modules.qurban.chartType')}
           </span>
         </div>
-        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 italic">{t('modules.qurban.context')}</p>
+      </div>
+
+      {/* Educational Context */}
+      <div className="px-4 py-3 rounded-xl bg-amber-50/60 dark:bg-amber-900/15 border border-amber-100 dark:border-amber-900 text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
+        <p className="font-semibold mb-1">💡 Mengapa Modus penting di sini?</p>
+        <p className="text-xs text-amber-700 dark:text-amber-400">
+          <strong>Modus</strong> menunjukkan angka realisasi yang paling sering muncul antar desa. Jika modus rendah, berarti mayoritas desa menerima distribusi minimal — ini menandakan <strong>ketimpangan</strong>. Modus membantu kita melihat pola dominan yang mungkin tersembunyi di balik rata-rata yang "tampak baik".
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -115,7 +125,23 @@ export function QurbanModule({ onEdit, onStatView, onAmanah }) {
         ))}
       </div>
 
+      {/* Tabayyun Alert */}
+      <TabayyunAlert
+        isAnomalous={tabayyun.isAnomalous}
+        mean={stats.mean}
+        median={stats.median}
+        diff={tabayyun.diff}
+        threshold={tabayyun.threshold}
+        severity={tabayyun.severity}
+        onDetected={onTabayyun}
+      />
+
       <AmanahToggle isAmanah={isAmanah} onToggle={toggleAmanah} onFirstToggle={onAmanah} />
+
+      {/* Tawazun hint */}
+      <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
+        ⚖️ <strong>Tawazun:</strong> Bandingkan kolom Target vs Realisasi. Apakah distribusi sudah adil? Modus membantu mengungkap ketimpangan yang rata-rata (Mean) tidak bisa tunjukkan.
+      </div>
     </div>
   )
 }

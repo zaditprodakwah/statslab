@@ -171,6 +171,7 @@ function AppInner() {
               <TahfizhModule
                 onEdit={handleEdit}
                 onStatView={handleStatView}
+                onTabayyun={handleTabayyun}
                 onAmanah={handleAmanah}
               />
             )}
@@ -178,6 +179,7 @@ function AppInner() {
               <QurbanModule
                 onEdit={handleEdit}
                 onStatView={handleStatView}
+                onTabayyun={handleTabayyun}
                 onAmanah={handleAmanah}
               />
             )}
@@ -185,6 +187,7 @@ function AppInner() {
               <LiterasiModule
                 onEdit={handleEdit}
                 onStatView={handleStatView}
+                onTabayyun={handleTabayyun}
                 onAmanah={handleAmanah}
               />
             )}

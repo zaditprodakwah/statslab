@@ -2,14 +2,23 @@
 // AmanahToggle — Y-Axis Visual Integrity Switch
 // Fires Lvl6 unlock on first toggle
 // ============================================================
-import { useRef } from 'react'
-import { Eye, EyeOff, Info } from 'lucide-react'
+import { useRef, useState, useEffect } from 'react'
+import { Eye, EyeOff, Info, ChevronDown, ChevronUp, CheckCircle } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage'
 
 export function AmanahToggle({ isAmanah, onToggle, onFirstToggle }) {
   const { t } = useLanguage()
   const firedRef = useRef(false)
   const statesSeen = useRef(new Set())
+  const [showInfo, setShowInfo] = useState(false)
+  const [feedback, setFeedback] = useState('')
+
+  useEffect(() => {
+    if (feedback) {
+      const timer = setTimeout(() => setFeedback(''), 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [feedback])
 
   const handleToggle = () => {
     onToggle()
@@ -23,6 +32,9 @@ export function AmanahToggle({ isAmanah, onToggle, onFirstToggle }) {
       firedRef.current = true
       if (onFirstToggle) onFirstToggle()
     }
+    
+    // Set feedback text based on the new state
+    setFeedback(newState ? 'Skala Integritas (Y=0) Aktif ✓' : 'Skala Bias Aktif ✗')
   }
 
   return (
@@ -33,16 +45,23 @@ export function AmanahToggle({ isAmanah, onToggle, onFirstToggle }) {
             <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
               {t('amanah.toggleLabel')}
             </span>
-            <span
-              className="text-slate-400 cursor-help"
-              title={t('amanah.tooltip')}
+            <button
+              onClick={() => setShowInfo(!showInfo)}
+              className="text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+              title="Penjelasan Edukatif"
             >
-              <Info className="w-3.5 h-3.5" />
-            </span>
+              <Info className="w-4 h-4" />
+            </button>
           </div>
           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
             {t('amanah.description')}
           </p>
+          
+          {feedback && (
+            <div className="mt-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400 animate-pulse">
+              {feedback}
+            </div>
+          )}
         </div>
 
         {/* Toggle Switch */}
@@ -76,6 +95,20 @@ export function AmanahToggle({ isAmanah, onToggle, onFirstToggle }) {
           </span>
         </div>
       </div>
+
+      {/* Educational Information Accordion */}
+      {showInfo && (
+        <div className="mt-4 p-3 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-xs text-slate-700 dark:text-slate-300 border border-emerald-100 dark:border-emerald-800 animate-fade-in shadow-inner">
+          <p className="font-semibold mb-1 text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
+            <CheckCircle className="w-3.5 h-3.5" /> Kenapa sumbu-Y harus dimulai dari Nol (0)?
+          </p>
+          <p className="leading-relaxed opacity-90">
+            Dalam visualisasi data (seperti grafik batang), memotong sumbu-Y sehingga tidak dimulai dari angka nol adalah teknik yang sering disalahgunakan (<strong>Misleading Graphs</strong>). 
+            Pemotongan sumbu-Y melebih-lebihkan perbedaan kecil antar kategori seolah-olah perbedaannya sangat besar dan dramatis. 
+            Nilai <strong>Amanah</strong> menuntut kita untuk menyajikan data secara jujur, utuh, dan proporsional. Dengan menekan tombol ini, grafik akan diperbaiki ke skala yang sebenarnya, mengembalikan integritas visual agar audiens tidak tertipu oleh ilusi optik data.
+          </p>
+        </div>
+      )}
     </div>
   )
 }
