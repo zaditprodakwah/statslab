@@ -9,13 +9,20 @@ import { useLanguage } from '../../hooks/useLanguage'
 export function AmanahToggle({ isAmanah, onToggle, onFirstToggle }) {
   const { t } = useLanguage()
   const firedRef = useRef(false)
+  const statesSeen = useRef(new Set())
 
   const handleToggle = () => {
-    if (!firedRef.current) {
+    onToggle()
+    
+    // Add current state (after toggle) to the set
+    // Note: onToggle is async in terms of state update, so we use the inverse of isAmanah
+    const newState = !isAmanah
+    statesSeen.current.add(newState ? 'amanah' : 'bias')
+
+    if (statesSeen.current.size >= 2 && !firedRef.current) {
       firedRef.current = true
       if (onFirstToggle) onFirstToggle()
     }
-    onToggle()
   }
 
   return (

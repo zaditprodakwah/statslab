@@ -1,25 +1,25 @@
 import { useState, useEffect, Fragment } from 'react'
-import { Printer, Save, FileCheck, Info } from 'lucide-react'
+import { Printer, Save, FileCheck, Info, ShieldCheck } from 'lucide-react'
 import { EXPERT_INDICATORS } from '../../data/expertIndicators'
 
 export function ExpertValidationHub() {
   const [activeType, setActiveType] = useState('materi') // 'materi', 'media', 'agama'
   const [scores, setScores] = useState(() => {
-    const saved = sessionStorage.getItem('validator_draft_scores')
+    const saved = localStorage.getItem('validator_draft_scores')
     return saved ? JSON.parse(saved) : {}
   })
   const [notes, setNotes] = useState(() => {
-    const saved = sessionStorage.getItem('validator_draft_notes')
+    const saved = localStorage.getItem('validator_draft_notes')
     return saved ? JSON.parse(saved) : {}
   })
 
   // Persist drafts
   useEffect(() => {
-    sessionStorage.setItem('validator_draft_scores', JSON.stringify(scores))
+    localStorage.setItem('validator_draft_scores', JSON.stringify(scores))
   }, [scores])
 
   useEffect(() => {
-    sessionStorage.setItem('validator_draft_notes', JSON.stringify(notes))
+    localStorage.setItem('validator_draft_notes', JSON.stringify(notes))
   }, [notes])
 
   const handleScoreChange = (type, indicatorId, value) => {
@@ -42,40 +42,55 @@ export function ExpertValidationHub() {
     window.print()
   }
 
+  const [saveStatus, setSaveStatus] = useState('idle') // 'idle', 'saving', 'saved'
+
   const handleSave = () => {
-    // Already saved via useEffect, but let's provide feedback
-    alert('✅ Hasil validasi berhasil disimpan ke draf sesi ini.')
+    setSaveStatus('saving')
+    // Logic: persist to localStorage (already done by useEffect)
+    setTimeout(() => {
+      setSaveStatus('saved')
+      console.log('Validation results saved to local storage:', { scores, notes })
+      setTimeout(() => setSaveStatus('idle'), 3000)
+    }, 1000)
   }
 
   return (
-    <div className="space-y-8 animate-fade-in pb-20">
+    <>
+    {/* ── Web View Template ────────────────────────────────── */}
+    <div className="space-y-10 animate-fade-in pb-32 print:hidden">
       {/* Header Info for Validator */}
-      <div className="glass-card p-6 border-emerald-500/20 bg-emerald-500/5">
-        <div className="flex gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center flex-shrink-0">
-            <Info className="w-6 h-6 text-emerald-500" />
+      <div className="glass-card p-10 border-emerald-500/40 bg-slate-900/40 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:opacity-10 transition-opacity">
+          <ShieldCheck className="w-40 h-40 text-emerald-500" />
+        </div>
+        <div className="flex flex-col md:flex-row gap-8 relative z-10">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-600 flex items-center justify-center flex-shrink-0 shadow-xl shadow-emerald-500/30">
+            <Info className="w-8 h-8 text-white" />
           </div>
-          <div className="space-y-2">
-            <h2 className="text-lg font-black text-white leading-tight">Panduan Validasi Ahli</h2>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Instrumen ini bertujuan untuk mengukur validitas media (Indeks Aiken's V) berdasarkan Model Pengembangan 4D. 
-              Mohon berikan skor 1 (Sangat Kurang) hingga 5 (Sangat Layak) pada setiap indikator. 
-              Draf Anda akan tersimpan secara otomatis jika halaman dimuat ulang.
+          <div className="space-y-4">
+            <h2 className="text-2xl font-black text-white leading-tight tracking-tight uppercase italic flex items-center gap-3">
+              Panduan Validasi Instrumen
+              <span className="px-3 py-1 bg-emerald-500 text-black text-[10px] font-black rounded-lg not-italic tracking-widest">STABLE</span>
+            </h2>
+            <p className="text-slate-300 text-lg leading-relaxed font-medium max-w-3xl">
+              Gunakan lembar ini untuk mengukur validitas media berdasarkan <span className="text-emerald-400 font-bold">Indeks Aiken's V</span>. 
+              Skor <span className="text-emerald-400 font-bold underline">1 (Sangat Kurang)</span> sampai <span className="text-emerald-400 font-bold underline">5 (Sangat Layak)</span>.
+              Draf tersimpan otomatis. Gunakan tombol <span className="text-white font-bold">CETAK PDF</span> untuk arsip fisik.
             </p>
           </div>
         </div>
       </div>
 
       {/* Tab Switcher */}
-      <div className="flex flex-wrap gap-2 no-print">
+      <div className="flex flex-wrap gap-4 no-print bg-slate-900/50 p-2 rounded-[2.5rem] border border-slate-800">
         {Object.keys(EXPERT_INDICATORS).map((key) => (
           <button
             key={key}
             onClick={() => setActiveType(key)}
-            className={`px-6 py-3 rounded-xl font-black text-sm transition-all border-2 ${
+            className={`px-10 py-5 rounded-[2rem] font-black text-sm transition-all border-2 ${
               activeType === key
-                ? 'bg-emerald-600 border-emerald-500 text-white shadow-lg shadow-emerald-900/40'
-                : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-slate-300 hover:border-slate-700'
+                ? 'bg-emerald-600 border-emerald-400 text-white shadow-2xl shadow-emerald-900/60 translate-y-[-4px]'
+                : 'bg-transparent border-transparent text-slate-500 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
             {EXPERT_INDICATORS[key].title.toUpperCase()}
@@ -86,61 +101,72 @@ export function ExpertValidationHub() {
         
         <button 
           onClick={handlePrint}
-          className="flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-black transition-all border border-slate-600"
+          className="flex items-center gap-3 px-10 py-5 bg-white hover:bg-slate-200 text-slate-950 rounded-[2rem] font-black transition-all shadow-2xl active:scale-95"
         >
-          <Printer className="w-4 h-4" />
+          <Printer className="w-6 h-6 text-emerald-600" />
           CETAK PDF (A4)
         </button>
       </div>
 
       {/* Validation Form */}
-      <div className="space-y-10">
-        <div className="border-b border-slate-800 pb-4">
-          <h1 className="text-3xl font-black text-white">{currentIndicators.title}</h1>
-          <p className="text-slate-500">{currentIndicators.description}</p>
+      <div className="space-y-16">
+        <div className="border-b-4 border-slate-800 pb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <h1 className="text-5xl font-black text-white tracking-tighter uppercase italic">{currentIndicators.title}</h1>
+            <p className="text-slate-400 text-xl mt-3 font-semibold max-w-2xl">{currentIndicators.description}</p>
+          </div>
+          <div className="flex items-center gap-4 bg-slate-900 px-6 py-4 rounded-3xl border border-slate-800 no-print">
+            <div className="text-right">
+              <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest">Progress Validasi</p>
+              <p className="text-white font-black text-lg">
+                {Math.round((Object.keys(scores).filter(k => k.startsWith(activeType)).length / 
+                currentIndicators.categories.reduce((acc, c) => acc + c.indicators.length, 0)) * 100)}%
+              </p>
+            </div>
+            <div className="w-12 h-12 rounded-full border-4 border-slate-800 border-t-emerald-500 flex items-center justify-center">
+              <FileCheck className="w-5 h-5 text-emerald-500" />
+            </div>
+          </div>
         </div>
 
         {currentIndicators.categories.map((cat, catIdx) => (
-          <div key={catIdx} className="space-y-6">
-            <h3 className="text-emerald-400 font-black uppercase tracking-widest text-xs flex items-center gap-2">
-              <FileCheck className="w-4 h-4" />
-              Aspek: {cat.name}
-            </h3>
+          <div key={catIdx} className="space-y-10 group break-inside-avoid-page">
+            <div className="flex items-center gap-5">
+              <div className="h-10 w-2 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
+              <h3 className="text-white font-black uppercase tracking-[0.3em] text-lg italic">
+                ASPEK: {cat.name}
+              </h3>
+            </div>
             
-            <div className="grid gap-4">
+            <div className="grid gap-8">
               {cat.indicators.map((ind) => {
                 const scoreKey = `${activeType}_${ind.id}`
                 const currentScore = scores[scoreKey] || 0
 
                 return (
-                  <div key={ind.id} className="glass-card-dark p-6 border-slate-800/50 hover:border-emerald-500/50 transition-all group">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                      <div className="flex gap-4 flex-1">
-                        <span className="text-emerald-500/30 font-black text-2xl group-hover:text-emerald-500 transition-colors">
+                  <div key={ind.id} className={`glass-card-dark p-10 border-2 transition-all duration-300 ${currentScore > 0 ? 'border-emerald-500/50 bg-emerald-900/20 shadow-emerald-900/40' : 'border-slate-600 hover:border-slate-500 bg-slate-800/80 shadow-lg'}`}>
+                    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-10">
+                      <div className="flex gap-8 flex-1">
+                        <span className={`font-black text-4xl transition-colors shrink-0 ${currentScore > 0 ? 'text-emerald-400' : 'text-slate-400'}`}>
                           {String(ind.id).padStart(2, '0')}
                         </span>
-                        <p className="text-white text-base font-bold leading-relaxed">{ind.text}</p>
+                        <p className="text-white text-xl font-extrabold leading-relaxed portal-text-crisp">{ind.text}</p>
                       </div>
                       
-                      <div className="flex items-center gap-1.5 no-print">
+                      <div className="flex items-center gap-3 no-print">
                         {[1, 2, 3, 4, 5].map((val) => (
                           <button
                             key={val}
                             onClick={() => handleScoreChange(activeType, ind.id, val)}
-                            className={`w-10 h-10 rounded-lg flex items-center justify-center font-black text-xs transition-all ${
+                            className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black text-lg transition-all border-2 ${
                               currentScore === val
-                                ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/40 scale-110'
-                                : 'bg-slate-900 text-slate-500 border border-slate-800 hover:border-slate-600'
+                                ? 'bg-emerald-500 border-emerald-300 text-white shadow-2xl shadow-emerald-500/40 scale-110'
+                                : 'bg-slate-900 border-slate-700 text-slate-300 hover:border-emerald-500/80 hover:text-emerald-300'
                             }`}
                           >
                             {val}
                           </button>
                         ))}
-                      </div>
-                      
-                      {/* Print-only score display */}
-                      <div className="hidden print:block border-2 border-black w-10 h-10 flex items-center justify-center font-bold">
-                        {currentScore || ''}
                       </div>
                     </div>
                   </div>
@@ -149,79 +175,107 @@ export function ExpertValidationHub() {
             </div>
 
             {/* Suggestions Textarea */}
-            <div className="space-y-3 pt-2">
-              <label className="text-xs font-bold text-slate-500 uppercase">Catatan / Saran Revisi ({cat.name}):</label>
+            <div className="space-y-6 pt-6 bg-slate-800/50 p-10 rounded-[3rem] border-2 border-slate-600 border-dashed group-hover:border-slate-500 transition-colors no-print">
+              <label className="text-sm font-black text-slate-300 uppercase tracking-widest flex items-center gap-3">
+                <FileCheck className="w-5 h-5 text-emerald-500" />
+                Catatan / Saran Revisi Strategis ({cat.name}):
+              </label>
               <textarea 
                 value={notes[`${activeType}_${cat.name}`] || ''}
                 onChange={(e) => handleNoteChange(activeType, cat.name, e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-2xl p-5 text-sm text-white focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all min-h-[120px] shadow-inner"
-                placeholder="Tuliskan masukan Anda di sini..."
+                className="w-full bg-slate-900 border-2 border-slate-700 rounded-[2.5rem] p-8 text-lg text-white focus:ring-4 focus:ring-emerald-500/30 focus:border-emerald-500 outline-none transition-all min-h-[220px] shadow-inner"
+                placeholder="Tuliskan masukan kritis untuk peningkatan kualitas instrumen..."
               />
             </div>
           </div>
         ))}
       </div>
 
-      <div className="flex justify-end pt-10 no-print">
+      <div className="flex justify-end pt-16 no-print">
         <button 
           onClick={handleSave}
-          className="flex items-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black shadow-xl shadow-emerald-900/40 transition-all active:scale-95"
+          disabled={saveStatus !== 'idle'}
+          className={`group flex items-center gap-4 px-12 py-6 rounded-[3rem] font-black text-xl shadow-2xl transition-all active:scale-95 ${
+            saveStatus === 'saved' 
+              ? 'bg-blue-600 text-white shadow-blue-900/40' 
+              : saveStatus === 'saving'
+              ? 'bg-slate-800 text-slate-400 cursor-wait'
+              : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-900/60 translate-y-0 hover:-translate-y-1'
+          }`}
         >
-          <Save className="w-5 h-5" />
-          SIMPAN HASIL VALIDASI
+          {saveStatus === 'saved' ? (
+            <>
+              <FileCheck className="w-7 h-7 animate-bounce" />
+              DATA TERSIMPAN!
+            </>
+          ) : saveStatus === 'saving' ? (
+            <>
+              <div className="w-6 h-6 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+              MEMPROSES...
+            </>
+          ) : (
+            <>
+              <Save className="w-7 h-7 group-hover:rotate-12 transition-transform" />
+              SIMPAN HASIL VALIDASI
+            </>
+          )}
         </button>
       </div>
+    </div>
 
-      {/* ── Print View Template (Hidden on Screen) ────────────────── */}
-      <div id="validation-print-area" className="hidden print:block bg-white text-black font-serif">
-        <div className="text-center mb-10 border-b-4 border-double border-black pb-6">
-          <h1 className="text-2xl font-bold uppercase leading-tight">Lembar Validasi Instrumen Penelitian</h1>
-          <h2 className="text-xl font-bold uppercase mt-1">StatsLab: Dasbor Statistika Interaktif</h2>
-          <p className="text-sm mt-4 italic text-gray-600">Model Pengembangan 4D (Define, Design, Develop, Disseminate)</p>
+      {/* ── Print View Template (Visible only on Print) ────────────────── */}
+      <div className="hidden print:block bg-white text-black font-serif w-full max-w-full">
+        <div className="text-center mb-10 border-b-[6px] border-double border-black pb-8">
+          <h1 className="text-3xl font-bold uppercase leading-tight tracking-tight">Lembar Validasi Instrumen Penelitian</h1>
+          <h2 className="text-2xl font-bold uppercase mt-2">StatsLab: Dasbor Statistika Interaktif</h2>
+          <p className="text-sm mt-5 italic text-gray-700">Instrumen Validasi Model Pengembangan 4D (Thiagarajan, 1974)</p>
         </div>
 
-        <div className="mb-6">
-          <table className="w-full text-sm">
+        <div className="mb-8 p-6 border-2 border-black rounded-lg">
+          <table className="w-full text-base border-separate border-spacing-y-2">
             <tbody>
-              <tr><td className="w-32 font-bold py-1">Nama Ahli</td><td>: _________________________________________________</td></tr>
-              <tr><td className="w-32 font-bold py-1">Bidang Keahlian</td><td>: {currentIndicators.title.replace('Validasi ', '')}</td></tr>
-              <tr><td className="w-32 font-bold py-1">Tanggal</td><td>: _________________________________________________</td></tr>
+              <tr><td className="w-40 font-bold">Nama Ahli</td><td>: _________________________________________________</td></tr>
+              <tr><td className="w-40 font-bold">Instansi</td><td>: _________________________________________________</td></tr>
+              <tr><td className="w-40 font-bold">Bidang Keahlian</td><td>: <span className="uppercase font-black">{currentIndicators.title.replace('Validasi ', '')}</span></td></tr>
+              <tr><td className="w-40 font-bold">Hari, Tanggal</td><td>: _________________________________________________</td></tr>
             </tbody>
           </table>
         </div>
 
-        <p className="text-sm mb-6 leading-relaxed">
-          <strong>Petunjuk:</strong> Berikan tanda cek (✓) atau tuliskan angka skor (1-5) pada kolom skor sesuai dengan penilaian Anda terhadap indikator yang tersedia.
-          (1: Sangat Kurang, 2: Kurang, 3: Cukup, 4: Layak, 5: Sangat Layak)
-        </p>
+        <div className="mb-8 p-5 bg-gray-50 border border-gray-300 text-[10px] leading-relaxed italic">
+          <strong>Petunjuk Pengisian:</strong> Mohon Bapak/Ibu memberikan penilaian pada butir-butir indikator di bawah ini dengan memberikan angka skor 1 s.d 5 (1: Sangat Kurang; 2: Kurang; 3: Cukup; 4: Layak; 5: Sangat Layak). Skor digital yang Anda masukkan akan tercetak secara otomatis.
+        </div>
 
-        <table className="w-full border-collapse border-2 border-black text-xs mb-10">
+        <table className="w-full border-collapse border-[2.5px] border-black text-[10px] mb-12">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border-2 border-black p-3 w-10 text-center">No</th>
-              <th className="border-2 border-black p-3 text-left">Indikator Penilaian</th>
-              <th className="border-2 border-black p-3 w-16 text-center">Skor</th>
+              <th className="border-[2px] border-black p-4 w-12 text-center uppercase font-bold">No</th>
+              <th className="border-[2px] border-black p-4 text-left uppercase font-bold">Indikator Penilaian / Butir Instrumen</th>
+              <th className="border-[2px] border-black p-4 w-20 text-center uppercase font-bold">Skor (1-5)</th>
             </tr>
           </thead>
           <tbody>
             {currentIndicators.categories.map((cat, cIdx) => (
               <Fragment key={`print-cat-group-${cIdx}`}>
-                <tr className="bg-gray-50">
-                  <td colSpan={3} className="border-2 border-black p-2 font-bold uppercase">{cat.name}</td>
+                <tr className="bg-gray-200 break-after-avoid">
+                  <td className="border-[2px] border-black p-3 font-bold text-center">{String.fromCharCode(65 + cIdx)}</td>
+                  <td colSpan={2} className="border-[2px] border-black p-3 font-bold uppercase tracking-wider">{cat.name}</td>
                 </tr>
                 {cat.indicators.map((ind) => (
-                  <tr key={`print-ind-${ind.id}`}>
-                    <td className="border-2 border-black p-2 text-center">{ind.id}</td>
-                    <td className="border-2 border-black p-2">{ind.text}</td>
-                    <td className="border-2 border-black p-2 text-center font-bold">
-                      {scores[`${activeType}_${ind.id}`] || ''}
+                  <tr key={`print-ind-${ind.id}`} className="break-inside-avoid">
+                    <td className="border-[2px] border-black p-3 text-center">{ind.id}</td>
+                    <td className="border-[2px] border-black p-3 leading-relaxed">{ind.text}</td>
+                    <td className="border-[2px] border-black p-3 text-center font-bold text-lg bg-gray-50/50">
+                      {scores[`${activeType}_${ind.id}`] || '_____'}
                     </td>
                   </tr>
                 ))}
-                <tr>
-                  <td colSpan={3} className="border-2 border-black p-2 min-h-[60px]">
-                    <div className="font-bold mb-1">Catatan/Saran:</div>
-                    <div className="italic text-gray-700">{notes[`${activeType}_${cat.name}`] || '—'}</div>
+                <tr className="break-inside-avoid">
+                  <td colSpan={3} className="border-[2px] border-black p-4 bg-white">
+                    <div className="font-bold mb-2 uppercase text-[9px] tracking-widest text-gray-600">Catatan/Saran Perbaikan Aspek {cat.name}:</div>
+                    <div className="italic text-gray-800 min-h-[60px] whitespace-pre-wrap leading-relaxed border-t border-gray-100 pt-2">
+                      {notes[`${activeType}_${cat.name}`] || '............................................................................................................................................................................................................................................................................................................'}
+                    </div>
                   </td>
                 </tr>
               </Fragment>
@@ -229,16 +283,23 @@ export function ExpertValidationHub() {
           </tbody>
         </table>
 
-        <div className="mt-20 flex justify-end">
+        <div className="mt-16 flex justify-between px-10 break-inside-avoid pt-10">
+          <div className="text-center">
+            <p className="mb-24">Mengetahui, <br/> Peneliti Utama</p>
+            <p className="font-bold underline text-sm">________________________</p>
+          </div>
           <div className="text-center w-80">
             <p className="mb-2">________________, ________________ 2026</p>
             <p className="mb-24 font-bold">Validator Ahli,</p>
-            <div className="border-b-2 border-black w-full mb-2"></div>
-            <p className="text-sm font-bold">(___________________________________)</p>
-            <p className="text-xs mt-1 font-bold">NIP/NIDN: __________________________</p>
+            <p className="text-base font-bold underline leading-none">( ___________________________________ )</p>
+            <p className="text-xs mt-2 italic">NIP/NIDN: ......................................................</p>
           </div>
         </div>
+
+        <div className="mt-20 pt-10 border-t border-gray-200 text-center text-[10px] text-gray-400 uppercase tracking-[0.5em] break-inside-avoid">
+          StatsLab Research Ecosystem • Production Build v1.0.0
+        </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -131,34 +131,44 @@ body {
     margin: 15mm;
   }
   
-  body * { visibility: hidden !important; }
-  
-  #certificate-print-area,
-  #validation-print-area,
-  #certificate-print-area *,
-  #validation-print-area * { 
-    visibility: visible !important; 
-  }
-
-  #certificate-print-area,
-  #validation-print-area {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
+  html, body, #root {
     width: 100% !important;
+    height: auto !important;
     margin: 0 !important;
     padding: 0 !important;
     background: white !important;
     color: black !important;
-    z-index: 99999;
-    display: block !important;
+    overflow: visible !important;
   }
 
+  .no-print { display: none !important; }
+
+  /* High fidelity form printing */
+  * { 
+    -webkit-print-color-adjust: exact !important; 
+    print-color-adjust: exact !important; 
+  }
+
+  /* Force table layouts */
+  table { border-collapse: collapse !important; width: 100% !important; }
+  td, th { border: 1px solid black !important; padding: 4px !important; }
+  
   /* Prevent table rows from breaking across pages */
   tr { page-break-inside: avoid !important; }
+  .break-inside-avoid { page-break-inside: avoid !important; }
   thead { display: table-header-group !important; }
-  
-  .no-print { display: none !important; }
+}
+
+/* ─── RESEARCHER PORTAL CONTRAST ───────────────────── */
+.portal-text-crisp {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  letter-spacing: 0.01em;
+}
+
+.portal-glass {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
 }
 
 /* ─── DATA TABLE ────────────────────────────────────── */

@@ -9,15 +9,6 @@ import { useLanguage } from '../../hooks/useLanguage'
 
 export function TabayyunAlert({ isAnomalous, mean, median, diff, threshold, severity, onDetected }) {
   const { t } = useLanguage()
-  const firedRef = useRef(false)
-
-  useEffect(() => {
-    if (isAnomalous && !firedRef.current) {
-      firedRef.current = true
-      if (onDetected) onDetected()
-    }
-  }, [isAnomalous, onDetected])
-
   if (!isAnomalous) {
     return (
       <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-sm animate-fade-in">
@@ -42,9 +33,19 @@ export function TabayyunAlert({ isAnomalous, mean, median, diff, threshold, seve
           <Icon className="w-4 h-4 text-white" />
         </div>
         <div className="flex-1 min-w-0">
-          <h4 className={`font-bold text-sm ${cfg.text} mb-1`}>
-            {t('tabayyun.title')}
-          </h4>
+          <div className="flex items-start justify-between gap-4 mb-1">
+            <h4 className={`font-bold text-sm ${cfg.text}`}>
+              {t('tabayyun.title')}
+            </h4>
+            <button
+              onClick={() => {
+                if (onDetected) onDetected()
+              }}
+              className="px-3 py-1 bg-white dark:bg-slate-800 rounded-lg text-[10px] font-black uppercase tracking-tight shadow-sm hover:scale-105 active:scale-95 transition-all border border-amber-200 dark:border-amber-900"
+            >
+              Konfirmasi Temuan
+            </button>
+          </div>
           <p className={`text-sm ${cfg.text} opacity-90 leading-relaxed`}>
             {t('tabayyun.body')}
           </p>

@@ -61,12 +61,10 @@ function AppInner() {
   const gamify = useGamify()
 
   // Lvl3 unlock on module navigation (tracks first non-ziswaf visit)
-  const visitedModules = useRef(new Set(['ziswaf']))
   const handleModuleChange = useCallback((mod) => {
     setActiveModule(mod)
-    if (!visitedModules.current.has(mod) && mod !== 'certificate' && mod !== 'sus') {
-      visitedModules.current.add(mod)
-      gamify.unlockLevel(3)
+    if (mod !== 'ziswaf' && mod !== 'certificate' && mod !== 'sus') {
+      if (gamify.canUnlock(3)) gamify.unlockLevel(3)
     }
   }, [gamify])
 
@@ -79,10 +77,10 @@ function AppInner() {
   }, [isDark])
 
   // Handlers for gamify unlock triggers
-  const handleEdit = useCallback(() => gamify.unlockLevel(2), [gamify])
-  const handleStatView = useCallback(() => gamify.unlockLevel(4), [gamify])
-  const handleTabayyun = useCallback(() => gamify.unlockLevel(5), [gamify])
-  const handleAmanah = useCallback(() => gamify.unlockLevel(6), [gamify])
+  const handleEdit = useCallback(() => { if (gamify.canUnlock(2)) gamify.unlockLevel(2) }, [gamify])
+  const handleStatView = useCallback(() => { if (gamify.canUnlock(4)) gamify.unlockLevel(4) }, [gamify])
+  const handleTabayyun = useCallback(() => { if (gamify.canUnlock(5)) gamify.unlockLevel(5) }, [gamify])
+  const handleAmanah = useCallback(() => { if (gamify.canUnlock(6)) gamify.unlockLevel(6) }, [gamify])
 
   // Gate: Show onboarding if no profile
   if (!hasProfile) {
@@ -103,7 +101,15 @@ function AppInner() {
               {isDark ? '☀️' : '🌙'}
             </button>
           </div>
-          <WelcomeScreen onSubmit={saveProfile} />
+          <WelcomeScreen onSubmit={(data) => {
+            if (data.freshStart) {
+              gamify.resetProgress()
+              localStorage.removeItem('statslab_progress')
+              localStorage.removeItem('validator_draft_scores')
+              localStorage.removeItem('validator_draft_notes')
+            }
+            saveProfile(data)
+          }} />
         </div>
       </div>
     )
@@ -205,6 +211,7 @@ function AppInner() {
         {showResearcher && (
           <ResearcherPortal 
             profile={profile}
+            gamify={gamify}
             onExit={() => setShowResearcher(false)} 
           />
         )}

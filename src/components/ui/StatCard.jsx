@@ -29,30 +29,32 @@ export function StatCard({ type, value, onView, formatter }) {
   const Icon = ICONS[type] || Hash
   const gradient = COLORS[type] || COLORS.mean
 
-  useEffect(() => {
+  const handleView = () => {
     if (onView) onView(type)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }
 
-  const displayValue = formatter
-    ? formatter(value)
-    : Array.isArray(value)
-    ? value.length > 0 ? value.join(', ') : '—'
-    : typeof value === 'number'
-    ? value.toLocaleString('id-ID')
-    : value ?? '—'
-
+  const displayValue = formatter ? formatter(value) : value
   const label = t(`stats.${type}`)
 
+
+
   return (
-    <div className="glass-card p-4 flex items-center gap-4 animate-fade-in hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 cursor-default">
-      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center flex-shrink-0 shadow-lg`}>
+    <div 
+      onClick={handleView}
+      className="glass-card p-4 flex items-center gap-4 animate-fade-in hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer group active:scale-95"
+      title={t('stats.clickToLearn') || 'Klik untuk mempelajari wawasan ini'}
+    >
+      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform`}>
         <Icon className="w-6 h-6 text-white" />
       </div>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 truncate">{label}</p>
         <p className="text-xl font-bold text-slate-800 dark:text-slate-100 truncate" title={String(displayValue)}>
           {displayValue}
         </p>
+      </div>
+      <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">
+        {t('stats.learn') || 'Amati'}
       </div>
     </div>
   )

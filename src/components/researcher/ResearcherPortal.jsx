@@ -7,9 +7,24 @@ import { useState } from 'react'
 import { ShieldCheck, FileText, BarChart3, Printer, X, BookOpen, AlertCircle, Database, Zap, RefreshCcw } from 'lucide-react'
 import { ExpertValidationHub } from './ExpertValidationHub'
 
-export function ResearcherPortal({ onExit, profile }) {
+export function ResearcherPortal({ onExit, profile, gamify }) {
   const [activeTab, setActiveTab] = useState('validation')
   const [isAuthorized, setIsAuthorized] = useState(false)
+
+  const handleGodMode = () => {
+    if (confirm('🚀 Aktifkan God Mode (Unlock Level 6)?\n\nIni akan membuka Sertifikat dan Form SUS secara instan untuk keperluan demonstrasi atau audit.')) {
+      gamify.godMode()
+      onExit()
+    }
+  }
+
+  const handleNukeData = () => {
+    if (confirm('⚠️ HAPUS SELURUH DATA PENELITIAN?\n\nTindakan ini akan menghapus draf validator, progres siswa, dan profil. Perangkat akan kembali ke kondisi awal (Fresh Start).')) {
+      gamify.resetAll?.() || localStorage.clear()
+      sessionStorage.clear()
+      window.location.reload()
+    }
+  }
 
   const categories = [
     { id: 'validation', label: 'Validasi Ahli', icon: ShieldCheck },
@@ -53,7 +68,7 @@ export function ResearcherPortal({ onExit, profile }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] bg-slate-950 flex flex-col animate-fade-in overflow-hidden">
+    <div className="fixed inset-0 z-[100] bg-slate-950 flex flex-col animate-fade-in overflow-hidden print:static print:overflow-visible print:bg-white print:z-auto">
       {/* Header */}
       <header className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/50 no-print">
         <div className="flex items-center gap-3">
@@ -73,9 +88,9 @@ export function ResearcherPortal({ onExit, profile }) {
         </button>
       </header>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden print:overflow-visible">
         {/* Navigation Sidebar */}
-        <aside className="w-72 border-r border-slate-800 bg-slate-900/30 p-6 hidden md:flex flex-col no-print">
+        <aside className="w-72 border-r border-slate-800 bg-slate-900/30 p-6 hidden md:flex flex-col no-print print:hidden">
           <nav className="space-y-2 flex-1">
             {categories.map((cat) => (
               <button
@@ -108,7 +123,7 @@ export function ResearcherPortal({ onExit, profile }) {
         </aside>
 
         {/* Content Area */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-12 bg-slate-950 relative">
+        <main className="flex-1 overflow-y-auto p-6 md:p-12 bg-slate-950 relative print:p-0 print:bg-white print:overflow-visible">
           {activeTab === 'validation' && <ExpertValidationHub />}
 
           {activeTab === 'monitoring' && (
@@ -210,10 +225,7 @@ export function ResearcherPortal({ onExit, profile }) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <button 
-                  onClick={() => {
-                    localStorage.setItem('statslab_level', '6');
-                    window.location.reload();
-                  }}
+                  onClick={handleGodMode}
                   className="p-8 bg-amber-950/20 border border-amber-900/30 rounded-[2.5rem] text-left hover:bg-amber-950/40 transition-all group relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
@@ -232,12 +244,7 @@ export function ResearcherPortal({ onExit, profile }) {
                 </button>
 
                 <button 
-                  onClick={() => {
-                    if (confirm('⚠️ Hapus seluruh data penelitian di perangkat ini?')) {
-                      localStorage.clear();
-                      window.location.reload();
-                    }
-                  }}
+                  onClick={handleNukeData}
                   className="p-8 bg-red-950/20 border border-red-900/30 rounded-[2.5rem] text-left hover:bg-red-950/40 transition-all group relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">

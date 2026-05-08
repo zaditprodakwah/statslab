@@ -43,14 +43,18 @@ export function useGamify() {
 
   const unlockLevel = useCallback((targetLevel) => {
     setState((prev) => {
+      // 1. If already unlocked, skip
       if (prev.unlockedLevels.includes(targetLevel)) return prev
+
+      // 2. Strict sequence enforcement (skip if not current + 1)
+      if (targetLevel !== prev.level + 1) return prev
 
       const pts = POINTS_TABLE[targetLevel] ?? 0
       const newBadges = BADGES[targetLevel]
         ? [...prev.badges, BADGES[targetLevel]]
         : prev.badges
       const newUnlocked = [...prev.unlockedLevels, targetLevel]
-      const newLevel = Math.max(prev.level, targetLevel)
+      const newLevel = targetLevel
       const newPoints = Math.min(prev.points + pts, 150)
       const ts = new Date().toISOString()
 
@@ -72,6 +76,33 @@ export function useGamify() {
     })
   }, [])
 
+  const canUnlock = useCallback((targetLevel) => {
+    return state.level + 1 === targetLevel
+  }, [state.level])
+
+  const resetProgress = useCallback(() => {
+    setState(DEFAULT_STATE)
+  }, [])
+
+  const godMode = useCallback(() => {
+    const fullState = {
+      level: 6,
+      points: 150,
+      unlockedLevels: [1, 2, 3, 4, 5, 6],
+      badges: Object.values(BADGES),
+      levelHistory: {
+        1: new Date().toISOString(),
+        2: new Date().toISOString(),
+        3: new Date().toISOString(),
+        4: new Date().toISOString(),
+        5: new Date().toISOString(),
+        6: new Date().toISOString(),
+      },
+    }
+    setState(fullState)
+    saveProgress(fullState)
+  }, [])
+
   const addPoints = useCallback((pts) => {
     setState((prev) => ({
       ...prev,
@@ -80,7 +111,10 @@ export function useGamify() {
   }, [])
 
   const resetAll = useCallback(() => {
-    localStorage.clear()
+    localStorage.removeItem('statslab_progress')
+    localStorage.removeItem('statslab_profile')
+    localStorage.removeItem('validator_draft_scores')
+    localStorage.removeItem('validator_draft_notes')
     window.location.reload()
   }, [])
 
@@ -89,8 +123,11 @@ export function useGamify() {
   return {
     ...state,
     unlockLevel,
+    canUnlock,
+    godMode,
     addPoints,
     resetAll,
+    resetProgress,
     notification,
     canPrintCertificate,
     BADGES,

@@ -16,8 +16,18 @@ export const locales = {
     appName: 'STATSLAB',
     appFullName: 'StatsLab – Dasbor Statistika Interaktif',
     appTagline: 'Belajar Statistika dengan Nilai Keislaman',
-
     // ── Onboarding ────────────────────────────────────────
+    landing: {
+      heroTitle: 'Statistika dengan Nilai Keislaman',
+      heroSubtitle: 'Platform interaktif untuk memahami literasi data melalui konteks Filantropi Islam (Ziswaf, Tahfizh, Qurban).',
+      feature1Title: 'Gamifikasi 6 Level',
+      feature1Desc: 'Selesaikan tantangan analitis dan kumpulkan badge literasi data.',
+      feature2Title: 'Tabayyun & Amanah',
+      feature2Desc: 'Integrasi nilai Islam dalam verifikasi data (Tabayyun) dan integritas visual (Amanah).',
+      feature3Title: 'Expert Validation',
+      feature3Desc: 'Dilengkapi portal khusus (Researcher Portal) bagi auditor & validator.',
+      btnExplore: 'Mulai Eksplorasi 🚀',
+    },
     onboarding: {
       title: 'Selamat Datang di STATSLAB',
       subtitle: 'Isi identitasmu dulu ya, sebelum mulai belajar! 🌟',
@@ -31,6 +41,8 @@ export const locales = {
       placeholderGuru: 'Contoh: Bpk. Khoiruzzad, M.Pd.',
       btnStart: 'Mulai Belajar! 🚀',
       required: 'Wajib diisi',
+      freshStart: 'Mulai dari Nol',
+      freshStartDesc: 'Hapus progres & data lama (Disarankan untuk Responden Baru)',
     },
 
     // ── Navigation ────────────────────────────────────────
@@ -200,8 +212,18 @@ export const locales = {
     appName: 'STATSLAB',
     appFullName: 'StatsLab – Interactive Statistics Dashboard',
     appTagline: 'Learning Statistics with Islamic Values',
-
     // ── Onboarding ────────────────────────────────────────
+    landing: {
+      heroTitle: 'Statistics with Islamic Values',
+      heroSubtitle: 'An interactive platform to understand data literacy through Islamic Philanthropy (Ziswaf, Tahfizh, Qurban).',
+      feature1Title: '6-Level Gamification',
+      feature1Desc: 'Complete analytical challenges and collect data literacy badges.',
+      feature2Title: 'Tabayyun & Amanah',
+      feature2Desc: 'Integrating Islamic values in data verification (Tabayyun) and visual integrity (Amanah).',
+      feature3Title: 'Expert Validation',
+      feature3Desc: 'Equipped with a dedicated portal (Researcher Portal) for auditors & validators.',
+      btnExplore: 'Start Exploring 🚀',
+    },
     onboarding: {
       title: 'Welcome to STATSLAB',
       subtitle: "Let's fill in your identity before we start! 🌟",
@@ -215,6 +237,8 @@ export const locales = {
       placeholderGuru: "e.g. Mr. Khoiruzzad, M.Pd.",
       btnStart: 'Start Learning! 🚀',
       required: 'Required',
+      freshStart: 'Fresh Start',
+      freshStartDesc: 'Clear previous progress & data (Recommended for New Respondents)',
     },
 
     // ── Navigation ────────────────────────────────────────
