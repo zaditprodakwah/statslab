@@ -25,7 +25,7 @@ export function BottomNav({ activeModule, onModuleChange }) {
               key={tab.id}
               onClick={() => onModuleChange(tab.id)}
               className={`relative flex flex-col items-center justify-center gap-1.5 flex-1 h-full transition-all duration-500 ${
-                isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'
+                isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-600 dark:text-slate-300'
               }`}
             >
               {/* Active Indicator Bar */}
@@ -40,7 +40,7 @@ export function BottomNav({ activeModule, onModuleChange }) {
                 <PremiumIcon 
                   id={tab.icon} 
                   size={20} 
-                  className={isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400'}
+                  className={isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-300'}
                 />
               </div>
 

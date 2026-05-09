@@ -36,22 +36,13 @@ export function QurbanModule({
   setData, 
   setAmanah, 
   setTabayyunConfirmed, 
-  onEdit, 
+  onEdit,
   onStatView,
-  gamify
+  gamify,
+  scenario
 }) {
   const { t } = useLanguage()
 
-  const [scenario, setScenario] = useState('anomali')
-
-  const handleScenarioChange = (s) => {
-    setScenario(s)
-    if (s === 'normal') {
-      setData(PRESET_QURBAN_NORMAL)
-    } else {
-      setData(PRESET_QURBAN)
-    }
-  }
 
   const realisasiValues = useMemo(() => data.map((r) => r.realisasi), [data])
   const stats = useStats(realisasiValues)
@@ -116,13 +107,13 @@ export function QurbanModule({
           <h2 className="text-2xl sm:text-3xl font-black text-slate-800 dark:text-white flex items-center gap-3 uppercase italic tracking-tighter">
             🐄 {t('modules.qurban.title')}
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">{t('modules.qurban.desc')}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 font-medium">{t('modules.qurban.desc')}</p>
         </div>
         <div className="flex gap-2">
           <span className="stat-badge bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-black uppercase italic text-[10px]">
             📊 {t('modules.qurban.focus')}
           </span>
-          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-black uppercase italic text-[10px]">
+          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-black uppercase italic text-[10px]">
             Bar Chart
           </span>
         </div>
@@ -132,7 +123,7 @@ export function QurbanModule({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Bar Chart */}
         <div className="glass-card p-6 border-2 border-slate-100 dark:border-slate-800/50">
-          <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+          <h3 className="text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-4 flex items-center gap-2">
             Perbandingan Target vs Realisasi
           </h3>
           <div className="h-[300px] md:h-[400px] w-full relative">
@@ -142,7 +133,7 @@ export function QurbanModule({
 
         {/* Data Table */}
         <div className="glass-card p-6 border-2 border-slate-100 dark:border-slate-800/50">
-          <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+          <h3 className="text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-4 flex items-center gap-2">
             Data Distribusi Desa (Real-time Audit)
           </h3>
           <div className="max-h-[300px] overflow-y-auto">
@@ -197,7 +188,6 @@ export function QurbanModule({
       {/* 5. NARRATIVE & CONTEXT (Moved down) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
-          <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
           
           {scenario === 'normal' ? (
             <div className="p-5 rounded-2xl bg-blue-50/60 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 animate-in slide-in-from-left">

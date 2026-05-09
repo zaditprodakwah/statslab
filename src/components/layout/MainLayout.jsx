@@ -23,7 +23,7 @@ export function MainLayout({ sidebar, children, profile, gamify, activeModule })
             <User className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider leading-none mb-0.5">
+            <p className="text-[10px] font-bold text-slate-500 dark:text-slate-300 uppercase tracking-wider leading-none mb-0.5">
               {profile?.nama || 'Siswa'}
             </p>
             <h3 className="text-xs font-extrabold text-slate-700 dark:text-slate-200 leading-none">

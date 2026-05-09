@@ -97,7 +97,7 @@ export function WelcomeScreen({ onSubmit, onOpenKnowledgeBase }) {
                 <Target className="w-6 h-6" />
               </div>
               <h3 className="font-black text-slate-800 dark:text-white mb-2 uppercase tracking-tight italic">{t('landing.feature1Title')}</h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{t('landing.feature1Desc')}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{t('landing.feature1Desc')}</p>
             </div>
             
             <div className="group bg-white/40 dark:bg-slate-800/40 p-6 rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all">
@@ -105,7 +105,7 @@ export function WelcomeScreen({ onSubmit, onOpenKnowledgeBase }) {
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <h3 className="font-black text-slate-800 dark:text-white mb-2 uppercase tracking-tight italic">{t('landing.feature2Title')}</h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{t('landing.feature2Desc')}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{t('landing.feature2Desc')}</p>
             </div>
             
             <div className="group bg-white/40 dark:bg-slate-800/40 p-6 rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all">
@@ -113,7 +113,7 @@ export function WelcomeScreen({ onSubmit, onOpenKnowledgeBase }) {
                 <Award className="w-6 h-6" />
               </div>
               <h3 className="font-black text-slate-800 dark:text-white mb-2 uppercase tracking-tight italic">{t('landing.feature3Title')}</h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{t('landing.feature3Desc')}</p>
+              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{t('landing.feature3Desc')}</p>
             </div>
           </div>
 
@@ -150,11 +150,11 @@ export function WelcomeScreen({ onSubmit, onOpenKnowledgeBase }) {
                             }
                           />
                         </div>
-                        <span className="text-[8px] sm:text-[10px] font-black px-1.5 py-0.5 bg-white/10 rounded-lg text-slate-400">LVL {s.lvl}</span>
+                        <span className="text-[8px] sm:text-[10px] font-black px-1.5 py-0.5 bg-white/10 rounded-lg text-slate-300">LVL {s.lvl}</span>
                       </div>
                       <div className="min-w-0">
                         <p className="text-[10px] font-black uppercase text-emerald-400 leading-none mb-1 truncate">{s.label}</p>
-                        <p className="text-[9px] text-slate-400 font-medium italic mb-2 truncate">"{s.theory}"</p>
+                        <p className="text-[9px] text-slate-300 font-medium italic mb-2 truncate">"{s.theory}"</p>
                         <p className="text-[8px] text-slate-500 leading-tight font-bold group-hover:text-slate-300 transition-colors uppercase tracking-tighter line-clamp-2 h-5">
                           {s.action}
                         </p>
@@ -218,20 +218,20 @@ export function WelcomeScreen({ onSubmit, onOpenKnowledgeBase }) {
           {/* Footer Legal */}
           <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-8 text-left">
             <div>
-              <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">{t('legal.tosTitle')}</h5>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">
+              <h5 className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-2">{t('legal.tosTitle')}</h5>
+              <p className="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">
                 {t('legal.tosBody')}
               </p>
             </div>
             <div>
-              <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">{t('legal.disclaimerTitle')}</h5>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">
+              <h5 className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-2">{t('legal.disclaimerTitle')}</h5>
+              <p className="text-[10px] text-slate-600 dark:text-slate-300 leading-relaxed">
                 {t('legal.disclaimerBody')}
               </p>
             </div>
           </div>
           
-          <div className="mt-6 text-center text-[10px] text-slate-400 font-medium">
+          <div className="mt-6 text-center text-[10px] text-slate-500 dark:text-slate-300 font-medium">
             StatsLab Research Team &copy; 2026 • Unit Pengembangan Teknologi Pendidikan
           </div>
         </div>
@@ -245,7 +245,7 @@ export function WelcomeScreen({ onSubmit, onOpenKnowledgeBase }) {
             <h1 className="text-2xl font-extrabold text-slate-800 dark:text-slate-100 mb-1">
               {t('onboarding.title')}
             </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
               {t('onboarding.subtitle')}
             </p>
             <div className="mt-3 inline-block px-3 py-1 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold rounded-full tracking-wide">

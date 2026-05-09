@@ -1,5 +1,10 @@
 import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react'
-import { PRESET_ZISWAF, PRESET_TAHFIZH, PRESET_QURBAN, PRESET_LITERASI } from '../data/presetData'
+import { 
+  PRESET_ZISWAF, PRESET_ZISWAF_NORMAL, 
+  PRESET_TAHFIZH, PRESET_TAHFIZH_NORMAL,
+  PRESET_QURBAN, PRESET_QURBAN_NORMAL,
+  PRESET_LITERASI, PRESET_LITERASI_NORMAL 
+} from '../data/presetData'
 
 const ModuleDataContext = createContext(null)
 
@@ -16,10 +21,10 @@ export function ModuleDataProvider({ children }) {
   
   const [moduleData, setModuleData] = useState(() => {
     const defaultData = {
-      ziswaf: { items: PRESET_ZISWAF, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
-      tahfizh: { items: PRESET_TAHFIZH, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
-      qurban: { items: PRESET_QURBAN, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
-      literasi: { items: PRESET_LITERASI, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false },
+      ziswaf: { items: PRESET_ZISWAF, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false, scenario: 'anomali' },
+      tahfizh: { items: PRESET_TAHFIZH, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false, scenario: 'anomali' },
+      qurban: { items: PRESET_QURBAN, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false, scenario: 'anomali' },
+      literasi: { items: PRESET_LITERASI, isAmanah: true, tabayyunConfirmed: false, hasSeenBias: false, scenario: 'anomali' },
     }
     try {
       const saved = localStorage.getItem('statslab_module_data')
@@ -69,6 +74,28 @@ export function ModuleDataProvider({ children }) {
     })
   }, [])
 
+  const handleScenarioChange = useCallback((id, scenario) => {
+    setModuleData(prev => {
+      if (!prev[id]) return prev
+      let newItems = prev[id].items
+      if (scenario === 'normal') {
+        if (id === 'ziswaf') newItems = PRESET_ZISWAF_NORMAL
+        if (id === 'tahfizh') newItems = PRESET_TAHFIZH_NORMAL
+        if (id === 'qurban') newItems = PRESET_QURBAN_NORMAL
+        if (id === 'literasi') newItems = PRESET_LITERASI_NORMAL
+      } else {
+        if (id === 'ziswaf') newItems = PRESET_ZISWAF
+        if (id === 'tahfizh') newItems = PRESET_TAHFIZH
+        if (id === 'qurban') newItems = PRESET_QURBAN
+        if (id === 'literasi') newItems = PRESET_LITERASI
+      }
+      return {
+        ...prev,
+        [id]: { ...prev[id], scenario, items: newItems }
+      }
+    })
+  }, [])
+
   const handleDataChange = useCallback((id, updater) => {
     setModuleData(prev => {
       if (!prev[id]) return prev
@@ -90,7 +117,8 @@ export function ModuleDataProvider({ children }) {
     moduleData,
     activeState,
     updateModuleState,
-    handleDataChange
+    handleDataChange,
+    handleScenarioChange
   }
 
   return (

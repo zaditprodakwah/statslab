@@ -42,22 +42,12 @@ export function ZiswafModule({
   setData, 
   setAmanah, 
   setTabayyunConfirmed, 
-  onEdit, 
+  onEdit,
   onStatView,
-  gamify
+  gamify,
+  scenario
 }) {
   const { t } = useLanguage()
-
-  const [scenario, setScenario] = useState('anomali')
-
-  const handleScenarioChange = (s) => {
-    setScenario(s)
-    if (s === 'normal') {
-      setData(PRESET_ZISWAF_NORMAL)
-    } else {
-      setData(PRESET_ZISWAF)
-    }
-  }
 
   const nominals = useMemo(() => data.map((r) => r.nominal), [data])
   const stats = useStats(nominals)
@@ -110,13 +100,13 @@ export function ZiswafModule({
           <h2 className="text-2xl sm:text-3xl font-black text-slate-800 dark:text-white flex items-center gap-3 uppercase italic tracking-tighter">
             📊 {t('modules.ziswaf.title')}
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">{t('modules.ziswaf.desc')}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 font-medium">{t('modules.ziswaf.desc')}</p>
         </div>
         <div className="flex gap-2">
           <span className="stat-badge bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 font-black uppercase italic text-[10px]">
             📈 {t('modules.ziswaf.focus')}
           </span>
-          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-black uppercase italic text-[10px]">
+          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-black uppercase italic text-[10px]">
             Pie Chart
           </span>
         </div>
@@ -126,7 +116,7 @@ export function ZiswafModule({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Pie Chart */}
         <div className="glass-card p-4 sm:p-6 border-2 border-slate-100 dark:border-slate-800/50 flex flex-col items-center">
-          <h3 className="text-[10px] sm:text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2 self-start">
+          <h3 className="text-[10px] sm:text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-4 flex items-center gap-2 self-start">
             <BarChart3 className="w-4 h-4" /> Proporsi Distribusi Dana
           </h3>
           <div className="h-[300px] md:h-[400px] w-full relative flex items-center justify-center">
@@ -136,7 +126,7 @@ export function ZiswafModule({
 
         {/* Data Table */}
         <div className="glass-card p-6 border-2 border-slate-100 dark:border-slate-800/50">
-          <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+          <h3 className="text-xs font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest mb-4 flex items-center gap-2">
             <Database className="w-4 h-4" /> Data Ziswaf (Real-time Audit)
           </h3>
           <div className="max-h-[300px] overflow-y-auto">
@@ -192,7 +182,6 @@ export function ZiswafModule({
       {/* 5. NARRATIVE & CONTEXT (Moved down) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
-          <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
           
           {scenario === 'normal' ? (
             <div className="p-5 rounded-2xl bg-blue-50/60 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 animate-in slide-in-from-left">

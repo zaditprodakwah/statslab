@@ -67,7 +67,7 @@ export function DataTable({ data, setData, columns, onEdit, moduleId, gamify }) 
 
   if (!Array.isArray(data)) {
     return (
-      <div className="p-4 text-center text-slate-400 italic bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800">
+      <div className="p-4 text-center text-slate-500 dark:text-slate-300 italic bg-slate-50 dark:bg-slate-900/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-800">
         No data available
       </div>
     )
@@ -88,7 +88,7 @@ export function DataTable({ data, setData, columns, onEdit, moduleId, gamify }) 
                   {t(`table.${col.labelKey || col.field}`)}
                 </th>
               ))}
-              <th className="px-3 py-3 text-center text-xs text-slate-400 uppercase tracking-wide w-14">
+              <th className="px-3 py-3 text-center text-xs text-slate-400 dark:text-slate-300 uppercase tracking-wide w-14">
                 ×
               </th>
             </tr>
@@ -104,7 +104,7 @@ export function DataTable({ data, setData, columns, onEdit, moduleId, gamify }) 
                   return (
                     <td key={col.field} className={`px-3 py-2 text-center transition-colors duration-300 ${isSaving ? 'bg-emerald-100/50 dark:bg-emerald-900/20' : 'text-slate-700 dark:text-slate-300'}`}>
                       {col.field === 'id' ? (
-                        <span className="text-slate-400 text-xs">{rowIdx + 1}</span>
+                        <span className="text-slate-400 dark:text-slate-300 text-xs">{rowIdx + 1}</span>
                       ) : col.editable === false ? (
                         <span>{row[col.field]}</span>
                       ) : (
@@ -167,7 +167,7 @@ export function DataTable({ data, setData, columns, onEdit, moduleId, gamify }) 
                 const isSaving = savingId === `${row.id}-${col.field}`
                 return (
                   <div key={col.field} className="space-y-1.5">
-                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">
+                    <label className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-widest px-1">
                       {t(`table.${col.labelKey || col.field}`)}
                     </label>
                     {col.editable === false ? (
@@ -209,7 +209,7 @@ export function DataTable({ data, setData, columns, onEdit, moduleId, gamify }) 
           <PlusCircle className="w-5 h-5" />
           {t('table.addRow').toUpperCase()}
         </button>
-        <span className="text-[10px] font-bold text-slate-400 italic text-center">
+        <span className="text-[10px] font-bold text-slate-500 dark:text-slate-300 italic text-center">
           💡 {t('table.editTip') || 'Tips: Klik pada data untuk mengubah'}
         </span>
       </div>

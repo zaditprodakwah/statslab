@@ -43,7 +43,7 @@ export function ResearcherPortal({ onExit, profile, gamify }) {
           </div>
           <div className="space-y-2">
             <h2 className="text-2xl font-black text-white tracking-tight">RESEARCHER SHIELD</h2>
-            <p className="text-slate-400 text-sm leading-relaxed">
+            <p className="text-slate-300 text-sm leading-relaxed">
               Halaman ini bersifat eksklusif untuk <span className="text-emerald-400 font-bold">Peneliti Utama</span> dan <span className="text-emerald-400 font-bold">Validator Pakar</span>. 
               Lanjutkan untuk mengakses instrumen validasi?
             </p>
@@ -77,12 +77,12 @@ export function ResearcherPortal({ onExit, profile, gamify }) {
           </div>
           <div>
             <h1 className="text-xl font-black text-white tracking-tight uppercase italic">Portal Peneliti</h1>
-            <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">Research & Development Edition</p>
+            <p className="text-slate-300 text-[10px] font-bold uppercase tracking-[0.2em]">Research & Development Edition</p>
           </div>
         </div>
         <button 
           onClick={onExit}
-          className="p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+          className="p-2 rounded-full hover:bg-slate-800 text-slate-300 hover:text-white transition-colors"
         >
           <X className="w-6 h-6" />
         </button>
@@ -109,14 +109,14 @@ export function ResearcherPortal({ onExit, profile, gamify }) {
           </nav>
           
           <div className="mt-auto p-5 rounded-3xl bg-slate-800/30 border border-slate-800/50">
-            <h3 className="text-slate-500 text-[10px] font-black mb-3 uppercase tracking-widest">Peneliti Aktif</h3>
+            <h3 className="text-slate-300 text-[10px] font-black mb-3 uppercase tracking-widest">Peneliti Aktif</h3>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
                 <span className="text-emerald-500 font-black text-sm">{profile.nama?.charAt(0) || 'R'}</span>
               </div>
               <div className="min-w-0">
                 <p className="text-white text-sm font-bold truncate">{profile.nama || 'Researcher'}</p>
-                <p className="text-slate-500 text-[10px] truncate">{profile.sekolah || 'StatsLab Unit'}</p>
+                <p className="text-slate-300 text-[10px] truncate">{profile.sekolah || 'StatsLab Unit'}</p>
               </div>
             </div>
           </div>
@@ -130,7 +130,7 @@ export function ResearcherPortal({ onExit, profile, gamify }) {
             <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
               <div className="space-y-2">
                 <h2 className="text-3xl font-black text-white">Monitoring SUS Real-time</h2>
-                <p className="text-slate-400">Data evaluasi kepraktisan media dari Google Sheets.</p>
+                <p className="text-slate-300">Data evaluasi kepraktisan media dari Google Sheets.</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -208,7 +208,7 @@ export function ResearcherPortal({ onExit, profile, gamify }) {
                     </div>
                     <div className="space-y-2">
                       <h4 className={`font-black text-lg ${doc.color === 'red' ? 'text-red-400' : 'text-white'}`}>{doc.title}</h4>
-                      <p className="text-slate-400 text-sm leading-relaxed">{doc.desc}</p>
+                      <p className="text-slate-300 text-sm leading-relaxed">{doc.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -265,7 +265,7 @@ export function ResearcherPortal({ onExit, profile, gamify }) {
 
               <div className="glass-card p-8 border-slate-800 bg-slate-900/30 flex items-center justify-between">
                 <div>
-                  <h4 className="text-slate-500 font-black text-[10px] uppercase tracking-widest mb-1">Technical Audit Trail</h4>
+                  <h4 className="text-slate-300 font-black text-[10px] uppercase tracking-widest mb-1">Technical Audit Trail</h4>
                   <p className="text-slate-300 font-mono text-sm">Build: v1.0.0-RESEARCH-STABLE</p>
                 </div>
                 <div className="flex gap-2">

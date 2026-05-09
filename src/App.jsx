@@ -171,6 +171,7 @@ function AppInner() {
           gamify={gamify}
           moduleData={moduleData}
           onAmanahToggle={handleAmanah}
+          onScenarioChange={handleScenarioChange}
         />
 
         <MainLayout
@@ -199,6 +200,7 @@ function AppInner() {
                   onEdit={handleEdit}
                   onStatView={handleStatView}
                   gamify={gamify}
+                  scenario={moduleData.ziswaf.scenario}
                 />
               )}
               {activeModule === 'tahfizh' && (
@@ -212,6 +214,7 @@ function AppInner() {
                   onEdit={handleEdit}
                   onStatView={handleStatView}
                   gamify={gamify}
+                  scenario={moduleData.tahfizh.scenario}
                 />
               )}
               {activeModule === 'qurban' && (
@@ -225,6 +228,7 @@ function AppInner() {
                   onEdit={handleEdit}
                   onStatView={handleStatView}
                   gamify={gamify}
+                  scenario={moduleData.qurban.scenario}
                 />
               )}
               {activeModule === 'literasi' && (
@@ -238,6 +242,7 @@ function AppInner() {
                   onEdit={handleEdit}
                   onStatView={handleStatView}
                   gamify={gamify}
+                  scenario={moduleData.literasi.scenario}
                 />
               )}
             </ModuleErrorBoundary>

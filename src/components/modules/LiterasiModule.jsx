@@ -30,21 +30,12 @@ export function LiterasiModule({
   setData, 
   setAmanah, 
   setTabayyunConfirmed, 
-  onEdit, 
+  onEdit,
   onStatView,
-  gamify
+  gamify,
+  scenario
 }) {
   const { t } = useLanguage()
-  const [scenario, setScenario] = useState('anomali')
-
-  const handleScenarioChange = (s) => {
-    setScenario(s)
-    if (s === 'normal') {
-      setData(PRESET_LITERASI_NORMAL)
-    } else {
-      setData(PRESET_LITERASI)
-    }
-  }
 
   // Literasi uses 'jumlah' field from PRESET_LITERASI
   const values = useMemo(() => (data || []).map((r) => r.jumlah ?? 0), [data])
@@ -106,13 +97,13 @@ export function LiterasiModule({
           <h2 className="text-2xl sm:text-3xl font-black text-slate-800 dark:text-white flex items-center gap-3 uppercase italic tracking-tighter">
             📚 {t('modules.literasi.title')}
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">{t('modules.literasi.desc')}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 font-medium">{t('modules.literasi.desc')}</p>
         </div>
         <div className="flex gap-2">
           <span className="stat-badge bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 font-black uppercase italic text-[10px]">
             📊 Modus & Frekuensi
           </span>
-          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-black uppercase italic text-[10px]">
+          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-black uppercase italic text-[10px]">
             Bar Chart
           </span>
         </div>
@@ -121,7 +112,7 @@ export function LiterasiModule({
       {/* 2. MAIN VISUALIZATION & DATA */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="glass-card p-6 border-2 border-slate-100 dark:border-slate-800/50">
-          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+          <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
             Perbandingan Sirkulasi per Kategori
           </h3>
           <div className="h-[300px] md:h-[400px] w-full relative">
@@ -130,7 +121,7 @@ export function LiterasiModule({
         </div>
 
         <div className="glass-card p-6 border-2 border-slate-100 dark:border-slate-800/50">
-          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+          <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
             Log Inventaris Perpustakaan
           </h3>
           <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
@@ -185,7 +176,6 @@ export function LiterasiModule({
       {/* 5. NARRATIVE & CONTEXT */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
-          <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
           
           {scenario === 'normal' ? (
             <div className="p-5 rounded-3xl bg-emerald-50/60 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30">

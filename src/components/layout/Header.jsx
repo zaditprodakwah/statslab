@@ -9,6 +9,8 @@ import { useGamify } from '../../contexts/GamifyContext'
 import { useModuleData } from '../../contexts/ModuleDataContext'
 import { PremiumIcon } from '../ui/PremiumIcons'
 
+import { ScenarioSwitcher } from '../common/ScenarioSwitcher'
+
 export function Header({ 
   isDark, 
   onToggleDark, 
@@ -16,7 +18,8 @@ export function Header({
   onOpenHelp, 
   onOpenKnowledgeBase, 
   onMagicEntry,
-  onAmanahToggle
+  onAmanahToggle,
+  onScenarioChange
 }) {
   const { t, lang, setLang } = useLanguage()
   const gamify = useGamify()
@@ -83,7 +86,7 @@ export function Header({
           <span className="font-black text-slate-800 dark:text-white text-base tracking-tighter leading-none italic uppercase">
             STATSLAB
           </span>
-          <span className="text-slate-400 dark:text-slate-500 text-[9px] font-bold uppercase tracking-widest leading-none mt-0.5">
+          <span className="text-slate-500 dark:text-slate-300 text-[9px] font-bold uppercase tracking-widest leading-none mt-0.5">
              Interactive Data Literacy
           </span>
         </div>
@@ -143,7 +146,7 @@ export function Header({
                     <ShieldCheck className={`w-4 h-4 ${isAmanah ? 'text-emerald-500' : 'text-slate-400 dark:text-slate-300'}`} />
                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-slate-100">Skala Amanah</span>
                   </div>
-                  {isAmanahLocked && <span className="text-[8px] font-black px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-slate-400">LVL 5 REQ</span>}
+                  {isAmanahLocked && <span className="text-[8px] font-black px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded text-slate-500 dark:text-slate-300">LVL 5 REQ</span>}
                 </div>
                 <button
                   disabled={isAmanahLocked}
@@ -163,6 +166,14 @@ export function Header({
                 </button>
               </div>
 
+              {/* Skenario Toggle */}
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
+                <ScenarioSwitcher 
+                  currentScenario={activeState.scenario} 
+                  onChange={(s) => onScenarioChange(activeModule, s)} 
+                />
+              </div>
+
               {/* Dark Mode & Lang (Consolidated) */}
               <div className="pt-3 border-t border-slate-100 dark:border-slate-800 grid grid-cols-2 gap-2">
                 <button onClick={onToggleDark} className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 transition-all">
@@ -171,7 +182,7 @@ export function Header({
                 </button>
                 <div className="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
                   {['id', 'en'].map((l) => (
-                    <button key={l} onClick={() => setLang(l)} className={`flex-1 py-1 text-[9px] font-black rounded-lg transition-all ${lang === l ? 'bg-white dark:bg-slate-700 text-blue-600' : 'text-slate-400'}`}>
+                    <button key={l} onClick={() => setLang(l)} className={`flex-1 py-1 text-[9px] font-black rounded-lg transition-all ${lang === l ? 'bg-white dark:bg-slate-700 text-blue-600' : 'text-slate-500 dark:text-slate-300'}`}>
                       {l.toUpperCase()}
                     </button>
                   ))}
@@ -194,15 +205,15 @@ export function Header({
           
           {activeMenu === 'akademik' && (
             <div className="absolute top-full right-0 mt-2 w-64 glass-panel-heavy rounded-2xl shadow-2xl border border-amber-500/20 p-2 animate-pop-in">
-              <button onClick={() => { onOpenKnowledgeBase(); setActiveMenu(null); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-amber-50 dark:hover:bg-amber-900/20 text-slate-600 dark:text-slate-400 transition-all">
+              <button onClick={() => { onOpenKnowledgeBase(); setActiveMenu(null); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-amber-50 dark:hover:bg-amber-900/20 text-slate-600 dark:text-slate-300 transition-all">
                 <BookOpen className="w-4 h-4 text-amber-500" />
                 <span className="text-[11px] uppercase tracking-tight font-bold">Knowledge Base</span>
               </button>
-              <button onClick={() => { setActiveModule('certificate'); setActiveMenu(null); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-slate-600 dark:text-slate-400 transition-all">
+              <button onClick={() => { setActiveModule('certificate'); setActiveMenu(null); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-slate-600 dark:text-slate-300 transition-all">
                 <Award className="w-4 h-4 text-indigo-500" />
                 <span className="text-[11px] uppercase tracking-tight font-bold">Sertifikat</span>
               </button>
-              <button onClick={() => { onOpenSUS(); setActiveMenu(null); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-900/20 text-slate-600 dark:text-slate-400 transition-all">
+              <button onClick={() => { onOpenSUS(); setActiveMenu(null); }} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-900/20 text-slate-600 dark:text-slate-300 transition-all">
                 <ClipboardList className="w-4 h-4 text-rose-500" />
                 <span className="text-[11px] uppercase tracking-tight font-bold">Evaluasi SUS</span>
               </button>
@@ -263,6 +274,12 @@ export function Header({
                   {isAmanah ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
                   <span className="text-xs font-black uppercase tracking-widest">{isAmanah ? 'Skala Amanah: AKTIF' : 'Skala Amanah: MATI'}</span>
                 </button>
+
+                <ScenarioSwitcher 
+                  currentScenario={activeState.scenario} 
+                  onChange={(s) => { onScenarioChange(activeModule, s); setActiveMenu(null); }} 
+                />
+
                 <div className="flex gap-4">
                   <button onClick={onToggleDark} className="flex-1 py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center gap-2">
                      {isDark ? <Sun size={18} /> : <Moon size={18} />}
