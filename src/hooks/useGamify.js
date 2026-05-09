@@ -67,7 +67,7 @@ export function useGamify() {
         points: pts,
         badge: BADGES[targetLevel] || null,
       })
-      setTimeout(() => setNotification(null), 4000)
+      setTimeout(() => setNotification(null), 8000)
 
       return {
         ...prev,
@@ -80,8 +80,8 @@ export function useGamify() {
     })
   }, [])
 
-  const notify = useCallback((title, message, type = 'info', duration = 3000) => {
-    setNotification({ title, message, type })
+  const notify = useCallback((title, message, type = 'info', instruction = null, duration = 8000) => {
+    setNotification({ title, message, type, instruction })
     setTimeout(() => setNotification(null), duration)
   }, [])
 
@@ -129,6 +129,10 @@ export function useGamify() {
 
   const canPrintCertificate = state.level >= 6
 
+  const dismiss = useCallback(() => {
+    setNotification(null)
+  }, [])
+
   return {
     ...state,
     unlockLevel,
@@ -139,7 +143,9 @@ export function useGamify() {
     resetProgress,
     notification,
     notify,
+    dismiss,
     canPrintCertificate,
     BADGES,
   }
 }
+

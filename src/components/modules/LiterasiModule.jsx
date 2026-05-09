@@ -3,7 +3,7 @@
 // Shows library book category distribution
 // Enhanced: Tabayyun + Educational theory panel
 // ============================================================
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Line } from 'react-chartjs-2'
 import {
   Chart as ChartJS, CategoryScale, LinearScale,
@@ -15,7 +15,8 @@ import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { useStats } from '../../hooks/useStats'
 import { useTabayyun } from '../../hooks/useTabayyun'
 import { AmanahToggle } from '../ui/AmanahToggle'
-import { PRESET_LITERASI } from '../../data/presetData'
+import { ScenarioSwitcher } from '../common/ScenarioSwitcher'
+import { PRESET_LITERASI, PRESET_LITERASI_NORMAL } from '../../data/presetData'
 import { useLanguage } from '../../hooks/useLanguage'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
@@ -39,6 +40,17 @@ export function LiterasiModule({
 }) {
   const { t } = useLanguage()
 
+  const [scenario, setScenario] = useState('anomali')
+
+  const handleScenarioChange = (s) => {
+    setScenario(s)
+    if (s === 'normal') {
+      setData(PRESET_LITERASI_NORMAL)
+    } else {
+      setData(PRESET_LITERASI)
+    }
+  }
+
   const realisasiValues = useMemo(() => data.map((r) => r.realisasi || r.jumlah), [data])
   const stats = useStats(realisasiValues)
   const tabayyun = useTabayyun(stats.mean, stats.median)
@@ -48,9 +60,9 @@ export function LiterasiModule({
     if (tabayyun.isAnomalous && !tabayyunConfirmed && gamify.notify) {
       gamify.notify(
         'Anomali Terdeteksi!', 
-        'Data sirkulasi buku menunjukkan ketimpangan. Cek Outlier.', 
+        'Data sirkulasi buku menunjukkan ketimpangan distribusi.', 
         'warning',
-        5000
+        'Lihat peringatan di bawah. Gunakan fitur Tabayyun untuk memverifikasi apakah ada kategori buku yang dianaktirikan.'
       )
     }
   }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
@@ -117,6 +129,27 @@ export function LiterasiModule({
         </p>
       </div>
 
+      {/* Scenario Switcher & Narrative */}
+      <div className="space-y-3 mt-4 mb-4">
+        <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
+        
+        {scenario === 'normal' ? (
+          <div className="p-4 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900/30">
+            <h4 className="font-semibold text-blue-800 dark:text-blue-300 text-sm mb-1">📖 Cerita Data: Sirkulasi Sehat</h4>
+            <p className="text-xs text-blue-700 dark:text-blue-400">
+              Minat baca siswa tersebar merata di berbagai kategori buku. Rata-rata dan nilai tengah hampir sama, mengindikasikan program literasi sekolah berhasil menyentuh berbagai minat tanpa ada kesenjangan yang berarti.
+            </p>
+          </div>
+        ) : (
+          <div className="p-4 rounded-xl bg-indigo-50/60 dark:bg-indigo-900/15 border border-indigo-100 dark:border-indigo-900/30 animate-in fade-in">
+            <h4 className="font-semibold text-indigo-800 dark:text-indigo-300 text-sm mb-1">📖 Cerita Data: Skewness (Anomali)</h4>
+            <p className="text-xs text-indigo-700 dark:text-indigo-400">
+              Kategori "Fiksi" tiba-tiba melonjak sangat tinggi mencapai 150 buku, menarik rata-rata (Mean) ke atas, sementara sebagian besar kategori lain hanya dipinjam kurang dari 30 buku. Ini menyebabkan "positive skew". Adakan Tabayyun: apakah guru menugaskan review buku fiksi secara massal? Ini menyebabkan ilusi bahwa budaya baca sekolah tinggi secara keseluruhan.
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* IMPACT ALERTS - MOVED UP FOR VISIBILITY */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Tabayyun Alert */}
@@ -130,14 +163,14 @@ export function LiterasiModule({
           onDetected={setTabayyunConfirmed}
           externalConfirmed={tabayyunConfirmed}
           gamify={gamify}
-          isMissionTarget={gamify.level === 4}
+          isMissionTarget={gamify.level === 5}
         />
 
         <AmanahToggle 
           isAmanah={isAmanah} 
           onToggle={() => setAmanah(!isAmanah)} 
           gamify={gamify}
-          isMissionTarget={gamify.level === 5}
+          isMissionTarget={gamify.level === 6}
         />
       </div>
 
@@ -166,6 +199,7 @@ export function LiterasiModule({
             type={type}
             value={stats[type]}
             onView={(tp) => { if (['mean','median','modus'].includes(tp)) onStatView?.() }}
+            isMissionTarget={gamify.level === 4 && ['mean','median','modus'].includes(type)}
           />
         ))}
       </div>

@@ -3,7 +3,8 @@
 // Manages: dark mode, profile gate, module routing, gamify
 // Mobile: BottomNav handles module switching (< sm)
 // ============================================================
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, Component } from 'react'
+import { AlertTriangle } from 'lucide-react'
 import { LanguageProvider } from './hooks/useLanguage'
 import { useProfile } from './hooks/useProfile'
 import { useGamify } from './hooks/useGamify'
@@ -17,11 +18,13 @@ import { TahfizhModule } from './components/modules/TahfizhModule'
 import { QurbanModule } from './components/modules/QurbanModule'
 import { LiterasiModule } from './components/modules/LiterasiModule'
 import { HelpModal } from './components/common/HelpModal'
+import { AcademicKnowledgeBase } from './components/common/AcademicKnowledgeBase'
 import { PrintButton } from './components/certificate/PrintButton'
 import { CertificateView } from './components/certificate/CertificateView'
 import { SUSForm } from './components/sus/SUSForm'
 import { ResearcherPortal } from './components/researcher/ResearcherPortal'
 import { MissionBar } from './components/ui/MissionBar'
+import { Toast } from './components/ui/Toast'
 import { PRESET_ZISWAF, PRESET_TAHFIZH, PRESET_QURBAN, PRESET_LITERASI } from './data/presetData'
 
 // ── Dark mode init (before first paint) ──────────────────
@@ -30,15 +33,13 @@ function initDark() {
   return stored ? stored === 'true' : window.matchMedia('(prefers-color-scheme: dark)').matches
 }
 
-// ── Toast notification ────────────────────────────────────
-import { Toast } from './components/ui/Toast'
-
 // ── App ───────────────────────────────────────────────────
 function AppInner() {
   const [isDark, setIsDark] = useState(initDark)
   const [activeModule, setActiveModule] = useState('ziswaf')
   const [showResearcher, setShowResearcher] = useState(false)
   const [isHelpOpen, setIsHelpOpen] = useState(false)
+  const [isKnowledgeBaseOpen, setIsKnowledgeBaseOpen] = useState(false)
   const { profile, saveProfile, hasProfile } = useProfile()
   const gamify = useGamify()
 
@@ -54,13 +55,17 @@ function AppInner() {
       const saved = localStorage.getItem('statslab_module_data')
       if (saved) {
         const parsed = JSON.parse(saved)
-        // Basic validation to ensure all expected modules exist
-        if (parsed.ziswaf && parsed.tahfizh && parsed.qurban && parsed.literasi) {
-          return parsed
-        }
+        // Robust validation to ensure all expected modules and their items exist
+        const keys = ['ziswaf', 'tahfizh', 'qurban', 'literasi']
+        const isValid = keys.every(k => 
+          parsed[k] && 
+          Array.isArray(parsed[k].items) && 
+          parsed[k].items.length > 0
+        )
+        if (isValid) return parsed
       }
     } catch (e) {
-      console.error('Failed to load module data:', e)
+      console.error('Failed to load module data from localStorage:', e)
     }
     return defaultData
   })
@@ -70,12 +75,15 @@ function AppInner() {
     localStorage.setItem('statslab_module_data', JSON.stringify(moduleData))
   }, [moduleData])
 
-  // Generic data/state updater
+  // Generic data/state updater with robust guard
   const updateModuleState = useCallback((id, updates) => {
-    setModuleData(prev => ({
-      ...prev,
-      [id]: { ...prev[id], ...updates }
-    }))
+    setModuleData(prev => {
+      if (!prev[id]) return prev
+      return {
+        ...prev,
+        [id]: { ...prev[id], ...updates }
+      }
+    })
   }, [])
 
   // ── Gamify Level Triggers ──────────────────────────────
@@ -83,7 +91,8 @@ function AppInner() {
   // Level 1 → 2: When any data is changed
   const handleDataChange = useCallback((id, updater) => {
     setModuleData(prev => {
-      const currentItems = prev[id].items
+      if (!prev[id]) return prev
+      const currentItems = prev[id]?.items || []
       const newItems = typeof updater === 'function' ? updater(currentItems) : updater
       return {
         ...prev,
@@ -97,18 +106,18 @@ function AppInner() {
     if (gamify.canUnlock(2)) gamify.unlockLevel(2) 
   }, [gamify])
 
-  // Level 2 → 3: When a statistical card is viewed
-  const handleStatView = useCallback(() => { 
-    if (gamify.canUnlock(3)) gamify.unlockLevel(3) 
-  }, [gamify])
-  
-  // Level 3 → 4: When switching to a non-default module
+  // Level 2 → 3: When switching to a non-default module
   const handleModuleChange = useCallback((mod) => {
     setActiveModule(mod)
     const isTabayyunModule = ['tahfizh', 'qurban', 'literasi'].includes(mod)
-    if (isTabayyunModule && gamify.canUnlock(4)) {
-      gamify.unlockLevel(4)
+    if (isTabayyunModule && gamify.canUnlock(3)) {
+      gamify.unlockLevel(3)
     }
+  }, [gamify])
+
+  // Level 3 → 4: When a statistical card is viewed
+  const handleStatView = useCallback(() => { 
+    if (gamify.canUnlock(4)) gamify.unlockLevel(4) 
   }, [gamify])
 
   // Level 4 → 5: When an anomaly is confirmed (Tabayyun)
@@ -119,14 +128,39 @@ function AppInner() {
 
   // Level 5 → 6: When the Amanah switch is toggled (Integrity test)
   const handleAmanah = useCallback((id, isAmanah) => {
-    const current = moduleData[id]
-    const hasSeenBias = current.hasSeenBias || !isAmanah
-    updateModuleState(id, { isAmanah, hasSeenBias })
-    
-    if (hasSeenBias && isAmanah && gamify.canUnlock(6)) {
-      gamify.unlockLevel(6)
-    }
-  }, [gamify, moduleData, updateModuleState])
+    setModuleData(prev => {
+      const current = prev[id]
+      if (!current) return prev
+      const hasSeenBias = current.hasSeenBias || !isAmanah
+      
+      // Notify user about the state change
+      if (!isAmanah && gamify.notify) {
+        gamify.notify(
+          'Eksperimen Bias Visual', 
+          'Anda sedang melihat grafik yang terpotong (Truncated). Skala Y tidak dimulai dari nol.', 
+          'warning',
+          'Sekarang AKTIFKAN kembali saklar Skala Amanah di atas untuk mencapai Level 6 (Audit Integritas Sumbu-Y).'
+        )
+      } else if (isAmanah && !current.hasSeenBias && gamify.notify) {
+         gamify.notify(
+          'Skala Amanah Aktif', 
+          'Grafik dimulai dari nol. Ini adalah standar pelaporan yang jujur.', 
+          'info',
+          'Coba MATIKAN saklar ini sebentar untuk melihat bagaimana data bisa dimanipulasi secara visual.'
+        )
+      }
+
+      // Check for Level 6 unlock
+      if (hasSeenBias && isAmanah && gamify.canUnlock(6)) {
+        gamify.unlockLevel(6)
+      }
+
+      return {
+        ...prev,
+        [id]: { ...current, isAmanah, hasSeenBias }
+      }
+    })
+  }, [gamify])
 
   // Dark mode sync to <html> class
   useEffect(() => {
@@ -201,6 +235,7 @@ function AppInner() {
           onToggleDark={() => setIsDark((d) => !d)}
           onOpenSUS={() => setActiveModule('sus')}
           onOpenHelp={() => setIsHelpOpen(true)}
+          onOpenKnowledgeBase={() => setIsKnowledgeBaseOpen(true)}
           onMagicEntry={() => setShowResearcher(true)}
         />
 
@@ -292,7 +327,7 @@ function AppInner() {
         <MissionBar gamify={gamify} />
 
         {/* Gamification Toast — above BottomNav on mobile */}
-        <Toast notification={gamify.notification} lang="id" />
+        <Toast notification={gamify.notification} lang="id" onDismiss={gamify.dismiss} />
 
         {/* Researcher Portal Overlay */}
         {showResearcher && (
@@ -308,13 +343,19 @@ function AppInner() {
           isOpen={isHelpOpen} 
           onClose={() => setIsHelpOpen(false)} 
         />
+
+        {/* Academic Knowledge Base */}
+        <AcademicKnowledgeBase
+          isOpen={isKnowledgeBaseOpen}
+          onClose={() => setIsKnowledgeBaseOpen(false)}
+        />
       </div>
     </div>
   )
 }
 
-// ── Error Boundary ─────────────────────────────────────────
-class ErrorBoundary extends React.Component {
+// ── Error Boundaries ─────────────────────────────────────────
+class ErrorBoundary extends Component {
   constructor(props) {
     super(props)
     this.state = { hasError: false }
@@ -323,7 +364,7 @@ class ErrorBoundary extends React.Component {
     return { hasError: true }
   }
   componentDidCatch(error, errorInfo) {
-    console.error('STATSLAB CRASH:', error, errorInfo)
+    console.error('STATSLAB GLOBAL CRASH:', error, errorInfo)
   }
   render() {
     if (this.state.hasError) {
@@ -356,10 +397,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-import React from 'react'
-import { AlertTriangle } from 'lucide-react'
-
-class ModuleErrorBoundary extends React.Component {
+class ModuleErrorBoundary extends Component {
   constructor(props) {
     super(props)
     this.state = { hasError: false }

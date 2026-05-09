@@ -3,16 +3,18 @@
 // Tabayyun WILL trigger (Fisabilillah outlier intentional)
 // AmanahToggle + Lvl5 + Lvl6 unlock here
 // ============================================================
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Pie } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import { DataTable } from '../ui/DataTable'
 import { StatCard } from '../ui/StatCard'
 import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { AmanahToggle } from '../ui/AmanahToggle'
+import { ScenarioSwitcher } from '../common/ScenarioSwitcher'
 import { useStats } from '../../hooks/useStats'
 import { useTabayyun } from '../../hooks/useTabayyun'
 import { useLanguage } from '../../hooks/useLanguage'
+import { PRESET_ZISWAF, PRESET_ZISWAF_NORMAL } from '../../data/presetData'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
@@ -43,6 +45,17 @@ export function ZiswafModule({
 }) {
   const { t } = useLanguage()
 
+  const [scenario, setScenario] = useState('anomali')
+
+  const handleScenarioChange = (s) => {
+    setScenario(s)
+    if (s === 'normal') {
+      setData(PRESET_ZISWAF_NORMAL)
+    } else {
+      setData(PRESET_ZISWAF)
+    }
+  }
+
   const nominals = useMemo(() => data.map((r) => r.nominal), [data])
   const stats = useStats(nominals)
   const tabayyun = useTabayyun(stats.mean, stats.median)
@@ -52,9 +65,9 @@ export function ZiswafModule({
     if (tabayyun.isAnomalous && !tabayyunConfirmed && gamify.notify) {
       gamify.notify(
         'Anomali Terdeteksi!', 
-        'Rata-rata bergeser tajam. Segera lakukan Tabayyun di modul ini.', 
+        'Rata-rata bergeser tajam. Distribusi dana tidak merata.', 
         'warning',
-        5000
+        'Scroll ke bawah ke panel "Peringatan Anomali" dan klik tombol "TABAYYUN SEKARANG" untuk memverifikasi data ini.'
       )
     }
   }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
@@ -111,6 +124,27 @@ export function ZiswafModule({
         </p>
       </div>
 
+      {/* Scenario Switcher & Narrative */}
+      <div className="space-y-3">
+        <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
+        
+        {scenario === 'normal' ? (
+          <div className="p-4 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900/30">
+            <h4 className="font-semibold text-blue-800 dark:text-blue-300 text-sm mb-1">📖 Cerita Data: Kondisi Ideal</h4>
+            <p className="text-xs text-blue-700 dark:text-blue-400">
+              Pada skenario ini, distribusi dana zakat berjalan normal. Bantuan disalurkan secara proporsional kepada Asnaf Fakir, Miskin, dan Fisabilillah. Perhatikan bagaimana nilai <strong>Mean</strong> dan <strong>Median</strong> berdekatan, menandakan tidak ada ketimpangan ekstrem.
+            </p>
+          </div>
+        ) : (
+          <div className="p-4 rounded-xl bg-rose-50/60 dark:bg-rose-900/15 border border-rose-100 dark:border-rose-900/30 animate-in fade-in">
+            <h4 className="font-semibold text-rose-800 dark:text-rose-300 text-sm mb-1">📖 Cerita Data: Realitas Lapangan (Anomali)</h4>
+            <p className="text-xs text-rose-700 dark:text-rose-400">
+              Tiba-tiba, ada lonjakan pengeluaran untuk satu program Fisabilillah (membangun fasilitas besar). Ini adalah <em>outlier</em> (pencilan). Lihat bagaimana nilai <strong>Mean</strong> melonjak tajam, sementara <strong>Median</strong> tetap stabil. Tabayyun diperlukan untuk memastikan apakah dana ini benar-benar disalurkan ke pos yang tepat atau terjadi kesalahan pencatatan!
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* IMPACT ALERTS - MOVED UP FOR VISIBILITY */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Tabayyun Alert */}
@@ -124,7 +158,7 @@ export function ZiswafModule({
           onDetected={setTabayyunConfirmed}
           externalConfirmed={tabayyunConfirmed}
           gamify={gamify}
-          isMissionTarget={gamify.level === 4}
+          isMissionTarget={gamify.level === 5}
         />
         
         {/* Amanah Toggle */}
@@ -132,7 +166,7 @@ export function ZiswafModule({
           isAmanah={isAmanah}
           onToggle={() => setAmanah(!isAmanah)}
           gamify={gamify}
-          isMissionTarget={gamify.level === 5}
+          isMissionTarget={gamify.level === 6}
         />
       </div>
 
@@ -173,6 +207,7 @@ export function ZiswafModule({
             value={stats[type]}
             onView={(tp) => { if (['mean','median','modus'].includes(tp)) onStatView?.() }}
             formatter={['mean','median','min','max'].includes(type) ? formatRp : undefined}
+            isMissionTarget={gamify.level === 4 && ['mean','median','modus'].includes(type)}
           />
         ))}
       </div>

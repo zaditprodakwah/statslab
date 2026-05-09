@@ -73,6 +73,10 @@ body {
     @apply px-4 py-2 bg-white/90 dark:bg-slate-800/90 hover:bg-white dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold rounded-xl border border-slate-300 dark:border-slate-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 backdrop-blur-sm;
   }
 
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all duration-200 placeholder-slate-400 dark:placeholder-slate-500;
+  }
+
   .level-locked {
     @apply grayscale opacity-60 cursor-not-allowed pointer-events-none filter blur-[0.5px];
   }
@@ -139,6 +143,16 @@ body {
   * { 
     -webkit-print-color-adjust: exact !important; 
     print-color-adjust: exact !important; 
+  }
+
+  .break-before-page {
+    page-break-before: always !important;
+  }
+  
+  #certificate-print-area {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
   }
 }
 

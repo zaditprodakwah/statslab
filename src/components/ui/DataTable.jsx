@@ -26,13 +26,13 @@ export function DataTable({ data, setData, columns, onEdit, moduleId, gamify }) 
     })
 
     // Trigger high-visibility notification if gamify is available
-    if (gamify && gamify.notify) {
-      const fieldLabel = field.charAt(0).toUpperCase() + field.slice(1)
+    if (gamify && gamify.notify && column) {
+      const fieldLabel = t(`table.${column.labelKey || field}`)
       gamify.notify(
         'Data Diperbarui', 
         `${fieldLabel} berhasil disimpan ke sistem audit.`, 
         'saved',
-        2000
+        'Lihat perubahan pada grafik di bawah untuk melihat dampak statistik.'
       )
     }
 
@@ -111,7 +111,7 @@ export function DataTable({ data, setData, columns, onEdit, moduleId, gamify }) 
                           type={col.type === 'number' ? 'number' : 'text'}
                           value={row[col.field] ?? ''}
                           onChange={(e) => handleChange(row.id, col.field, e.target.value)}
-                          className={`w-full bg-transparent text-center focus:outline-none focus:ring-1 focus:ring-emerald-400 rounded px-1 py-0.5 min-w-0 transition-all ${isSaving ? 'font-bold text-emerald-600 dark:text-emerald-400' : ''}`}
+                          className={`w-full bg-transparent text-center focus:outline-none focus:ring-1 focus:ring-emerald-400 rounded px-1 py-0.5 min-w-0 transition-all text-slate-800 dark:text-slate-100 ${isSaving ? 'font-bold text-emerald-600 dark:text-emerald-400' : ''}`}
                           tabIndex={0}
                           aria-label={`${t(`table.${col.labelKey || col.field}`)} baris ${rowIdx + 1}`}
                           id={`${moduleId}-table-${row.id}-${col.field}`}

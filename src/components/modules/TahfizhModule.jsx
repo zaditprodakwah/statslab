@@ -3,7 +3,7 @@
 // Shows monthly Quran memorization progress
 // Enhanced: Tabayyun + Educational theory panel
 // ============================================================
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Line } from 'react-chartjs-2'
 import {
   Chart as ChartJS, CategoryScale, LinearScale,
@@ -15,7 +15,8 @@ import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { useStats } from '../../hooks/useStats'
 import { useTabayyun } from '../../hooks/useTabayyun'
 import { AmanahToggle } from '../ui/AmanahToggle'
-import { PRESET_TAHFIZH } from '../../data/presetData'
+import { ScenarioSwitcher } from '../common/ScenarioSwitcher'
+import { PRESET_TAHFIZH, PRESET_TAHFIZH_NORMAL } from '../../data/presetData'
 import { useLanguage } from '../../hooks/useLanguage'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
@@ -39,6 +40,17 @@ export function TahfizhModule({
 }) {
   const { t } = useLanguage()
 
+  const [scenario, setScenario] = useState('anomali')
+
+  const handleScenarioChange = (s) => {
+    setScenario(s)
+    if (s === 'normal') {
+      setData(PRESET_TAHFIZH_NORMAL)
+    } else {
+      setData(PRESET_TAHFIZH)
+    }
+  }
+
   const values = useMemo(() => data.map((r) => r.halaman), [data])
   const stats = useStats(values)
   const tabayyun = useTabayyun(stats.mean, stats.median)
@@ -48,9 +60,9 @@ export function TahfizhModule({
     if (tabayyun.isAnomalous && !tabayyunConfirmed && gamify.notify) {
       gamify.notify(
         'Anomali Terdeteksi!', 
-        'Median data hafalan bergeser. Cek apakah ada bulan yang tidak konsisten.', 
+        'Median data hafalan bergeser. Ada ketidakkonsistenan data.', 
         'warning',
-        5000
+        'Scroll ke bawah ke panel "Peringatan Anomali" dan lakukan audit Tabayyun untuk menyeimbangkan data hafalan.'
       )
     }
   }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
@@ -99,6 +111,7 @@ export function TahfizhModule({
 
   return (
     <div className="space-y-5 animate-fade-in">
+      {/* Module header */}
       <div>
         <h2 className="text-xl font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
           📖 {t('modules.tahfizh.title')}
@@ -106,7 +119,7 @@ export function TahfizhModule({
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{t('modules.tahfizh.desc')}</p>
         <div className="flex gap-2 mt-2">
           <span className="stat-badge bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
-            📊 {t('modules.tahfizh.focus')}
+            🎯 {t('modules.tahfizh.focus')}
           </span>
           <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
             Line Chart
@@ -115,11 +128,32 @@ export function TahfizhModule({
       </div>
 
       {/* Educational Context */}
-      <div className="px-4 py-3 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900 text-sm text-blue-800 dark:text-blue-300 leading-relaxed shadow-sm">
-        <p className="font-semibold mb-1">💡 Mengapa Median penting di sini?</p>
+      <div className="px-4 py-3 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900 text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
+        <p className="font-semibold mb-1">💡 Mengapa Median (Nilai Tengah) penting di sini?</p>
         <p className="text-xs text-blue-700 dark:text-blue-400">
-          Data hafalan bulanan bisa sangat fluktuatif (misal: sakit sebulan → 0 halaman). <strong>Median</strong> tidak terpengaruh oleh bulan-bulan ekstrem tersebut, sehingga lebih merepresentasikan konsistensi (<em>istiqomah</em>) yang sesungguhnya dibanding Mean. Garis kuning pada grafik menunjukkan posisi Median. Jika selisih Mean & Median besar, berarti ada lonjakan atau penurunan drastis di satu bulan.
+          <strong>Median</strong> mengurutkan data dan mengambil nilai tengahnya. Berbeda dengan Mean, Median <strong>kebal terhadap outlier</strong>. Jika ada satu bulan dimana hafalan melesat secara tidak wajar, Median tetap menggambarkan kemampuan hafalan rata-rata siswa yang sesungguhnya.
         </p>
+      </div>
+
+      {/* Scenario Switcher & Narrative */}
+      <div className="space-y-3">
+        <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
+        
+        {scenario === 'normal' ? (
+          <div className="p-4 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900/30">
+            <h4 className="font-semibold text-blue-800 dark:text-blue-300 text-sm mb-1">📖 Cerita Data: Kondisi Stabil</h4>
+            <p className="text-xs text-blue-700 dark:text-blue-400">
+              Perkembangan hafalan siswa terlihat stabil dan konsisten. Nilai <strong>Mean</strong> dan <strong>Median</strong> sejalan. Ini adalah representasi data yang sehat dan tanpa bias.
+            </p>
+          </div>
+        ) : (
+          <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-900/15 border border-amber-100 dark:border-amber-900/30 animate-in fade-in">
+            <h4 className="font-semibold text-amber-800 dark:text-amber-300 text-sm mb-1">📖 Cerita Data: Bias Klaim Progres (Anomali)</h4>
+            <p className="text-xs text-amber-700 dark:text-amber-400">
+              Di bulan September, laporan hafalan mencapai angka fantastis (95 halaman). Nilai <strong>Mean</strong> tertarik naik sehingga memberikan ilusi bahwa rata-rata hafalan bulanan sangat tinggi. Namun, perhatikan nilai <strong>Median</strong>! Ia tetap diam di angka belasan. Tabayyun diperlukan untuk memeriksa keaslian data bulan September ini.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* IMPACT ALERTS - MOVED UP FOR VISIBILITY */}
@@ -135,14 +169,14 @@ export function TahfizhModule({
           onDetected={setTabayyunConfirmed}
           externalConfirmed={tabayyunConfirmed}
           gamify={gamify}
-          isMissionTarget={gamify.level === 4}
+          isMissionTarget={gamify.level === 5}
         />
 
         <AmanahToggle 
           isAmanah={isAmanah} 
           onToggle={() => setAmanah(!isAmanah)} 
           gamify={gamify}
-          isMissionTarget={gamify.level === 5}
+          isMissionTarget={gamify.level === 6}
         />
       </div>
 
@@ -171,6 +205,7 @@ export function TahfizhModule({
             type={type}
             value={stats[type]}
             onView={(tp) => { if (['mean','median','modus'].includes(tp)) onStatView?.() }}
+            isMissionTarget={gamify.level === 4 && ['mean','median','modus'].includes(type)}
           />
         ))}
       </div>

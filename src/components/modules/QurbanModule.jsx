@@ -3,7 +3,7 @@
 // Shows Qurban distribution target vs realization
 // Enhanced: Tabayyun + Educational theory panel
 // ============================================================
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Bar } from 'react-chartjs-2'
 import {
   Chart as ChartJS, CategoryScale, LinearScale,
@@ -15,7 +15,8 @@ import { TabayyunAlert } from '../ui/TabayyunAlert'
 import { useStats } from '../../hooks/useStats'
 import { useTabayyun } from '../../hooks/useTabayyun'
 import { AmanahToggle } from '../ui/AmanahToggle'
-import { PRESET_QURBAN } from '../../data/presetData'
+import { ScenarioSwitcher } from '../common/ScenarioSwitcher'
+import { PRESET_QURBAN, PRESET_QURBAN_NORMAL } from '../../data/presetData'
 import { useLanguage } from '../../hooks/useLanguage'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -40,6 +41,17 @@ export function QurbanModule({
 }) {
   const { t } = useLanguage()
 
+  const [scenario, setScenario] = useState('anomali')
+
+  const handleScenarioChange = (s) => {
+    setScenario(s)
+    if (s === 'normal') {
+      setData(PRESET_QURBAN_NORMAL)
+    } else {
+      setData(PRESET_QURBAN)
+    }
+  }
+
   const realisasiValues = useMemo(() => data.map((r) => r.realisasi), [data])
   const stats = useStats(realisasiValues)
   const tabayyun = useTabayyun(stats.mean, stats.median)
@@ -49,9 +61,9 @@ export function QurbanModule({
     if (tabayyun.isAnomalous && !tabayyunConfirmed && gamify.notify) {
       gamify.notify(
         'Anomali Terdeteksi!', 
-        'Distribusi hewan qurban antar desa tidak merata. Perlu Tabayyun.', 
+        'Distribusi hewan qurban antar desa tidak merata.', 
         'warning',
-        5000
+        'Cek panel Peringatan Anomali di bawah. Bandingkan Target vs Realisasi untuk menemukan desa yang terabaikan.'
       )
     }
   }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
@@ -118,6 +130,27 @@ export function QurbanModule({
         </p>
       </div>
 
+      {/* Scenario Switcher & Narrative */}
+      <div className="space-y-3 mt-4 mb-4">
+        <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
+        
+        {scenario === 'normal' ? (
+          <div className="p-4 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900/30">
+            <h4 className="font-semibold text-blue-800 dark:text-blue-300 text-sm mb-1">📖 Cerita Data: Distribusi Merata</h4>
+            <p className="text-xs text-blue-700 dark:text-blue-400">
+              Distribusi hewan Qurban berjalan sesuai target. Angka realisasi pada tiap desa sangat mendekati angka target yang direncanakan. Ini menunjukkan manajemen penyaluran yang amanah dan terencana dengan baik.
+            </p>
+          </div>
+        ) : (
+          <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-900/15 border border-amber-100 dark:border-amber-900/30 animate-in fade-in">
+            <h4 className="font-semibold text-amber-800 dark:text-amber-300 text-sm mb-1">📖 Cerita Data: Over-realization (Anomali)</h4>
+            <p className="text-xs text-amber-700 dark:text-amber-400">
+              Perhatikan desa Sukarame! Target awal hanya 30, tetapi realisasinya mencapai 150 ekor hewan Qurban. Lonjakan drastis ini mungkin terjadi karena banyak pekurban mendadak memilih desa ini tanpa koordinasi. Tabayyun diperlukan: apakah data ini salah ketik atau ada penumpukan pembagian yang harus dievaluasi tahun depan?
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* IMPACT ALERTS - MOVED UP FOR VISIBILITY */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Tabayyun Alert */}
@@ -131,14 +164,14 @@ export function QurbanModule({
           onDetected={setTabayyunConfirmed}
           externalConfirmed={tabayyunConfirmed}
           gamify={gamify}
-          isMissionTarget={gamify.level === 4}
+          isMissionTarget={gamify.level === 5}
         />
 
         <AmanahToggle 
           isAmanah={isAmanah} 
           onToggle={() => setAmanah(!isAmanah)} 
           gamify={gamify}
-          isMissionTarget={gamify.level === 5}
+          isMissionTarget={gamify.level === 6}
         />
       </div>
 
@@ -167,6 +200,7 @@ export function QurbanModule({
             type={type}
             value={stats[type]}
             onView={(tp) => { if (['mean','median','modus'].includes(tp)) onStatView?.() }}
+            isMissionTarget={gamify.level === 4 && ['mean','median','modus'].includes(type)}
           />
         ))}
       </div>

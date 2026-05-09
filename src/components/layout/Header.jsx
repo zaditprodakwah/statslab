@@ -5,10 +5,10 @@
 // Navigation on mobile handled by BottomNav
 // ============================================================
 import { useState, useRef } from 'react'
-import { Moon, Sun, Globe, ClipboardList, HelpCircle } from 'lucide-react'
+import { Moon, Sun, Globe, ClipboardList, HelpCircle, BookOpen } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage'
 
-export function Header({ isDark, onToggleDark, onOpenSUS, onOpenHelp, onMagicEntry }) {
+export function Header({ isDark, onToggleDark, onOpenSUS, onOpenHelp, onOpenKnowledgeBase, onMagicEntry }) {
   const { t, lang, setLang } = useLanguage()
   
   // Magic Entry Logic (5x logo clicks in 2s)
@@ -54,6 +54,15 @@ export function Header({ isDark, onToggleDark, onOpenSUS, onOpenHelp, onMagicEnt
 
       {/* Right controls */}
       <div className="flex items-center gap-1.5">
+        {/* Academic Knowledge Base Button */}
+        <button
+          onClick={onOpenKnowledgeBase}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        >
+          <BookOpen className="w-3 h-3" />
+          <span className="hidden xs:inline">TOR & Legal</span>
+        </button>
+
         {/* Help Button */}
         <button
           onClick={onOpenHelp}
