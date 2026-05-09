@@ -41,9 +41,9 @@ export function TabayyunAlert({
   }
 
   const severityConfig = {
-    mild: { bg: 'bg-yellow-50 dark:bg-yellow-900/20', border: 'border-yellow-300 dark:border-yellow-700', text: 'text-yellow-800 dark:text-yellow-200', icon: Info },
-    strong: { bg: 'bg-amber-50 dark:bg-amber-900/20', border: 'border-amber-400 dark:border-amber-600', text: 'text-amber-900 dark:text-amber-100', icon: AlertTriangle },
-    extreme: { bg: 'bg-red-50 dark:bg-red-900/20', border: 'border-red-400 dark:border-red-600', text: 'text-red-900 dark:text-red-100', icon: AlertTriangle },
+    mild: { bg: 'bg-yellow-50 dark:bg-yellow-900/40', border: 'border-yellow-300 dark:border-yellow-600', text: 'text-yellow-900 dark:text-yellow-100', icon: Info },
+    strong: { bg: 'bg-amber-50 dark:bg-amber-900/40', border: 'border-amber-400 dark:border-amber-500', text: 'text-amber-950 dark:text-amber-50', icon: AlertTriangle },
+    extreme: { bg: 'bg-red-50 dark:bg-red-900/40', border: 'border-red-400 dark:border-red-500', text: 'text-red-950 dark:text-red-50', icon: AlertTriangle },
   }
   const cfg = severityConfig[severity] || severityConfig.strong
   const Icon = cfg.icon
@@ -69,9 +69,9 @@ export function TabayyunAlert({
             <Icon className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between gap-4 mb-2">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-3">
               <div className="flex flex-col">
-                <h4 className={`font-black text-xs uppercase tracking-[0.2em] ${cfg.text}`}>
+                <h4 className={`font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] ${cfg.text}`}>
                   {t('tabayyun.title')}
                 </h4>
                 {!confirmed && !isLocked && (
@@ -80,7 +80,7 @@ export function TabayyunAlert({
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                     </span>
-                    <span className="text-[10px] font-black text-amber-600 dark:text-amber-400 uppercase">
+                    <span className="text-[9px] sm:text-[10px] font-black text-amber-600 dark:text-amber-400 uppercase">
                       Audit Mandatori Diperlukan
                     </span>
                   </div>
@@ -89,7 +89,7 @@ export function TabayyunAlert({
               <button
                 onClick={handleOpenModal}
                 disabled={confirmed || isLocked}
-                className={`px-5 py-2 rounded-xl text-[11px] font-black uppercase tracking-wider shadow-lg transition-all border-2 ${
+                className={`w-full sm:w-auto px-5 py-2.5 rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-wider shadow-lg transition-all border-2 ${
                   confirmed 
                     ? 'bg-emerald-500 text-white border-emerald-400 cursor-default shadow-emerald-500/20' 
                     : isLocked

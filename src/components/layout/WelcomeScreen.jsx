@@ -4,16 +4,19 @@
 // Enhanced: Educational landing with theory & how-it-works
 // ============================================================
 import { useState } from 'react'
-import { BookOpen, User, School, GraduationCap, ChevronRight, Target, ShieldCheck, Award, BarChart3, Eye, AlertTriangle, ChevronDown, ChevronUp, CheckCircle, Info, Layers } from 'lucide-react'
+import { BookOpen, User, School, GraduationCap, ChevronRight, Target, ShieldCheck, Award, BarChart3, Eye, AlertTriangle, ChevronDown, ChevronUp, CheckCircle, Info, Layers, ExternalLink, Scale, FileText, HelpCircle } from 'lucide-react'
 import { useLanguage } from '../../hooks/useLanguage'
+import { PremiumIcon } from '../ui/PremiumIcons'
+import { FloatingAmanahOverlay } from '../ui/FloatingAmanahOverlay'
 
-export function WelcomeScreen({ onSubmit }) {
+export function WelcomeScreen({ onSubmit, onOpenKnowledgeBase }) {
   const { t } = useLanguage()
   const [step, setStep] = useState('landing') // 'landing' | 'form'
   const [form, setForm] = useState({ nama: '', kelas: '', sekolah: '', guru: '', freshStart: true })
   const [errors, setErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showHowItWorks, setShowHowItWorks] = useState(false)
+  const [isAmanahOpen, setIsAmanahOpen] = useState(false)
 
   const fields = [
     { key: 'nama', icon: User, labelKey: 'onboarding.labelNama', placeholderKey: 'onboarding.placeholderNama', id: 'onboard-nama' },
@@ -35,173 +38,201 @@ export function WelcomeScreen({ onSubmit }) {
     const errs = validate()
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
     setIsSubmitting(true)
-    setTimeout(() => onSubmit(form), 300)
+    setTimeout(() => onSubmit(form, form.freshStart), 300)
   }
 
   const levelSteps = [
-    { lvl: 1, label: 'Idiosinkratik', action: 'Masuk ke portal & lihat data awal', icon: '🔰' },
-    { lvl: 2, label: 'Kolokuial', action: 'Edit angka pada tabel data', icon: '✏️' },
-    { lvl: 3, label: 'Tidak Konsisten', action: 'Jelajahi modul berbeda (Tahfizh/Qurban/Literasi)', icon: '🧭' },
-    { lvl: 4, label: 'Konsisten Non-Kritis', action: 'Klik kartu statistik (Mean/Median/Modus)', icon: '📊' },
-    { lvl: 5, label: 'Kritis', action: 'Konfirmasi temuan anomali data (Tabayyun)', icon: '🔍' },
-    { lvl: 6, label: 'Kritis Matematis', action: 'Toggle Skala Amanah & Bias (kedua arah)', icon: '🏆' },
+    { lvl: 1, label: 'Pencari Data', theory: 'Idiosinkratik', action: 'Masuk & Lihat Data', icon: 'finder' },
+    { lvl: 2, label: 'Pelapor Data', theory: 'Kolokuial', action: 'Input & Edit Tabel', icon: 'reporter' },
+    { lvl: 3, label: 'Analis Junior', theory: 'Tidak Konsisten', action: 'Jelajahi 4 Modul', icon: 'analyst' },
+    { lvl: 4, label: 'Detektif Data', theory: 'Konsisten Non-Kritis', action: 'Analisis Statistik', icon: 'detective' },
+    { lvl: 5, label: 'Ahli Strategi', theory: 'Kritis', action: 'Verifikasi Tabayyun', icon: 'strategist' },
+    { lvl: 6, label: 'Master Data', theory: 'Kritis Matematis', action: 'Integritas Amanah', icon: 'master' },
   ]
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {/* Decorative blobs */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-300/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-300/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-emerald-300/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-300/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
 
       {step === 'landing' ? (
-        <div className="glass rounded-2xl p-8 w-full max-w-3xl animate-slide-up relative z-10">
+        <div className="glass rounded-2xl p-6 sm:p-10 w-full max-w-4xl animate-slide-up relative z-10 border border-white/20 shadow-2xl">
           {/* Hero */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-xl shadow-emerald-500/30 mb-6">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-500 to-teal-600 shadow-xl shadow-emerald-500/30 mb-8 transform hover:rotate-6 transition-transform">
               <BookOpen className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-800 dark:text-slate-100 mb-3 leading-tight">
+            <h1 className="text-3xl sm:text-5xl font-black text-slate-800 dark:text-white mb-4 leading-[1.1] tracking-tighter uppercase italic">
               {t('landing.heroTitle')}
             </h1>
-            <p className="text-base text-slate-600 dark:text-slate-300 mb-2 max-w-xl mx-auto leading-relaxed">
+            <p className="text-lg text-slate-600 dark:text-slate-300 mb-6 max-w-2xl mx-auto leading-relaxed">
               {t('landing.heroSubtitle')}
             </p>
-            <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
-              Aplikasi ini dirancang sebagai media pembelajaran interaktif untuk memahami konsep statistika deskriptif (Mean, Median, Modus) melalui konteks filantropi Islam yang nyata.
-            </p>
-          </div>
-
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 text-left">
-            <div className="bg-white/50 dark:bg-slate-800/50 p-4 rounded-xl border border-emerald-100 dark:border-emerald-900/30 shadow-sm">
-              <Target className="w-6 h-6 text-emerald-500 mb-2" />
-              <h3 className="font-bold text-slate-800 dark:text-slate-200 mb-1">{t('landing.feature1Title')}</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">{t('landing.feature1Desc')}</p>
-            </div>
-            <div className="bg-white/50 dark:bg-slate-800/50 p-4 rounded-xl border border-teal-100 dark:border-teal-900/30 shadow-sm">
-              <ShieldCheck className="w-6 h-6 text-teal-500 mb-2" />
-              <h3 className="font-bold text-slate-800 dark:text-slate-200 mb-1">{t('landing.feature2Title')}</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">{t('landing.feature2Desc')}</p>
-            </div>
-            <div className="bg-white/50 dark:bg-slate-800/50 p-4 rounded-xl border border-sky-100 dark:border-sky-900/30 shadow-sm">
-              <Award className="w-6 h-6 text-sky-500 mb-2" />
-              <h3 className="font-bold text-slate-800 dark:text-slate-200 mb-1">{t('landing.feature3Title')}</h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">{t('landing.feature3Desc')}</p>
+            
+            {/* CTA Main */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={() => setStep('form')}
+                className="btn-primary flex items-center justify-center gap-3 px-10 py-5 text-xl font-black shadow-2xl shadow-emerald-500/30 hover:-translate-y-1 active:translate-y-0 transition-all uppercase tracking-tighter italic"
+              >
+                {t('landing.btnExplore')}
+                <ChevronRight className="w-6 h-6" />
+              </button>
+              
+              <button 
+                onClick={() => setShowHowItWorks(!showHowItWorks)}
+                className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-emerald-500 font-bold transition-colors text-sm px-4 py-2"
+              >
+                <HelpCircle className="w-5 h-5" />
+                BAGAIMANA INI BEKERJA?
+              </button>
             </div>
           </div>
 
-          {/* How It Works Accordion */}
-          <div className="mb-6">
-            <button
-              onClick={() => setShowHowItWorks(!showHowItWorks)}
-              className="w-full flex items-center justify-between px-5 py-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-all"
-            >
-              <div className="flex items-center gap-2">
-                <Layers className="w-5 h-5" />
-                <span className="text-sm font-bold">Cara Kerja & Teori Statistika</span>
+          {/* Quick Info Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+            <div className="group bg-white/40 dark:bg-slate-800/40 p-6 rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all">
+              <div className="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-4 text-emerald-600 group-hover:scale-110 transition-transform">
+                <Target className="w-6 h-6" />
               </div>
-              {showHowItWorks ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </button>
+              <h3 className="font-black text-slate-800 dark:text-white mb-2 uppercase tracking-tight italic">{t('landing.feature1Title')}</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{t('landing.feature1Desc')}</p>
+            </div>
+            
+            <div className="group bg-white/40 dark:bg-slate-800/40 p-6 rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all">
+              <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-4 text-amber-600 group-hover:scale-110 transition-transform">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <h3 className="font-black text-slate-800 dark:text-white mb-2 uppercase tracking-tight italic">{t('landing.feature2Title')}</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{t('landing.feature2Desc')}</p>
+            </div>
+            
+            <div className="group bg-white/40 dark:bg-slate-800/40 p-6 rounded-2xl border border-white/50 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all">
+              <div className="w-12 h-12 rounded-xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center mb-4 text-teal-600 group-hover:scale-110 transition-transform">
+                <Award className="w-6 h-6" />
+              </div>
+              <h3 className="font-black text-slate-800 dark:text-white mb-2 uppercase tracking-tight italic">{t('landing.feature3Title')}</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">{t('landing.feature3Desc')}</p>
+            </div>
+          </div>
 
-            {showHowItWorks && (
-              <div className="mt-3 space-y-4 animate-fade-in">
-                {/* Theory Section */}
-                <div className="p-5 rounded-xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 shadow-sm">
-                  <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
-                    <BarChart3 className="w-5 h-5 text-emerald-600" />
-                    Teori Statistika Deskriptif
-                  </h4>
-                  <div className="space-y-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                    <div className="p-3 rounded-lg bg-emerald-50/80 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800">
-                      <p className="font-semibold text-emerald-800 dark:text-emerald-300 mb-1">📐 Mean (Rata-rata)</p>
-                      <p>Rumus: <code className="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded font-mono text-xs">x̄ = Σxᵢ / n</code></p>
-                      <p className="mt-1 opacity-80">Menjumlahkan semua nilai lalu dibagi jumlah data. Sensitif terhadap nilai ekstrem (outlier).</p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-blue-50/80 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
-                      <p className="font-semibold text-blue-800 dark:text-blue-300 mb-1">📊 Median (Nilai Tengah)</p>
-                      <p>Data diurutkan, lalu diambil nilai tengah. Jika data genap: <code className="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded font-mono text-xs">Me = (x[n/2] + x[n/2+1]) / 2</code></p>
-                      <p className="mt-1 opacity-80">Lebih kebal (robust) terhadap outlier dibanding Mean.</p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-violet-50/80 dark:bg-violet-900/20 border border-violet-100 dark:border-violet-800">
-                      <p className="font-semibold text-violet-800 dark:text-violet-300 mb-1">📈 Modus (Nilai Terbanyak)</p>
-                      <p>Nilai yang paling sering muncul dalam kumpulan data. Bisa lebih dari satu (bimodal/multimodal).</p>
-                    </div>
+          {/* Theory & Mechanism Accordion */}
+          {showHowItWorks && (
+            <div className="space-y-6 mb-10 animate-slide-up">
+              {/* Dual Labeling Gamification Flow */}
+              <div className="p-8 rounded-[2rem] bg-slate-900 text-white relative overflow-hidden shadow-2xl border border-slate-800">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full blur-[60px] translate-y-1/2 -translate-x-1/2" />
+                
+                <h4 className="text-xl font-black mb-8 uppercase italic tracking-tighter flex items-center gap-3 relative z-10">
+                  <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
+                    <Layers className="w-6 h-6" />
                   </div>
-                </div>
-
-                {/* Detection Logic */}
-                <div className="p-5 rounded-xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 shadow-sm">
-                  <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
-                    <AlertTriangle className="w-5 h-5 text-amber-500" />
-                    Deteksi Anomali Data (Tabayyun)
-                  </h4>
-                  <div className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed space-y-2">
-                    <p>
-                      Aplikasi ini secara otomatis mendeteksi <strong>anomali data</strong> menggunakan rumus perbandingan Mean dan Median:
-                    </p>
-                    <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 font-mono text-center border border-amber-200 dark:border-amber-800">
-                      <span className="text-amber-800 dark:text-amber-200 font-bold text-base">|Mean − Median| &gt; Median × 0.3</span>
-                    </div>
-                    <p>
-                      Jika kondisi di atas terpenuhi, berarti terdapat nilai pencilan (<em>outlier</em>) yang menyebabkan distribusi data menjadi miring (<em>skewed</em>). Konsep <strong>Tabayyun</strong> (QS. Al-Hujurat: 6) mengajarkan kita untuk memverifikasi informasi sebelum menyimpulkan.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Visual Integrity */}
-                <div className="p-5 rounded-xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 shadow-sm">
-                  <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
-                    <Eye className="w-5 h-5 text-emerald-500" />
-                    Integritas Visual (Amanah)
-                  </h4>
-                  <div className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed space-y-2">
-                    <p>
-                      Grafik yang sumbu-Y nya tidak dimulai dari nol dapat menciptakan <strong>ilusi perbedaan besar</strong> padahal sebenarnya kecil. Ini disebut <em>Misleading Graph</em> atau <em>Truncated Y-Axis</em>.
-                    </p>
-                    <p>
-                      Fitur <strong>Skala Amanah</strong> memungkinkan pengguna membuktikan sendiri efek manipulasi visual ini dengan menyalakan/mematikan skala Y dari nol. Konsep Amanah mengajarkan kejujuran dalam penyajian data.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Level Progression */}
-                <div className="p-5 rounded-xl bg-white/70 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700 shadow-sm">
-                  <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
-                    <Target className="w-5 h-5 text-emerald-500" />
-                    Alur Gamifikasi (6 Level Sekuensial)
-                  </h4>
-                  <div className="space-y-2">
-                    {levelSteps.map((s) => (
-                      <div key={s.lvl} className="flex items-start gap-3 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center flex-shrink-0 text-white text-xs font-black shadow">
-                          {s.lvl}
+                  Dual-Labeling System: Karir Statistika
+                </h4>
+                
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 relative z-10">
+                  {levelSteps.map((s) => (
+                    <div key={s.lvl} className="flex flex-col p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 group hover:bg-white/10 transition-all hover:scale-[1.02]">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="group-hover:scale-110 transition-transform duration-300 drop-shadow-md">
+                          <PremiumIcon 
+                            id={s.icon} 
+                            size={28} 
+                            className={
+                              s.lvl === 1 ? 'text-emerald-400' :
+                              s.lvl === 2 ? 'text-blue-400' :
+                              s.lvl === 3 ? 'text-amber-400' :
+                              s.lvl === 4 ? 'text-purple-400' :
+                              s.lvl === 5 ? 'text-rose-400' :
+                              'text-indigo-400'
+                            }
+                          />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
-                            {s.icon} {s.label}
-                          </p>
-                          <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{s.action}</p>
-                        </div>
+                        <span className="text-[8px] sm:text-[10px] font-black px-1.5 py-0.5 bg-white/10 rounded-lg text-slate-400">LVL {s.lvl}</span>
                       </div>
-                    ))}
-                  </div>
-                  <p className="mt-3 text-xs text-slate-500 dark:text-slate-400 italic">
-                    Setiap level harus dicapai secara berurutan. Sertifikat digital hanya dapat dicetak setelah menyelesaikan seluruh 6 level.
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-black uppercase text-emerald-400 leading-none mb-1 truncate">{s.label}</p>
+                        <p className="text-[9px] text-slate-400 font-medium italic mb-2 truncate">"{s.theory}"</p>
+                        <p className="text-[8px] text-slate-500 leading-tight font-bold group-hover:text-slate-300 transition-colors uppercase tracking-tighter line-clamp-2 h-5">
+                          {s.action}
+                        </p>
+                      </div>
+                      <div className="w-full h-1 bg-white/5 rounded-full mt-3 overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-emerald-500 to-blue-500" style={{ width: `${(s.lvl/6)*100}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <p className="text-[10px] text-slate-500 italic">
+                    * Berdasarkan standar literasi statistik internasional <strong>Watson & Callingham (2003)</strong>
                   </p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Sistem Akademik Terintegrasi</span>
+                  </div>
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* CTA */}
-          <div className="text-center">
-            <button
-              onClick={() => setStep('form')}
-              className="btn-primary inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold shadow-lg shadow-emerald-500/20 hover:-translate-y-1 transition-all duration-300"
-            >
-              {t('landing.btnExplore')}
-              <ChevronRight className="w-5 h-5" />
-            </button>
+              {/* Practical Knowledge Base Link */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="p-6 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 flex flex-col justify-between">
+                  <div>
+                    <h4 className="font-black text-blue-800 dark:text-blue-300 mb-2 uppercase tracking-tight italic flex items-center gap-2">
+                      <FileText className="w-5 h-5" /> {t('legal.knowledgeBaseTitle')}
+                    </h4>
+                    <p className="text-xs text-blue-600 dark:text-blue-400 leading-relaxed mb-4">
+                      {t('legal.knowledgeBaseDesc')}
+                    </p>
+                  </div>
+                  <button 
+                    onClick={onOpenKnowledgeBase}
+                    className="text-xs font-black text-blue-700 dark:text-blue-300 flex items-center gap-1 hover:gap-2 transition-all group"
+                  >
+                    BUKA PERPUSTAKAAN DIGITAL 
+                    <ExternalLink className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </button>
+                </div>
+
+                {/* Practical Amanah Test */}
+                <div className="p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
+                  <h4 className="font-black text-emerald-800 dark:text-emerald-300 mb-2 uppercase tracking-tight italic flex items-center gap-2">
+                    <Scale className="w-5 h-5" /> Uji Praktikalitas Amanah
+                  </h4>
+                  <p className="text-xs text-emerald-600 dark:text-emerald-400 leading-relaxed mb-4">
+                    Pelajari bagaimana sumbu-Y yang dipotong dapat memanipulasi persepsi publik terhadap data bantuan sosial.
+                  </p>
+                  <button 
+                    onClick={() => setIsAmanahOpen(true)}
+                    className="w-full py-3 bg-emerald-600 text-white rounded-xl text-xs font-black uppercase tracking-tighter hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-900/20"
+                  >
+                    COBA SIMULASI BIAS VISUAL
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Footer Legal */}
+          <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-8 text-left">
+            <div>
+              <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">{t('legal.tosTitle')}</h5>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                {t('legal.tosBody')}
+              </p>
+            </div>
+            <div>
+              <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">{t('legal.disclaimerTitle')}</h5>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                {t('legal.disclaimerBody')}
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-6 text-center text-[10px] text-slate-400 font-medium">
+            StatsLab Research Team &copy; 2026 • Unit Pengembangan Teknologi Pendidikan
           </div>
         </div>
       ) : (
@@ -235,13 +266,14 @@ export function WelcomeScreen({ onSubmit }) {
                   <input
                     id={id}
                     type="text"
+                    autoFocus={key === 'nama'}
                     value={form[key]}
                     onChange={(e) => {
                       setForm((p) => ({ ...p, [key]: e.target.value }))
                       if (errors[key]) setErrors((p) => ({ ...p, [key]: '' }))
                     }}
                     placeholder={t(placeholderKey)}
-                    className={`input-field pl-9 ${errors[key] ? 'border-rose-400 focus:ring-rose-400' : ''}`}
+                    className={`input-field pl-9 text-sm sm:text-base ${errors[key] ? 'border-rose-400 focus:ring-rose-400' : ''}`}
                     tabIndex={0}
                     aria-required="true"
                     aria-invalid={!!errors[key]}
@@ -296,6 +328,10 @@ export function WelcomeScreen({ onSubmit }) {
           </form>
         </div>
       )}
+      <FloatingAmanahOverlay 
+        isOpen={isAmanahOpen} 
+        onClose={() => setIsAmanahOpen(false)} 
+      />
     </div>
   )
 }

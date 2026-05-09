@@ -44,63 +44,63 @@ export function Toast({ notification, lang = 'id', onDismiss }) {
       role="status"
       aria-live="polite"
     >
-      <div className={`border-2 shadow-[0_30px_60px_rgba(0,0,0,0.25)] rounded-[2.5rem] px-8 py-6 flex items-start gap-6 w-full transition-all ${themes[type]} pointer-events-auto backdrop-blur-xl relative`}>
+      <div className={`border-2 shadow-[0_30px_60px_rgba(0,0,0,0.25)] rounded-[2rem] sm:rounded-[2.5rem] px-5 py-4 sm:px-8 sm:py-6 flex items-start gap-4 sm:gap-6 w-full transition-all ${themes[type]} pointer-events-auto backdrop-blur-xl relative`}>
         {onDismiss && (
           <button 
             onClick={onDismiss} 
-            className="absolute top-4 right-4 p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
+            className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
             aria-label="Tutup notifikasi"
           >
-            <X className="w-5 h-5 opacity-70" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5 opacity-70" />
           </button>
         )}
-        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 animate-bounce bg-white dark:bg-white/10 shadow-xl border border-current/10 mt-1`}>
+        <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center flex-shrink-0 animate-bounce bg-white dark:bg-white/10 shadow-xl border border-current/10 mt-1`}>
           {isLevel ? (
-             notification.level === 6 ? <Trophy className="w-10 h-10 text-amber-500" /> : <Sparkles className="w-10 h-10 text-blue-500" />
+             notification.level === 6 ? <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-amber-500" /> : <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-blue-500" />
           ) : type === 'success' ? (
-            <CheckCircle className="w-9 h-9" />
+            <CheckCircle className="w-7 h-7 sm:w-9 sm:h-9" />
           ) : type === 'warning' ? (
-            <AlertTriangle className="w-9 h-9" />
+            <AlertTriangle className="w-7 h-7 sm:w-9 sm:h-9" />
           ) : type === 'saved' ? (
-             <CheckCircle className="w-9 h-9 text-violet-500" />
+             <CheckCircle className="w-7 h-7 sm:w-9 sm:h-9 text-violet-500" />
           ) : (
-            <Info className="w-9 h-9" />
+            <Info className="w-7 h-7 sm:w-9 sm:h-9" />
           )}
         </div>
         
-        <div className="flex-1 space-y-2 py-1 pr-6">
+        <div className="flex-1 space-y-1.5 py-0.5 sm:py-1 pr-6">
           <div className="flex items-center justify-between gap-2">
-            <p className="font-black text-xl leading-tight uppercase tracking-tight text-slate-900 dark:text-white">
+            <p className="font-black text-lg sm:text-xl leading-tight uppercase tracking-tight text-slate-900 dark:text-white">
               {title}
             </p>
             {type === 'warning' && (
-              <span className="text-[10px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-full animate-pulse whitespace-nowrap flex-shrink-0">
+              <span className="hidden sm:inline-block text-[10px] font-black bg-rose-500 text-white px-2 py-0.5 rounded-full animate-pulse whitespace-nowrap flex-shrink-0">
                 ACTION REQUIRED
               </span>
             )}
           </div>
           
-          <p className="text-base font-bold opacity-90 leading-snug">
+          <p className="text-sm sm:text-base font-bold opacity-90 leading-snug">
             {sub}
           </p>
           
           {instruction && (
-            <div className="mt-4 p-4 rounded-2xl bg-white/50 dark:bg-black/20 border border-current/20 flex gap-3 items-start animate-fade-in">
-              <Lightbulb className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+            <div className="mt-2 sm:mt-4 p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/50 dark:bg-black/20 border border-current/20 flex gap-2 sm:gap-3 items-start animate-fade-in">
+              <Lightbulb className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-xs font-black uppercase tracking-widest opacity-60 mb-1">Petunjuk Lanjut</p>
-                <p className="text-sm font-bold leading-relaxed">{instruction}</p>
+                <p className="text-[9px] sm:text-xs font-black uppercase tracking-widest opacity-60 mb-0.5 sm:mb-1">Petunjuk Lanjut</p>
+                <p className="text-xs sm:text-sm font-bold leading-relaxed">{instruction}</p>
               </div>
             </div>
           )}
 
           {nextMission && (
-            <div className="mt-4 pt-4 border-t border-current/10 space-y-2">
-              <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest opacity-60">
-                <Target className="w-4 h-4" />
+            <div className="mt-2 sm:mt-4 pt-2 sm:pt-4 border-t border-current/10 space-y-1 sm:space-y-2">
+              <div className="flex items-center gap-2 text-[10px] sm:text-[11px] font-black uppercase tracking-widest opacity-60">
+                <Target className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 Misi Berikutnya
               </div>
-              <p className="text-sm font-black italic bg-white/60 dark:bg-black/30 px-4 py-3 rounded-2xl border border-current/10 shadow-sm">
+              <p className="text-xs sm:text-sm font-black italic bg-white/60 dark:bg-black/30 px-3 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl border border-current/10 shadow-sm">
                 {nextMission}
               </p>
             </div>

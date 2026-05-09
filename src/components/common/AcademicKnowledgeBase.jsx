@@ -1,152 +1,301 @@
-import { useState } from 'react'
-import { BookOpen, X, ShieldAlert, FileText, CheckCircle2 } from 'lucide-react'
+import React, { useState } from 'react'
+import { X, ExternalLink, ArrowRight, ArrowUp, BookOpen, Info } from 'lucide-react'
+import { CartesianAid } from '../ui/CartesianAid'
+import { PremiumIcon } from '../ui/PremiumIcons'
 
 export function AcademicKnowledgeBase({ isOpen, onClose }) {
-  const [activeTab, setActiveTab] = useState('tor')
+  const [activeTab, setActiveTab] = useState('philosophy')
 
   if (!isOpen) return null
 
   const tabs = [
-    { id: 'tor', label: 'Term of Reference (TOR)', icon: FileText },
-    { id: 'tos', label: 'Terms of Service (TOS)', icon: CheckCircle2 },
-    { id: 'disclaimer', label: 'Disclaimer & Etik', icon: ShieldAlert }
+    { id: 'philosophy', label: 'Filosofi Amanah', icon: 'finder' },
+    { id: 'pedagogy', label: 'Logika Audit', icon: 'detective' },
+    { id: 'cartesian', label: 'Peta Kartesius', icon: 'cartesian' },
+    { id: 'mobile', label: 'Panduan Mobile', icon: 'reporter' },
+    { id: 'glossary', label: 'Glosarium Data', icon: 'master' },
   ]
 
+  const digitalLibraryLink = "https://scholar.google.com/scholar?q=statistics+pedagogy+data+integrity+for+students"
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm transition-all duration-300">
-      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[85vh] overflow-hidden border border-slate-200 dark:border-slate-800 animate-in fade-in zoom-in-95">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-slate-950/80 backdrop-blur-md animate-fade-in"
+        onClick={onClose}
+      />
+
+      {/* Modal Container */}
+      <div className="relative w-full max-w-6xl h-[90vh] bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col md:flex-row animate-scale-in">
         
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-              <BookOpen className="w-5 h-5" />
+        {/* Sidebar */}
+        <div className="w-full md:w-80 bg-slate-50 dark:bg-slate-950/50 border-b md:border-b-0 md:border-r border-slate-200 dark:border-slate-800 p-6 flex flex-col">
+          <div className="flex items-center gap-3 mb-10">
+            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-500 to-blue-600 shadow-xl shadow-emerald-500/20">
+              <PremiumIcon id="literasi" size={24} className="text-white" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">Academic Knowledge Base</h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Dokumen Legal & Akademik StatsLab</p>
+              <h2 className="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tighter italic leading-tight">Academic<br/>Knowledge</h2>
+              <p className="text-[10px] text-emerald-600 font-black uppercase tracking-widest mt-1">Ref. Kurikulum Nasional</p>
             </div>
           </div>
-          <button 
-            onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors focus:outline-none"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
 
-        {/* Tabs */}
-        <div className="flex px-4 pt-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/30 overflow-x-auto hide-scrollbar">
-          {tabs.map(tab => {
-            const Icon = tab.icon
-            const isActive = activeTab === tab.id
-            return (
+          <nav className="space-y-2 flex-grow overflow-x-auto md:overflow-x-visible flex md:flex-col pb-4 md:pb-0 scrollbar-hide">
+            {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold whitespace-nowrap border-b-2 transition-all duration-200 focus:outline-none ${
-                  isActive 
-                    ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/10 rounded-t-lg' 
-                    : 'border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-t-lg'
+                className={`flex items-center gap-4 px-5 py-4 rounded-2xl text-xs font-black uppercase tracking-tighter transition-all whitespace-nowrap md:whitespace-normal group relative overflow-hidden ${
+                  activeTab === tab.id 
+                    ? 'bg-slate-900 dark:bg-emerald-600 text-white shadow-2xl' 
+                    : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800/50'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'animate-pulse' : ''}`} />
+                <PremiumIcon 
+                  id={tab.icon} 
+                  size={20} 
+                  className={activeTab === tab.id ? 'text-white' : 'text-slate-400 group-hover:text-emerald-500'} 
+                />
                 {tab.label}
+                {activeTab === tab.id && (
+                  <div className="absolute right-0 top-0 bottom-0 w-1 bg-emerald-400 shadow-[0_0_10px_#34d399]" />
+                )}
               </button>
-            )
-          })}
-        </div>
+            ))}
+          </nav>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 bg-white dark:bg-slate-900">
-          <div className="prose prose-sm dark:prose-invert prose-emerald max-w-none text-slate-600 dark:text-slate-300">
-            
-            {activeTab === 'tor' && (
-              <div className="animate-in slide-in-from-right-4 fade-in duration-300">
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4">Term of Reference (TOR) - Pembelajaran Statistika Berbasis Realitas</h3>
-                <p>
-                  <strong>Latar Belakang:</strong> Pembelajaran statistika di tingkat menengah (SMP/MTs) seringkali terjebak pada hafalan rumus tanpa memahami konteks dunia nyata. StatsLab hadir sebagai platform inovatif yang menjembatani teori akademik dengan realitas sosial, ekonomi, dan lingkungan.
-                </p>
-                <h4 className="font-semibold text-slate-800 dark:text-slate-200 mt-4 mb-2">Tujuan Akademik</h4>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Meningkatkan kemampuan <strong>Literasi Data</strong> siswa melalui studi kasus nyata.</li>
-                  <li>Mengintegrasikan nilai-nilai karakter, khususnya <strong>Tabayyun</strong> (verifikasi data) dan <strong>Amanah</strong> (kejujuran visualisasi).</li>
-                  <li>Menerapkan prinsip <em>Data Storytelling</em> agar siswa dapat menceritakan makna di balik angka.</li>
-                </ul>
-                <h4 className="font-semibold text-slate-800 dark:text-slate-200 mt-4 mb-2">Metodologi</h4>
-                <p>
-                  StatsLab menggunakan pendekatan <em>Scenario-Based Learning</em> dan <em>Gamification</em>. Siswa akan dihadapkan pada dua jenis skenario: Normal dan Anomali (misalnya data yang memiliki pencilan ekstrem). Hal ini memaksa siswa berpikir kritis tentang kapan menggunakan Mean dan kapan menggunakan Median, mensimulasikan proses Tabayyun di dunia nyata.
-                </p>
+          <div className="mt-auto hidden md:block pt-8 border-t border-slate-200 dark:border-slate-800">
+            <div className="p-5 rounded-3xl bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 relative group overflow-hidden">
+               <div className="relative z-10">
+                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Status Keanggotaan</p>
+                <h4 className="text-xs font-black text-slate-800 dark:text-white leading-tight uppercase tracking-tighter italic">Peneliti Akademik<br/>Verified</h4>
               </div>
-            )}
-
-            {activeTab === 'tos' && (
-              <div className="animate-in slide-in-from-right-4 fade-in duration-300">
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4">Terms of Service (TOS) & Kode Etik Pengguna</h3>
-                <p>
-                  Dengan menggunakan platform StatsLab, setiap pengguna (siswa, pendidik, dan peneliti) menyetujui persyaratan layanan berikut:
-                </p>
-                <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 mt-4">
-                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">1. Integritas Akademik (Prinsip Amanah)</h4>
-                  <p className="text-sm">
-                    Pengguna dilarang dengan sengaja memanipulasi pengaturan visualisasi grafik (seperti memotong sumbu Y atau mengatur skala secara tidak proporsional) dengan tujuan untuk menipu, melebih-lebihkan, atau menyembunyikan fakta dari data (<em>Misleading Graphs</em>). Platform akan mendeteksi dan memberi peringatan pada manipulasi semacam ini.
-                  </p>
-                </div>
-                <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 mt-3">
-                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">2. Verifikasi Data (Prinsip Tabayyun)</h4>
-                  <p className="text-sm">
-                    Pengguna wajib memeriksa secara teliti jika terdapat data anomali atau pencilan (<em>outliers</em>) sebelum mengambil kesimpulan statistik. Kelalaian dalam mengidentifikasi anomali yang berujung pada analisis yang bias melanggar nilai Tabayyun dalam pengolahan informasi.
-                  </p>
-                </div>
-                <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800 mt-3">
-                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 mb-2">3. Penggunaan Modul</h4>
-                  <p className="text-sm">
-                    Progres, skor, dan data gamifikasi direkam secara lokal di peramban pengguna. StatsLab tidak bertanggung jawab atas hilangnya progres jika data lokal dibersihkan.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'disclaimer' && (
-              <div className="animate-in slide-in-from-right-4 fade-in duration-300">
-                <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-4">Disclaimer & Peringatan Risiko</h3>
-                
-                <div className="flex gap-4 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800/30">
-                  <div className="mt-1 flex-shrink-0 text-amber-500">
-                    <ShieldAlert className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-amber-800 dark:text-amber-300 mb-1">Status Data & Skenario</h4>
-                    <p className="text-sm text-amber-700/80 dark:text-amber-400/80">
-                      Beberapa dataset yang digunakan dalam StatsLab (seperti Ziswaf, Tahfizh, Qurban, Literasi) merupakan simulasi akademis yang didasarkan pada proporsi dunia nyata, namun telah disesuaikan (<em>adjusted</em>) untuk tujuan pedagogis. Data ini TIDAK DAPAT dijadikan referensi utama untuk pengambilan kebijakan resmi di luar konteks simulasi aplikasi ini.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-6 space-y-4">
-                  <h4 className="font-semibold text-slate-800 dark:text-slate-200">Batasan Sistem</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-sm">
-                    <li><strong>Algoritma Deteksi Amanah:</strong> Peringatan manipulasi grafik (<em>Amanah Checker</em>) didasarkan pada deteksi matematis sederhana terhadap batas sumbu Y. Tidak menutup kemungkinan ada kasus khusus di mana pemotongan sumbu Y dapat dibenarkan secara statistik lanjutan.</li>
-                    <li><strong>Penyimpanan Progres:</strong> Aplikasi bersifat <em>client-side</em> tanpa database terpusat. Keamanan dan keberlanjutan data bergantung sepenuhnya pada manajemen penyimpanan lokal perangkat masing-masing pengguna.</li>
-                    <li><strong>Evaluasi:</strong> Sistem sertifikasi akhir didasarkan pada logika heuristik gamifikasi. Keabsahan sertifikat murni untuk validasi partisipasi dalam simulasi ini, bukan merupakan gelar akademik resmi.</li>
-                  </ul>
-                </div>
-              </div>
-            )}
-            
+              <PremiumIcon id="master" size={48} className="absolute -right-2 -bottom-2 opacity-5 group-hover:scale-110 transition-transform duration-700" />
+            </div>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 flex justify-end">
+        {/* Content Area */}
+        <div className="flex-grow overflow-y-auto relative bg-white dark:bg-slate-900 flex flex-col">
           <button 
             onClick={onClose}
-            className="px-5 py-2.5 text-sm font-semibold bg-slate-800 hover:bg-slate-700 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 rounded-xl transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-800 dark:focus:ring-offset-slate-900"
+            className="absolute top-6 right-8 p-3 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all z-50 group shadow-lg border border-transparent hover:border-slate-200"
           >
-            Mengerti & Tutup
+            <X className="w-5 h-5 group-hover:rotate-90 transition-transform" />
           </button>
-        </div>
 
+          <div className="p-8 md:p-16 flex-grow">
+            {activeTab === 'philosophy' && (
+              <div className="max-w-3xl animate-fade-in space-y-12">
+                <section>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-6">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                    Ethical Data Literacy
+                  </div>
+                  <h3 className="text-5xl md:text-6xl font-black text-slate-900 dark:text-white italic tracking-tighter mb-6 leading-[0.9]">Filosofi <span className="text-emerald-600">Amanah</span></h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium text-xl">
+                    Statistik bukan sekadar angka, melainkan representasi dari kenyataan. Di StatsLab, kita belajar bahwa penyajian data yang tidak jujur (seperti memotong sumbu Y) adalah bentuk pengkhianatan terhadap fakta.
+                  </p>
+                </section>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="p-10 rounded-[2.5rem] bg-emerald-50/50 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-800/30 group hover:border-emerald-500/30 transition-all relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                       <PremiumIcon id="ziswaf" size={80} />
+                    </div>
+                    <h4 className="font-black text-slate-800 dark:text-slate-200 text-2xl mb-4 italic uppercase tracking-tighter">Integritas Visual</h4>
+                    <p className="text-base text-slate-500 dark:text-slate-400 leading-relaxed font-medium">Menampilkan data mulai dari titik nol adalah standar kejujuran untuk menghindari distorsi perbandingan yang menyesatkan.</p>
+                  </div>
+                  <div className="p-10 rounded-[2.5rem] bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-800/30 group hover:border-blue-500/30 transition-all relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                       <PremiumIcon id="qurban" size={80} />
+                    </div>
+                    <h4 className="font-black text-slate-800 dark:text-slate-200 text-2xl mb-4 italic uppercase tracking-tighter">Proporsionalitas</h4>
+                    <p className="text-base text-slate-500 dark:text-slate-400 leading-relaxed font-medium">Membantu audiens memahami skala perubahan yang sebenarnya secara jujur, bukan yang dilebih-lebihkan untuk tujuan tertentu.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'cartesian' && (
+              <div className="max-w-4xl animate-fade-in space-y-12">
+                <section>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-6">
+                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
+                    Visual Foundations
+                  </div>
+                  <h3 className="text-5xl md:text-6xl font-black text-slate-900 dark:text-white italic tracking-tighter mb-6 leading-[0.9]">Sumbu <span className="text-blue-600">Kartesius</span></h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium text-xl">
+                    Memahami arah data adalah langkah pertama menjadi Master Data. Grafik statistik menggunakan sistem koordinat untuk menghubungkan kategori dengan nilai.
+                  </p>
+                </section>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                  <div className="sticky top-0">
+                    <CartesianAid />
+                  </div>
+                  <div className="space-y-6">
+                    <div className="p-8 bg-slate-50 dark:bg-slate-800/50 rounded-[2rem] border-l-8 border-emerald-500 shadow-sm group hover:scale-[1.02] transition-transform">
+                      <h4 className="font-black text-slate-800 dark:text-slate-200 text-xl mb-3 italic uppercase tracking-tighter">Sumbu X (Horizontal)</h4>
+                      <p className="text-base text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                        Tempat kita meletakkan <strong>Kategori</strong> atau <strong>Waktu</strong>. Misalnya: Nama Siswa, Bulan, atau Jenis Bantuan. Digambarkan mendatar dari kiri ke kanan.
+                      </p>
+                    </div>
+                    <div className="p-8 bg-slate-50 dark:bg-slate-800/50 rounded-[2rem] border-l-8 border-blue-500 shadow-sm group hover:scale-[1.02] transition-transform">
+                      <h4 className="font-black text-slate-800 dark:text-slate-200 text-xl mb-3 italic uppercase tracking-tighter">Sumbu Y (Vertikal)</h4>
+                      <p className="text-base text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                        Tempat kita meletakkan <strong>Nilai</strong> atau <strong>Jumlah</strong>. Sumbu inilah yang harus dijaga kejujurannya (Skala Amanah) dengan memulai dari angka 0.
+                      </p>
+                    </div>
+                    <div className="p-8 bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2rem] text-white shadow-2xl relative overflow-hidden">
+                       <div className="relative z-10">
+                        <p className="text-emerald-400 text-[10px] font-black uppercase tracking-widest mb-3 italic">Detektif Data Tips</p>
+                        <p className="text-lg font-medium leading-relaxed italic opacity-90">
+                          "Selalu periksa angka di Sumbu-Y. Jika grafik melonjak tinggi tapi angkanya hanya beda sedikit, kemungkinan besar sumbu tersebut 'dipotong' tidak dari nol!"
+                        </p>
+                       </div>
+                       <PremiumIcon id="detective" size={120} className="absolute -right-8 -bottom-8 opacity-10 rotate-12" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'pedagogy' && (
+              <div className="max-w-3xl animate-fade-in space-y-12">
+                <section>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-6">
+                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse" />
+                    Internal Audit Logic
+                  </div>
+                  <h3 className="text-5xl md:text-6xl font-black text-slate-900 dark:text-white italic tracking-tighter mb-6 leading-[0.9]">Logika <span className="text-amber-500">Pedagogis</span></h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium text-xl">
+                    StatsLab menggunakan algoritma audit real-time untuk mendeteksi ketidakkonsistenan data berdasarkan standar integritas akademik.
+                  </p>
+                </section>
+                
+                <div className="grid grid-cols-1 gap-6">
+                  <div className="p-8 rounded-[2rem] bg-rose-50 dark:bg-rose-900/10 border-2 border-rose-100 dark:border-rose-900/30">
+                    <h4 className="font-black text-rose-800 dark:text-rose-400 text-xl mb-3 uppercase italic tracking-tighter flex items-center gap-2">
+                       <PremiumIcon id="detective" size={24} /> Threshold Anomali: 30%
+                    </h4>
+                    <p className="text-sm text-rose-700 dark:text-rose-300 font-medium leading-relaxed">
+                      Sistem akan memicu peringatan <strong>Tabayyun</strong> jika selisih antara <strong>Mean</strong> dan <strong>Median</strong> melebihi 30%. Ketimpangan ini menandakan adanya <i>Outlier</i> (pencilan) yang mendistorsi gambaran data secara keseluruhan.
+                    </p>
+                  </div>
+
+                  <div className="p-8 rounded-[2rem] bg-emerald-50 dark:bg-emerald-900/10 border-2 border-emerald-100 dark:border-emerald-900/30">
+                    <h4 className="font-black text-emerald-800 dark:text-emerald-400 text-xl mb-3 uppercase italic tracking-tighter flex items-center gap-2">
+                       <PremiumIcon id="master" size={24} /> Integritas Sumbu Y
+                    </h4>
+                    <p className="text-sm text-emerald-700 dark:text-emerald-300 font-medium leading-relaxed">
+                      Sesuai standar <strong>Integritas Visual</strong>, grafik statistik wajib dimulai dari angka 0 pada Sumbu Y. Memulai grafik dari angka selain nol dapat menciptakan "ilusi perubahan" yang menyesatkan audiens.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'mobile' && (
+              <div className="max-w-3xl animate-fade-in space-y-12">
+                <section>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-6">
+                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse" />
+                    Multi-Device Experience
+                  </div>
+                  <h3 className="text-5xl md:text-6xl font-black text-slate-900 dark:text-white italic tracking-tighter mb-6 leading-[0.9]">Panduan <span className="text-blue-600">Mobile</span></h3>
+                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium text-xl">
+                    StatsLab dirancang untuk pengalaman riset yang fleksibel, baik di Desktop Laboratorium maupun Perangkat Mobile lapangan.
+                  </p>
+                </section>
+
+                <div className="space-y-4">
+                  <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 flex gap-4 items-start">
+                    <div className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center flex-shrink-0">
+                      <PremiumIcon id="reporter" size={24} className="text-blue-500" />
+                    </div>
+                    <div>
+                      <h4 className="font-black text-slate-800 dark:text-slate-200 text-lg uppercase italic tracking-tighter">Card View (Data Table)</h4>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                        Pada tampilan mobile, tabel data berubah menjadi kartu interaktif. Gunakan input yang lebih besar (min-44px) untuk memudahkan navigasi sentuh.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 flex gap-4 items-start">
+                    <div className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center flex-shrink-0">
+                      <PremiumIcon id="finder" size={24} className="text-emerald-500" />
+                    </div>
+                    <div>
+                      <h4 className="font-black text-slate-800 dark:text-slate-200 text-lg uppercase italic tracking-tighter">Pusat Kontrol (Header)</h4>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                        Akses switch modul dan pengaturan melalui ikon <strong>Grid</strong> di pojok kanan atas. Gunakan <i>Action Sheet</i> yang muncul untuk kendali penuh.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+
+            {activeTab === 'glossary' && (
+              <div className="max-w-5xl animate-fade-in space-y-12">
+                 <section>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-[10px] font-black uppercase tracking-[0.2em] rounded-full mb-6">
+                    <span className="w-1.5 h-1.5 bg-purple-500 rounded-full animate-pulse" />
+                    Data Terminology
+                  </div>
+                  <h3 className="text-5xl md:text-6xl font-black text-slate-900 dark:text-white italic tracking-tighter mb-6 leading-[0.9]">Kamus <span className="text-emerald-600">Statistika</span></h3>
+                </section>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                   {[
+                     { term: "Dataset", def: "Kumpulan data yang sedang kita olah.", icon: "ziswaf" },
+                     { term: "Outlier", def: "Data pencilan yang nilainya sangat berbeda drastis dari rata-rata.", icon: "analyst" },
+                     { term: "Mean", def: "Nilai tengah yang didapat dari jumlah data dibagi banyaknya data.", icon: "reporter" },
+                     { term: "Visualisasi", def: "Cara menampilkan data dalam bentuk gambar/grafik agar mudah dimengerti.", icon: "literasi" },
+                     { term: "Anomali", def: "Keanehan atau ketidakteraturan dalam data.", icon: "detective" },
+                     { term: "Integritas", def: "Kejujuran dalam menyajikan informasi tanpa manipulasi.", icon: "master" }
+                   ].map((item, idx) => (
+                     <div key={idx} className="p-8 rounded-[2rem] bg-slate-50 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800 hover:border-emerald-500/30 hover:shadow-2xl hover:shadow-emerald-500/10 transition-all group">
+                       <div className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-700 shadow-sm flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform">
+                         <PremiumIcon id={item.icon} size={24} className="text-emerald-500" />
+                       </div>
+                       <h4 className="font-black text-emerald-600 text-xl mb-2 uppercase tracking-tighter italic leading-none">{item.term}</h4>
+                       <p className="text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">{item.def}</p>
+                     </div>
+                   ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Action Footer (Standardized for all devices) */}
+          <div className="p-6 md:p-10 border-t border-slate-100 dark:border-slate-800 mt-auto bg-slate-50/50 dark:bg-slate-950/30 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center text-emerald-600 shadow-inner">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <div>
+                <h4 className="text-sm font-black text-slate-800 dark:text-white leading-tight uppercase tracking-tighter italic">Global Stat-Pedia</h4>
+                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Akses Referensi Akademik Terverifikasi</p>
+              </div>
+            </div>
+            
+            <button 
+              onClick={() => {
+                // Persistent cross-device window.open utility
+                const newWindow = window.open(digitalLibraryLink, '_blank', 'noopener,noreferrer');
+                if (newWindow) newWindow.opener = null;
+              }}
+              className="w-full sm:w-auto px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 shadow-xl shadow-emerald-500/20 active:scale-95 group"
+            >
+              <ExternalLink className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+              Buka Perpustakaan Digital
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )

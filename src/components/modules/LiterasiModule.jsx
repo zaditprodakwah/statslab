@@ -1,10 +1,5 @@
-// ============================================================
-// LiterasiModule — Horizontal Bar Chart, Focus: Modus + Freq
-// Shows library book category distribution
-// Enhanced: Tabayyun + Educational theory panel
-// ============================================================
 import { useState, useMemo, useEffect } from 'react'
-import { Line } from 'react-chartjs-2'
+import { Bar } from 'react-chartjs-2'
 import {
   Chart as ChartJS, CategoryScale, LinearScale,
   BarElement, Title, Tooltip, Legend, PointElement, LineElement
@@ -18,8 +13,9 @@ import { AmanahToggle } from '../ui/AmanahToggle'
 import { ScenarioSwitcher } from '../common/ScenarioSwitcher'
 import { PRESET_LITERASI, PRESET_LITERASI_NORMAL } from '../../data/presetData'
 import { useLanguage } from '../../hooks/useLanguage'
+import { Lightbulb } from 'lucide-react'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend)
 
 const COLUMNS = [
   { field: 'id', type: 'number', editable: false },
@@ -39,7 +35,6 @@ export function LiterasiModule({
   gamify
 }) {
   const { t } = useLanguage()
-
   const [scenario, setScenario] = useState('anomali')
 
   const handleScenarioChange = (s) => {
@@ -51,108 +46,121 @@ export function LiterasiModule({
     }
   }
 
-  const realisasiValues = useMemo(() => data.map((r) => r.realisasi || r.jumlah), [data])
-  const stats = useStats(realisasiValues)
+  // Literasi uses 'jumlah' field from PRESET_LITERASI
+  const values = useMemo(() => (data || []).map((r) => r.jumlah ?? 0), [data])
+  const stats = useStats(values)
   const tabayyun = useTabayyun(stats.mean, stats.median)
 
-  // Immediate notification on anomaly detection
   useEffect(() => {
     if (tabayyun.isAnomalous && !tabayyunConfirmed && gamify.notify) {
       gamify.notify(
-        'Anomali Terdeteksi!', 
-        'Data sirkulasi buku menunjukkan ketimpangan distribusi.', 
+        'Anomali Sirkulasi!', 
+        'Sistem mendeteksi lonjakan ekstrem pada kategori tertentu.', 
         'warning',
-        'Lihat peringatan di bawah. Gunakan fitur Tabayyun untuk memverifikasi apakah ada kategori buku yang dianaktirikan.'
+        'Cek data perpustakaan. Apakah ada "peminjaman fiktif" atau stok buku yang tidak wajar?'
       )
     }
   }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
 
-  const chartData = {
-    labels: data.map((r) => r.lembaga || r.kategori),
+  const chartData = useMemo(() => ({
+    labels: data.map((r) => r.kategori),
     datasets: [
       {
-        label: t('table.target'),
-        data: data.map((r) => r.target || r.jumlah * 0.8),
-        backgroundColor: 'rgba(99, 102, 241, 0.7)',
-        borderColor: 'rgba(99, 102, 241, 1)',
-        borderWidth: 1.5,
-        borderRadius: 6,
-      },
-      {
-        label: t('table.realisasi'),
-        data: realisasiValues,
-        backgroundColor: 'rgba(139, 92, 246, 0.8)',
-        borderColor: 'rgba(139, 92, 246, 1)',
-        borderWidth: 1.5,
-        borderRadius: 6,
-      },
+        label: 'Sirkulasi Buku',
+        data: values,
+        backgroundColor: values.map(v => v > 150 ? 'rgba(244, 63, 94, 0.8)' : 'rgba(16, 185, 129, 0.8)'),
+        borderColor: values.map(v => v > 150 ? 'rgba(244, 63, 94, 1)' : 'rgba(16, 185, 129, 1)'),
+        borderWidth: 2,
+        borderRadius: 12,
+        barThickness: 40,
+      }
     ],
-  }
+  }), [data, values])
 
-  const chartOptions = {
+  const chartOptions = useMemo(() => ({
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom', labels: { font: { size: 11, family: 'Inter' } } },
+      legend: { display: false },
     },
     scales: {
       y: {
-        min: isAmanah ? 0 : undefined,
-        ticks: { font: { size: 11 } },
-        grid: { color: 'rgba(0,0,0,0.05)' },
+        beginAtZero: isAmanah,
+        min: isAmanah ? 0 : Math.min(...values) * 0.8,
+        ticks: { font: { size: 10, weight: 'bold' }, color: '#94a3b8' },
+        grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
       },
-      x: { ticks: { font: { size: 11 } } },
+      x: { 
+        ticks: { font: { size: 10, weight: 'bold' }, color: '#64748b' },
+        grid: { display: false }
+      },
     },
-  }
+  }), [isAmanah, values])
+
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      <div>
-        <h2 className="text-xl font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-          📚 {t('modules.literasi.title')}
-        </h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{t('modules.literasi.desc')}</p>
-        <div className="flex gap-2 mt-2">
-          <span className="stat-badge bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300">
-            📊 {t('modules.literasi.focus')}
+    <div className="space-y-6 animate-fade-in">
+      {/* 1. Module header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-800 dark:text-white flex items-center gap-3 uppercase italic tracking-tighter">
+            📚 {t('modules.literasi.title')}
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">{t('modules.literasi.desc')}</p>
+        </div>
+        <div className="flex gap-2">
+          <span className="stat-badge bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 font-black uppercase italic text-[10px]">
+            📊 Modus & Frekuensi
           </span>
-          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-            Line Chart
+          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-black uppercase italic text-[10px]">
+            Bar Chart
           </span>
         </div>
       </div>
 
-      {/* Educational Context */}
-      <div className="px-4 py-3 rounded-xl bg-indigo-50/60 dark:bg-indigo-900/15 border border-indigo-100 dark:border-indigo-900 text-sm text-indigo-800 dark:text-indigo-300 leading-relaxed shadow-sm">
-        <p className="font-semibold mb-1">💡 Memahami Skewness (Kemiringan Data)</p>
-        <p className="text-xs text-indigo-700 dark:text-indigo-400">
-          Jika <strong>Mean</strong> jauh lebih besar dari <strong>Median</strong>, data kita "miring ke kanan" (positive skew). Ini artinya ada lembaga yang menerima bantuan sangat besar sementara mayoritas lainnya jauh di bawah rata-rata. Audit literasi bukan hanya soal total buku, tapi soal <strong>aksesibilitas yang merata</strong>. Tanpa membandingkan mean dan median, kita mungkin mengira literasi sudah baik padahal hanya terpusat di satu titik.
-        </p>
+      {/* 2. MAIN VISUALIZATION & DATA */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="glass-card p-6 border-2 border-slate-100 dark:border-slate-800/50">
+          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+            Perbandingan Sirkulasi per Kategori
+          </h3>
+          <div className="h-[300px] md:h-[400px] w-full relative">
+            <Bar data={chartData} options={chartOptions} />
+          </div>
+        </div>
+
+        <div className="glass-card p-6 border-2 border-slate-100 dark:border-slate-800/50">
+          <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+            Log Inventaris Perpustakaan
+          </h3>
+          <div className="max-h-[300px] overflow-y-auto custom-scrollbar">
+            <DataTable
+              data={data}
+              setData={setData}
+              columns={COLUMNS}
+              onEdit={onEdit}
+              moduleId="literasi"
+              gamify={gamify}
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Scenario Switcher & Narrative */}
-      <div className="space-y-3 mt-4 mb-4">
-        <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
-        
-        {scenario === 'normal' ? (
-          <div className="p-4 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900/30">
-            <h4 className="font-semibold text-blue-800 dark:text-blue-300 text-sm mb-1">📖 Cerita Data: Sirkulasi Sehat</h4>
-            <p className="text-xs text-blue-700 dark:text-blue-400">
-              Minat baca siswa tersebar merata di berbagai kategori buku. Rata-rata dan nilai tengah hampir sama, mengindikasikan program literasi sekolah berhasil menyentuh berbagai minat tanpa ada kesenjangan yang berarti.
-            </p>
-          </div>
-        ) : (
-          <div className="p-4 rounded-xl bg-indigo-50/60 dark:bg-indigo-900/15 border border-indigo-100 dark:border-indigo-900/30 animate-in fade-in">
-            <h4 className="font-semibold text-indigo-800 dark:text-indigo-300 text-sm mb-1">📖 Cerita Data: Skewness (Anomali)</h4>
-            <p className="text-xs text-indigo-700 dark:text-indigo-400">
-              Kategori "Fiksi" tiba-tiba melonjak sangat tinggi mencapai 150 buku, menarik rata-rata (Mean) ke atas, sementara sebagian besar kategori lain hanya dipinjam kurang dari 30 buku. Ini menyebabkan "positive skew". Adakan Tabayyun: apakah guru menugaskan review buku fiksi secara massal? Ini menyebabkan ilusi bahwa budaya baca sekolah tinggi secara keseluruhan.
-            </p>
-          </div>
-        )}
+      {/* 3. QUICK STATS */}
+      <div className="stats-grid">
+        {['mean', 'median', 'modus', 'min', 'max', 'count'].map((type) => (
+          <StatCard
+            key={type}
+            type={type}
+            value={stats[type]}
+            onView={(tp) => { if (['mean','median','modus'].includes(tp)) onStatView?.() }}
+            isMissionTarget={gamify.level === 4 && ['mean','median','modus'].includes(type)}
+          />
+        ))}
       </div>
 
-      {/* IMPACT ALERTS - MOVED UP FOR VISIBILITY */}
+      {/* 4. IMPACT ALERTS & VALIDATION */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Tabayyun Alert */}
         <TabayyunAlert
           isAnomalous={tabayyun.isAnomalous}
           mean={stats.mean}
@@ -174,39 +182,49 @@ export function LiterasiModule({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div className="glass-card p-4">
-          <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Tren Realisasi vs Target</h3>
-          <Line data={chartData} options={chartOptions} />
+      {/* 5. NARRATIVE & CONTEXT */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
+          
+          {scenario === 'normal' ? (
+            <div className="p-5 rounded-3xl bg-emerald-50/60 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30">
+              <h4 className="font-black text-emerald-800 dark:text-emerald-300 text-[10px] uppercase tracking-widest mb-2 flex items-center gap-2">
+                📖 Auditor Note: Distribusi Berimbang
+              </h4>
+              <p className="text-xs text-emerald-700 dark:text-emerald-400 leading-relaxed font-medium">
+                Peminjaman buku stabil. Tidak ada kategori yang mendominasi secara tidak wajar. Mean dan Median berdekatan.
+              </p>
+            </div>
+          ) : (
+            <div className="p-5 rounded-3xl bg-rose-50/60 dark:bg-rose-900/10 border border-rose-100 dark:border-rose-900/30">
+              <h4 className="font-black text-rose-800 dark:text-rose-300 text-[10px] uppercase tracking-widest mb-2 flex items-center gap-2">
+                📖 Auditor Note: Lonjakan Ekstrem!
+              </h4>
+              <p className="text-xs text-rose-700 dark:text-rose-400 leading-relaxed font-medium">
+                Kategori "Sains" melonjak 7x lipat dari kategori lain. Ini menarik Mean menjauhi Median. Selidiki sumber data!
+              </p>
+            </div>
+          )}
         </div>
-        <div className="glass-card p-4">
-          <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Audit Distribusi Buku</h3>
-          <DataTable
-            data={data}
-            setData={setData}
-            columns={COLUMNS}
-            onEdit={onEdit}
-            moduleId="literasi"
-            gamify={gamify}
-          />
+
+        <div className="p-6 rounded-3xl bg-slate-900 text-white relative overflow-hidden group shadow-xl">
+          <div className="relative z-10">
+            <h4 className="font-black text-emerald-400 text-[10px] uppercase tracking-[0.2em] mb-3 flex items-center gap-2">
+              <Lightbulb className="w-4 h-4 group-hover:rotate-12 transition-transform" /> 
+              Esensi Statistik
+            </h4>
+            <p className="text-xs text-slate-300 leading-relaxed font-medium">
+              Jika <strong>Mean &gt; Median</strong>, data miring ke kanan (Positive Skew). Dalam audit perpustakaan, ini tanda adanya "Best Seller" yang tidak wajar atau kesalahan input stok.
+            </p>
+            <div className="mt-4 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] text-emerald-400 font-bold italic">
+              ⚖️ Keadilan Literasi: Pastikan semua kategori buku mendapat atensi yang layak.
+            </div>
+          </div>
+          <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+            <Bar size={120} />
+          </div>
         </div>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {['mean', 'median', 'modus', 'min', 'max', 'count'].map((type) => (
-          <StatCard
-            key={type}
-            type={type}
-            value={stats[type]}
-            onView={(tp) => { if (['mean','median','modus'].includes(tp)) onStatView?.() }}
-            isMissionTarget={gamify.level === 4 && ['mean','median','modus'].includes(type)}
-          />
-        ))}
-      </div>
-
-      {/* Tawazun hint */}
-      <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
-        ⚖️ <strong>Tawazun:</strong> Audit keadilan distribusi. Apakah satu lembaga mendominasi bantuan buku?
       </div>
     </div>
   )

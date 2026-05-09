@@ -126,6 +126,37 @@ export function HelpModal({ isOpen, onClose }) {
               ))}
             </div>
           </section>
+
+          {/* Mobile Tips Section */}
+          <section className="space-y-6 pt-10 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-900/40 flex items-center justify-center text-violet-600 dark:text-violet-300 shadow-sm">
+                <Info className="w-5 h-5" />
+              </div>
+              <h3 className="text-lg font-black text-slate-800 dark:text-slate-100 uppercase tracking-tight italic">
+                Tips Penggunaan Mobile
+              </h3>
+            </div>
+            <div className="grid grid-cols-1 gap-3">
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-violet-50/50 dark:bg-violet-900/10 border border-violet-100 dark:border-violet-900/20">
+                <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                  <BarChart2 className="w-4 h-4 text-violet-500" />
+                </div>
+                <p className="text-xs font-bold text-slate-600 dark:text-slate-400 leading-relaxed">
+                   <strong>Card View:</strong> Pada layar kecil, tabel akan berubah menjadi kartu. Tap pada angka untuk langsung mengedit.
+                </p>
+              </div>
+              <div className="flex items-center gap-4 p-4 rounded-2xl bg-violet-50/50 dark:bg-violet-900/10 border border-violet-100 dark:border-violet-900/20">
+                <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                  <X className="w-4 h-4 text-rose-500" />
+                </div>
+                <p className="text-xs font-bold text-slate-600 dark:text-slate-400 leading-relaxed">
+                   <strong>Header Grid:</strong> Gunakan tombol grid di pojok kanan atas untuk mengakses semua modul dan pengaturan sistem.
+                </p>
+              </div>
+            </div>
+          </section>
+
         </div>
 
         {/* Footer */}

@@ -1,9 +1,4 @@
-// ============================================================
-// useGamify — Level & Points Manager
-// Storage key: 'statslab_progress'
-// Level 1-6, max 150 Points
-// ============================================================
-import { useState, useCallback, useEffect } from 'react'
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react'
 
 const POINTS_TABLE = { 2: 10, 3: 20, 4: 20, 5: 50, 6: 50 }
 const BADGES = {
@@ -23,39 +18,37 @@ const DEFAULT_STATE = {
   levelHistory: { 1: null, 2: null, 3: null, 4: null, 5: null, 6: null },
 }
 
-function loadProgress() {
-  try {
-    const raw = localStorage.getItem('statslab_progress')
-    return raw ? { ...DEFAULT_STATE, ...JSON.parse(raw) } : DEFAULT_STATE
-  } catch {
-    return DEFAULT_STATE
-  }
-}
-
-function saveProgress(state) {
-  localStorage.setItem('statslab_progress', JSON.stringify(state))
-}
+const GamifyContext = createContext(null)
 
 export function useGamify() {
-  const [state, setState] = useState(loadProgress)
+  const context = useContext(GamifyContext)
+  if (!context) {
+    throw new Error('useGamify must be used within a GamifyProvider')
+  }
+  return context
+}
+
+export function GamifyProvider({ children }) {
+  const [state, setState] = useState(() => {
+    try {
+      const raw = localStorage.getItem('statslab_progress')
+      return raw ? { ...DEFAULT_STATE, ...JSON.parse(raw) } : DEFAULT_STATE
+    } catch {
+      return DEFAULT_STATE
+    }
+  })
+  
   const [notification, setNotification] = useState(null)
 
-  // Sync to localStorage whenever state changes
+  // Sync to localStorage
   useEffect(() => {
-    saveProgress(state)
+    localStorage.setItem('statslab_progress', JSON.stringify(state))
   }, [state])
 
   const unlockLevel = useCallback((targetLevel) => {
     setState((prev) => {
-      // 1. If already unlocked, skip
       if (prev.unlockedLevels.includes(targetLevel)) return prev
-
-      // 2. Strict sequence enforcement: You MUST unlock Level N before N+1
-      // Level 1 is always unlocked. To unlock Level 2, you must be at Level 1.
-      if (targetLevel !== prev.level + 1) {
-        console.warn(`Gamify: Cannot unlock Level ${targetLevel} while at Level ${prev.level}.`)
-        return prev
-      }
+      if (targetLevel !== prev.level + 1) return prev
 
       const pts = POINTS_TABLE[targetLevel] ?? 0
       const newBadges = BADGES[targetLevel]
@@ -90,14 +83,12 @@ export function useGamify() {
   }, [])
 
   const canUnlock = useCallback((targetLevel) => {
-    // Only the NEXT level can be unlocked
     return state.level + 1 === targetLevel
   }, [state.level])
 
   const resetProgress = useCallback(() => {
     setState(DEFAULT_STATE)
     localStorage.removeItem('statslab_progress')
-    // Clear other related states if needed
   }, [])
 
   const godMode = useCallback(() => {
@@ -106,17 +97,9 @@ export function useGamify() {
       points: 150,
       unlockedLevels: [1, 2, 3, 4, 5, 6],
       badges: Object.values(BADGES),
-      levelHistory: {
-        1: new Date().toISOString(),
-        2: new Date().toISOString(),
-        3: new Date().toISOString(),
-        4: new Date().toISOString(),
-        5: new Date().toISOString(),
-        6: new Date().toISOString(),
-      },
+      levelHistory: Object.keys(BADGES).reduce((acc, lvl) => ({ ...acc, [lvl]: new Date().toISOString() }), {}),
     }
     setState(fullState)
-    saveProgress(fullState)
   }, [])
 
   const addPoints = useCallback((pts) => {
@@ -127,17 +110,14 @@ export function useGamify() {
   }, [])
 
   const resetAll = useCallback(() => {
-    localStorage.clear() // More robust for fresh start
+    localStorage.clear()
     window.location.reload()
   }, [])
 
   const canPrintCertificate = state.level >= 6
+  const dismiss = useCallback(() => setNotification(null), [])
 
-  const dismiss = useCallback(() => {
-    setNotification(null)
-  }, [])
-
-  return {
+  const value = {
     ...state,
     unlockLevel,
     canUnlock,
@@ -151,5 +131,10 @@ export function useGamify() {
     canPrintCertificate,
     BADGES,
   }
-}
 
+  return (
+    <GamifyContext.Provider value={value}>
+      {children}
+    </GamifyContext.Provider>
+  )
+}

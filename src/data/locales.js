@@ -16,6 +16,15 @@ export const locales = {
     appName: 'STATSLAB',
     appFullName: 'StatsLab – Dasbor Statistika Interaktif',
     appTagline: 'Belajar Statistika dengan Nilai Keislaman',
+    // ── Legal/Academic ────────────────────────────────────
+    legal: {
+      tosTitle: 'Syarat & Ketentuan Penggunaan',
+      tosBody: 'Aplikasi StatsLab dikembangkan untuk tujuan penelitian pendidikan. Seluruh data yang dimasukkan bersifat lokal pada perangkat ini (Local Storage). Pengguna diharapkan menjaga integritas data selama simulasi audit.',
+      disclaimerTitle: 'Disklaimer Akademik',
+      disclaimerBody: 'Seluruh skenario dan simulasi data dalam aplikasi ini (Ziswaf, Tahfizh, Qurban) adalah data fiktif yang dirancang untuk keperluan pembelajaran statistika deskriptif dan tidak mencerminkan kondisi riil lembaga filantropi manapun.',
+      knowledgeBaseTitle: 'Knowledge Base & Referensi',
+      knowledgeBaseDesc: 'Akses dokumentasi penelitian, teori Watson-Callingham, dan modul pembelajaran statistika.',
+    },
     // ── Onboarding ────────────────────────────────────────
     landing: {
       heroTitle: 'Statistika dengan Nilai Keislaman',
@@ -133,8 +142,16 @@ export const locales = {
     gamify: {
       level: 'Level',
       points: 'Poin',
-      badges: 'Badge',
+      badgesLabel: 'Badge',
       yourLevel: 'Level Literasimu',
+      badges: {
+        lvl1: 'Pencari Data',
+        lvl2: 'Pelapor Data',
+        lvl3: 'Analis Junior',
+        lvl4: 'Detektif Data',
+        lvl5: 'Ahli Strategi',
+        lvl6: 'Master Data',
+      },
       levels: {
         1: 'Idiosinkratik',
         2: 'Kolokuial',
@@ -158,17 +175,21 @@ export const locales = {
         lvl6Name: 'Kritis Matematis',
         lvl6Desc: 'Analisis kritis mendalam, menjaga integritas visual (Amanah), dan memvalidasi model secara mandiri.',
       },
+      tooltips: {
+        lvl1: "Fokus pada angka tunggal tanpa melihat hubungan antar data. Masih sangat subjektif.",
+        lvl2: "Mampu menggunakan istilah 'Mean' atau 'Median' namun belum paham maknanya dalam audit.",
+        lvl3: "Mulai memahami konsep, namun sering bingung saat menghadapi data yang tidak wajar (Anomali).",
+        lvl4: "Bisa menghitung statistik dengan benar, tapi belum sadar jika grafik sengaja dibuat menipu.",
+        lvl5: "Mampu mendeteksi kecurangan data (Outlier) dan melakukan verifikasi (Tabayyun).",
+        lvl6: "Menjaga kejujuran data (Amanah) dan memahami bias visual secara mendalam.",
+      },
       unlockMsg: {
         2: 'Bagus! Kamu berhasil mengedit data. +10 Poin! 🎉',
         3: 'Hebat! Kamu menjelajahi modul baru. +20 Poin! 🌟',
         4: 'Keren! Kamu membaca hasil statistika. +20 Poin! 📊',
-        5: 'Luar biasa! Kamu menemukan Anomali Data! +50 Poin & Badge Detektif! 🔍',
-        6: 'Sempurna! Kamu memahami bias grafik! +50 Poin & Badge Jujur Visual! 🏆',
+        5: 'Luar biasa! Kamu menemukan Anomali Data! +50 Poin & Badge Ahli Strategi! 🔍',
+        6: 'Sempurna! Kamu memahami bias grafik! +50 Poin & Badge Master Data! 🏆',
       },
-      badgeDetektif: 'Detektif Anomali',
-      badgeJujur: 'Jujur Visual',
-      badgeDetektifDesc: 'Berhasil mendeteksi Anomali Data / Outlier pada data Ziswaf',
-      badgeJujurDesc: 'Memahami dan menguji manipulasi skala grafik (Amanah)',
       maxPoints: 150,
       certificateUnlock: 'Cetak sertifikat tersedia setelah Level 6',
       missions: {
@@ -322,6 +343,15 @@ export const locales = {
     appName: 'STATSLAB',
     appFullName: 'StatsLab – Interactive Statistics Dashboard',
     appTagline: 'Learning Statistics with Islamic Values',
+    // ── Legal/Academic ────────────────────────────────────
+    legal: {
+      tosTitle: 'Terms of Service',
+      tosBody: 'The StatsLab application is developed for educational research purposes. All entered data is local to this device (Local Storage). Users are expected to maintain data integrity during audit simulations.',
+      disclaimerTitle: 'Academic Disclaimer',
+      disclaimerBody: 'All scenarios and data simulations in this app (Ziswaf, Tahfizh, Qurban) are fictitious data designed for descriptive statistics learning purposes and do not reflect the real conditions of any philanthropy institution.',
+      knowledgeBaseTitle: 'Knowledge Base & References',
+      knowledgeBaseDesc: 'Access research documentation, Watson-Callingham theory, and statistics learning modules.',
+    },
     // ── Onboarding ────────────────────────────────────────
     landing: {
       heroTitle: 'Statistics with Islamic Values',
@@ -439,8 +469,16 @@ export const locales = {
     gamify: {
       level: 'Level',
       points: 'Points',
-      badges: 'Badges',
+      badgesLabel: 'Badges',
       yourLevel: 'Your Data Literacy Level',
+      badges: {
+        lvl1: 'Data Seeker',
+        lvl2: 'Data Reporter',
+        lvl3: 'Junior Analyst',
+        lvl4: 'Data Detective',
+        lvl5: 'Strategist',
+        lvl6: 'Data Master',
+      },
       levels: {
         1: 'Idiosyncratic',
         2: 'Colloquial',
@@ -464,17 +502,21 @@ export const locales = {
         lvl6Name: 'Critical Mathematical',
         lvl6Desc: 'Deep critical analysis, maintaining visual integrity (Amanah), and independent model validation.',
       },
+      tooltips: {
+        lvl1: "Focus on individual numbers without seeing data relationships. Subjective opinions.",
+        lvl2: "Uses 'Mean' or 'Median' terms but doesn't fully grasp their audit implications yet.",
+        lvl3: "Starts grasping concepts, but gets confused with inconsistent or anomalous data.",
+        lvl4: "Accurately calculates statistics, but lacks critical awareness of visual bias.",
+        lvl5: "Capable of detecting data fraud (Outliers) and performing critical verification (Tabayyun).",
+        lvl6: "Maintains data honesty (Amanah) and deeply understands visual manipulation.",
+      },
       unlockMsg: {
         2: 'Great! You edited the data. +10 Points! 🎉',
         3: 'Awesome! You explored a new module. +20 Points! 🌟',
         4: 'Nice! You read the statistics results. +20 Points! 📊',
-        5: 'Amazing! You found a Data Anomaly! +50 Points & Badge! 🔍',
-        6: 'Perfect! You understood chart bias! +50 Points & Badge! 🏆',
+        5: 'Amazing! You found a Data Anomaly! +50 Points & Strategist Badge! 🔍',
+        6: 'Perfect! You understood chart bias! +50 Points & Data Master Badge! 🏆',
       },
-      badgeDetektif: 'Anomaly Detective',
-      badgeJujur: 'Visual Integrity',
-      badgeDetektifDesc: 'Successfully detected a Data Anomaly / Outlier in Ziswaf data',
-      badgeJujurDesc: 'Understood and tested chart scale manipulation (Amanah)',
       maxPoints: 150,
       certificateUnlock: 'Certificate available after reaching Level 6',
       missions: {

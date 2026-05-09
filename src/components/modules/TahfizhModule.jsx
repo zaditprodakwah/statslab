@@ -18,6 +18,7 @@ import { AmanahToggle } from '../ui/AmanahToggle'
 import { ScenarioSwitcher } from '../common/ScenarioSwitcher'
 import { PRESET_TAHFIZH, PRESET_TAHFIZH_NORMAL } from '../../data/presetData'
 import { useLanguage } from '../../hooks/useLanguage'
+import { Info, AlertTriangle, Lightbulb } from 'lucide-react'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
@@ -67,7 +68,7 @@ export function TahfizhModule({
     }
   }, [tabayyun.isAnomalous, tabayyunConfirmed, gamify.notify])
 
-  const chartData = {
+  const chartData = useMemo(() => ({
     labels: data.map((r) => r.bulan),
     datasets: [{
       label: 'Halaman Hafalan',
@@ -89,10 +90,11 @@ export function TahfizhModule({
       pointRadius: 0,
       fill: false,
     }],
-  }
+  }), [data, values, stats.median])
 
-  const chartOptions = {
+  const chartOptions = useMemo(() => ({
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { position: 'bottom', labels: { font: { size: 11, family: 'Inter' } } },
       tooltip: {
@@ -107,58 +109,74 @@ export function TahfizhModule({
       },
       x: { ticks: { font: { size: 11 } } },
     },
-  }
+  }), [isAmanah])
+
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      {/* Module header */}
-      <div>
-        <h2 className="text-xl font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-          📖 {t('modules.tahfizh.title')}
-        </h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{t('modules.tahfizh.desc')}</p>
-        <div className="flex gap-2 mt-2">
-          <span className="stat-badge bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
+    <div className="space-y-6 animate-fade-in">
+      {/* 1. Module header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-800 dark:text-white flex items-center gap-3 uppercase italic tracking-tighter">
+            📖 {t('modules.tahfizh.title')}
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 font-medium">{t('modules.tahfizh.desc')}</p>
+        </div>
+        <div className="flex gap-2">
+          <span className="stat-badge bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-black uppercase italic text-[10px]">
             🎯 {t('modules.tahfizh.focus')}
           </span>
-          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+          <span className="stat-badge bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-black uppercase italic text-[10px]">
             Line Chart
           </span>
         </div>
       </div>
 
-      {/* Educational Context */}
-      <div className="px-4 py-3 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900 text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
-        <p className="font-semibold mb-1">💡 Mengapa Median (Nilai Tengah) penting di sini?</p>
-        <p className="text-xs text-blue-700 dark:text-blue-400">
-          <strong>Median</strong> mengurutkan data dan mengambil nilai tengahnya. Berbeda dengan Mean, Median <strong>kebal terhadap outlier</strong>. Jika ada satu bulan dimana hafalan melesat secara tidak wajar, Median tetap menggambarkan kemampuan hafalan rata-rata siswa yang sesungguhnya.
-        </p>
+      {/* 2. MAIN VISUALIZATION & DATA (CRITICAL TOP PRIORITY) */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Line Chart */}
+        <div className="glass-card p-6 border-2 border-slate-100 dark:border-slate-800/50">
+          <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+            Tren Progres Hafalan
+          </h3>
+          <div className="h-[300px] md:h-[400px] w-full relative">
+            <Line data={chartData} options={chartOptions} />
+          </div>
+        </div>
+
+        {/* Data Table */}
+        <div className="glass-card p-6 border-2 border-slate-100 dark:border-slate-800/50">
+          <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+            Data Bulanan (Real-time Audit)
+          </h3>
+          <div className="max-h-[300px] overflow-y-auto">
+            <DataTable
+              data={data}
+              setData={setData}
+              columns={COLUMNS}
+              onEdit={onEdit}
+              moduleId="tahfizh"
+              gamify={gamify}
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Scenario Switcher & Narrative */}
-      <div className="space-y-3">
-        <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
-        
-        {scenario === 'normal' ? (
-          <div className="p-4 rounded-xl bg-blue-50/60 dark:bg-blue-900/15 border border-blue-100 dark:border-blue-900/30">
-            <h4 className="font-semibold text-blue-800 dark:text-blue-300 text-sm mb-1">📖 Cerita Data: Kondisi Stabil</h4>
-            <p className="text-xs text-blue-700 dark:text-blue-400">
-              Perkembangan hafalan siswa terlihat stabil dan konsisten. Nilai <strong>Mean</strong> dan <strong>Median</strong> sejalan. Ini adalah representasi data yang sehat dan tanpa bias.
-            </p>
-          </div>
-        ) : (
-          <div className="p-4 rounded-xl bg-amber-50/60 dark:bg-amber-900/15 border border-amber-100 dark:border-amber-900/30 animate-in fade-in">
-            <h4 className="font-semibold text-amber-800 dark:text-amber-300 text-sm mb-1">📖 Cerita Data: Bias Klaim Progres (Anomali)</h4>
-            <p className="text-xs text-amber-700 dark:text-amber-400">
-              Di bulan September, laporan hafalan mencapai angka fantastis (95 halaman). Nilai <strong>Mean</strong> tertarik naik sehingga memberikan ilusi bahwa rata-rata hafalan bulanan sangat tinggi. Namun, perhatikan nilai <strong>Median</strong>! Ia tetap diam di angka belasan. Tabayyun diperlukan untuk memeriksa keaslian data bulan September ini.
-            </p>
-          </div>
-        )}
+      {/* 3. QUICK STATS */}
+      <div className="stats-grid">
+        {['mean', 'median', 'modus', 'min', 'max', 'count'].map((type) => (
+          <StatCard
+            key={type}
+            type={type}
+            value={stats[type]}
+            onView={(tp) => { if (['mean','median','modus'].includes(tp)) onStatView?.() }}
+            isMissionTarget={gamify.level === 4 && ['mean','median','modus'].includes(type)}
+          />
+        ))}
       </div>
 
-      {/* IMPACT ALERTS - MOVED UP FOR VISIBILITY */}
+      {/* 4. IMPACT ALERTS & VALIDATION */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Tabayyun Alert */}
         <TabayyunAlert
           isAnomalous={tabayyun.isAnomalous}
           mean={stats.mean}
@@ -180,41 +198,44 @@ export function TahfizhModule({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div className="glass-card p-4">
-          <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Tren Progres Hafalan</h3>
-          <Line data={chartData} options={chartOptions} />
+      {/* 5. NARRATIVE & CONTEXT (Moved down) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <ScenarioSwitcher currentScenario={scenario} onChange={handleScenarioChange} />
+          
+          {scenario === 'normal' ? (
+            <div className="p-5 rounded-2xl bg-blue-50/60 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 animate-in slide-in-from-left">
+              <h4 className="font-black text-blue-800 dark:text-blue-300 text-xs uppercase tracking-widest mb-2 flex items-center gap-2">
+                📖 Cerita Data: Kondisi Stabil
+              </h4>
+              <p className="text-xs text-blue-700 dark:text-blue-400 leading-relaxed font-medium">
+                Perkembangan hafalan siswa terlihat stabil dan konsisten. Nilai <strong>Mean</strong> dan <strong>Median</strong> sejalan. Ini adalah representasi data yang sehat dan tanpa bias.
+              </p>
+            </div>
+          ) : (
+            <div className="p-5 rounded-2xl bg-amber-50/60 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-900/30 animate-in slide-in-from-left">
+              <h4 className="font-black text-amber-800 dark:text-amber-300 text-xs uppercase tracking-widest mb-2 flex items-center gap-2">
+                📖 Cerita Data: Bias Klaim Progres (Anomali)
+              </h4>
+              <p className="text-xs text-amber-700 dark:text-amber-400 leading-relaxed font-medium">
+                Di bulan September, laporan hafalan mencapai angka fantastis (95 halaman). Nilai <strong>Mean</strong> tertarik naik sehingga memberikan ilusi bahwa rata-rata hafalan bulanan sangat tinggi. Namun, perhatikan nilai <strong>Median</strong>! Ia tetap diam di angka belasan. Tabayyun diperlukan untuk memeriksa keaslian data bulan September ini.
+              </p>
+            </div>
+          )}
         </div>
-        <div className="glass-card p-4">
-          <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-400 mb-3">Data Bulanan</h3>
-          <DataTable
-            data={data}
-            setData={setData}
-            columns={COLUMNS}
-            onEdit={onEdit}
-            moduleId="tahfizh"
-            gamify={gamify}
-          />
+
+        <div className="p-5 rounded-2xl bg-emerald-50/60 dark:bg-emerald-900/10 border border-emerald-100 dark:border-emerald-900/30">
+          <h4 className="font-black text-emerald-800 dark:text-emerald-300 text-xs uppercase tracking-widest mb-2 flex items-center gap-2">
+            <Lightbulb className="w-4 h-4" /> Mengapa Median Penting?
+          </h4>
+          <p className="text-xs text-emerald-700 dark:text-emerald-400 leading-relaxed font-medium">
+            <strong>Median</strong> mengurutkan data dan mengambil nilai tengahnya. Berbeda dengan Mean, Median <strong>kebal terhadap outlier</strong>. Jika ada satu bulan dimana hafalan melesat secara tidak wajar, Median tetap menggambarkan kemampuan hafalan rata-rata siswa yang sesungguhnya.
+          </p>
+          <div className="mt-4 px-3 py-2 rounded-xl bg-white/50 dark:bg-black/20 border border-emerald-200/50 dark:border-emerald-800 text-[10px] text-emerald-600 dark:text-emerald-400 italic">
+            ⚖️ <strong>Tawazun:</strong> Perhatikan apakah garis Median (kuning) mendekati rata-rata titik data (biru). Jika jauh berbeda, data mungkin tidak seimbang.
+          </div>
         </div>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {['mean', 'median', 'modus', 'min', 'max', 'count'].map((type) => (
-          <StatCard
-            key={type}
-            type={type}
-            value={stats[type]}
-            onView={(tp) => { if (['mean','median','modus'].includes(tp)) onStatView?.() }}
-            isMissionTarget={gamify.level === 4 && ['mean','median','modus'].includes(type)}
-          />
-        ))}
-      </div>
-
-      {/* Tawazun hint */}
-      <div className="px-4 py-3 rounded-xl bg-teal-50/60 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900 text-sm text-teal-800 dark:text-teal-300 leading-relaxed">
-        ⚖️ <strong>Tawazun:</strong> Perhatikan apakah garis Median (kuning) mendekati rata-rata titik data (biru). Jika jauh berbeda, data mungkin tidak seimbang.
       </div>
     </div>
   )
 }
-

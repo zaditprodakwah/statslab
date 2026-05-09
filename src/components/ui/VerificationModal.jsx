@@ -139,7 +139,7 @@ export function VerificationModal({
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
                   placeholder="Ketik analisis Anda di sini (min. 10 karakter)..."
-                  className={`w-full p-5 rounded-2xl bg-slate-50 dark:bg-slate-800 border-2 transition-all focus:outline-none min-h-[120px] text-slate-700 dark:text-slate-200 font-medium ${
+                  className={`w-full p-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 transition-all focus:outline-none min-h-[120px] text-slate-700 dark:text-slate-200 font-medium ${
                     isCorrect === false ? 'border-rose-500' : 'border-slate-200 dark:border-slate-700 focus:border-blue-500'
                   }`}
                 />

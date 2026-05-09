@@ -10,8 +10,8 @@ export function MissionBar({ gamify }) {
   const progress = (points / maxPoints) * 100
 
   return (
-    <div className="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 z-[100] w-full max-w-xl px-4 animate-slide-up">
-      <div className="glass-card overflow-hidden shadow-2xl border-2 border-emerald-500/30 dark:border-emerald-400/20">
+    <div className="fixed bottom-[4.5rem] sm:bottom-6 left-1/2 -translate-x-1/2 z-[100] w-full max-w-xl px-4 animate-slide-up no-print">
+      <div className="glass-card overflow-hidden shadow-2xl border-2 border-emerald-500/30 dark:border-emerald-400/20 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl">
         {/* Progress Bar background */}
         <div className="absolute top-0 left-0 h-1 bg-slate-100 dark:bg-slate-800 w-full" />
         <div 
@@ -47,8 +47,14 @@ export function MissionBar({ gamify }) {
                 {t('gamify.rank')}: {rankName}
               </span>
             </div>
-            <p className="text-sm font-black text-slate-800 dark:text-slate-100 truncate leading-tight">
-              {missionText}
+            <p className="text-sm font-black text-slate-900 dark:text-white truncate leading-tight flex items-center gap-1.5">
+              <span>{t(`gamify.badges.lvl${level}`)}</span>
+              <span className="text-slate-300 dark:text-slate-600 font-light">|</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold italic">{rankName}</span>
+            </p>
+            <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1">
+              <span className="inline-block w-1 h-1 rounded-full bg-emerald-500" />
+              <span className="opacity-80">Misi: {missionText}</span>
             </p>
           </div>
 

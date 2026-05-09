@@ -24,7 +24,7 @@ export function MainLayout({ sidebar, children, profile, gamify, activeModule })
           </div>
           <div>
             <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider leading-none mb-0.5">
-              {profile?.name || 'Siswa'}
+              {profile?.nama || 'Siswa'}
             </p>
             <h3 className="text-xs font-extrabold text-slate-700 dark:text-slate-200 leading-none">
               {moduleTitles[activeModule] || 'Dashboard'}

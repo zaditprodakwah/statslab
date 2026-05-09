@@ -188,17 +188,33 @@ export function CertificateView({ profile, gamify }) {
           </table>
         </div>
 
-        {/* Researcher's Notes */}
+        {/* Researcher's Strategic Notes */}
         <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-widest mb-3 flex items-center gap-2">
-              📝 Researcher's Strategic Notes
+              📝 {lang === 'en' ? "Researcher's Strategic Notes" : "Catatan Strategis Peneliti"}
            </h4>
            <div className="space-y-4 text-[11px] leading-relaxed text-slate-600">
               <p>
-                 Siswa telah menunjukkan kemampuan luar biasa dalam menggunakan instrumen <strong>StatsLab</strong> untuk mengidentifikasi <em>anomali data</em> melalui prinsip <strong>Tabayyun</strong>. Capaian Level {gamify.level} mengindikasikan bahwa siswa tidak hanya mampu menghitung rata-rata (Mean) dan nilai tengah (Median), tetapi juga memiliki kesadaran kritis terhadap validitas visual (<strong>Amanah</strong>).
+                 {gamify.level >= 6 ? (
+                   lang === 'en' 
+                   ? `Student has demonstrated exceptional ability in using the StatsLab instrument to identify data anomalies through the Tabayyun principle. Achieving Level 6 indicates critical awareness of visual validity (Amanah).`
+                   : `Siswa telah menunjukkan kemampuan luar biasa dalam menggunakan instrumen StatsLab untuk mengidentifikasi anomali data melalui prinsip Tabayyun. Capaian Level 6 mengindikasikan kesadaran kritis terhadap validitas visual (Amanah).`
+                 ) : gamify.level >= 4 ? (
+                   lang === 'en'
+                   ? `Student is capable of interpreting statistical distributions and detecting outliers. Level ${gamify.level} achievement shows good progress in scholarly data literacy.`
+                   : `Siswa mampu menginterpretasi distribusi statistik dan mendeteksi pencilan (outliers). Capaian Level ${gamify.level} menunjukkan progres literasi data yang baik.`
+                 ) : (
+                   lang === 'en'
+                   ? `Student has begun exploring data through basic calculations and module interactions. Continued practice is encouraged to reach critical levels.`
+                   : `Siswa telah mulai mengeksplorasi data melalui perhitungan dasar dan interaksi modul. Teruslah berlatih untuk mencapai level kritis.`
+                 )}
               </p>
               <p>
-                 <strong>Rekomendasi Lanjutan:</strong> Untuk mempertahankan level <em>Critical Mathematical</em>, siswa disarankan untuk mengeksplorasi dataset dunia nyata yang lebih kompleks dan menggunakan nilai-nilai Islam (Tawazun) sebagai landasan dalam interpretasi data filantropi.
+                 <strong>{lang === 'en' ? 'Recommendation:' : 'Rekomendasi:'}</strong> {
+                   gamify.level >= 6 
+                   ? (lang === 'en' ? 'Explore real-world complex datasets and apply Tawazun values in philanthropy data interpretation.' : 'Eksplorasi dataset dunia nyata yang kompleks dan terapkan nilai Tawazun dalam interpretasi data filantropi.')
+                   : (lang === 'en' ? 'Deepen understanding of Mean and Median differences to unlock advanced Tabayyun levels.' : 'Perdalam pemahaman perbedaan Mean dan Median untuk membuka level Tabayyun lanjut.')
+                 }
               </p>
            </div>
         </div>

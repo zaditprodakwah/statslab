@@ -18,10 +18,10 @@
 .dark {
   --color-surface: rgba(15, 23, 42, 0.95);
   --color-surface-card: rgba(30, 41, 59, 0.9);
-  --color-border: rgba(16, 185, 129, 0.3);
+  --color-border: rgba(16, 185, 129, 0.45); /* Sharper border */
   --color-text: #f8fafc;
-  --color-text-muted: #cbd5e1; /* Lighter slate for dark mode contrast */
-  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --color-text-muted: #cbd5e1; /* Higher contrast for secondary text (Slate 300) */
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 /* ─── BASE ───────────────────────────────────────────── */
@@ -74,11 +74,95 @@ body {
   }
 
   .input-field {
-    @apply w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all duration-200 placeholder-slate-400 dark:placeholder-slate-500;
+    @apply w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all duration-200 placeholder-slate-400 dark:placeholder-slate-500 shadow-sm;
+  }
+
+  /* Absolute contrast for inputs in dark mode — ensuring high readability */
+  .dark textarea, 
+  .dark input[type="text"], 
+  .dark input[type="number"], 
+  .dark input[type="email"],
+  .dark input[type="password"],
+  .dark select {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+  }
+
+  .dark textarea::placeholder, 
+  .dark input::placeholder {
+    color: #64748b !important;
+  }
+
+  .dark textarea:focus, 
+  .dark input:focus,
+  .dark select:focus {
+    border-color: #10b981 !important;
+    background-color: #020617 !important;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15) !important;
+  }
+
+  /* Overlay Z-Index & Mobile Safety */
+  .overlay-base {
+    @apply fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 backdrop-blur-md;
+  }
+
+  .floating-alert {
+    @apply fixed bottom-24 left-1/2 -translate-x-1/2 z-[80] w-[95%] max-w-md;
+  }
+
+  /* Mobile Safe Padding */
+  .pb-mobile-nav {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+  }
+
+  @media (min-width: 640px) {
+    .pb-mobile-nav {
+      padding-bottom: 2rem;
+    }
+  }
+
+  /* Autofill fix for dark mode */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #0f172a;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover, 
+  .dark input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #f8fafc !important;
+    -webkit-box-shadow: 0 0 0px 1000px #0f172a inset !important;
   }
 
   .level-locked {
     @apply grayscale opacity-60 cursor-not-allowed pointer-events-none filter blur-[0.5px];
+  }
+
+  .stats-grid {
+    @apply flex overflow-x-auto gap-3 pb-3 snap-x scroll-smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .stats-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .stats-grid {
+      @apply grid grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-visible pb-0 snap-none;
+    }
+  }
+
+  .glass {
+    @apply bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border border-white/20 dark:border-slate-800/40 shadow-2xl;
+  }
+
+  .glass-card {
+    @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-white/20 dark:border-slate-700/30 rounded-3xl shadow-xl p-4 sm:p-6;
   }
 }
 
@@ -207,3 +291,32 @@ body {
     @apply min-h-[48px] min-w-[48px] flex items-center justify-center;
   }
 }
+
+/* ─── GAMIFICATION ANIMATIONS ───────────────────────── */
+@keyframes pop-in {
+  0% { transform: scale(0.9); opacity: 0; }
+  70% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shine {
+  from { left: -100%; }
+  to { left: 100%; }
+}
+
+.animate-pop-in { animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
+.animate-bounce-in { animation: bounce-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.animate-shine { animation: shine 2s infinite; }
