@@ -1,17 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PrismaClient } from "@prisma/client";
-import { PrismaNeon } from "@prisma/adapter-neon";
-import { Pool, neonConfig } from "@neondatabase/serverless";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 import dotenv from "dotenv";
-import ws from "ws";
-
-neonConfig.webSocketConstructor = ws;
 
 dotenv.config();
 
-const connectionString = process.env.DATABASE_URL || "";
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error("DATABASE_URL is missing in environment variables.");
+}
+
 const pool = new Pool({ connectionString });
-const adapter = new PrismaNeon(pool as any);
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
@@ -148,5 +148,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-    await pool.end();
   });

@@ -1,20 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PrismaClient } from "@prisma/client";
-import { Pool, neonConfig } from "@neondatabase/serverless";
-import { PrismaNeon } from "@prisma/adapter-neon";
-import ws from "ws";
-
-neonConfig.webSocketConstructor = (ws as any).default || ws;
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
   throw new Error("DATABASE_URL is missing in environment variables.");
 }
+
 const pool = new Pool({ connectionString });
-const adapter = new PrismaNeon(pool as any);
+const adapter = new PrismaPg(pool);
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+const prismaClientSingleton = () => {
+  return new PrismaClient({ adapter });
+};
 
-export const prisma = globalForPrisma.prisma || new PrismaClient({ adapter });
+declare global {
+  var prismaGlobal: undefined | ReturnType<typeof prismaClientSingleton>;
+}
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+export const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
+
+if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = prisma;
