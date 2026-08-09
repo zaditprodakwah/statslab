@@ -8,7 +8,7 @@ import SusFormModal from "@/components/SusFormModal";
 import GuidedTour from "@/components/GuidedTour";
 import EthicalModal from "@/components/EthicalModal";
 import CertificateModal from "@/components/CertificateModal";
-import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Download, Award } from "lucide-react";
+import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Award } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
 import Link from "next/link";
 
@@ -19,16 +19,18 @@ export default function DashboardClient() {
   const [susResult, setSusResult] = useState<{ score: number; adjective: string } | null>(null);
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [activePblTaskId, setActivePblTaskId] = useState<string | null>(null);
+  const [chartSelection, setChartSelection] = useState<{ taskId: string; label: string } | null>(null);
   const [tourRun, setTourRun] = useState(false);
   const [ethicalModal, setEthicalModal] = useState<"tabayyun" | "amanah" | null>(null);
 
   const {
     currentLevel,
-    submitTaskAnswer,
     sessionId,
     activeDataset,
     toggleAmanahScale,
     amanahZeroScale,
+    tawazunConfirmed,
+    confirmTawazun,
   } = useStatsLabStore();
 
   // Fetch all datasets
@@ -64,30 +66,14 @@ export default function DashboardClient() {
 
   const handleChartClick = useCallback((payload: any) => {
     if (!activePblTaskId) return;
-    const tasks = datasets.flatMap((d: any) => d.tasks || []);
-    const activeTask = tasks.find((t: any) => t.id === activePblTaskId);
-    if (!activeTask) return;
 
     const pointData = payload?.activePayload ? payload.activePayload[0]?.payload : payload;
-    const clickedLabel = pointData ? JSON.stringify(pointData) : "Chart Element Clicked";
+    const label = pointData ? JSON.stringify(pointData) : "Chart Element Clicked";
 
-    submitTaskAnswer(activePblTaskId, `[Grafik Clicked] ${clickedLabel}`, 2);
-
-    if (sessionId) {
-      fetch("/api/task-responses", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId,
-          taskId: activePblTaskId,
-          answerText: `[Grafik Clicked] ${clickedLabel}`,
-          score: 2,
-          interactionLog: { clickedPoint: pointData, timestamp: new Date().toISOString() },
-        }),
-      }).catch((e) => console.error(e));
-    }
+    // Gesture only: catat titik yang dipilih, siswa tetap harus menekan "Kirim Jawaban"
+    setChartSelection({ taskId: activePblTaskId, label: `[Grafik] ${label}` });
     setActivePblTaskId(null);
-  }, [activePblTaskId, datasets, sessionId, submitTaskAnswer]);
+  }, [activePblTaskId]);
 
   const handleAmanahToggle = () => {
     setEthicalModal("amanah");
@@ -104,9 +90,9 @@ export default function DashboardClient() {
     );
   }
 
-  const allTasks = datasets.flatMap((d: any) => d.tasks || []);
   // Active dataset object
   const activeDs = datasets.find((d: any) => d.slug === activeDataset) ?? datasets[0];
+  const activeTasks = activeDs?.tasks || [];
 
   return (
     <main className="page-enter" style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}>
@@ -159,25 +145,6 @@ export default function DashboardClient() {
           >
             <ClipboardCheck size={18} /> Evaluasi SUS (14 Butir)
           </button>
-
-          <a
-            href="/api/export/rasch"
-            download
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "10px 18px",
-              borderRadius: "var(--radius-md)",
-              border: "1px solid var(--color-slate-200)",
-              color: "var(--text-primary)",
-              textDecoration: "none",
-              fontWeight: 600,
-              fontSize: "0.9rem",
-            }}
-          >
-            <Download size={18} /> Ekspor Data Rasch
-          </a>
         </div>
 
         {susResult && (
@@ -187,11 +154,11 @@ export default function DashboardClient() {
         )}
       </header>
 
-      {/* Pilar Amanah Toggle */}
+      {/* Pilar Amanah & Tawazun Toggles */}
       <div
         id="amanah-scale-toggle"
         className="glass-panel"
-        style={{ marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px" }}
+        style={{ marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", flexWrap: "wrap", gap: "12px" }}
       >
         <div>
           <strong style={{ fontSize: "0.95rem" }}>⚖️ Prinsip Amanah — Skala Sumbu Y</strong>
@@ -199,17 +166,32 @@ export default function DashboardClient() {
             {amanahZeroScale ? "Skala berbasis nol (Zero-based) — Jujur & Proporsional" : "⚠️ Skala Terpotong — Risiko Misleading"}
           </p>
         </div>
-        <button
-          onClick={handleAmanahToggle}
-          className="btn-premium"
-          style={{
-            backgroundColor: amanahZeroScale ? "var(--color-emerald-700)" : "#dc2626",
-            fontSize: "0.85rem",
-            padding: "8px 16px",
-          }}
-        >
-          {amanahZeroScale ? "✅ Skala Jujur Aktif" : "❌ Skala Terpotong"}
-        </button>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <button
+            onClick={handleAmanahToggle}
+            className="btn-premium"
+            style={{
+              backgroundColor: amanahZeroScale ? "var(--color-emerald-700)" : "#dc2626",
+              fontSize: "0.85rem",
+              padding: "8px 16px",
+            }}
+          >
+            {amanahZeroScale ? "✅ Skala Jujur Aktif" : "❌ Skala Terpotong"}
+          </button>
+
+          <button
+            onClick={confirmTawazun}
+            className="btn-premium"
+            style={{
+              backgroundColor: tawazunConfirmed ? "var(--color-purple-600)" : "var(--color-slate-400)",
+              fontSize: "0.85rem",
+              padding: "8px 16px",
+            }}
+            title="Prinsip Tawazun: bandingkan Mean vs Median untuk memahami bentuk distribusi data"
+          >
+            ⚖️ {tawazunConfirmed ? "Garis Mean & Median Aktif" : "Tampilkan Mean vs Median"}
+          </button>
+        </div>
       </div>
 
       {/* Active Dataset Chart */}
@@ -243,10 +225,12 @@ export default function DashboardClient() {
           <BookOpen style={{ color: "var(--accent-primary)" }} /> Modul Asesmen Literasi Data
         </h2>
         <EmbeddedTasksPanel
-          tasks={allTasks}
+          tasks={activeTasks}
           onOpenCertificate={() => setIsCertOpen(true)}
           onSelectTaskForChart={(taskId) => setActivePblTaskId(taskId)}
           activePblTaskId={activePblTaskId}
+          chartSelection={chartSelection}
+          onClearChartSelection={() => setChartSelection(null)}
           onTabayyunTrigger={() => setEthicalModal("tabayyun")}
         />
       </section>

@@ -34,7 +34,7 @@ interface StatsLabState {
   totalScore: number; // Max 16
   
   // Actions
-  setStudentInfo: (info: { studentName: string; studentClass: string; schoolName: string; sessionId?: string }) => void;
+  setStudentInfo: (info: { studentName: string; studentClass: string; schoolName: string; sessionId?: string; testPhase?: StatsLabState["testPhase"] }) => void;
   setActiveDataset: (slug: DatasetSlug) => void;
   toggleAmanahScale: () => void;
   confirmTawazun: () => void;

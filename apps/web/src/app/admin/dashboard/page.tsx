@@ -2,12 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Users, Database, Download, LogOut, FileSpreadsheet, ShieldCheck } from "lucide-react";
+import { Users, Database, Download, LogOut, FileSpreadsheet, ShieldCheck, Loader2 } from "lucide-react";
 import { getAdminAuthHeaders } from "@/lib/adminToken";
+import { downloadExport } from "@/lib/downloadExport";
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState({ totalSessions: 0, totalResponses: 0 });
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadStats() {
@@ -28,6 +30,22 @@ export default function AdminDashboardPage() {
     }
     loadStats();
   }, []);
+
+  async function handleExport(kind: "rasch" | "cfa") {
+    setExporting(kind);
+    try {
+      const stamp = Date.now();
+      await downloadExport(
+        `/api/export/${kind}`,
+        kind === "rasch" ? `statslab-rasch-winsteps-${stamp}.ctl` : `statslab-cfa-lisrel-${stamp}.csv`
+      );
+    } catch (err) {
+      console.error("Export failed:", err);
+      alert(err instanceof Error ? err.message : "Gagal mengunduh ekspor");
+    } finally {
+      setExporting(null);
+    }
+  }
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 20px" }}>
@@ -103,23 +121,25 @@ export default function AdminDashboardPage() {
         </p>
 
         <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-          <a
-            href="/api/export/rasch"
-            download
+          <button
+            onClick={() => handleExport("rasch")}
+            disabled={exporting !== null}
             className="btn-premium btn-emerald flex-center"
-            style={{ textDecoration: "none", padding: "10px 20px" }}
+            style={{ padding: "10px 20px", opacity: exporting !== null ? 0.7 : 1 }}
           >
-            <Download size={18} style={{ marginRight: "8px" }} /> Ekspor Rasch PCM (.ctl Winsteps)
-          </a>
+            {exporting === "rasch" ? <Loader2 size={18} className="spin" style={{ marginRight: "8px" }} /> : <Download size={18} style={{ marginRight: "8px" }} />}
+            Ekspor Rasch PCM (.ctl Winsteps)
+          </button>
 
-          <a
-            href="/api/export/cfa"
-            download
+          <button
+            onClick={() => handleExport("cfa")}
+            disabled={exporting !== null}
             className="btn-premium flex-center"
-            style={{ textDecoration: "none", padding: "10px 20px", backgroundColor: "#2563eb" }}
+            style={{ padding: "10px 20px", backgroundColor: "#2563eb", opacity: exporting !== null ? 0.7 : 1 }}
           >
-            <Download size={18} style={{ marginRight: "8px" }} /> Ekspor CFA Dikotomis (.csv LISREL/R)
-          </a>
+            {exporting === "cfa" ? <Loader2 size={18} className="spin" style={{ marginRight: "8px" }} /> : <Download size={18} style={{ marginRight: "8px" }} />}
+            Ekspor CFA Dikotomis (.csv LISREL/R)
+          </button>
         </div>
       </div>
     </div>

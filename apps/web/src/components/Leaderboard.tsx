@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -56,6 +55,25 @@ export default function Leaderboard() {
 
       {loading ? (
         <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>Memuat peringkat siswa...</p>
+      ) : entries.length === 0 ? (
+        <div
+          style={{
+            padding: "24px",
+            textAlign: "center",
+            borderRadius: "var(--radius-md)",
+            border: "1px dashed var(--color-slate-300)",
+            backgroundColor: "var(--bg-surface)",
+            color: "var(--text-secondary)",
+          }}
+        >
+          <User size={28} style={{ marginBottom: "8px", opacity: 0.6 }} />
+          <p style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "4px" }}>
+            Belum Ada Data Peringkat
+          </p>
+          <p style={{ fontSize: "0.85rem" }}>
+            Papan peringkat akan terisi setelah siswa mulai menyelesaikan tugas literasi data.
+          </p>
+        </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           {entries.map((entry, index) => (

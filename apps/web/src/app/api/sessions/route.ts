@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { studentName, studentClass, schoolName } = body;
+    const { studentName, studentClass, schoolName, testPhase } = body;
 
     // Validate request
     if (!studentName || !schoolName) {
@@ -21,8 +21,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // Default test phase or role
-    const testPhase = "onboarding";
+    const ALLOWED_PHASES = ["small_scale", "large_scale", "think_aloud"] as const;
+    const sessionPhase =
+      testPhase && ALLOWED_PHASES.includes(testPhase) ? testPhase : "large_scale";
+
     const sessionToken = crypto.randomBytes(32).toString("hex");
 
     // Create session in DB
@@ -32,7 +34,7 @@ export async function POST(req: Request) {
         studentName,
         studentClass: studentClass || "",
         schoolName,
-        testPhase,
+        testPhase: sessionPhase,
         totalScore: 0,
         timeSpentMs: 0,
         currentLevel: 1,
@@ -47,6 +49,7 @@ export async function POST(req: Request) {
         studentName: session.studentName,
         studentClass: session.studentClass,
         schoolName: session.schoolName,
+        testPhase: session.testPhase,
       },
     });
   } catch (error) {

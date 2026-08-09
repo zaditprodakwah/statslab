@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { isAdminAuthorized } from "@/lib/adminAuth";
 
 export const dynamic = "force-dynamic";
 
+const unauthorized = () =>
+  NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-
-export async function GET() {
-
+export async function GET(req: Request) {
+  if (!isAdminAuthorized(req)) return unauthorized();
 
   try {
     const tasks = await prisma.task.findMany({

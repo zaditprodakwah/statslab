@@ -21,6 +21,7 @@ export default function HomePage() {
   });
 
   const setStudentInfo = useStatsLabStore((state) => state.setStudentInfo);
+  const testPhase = useStatsLabStore((state) => state.testPhase);
 
   const handleStartSession = async () => {
     if (activeRole === "guest") {
@@ -45,7 +46,7 @@ export default function HomePage() {
       const res = await fetch("/api/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, testPhase })
       });
 
       const data = await res.json();
@@ -55,7 +56,8 @@ export default function HomePage() {
           sessionId: data.data.sessionId,
           studentName: data.data.studentName,
           schoolName: data.data.schoolName,
-          studentClass: data.data.studentClass
+          studentClass: data.data.studentClass,
+          testPhase: data.data.testPhase
         });
         setSessionActive(true);
       } else {

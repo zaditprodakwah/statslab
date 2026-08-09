@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useMemo, useState } from "react";
@@ -16,8 +16,9 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
-import { ShieldCheck, HelpCircle, Eye, RefreshCw, MoveVertical } from "lucide-react";
+import { ShieldCheck, RefreshCw } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
 
 interface InteractiveChartProps {
@@ -38,6 +39,16 @@ const PIE_COLORS = [
   "var(--color-amber-600)",
 ];
 
+function summarize(values: number[]) {
+  if (values.length === 0) return { mean: 0, median: 0, stdDev: 0 };
+  const mean = values.reduce((a, b) => a + b, 0) / values.length;
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  const median = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+  const variance = values.reduce((a, b) => a + (b - mean) ** 2, 0) / values.length;
+  return { mean, median, stdDev: Math.sqrt(variance) };
+}
+
 export default function InteractiveChart({
   title,
   islamicValue,
@@ -49,15 +60,41 @@ export default function InteractiveChart({
   compactMode = false,
 }: InteractiveChartProps) {
   const [data, setData] = useState(initialData);
+  const [pendingClick, setPendingClick] = useState<{ payload: any; label: string } | null>(null);
   const [showTabayyunModal, setShowTabayyunModal] = useState(false);
-  const [selectedPoint, setSelectedPoint] = useState<any>(null);
 
   // Zustand state for 3 Pilar Islam
-  const { amanahZeroScale, toggleAmanahScale } = useStatsLabStore();
+  const { amanahZeroScale, tabayyunThreshold, tawazunConfirmed } = useStatsLabStore();
 
-  const handleOutlierClick = (item: unknown) => {
-    setSelectedPoint(item);
-    setShowTabayyunModal(true);
+  const primaryKey = dataKeys[0];
+  const stats = useMemo(() => {
+    const values = (data as Record<string, number | undefined>[])
+      .map((row) => Number(row[primaryKey]))
+      .filter((v) => !Number.isNaN(v));
+    return summarize(values);
+  }, [data, primaryKey]);
+
+  // Outlier detection berbasis threshold Pilar Tabayyun (store.tabayyunThreshold)
+  const isOutlier = (value: number) => {
+    const t = tabayyunThreshold || 0.2;
+    return value < stats.mean * (1 - t) || value > stats.mean * (1 + t);
+  };
+
+  const handlePointClick = (payload: any) => {
+    const row = payload?.activePayload ? payload.activePayload[0]?.payload : payload;
+    const value = Number(row?.[primaryKey]);
+    if (!Number.isNaN(value) && isOutlier(value)) {
+      setPendingClick({ payload, label: row?.[xAxisKey] ?? "Titik Data" });
+      setShowTabayyunModal(true);
+      return;
+    }
+    if (onChartClick) onChartClick(payload);
+  };
+
+  const confirmTabayyun = () => {
+    setShowTabayyunModal(false);
+    if (pendingClick && onChartClick) onChartClick(pendingClick.payload);
+    setPendingClick(null);
   };
 
   const handleResetData = () => {
@@ -75,6 +112,34 @@ export default function InteractiveChart({
       ),
     }));
   }, [type, dataKeys, data]);
+
+  const referenceLines =
+    tawazunConfirmed && type !== "pie" ? (
+      <>
+        <ReferenceLine
+          y={stats.mean}
+          stroke="var(--color-purple-600)"
+          strokeDasharray="5 4"
+          label={{
+            value: `Mean ${stats.mean.toFixed(1)}`,
+            position: "insideTopRight",
+            fontSize: 11,
+            fill: "var(--color-purple-600)",
+          }}
+        />
+        <ReferenceLine
+          y={stats.median}
+          stroke="#2563eb"
+          strokeDasharray="5 4"
+          label={{
+            value: `Median ${stats.median.toFixed(1)}`,
+            position: "insideBottomLeft",
+            fontSize: 11,
+            fill: "#2563eb",
+          }}
+        />
+      </>
+    ) : null;
 
   return (
     <div
@@ -109,31 +174,22 @@ export default function InteractiveChart({
           </p>
         </div>
 
-        {/* 3 Pilar Islam Control Toggles */}
-        <div style={{ display: "flex", gap: "8px" }}>
-          <button
-            onClick={toggleAmanahScale}
-            className="btn-premium"
-            style={{
-              padding: "6px 12px",
-              fontSize: "0.8rem",
-              backgroundColor: amanahZeroScale
-                ? "var(--color-emerald-700)"
-                : "var(--color-amber-500)",
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-            }}
-            title={
-              amanahZeroScale
-                ? "Prinsip Amanah: Skala Sumbu Y dimulai dari Nol (Jujur & Transparan)"
-                : "Skala Potong: Sumbu Y dipotong (Dapat Memanipulasi Visual)"
-            }
-          >
-            <ShieldCheck size={14} />
-            {amanahZeroScale ? "Amanah: Skala Nol (Aktif)" : "Skala Dipotong (Non-Amanah)"}
-          </button>
-
+        {/* Chart Controls */}
+        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+          {tawazunConfirmed && type !== "pie" && (
+            <span
+              style={{
+                fontSize: "0.8rem",
+                color: "var(--color-purple-600)",
+                backgroundColor: "var(--color-purple-50)",
+                padding: "6px 12px",
+                borderRadius: "var(--radius-full)",
+                fontWeight: 600,
+              }}
+            >
+              ⚖️ Tawazun: Mean vs Median
+            </span>
+          )}
           <button
             onClick={handleResetData}
             className="control-btn"
@@ -158,6 +214,7 @@ export default function InteractiveChart({
               />
               <Tooltip contentStyle={{ borderRadius: "var(--radius-md)", fontSize: "0.85rem" }} />
               <Legend wrapperStyle={{ fontSize: "0.85rem" }} />
+              {referenceLines}
               {dataKeys.map((key, idx) => (
                 <Bar
                   key={key}
@@ -166,7 +223,7 @@ export default function InteractiveChart({
                   radius={[6, 6, 0, 0]}
                   animationDuration={800}
                   onClick={(payload) => {
-                    if (onChartClick) onChartClick(payload);
+                    handlePointClick(payload);
                   }}
                   style={{ cursor: "pointer" }}
                 />
@@ -182,6 +239,7 @@ export default function InteractiveChart({
               />
               <Tooltip contentStyle={{ borderRadius: "var(--radius-md)", fontSize: "0.85rem" }} />
               <Legend wrapperStyle={{ fontSize: "0.85rem" }} />
+              {referenceLines}
               {dataKeys.map((key) => (
                 <Line
                   key={key}
@@ -194,7 +252,7 @@ export default function InteractiveChart({
                   activeDot={{
                     r: 9,
                     onClick: (e, payload) => {
-                      if (onChartClick) onChartClick(payload);
+                      handlePointClick(payload);
                     },
                     cursor: "grab",
                   }}
@@ -215,12 +273,11 @@ export default function InteractiveChart({
                 label
                 animationDuration={800}
                 onClick={(payload: any) => {
-                  if (onChartClick)
-                    onChartClick({
-                      ...payload.payload,
-                      [xAxisKey]: payload.name,
-                      value: payload.value,
-                    });
+                  handlePointClick({
+                    ...payload.payload,
+                    [xAxisKey]: payload.name,
+                    value: payload.value,
+                  });
                 }}
                 style={{ cursor: "pointer" }}
               >
@@ -234,7 +291,7 @@ export default function InteractiveChart({
       </div>
 
       {/* Tabayyun Verification Modal */}
-      {showTabayyunModal && selectedPoint && (
+      {showTabayyunModal && pendingClick && (
         <div
           style={{
             position: "fixed",
@@ -269,12 +326,12 @@ export default function InteractiveChart({
             </h4>
             <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "16px" }}>
               Anda memilih titik data nilai ekstrem/outlier pada{" "}
-              <strong>{selectedPoint[xAxisKey]}</strong>. Sebelum menyimpulkan data ini, lakukan
+              <strong>{pendingClick.label}</strong>. Sebelum menyimpulkan data ini, lakukan
               verifikasi ulang apakah ada kesalahan input data.
             </p>
 
             <button
-              onClick={() => setShowTabayyunModal(false)}
+              onClick={confirmTabayyun}
               className="btn-premium btn-emerald w-full"
               style={{ padding: "10px" }}
             >

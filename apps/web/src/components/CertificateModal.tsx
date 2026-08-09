@@ -11,11 +11,19 @@ interface CertificateModalProps {
 }
 
 export default function CertificateModal({ isOpen, onClose }: CertificateModalProps) {
-  const { studentName, schoolName, totalScore, currentLevel, xp } = useStatsLabStore();
+  const { studentName, schoolName, totalScore, currentLevel, xp, sessionId } = useStatsLabStore();
   const certRef = useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = useState(false);
 
   if (!isOpen) return null;
+
+  const today = new Date();
+  const issuedDate = today.toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const certificateId = `STATSLAB-${today.getFullYear()}-${(sessionId || "guest").slice(0, 8).toUpperCase()}`;
 
   const handleDownload = async () => {
     if (!certRef.current) return;
@@ -38,8 +46,8 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
     if (navigator.share) {
       try {
         await navigator.share({
-          title: "Sertifikat StatsLab",
-          text: `Saya telah menyelesaikan modul literasi data StatsLab dan mencapai Level ${currentLevel} dengan ${xp} XP!`,
+          title: "Sertifikat Literasi Data StatsLab",
+          text: `Saya telah menyelesaikan modul literasi data StatsLab (No. ${certificateId}) dan mencapai Tingkat ${currentLevel} dengan ${xp} XP!`,
           url: window.location.href,
         });
       } catch (err) {
@@ -84,7 +92,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
         </button>
 
         <h2 style={{ textAlign: "center", marginBottom: "24px", fontSize: "1.8rem", color: "var(--color-emerald-700)" }}>
-          🎉 Selamat! Anda telah mencapai Level Master
+          🎉 Selamat, {studentName || "Siswa"}! Sertifikat Anda Siap
         </h2>
 
         <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px", overflow: "auto" }}>
@@ -100,8 +108,9 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
               borderRadius: "8px",
               textAlign: "center",
               position: "relative",
-              backgroundImage: "url('/pattern.png')",
-              backgroundSize: "cover",
+              backgroundImage: "url('/pattern.svg')",
+              backgroundSize: "140px",
+              backgroundRepeat: "repeat",
               color: "#1e293b",
               fontFamily: "'Inter', sans-serif"
             }}
@@ -125,12 +134,12 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
               dari <strong style={{ color: "var(--color-emerald-700)" }}>{schoolName || "Instansi"}</strong>
             </p>
             
-            <p style={{ fontSize: "1.2rem", lineHeight: "1.6", maxWidth: "550px", margin: "0 auto", marginBottom: "40px" }}>
+            <p style={{ fontSize: "1.2rem", lineHeight: "1.6", maxWidth: "550px", margin: "0 auto", marginBottom: "32px" }}>
               Atas pencapaian luar biasa dalam menyelesaikan Modul Literasi Data Terintegrasi Nilai Keislaman, 
-              mencapai <strong style={{ color: "var(--color-amber-600)" }}>Tingkat {currentLevel} (Critical Mathematical)</strong>.
+              mencapai <strong style={{ color: "var(--color-amber-600)" }}>Tingkat {currentLevel}</strong> pada Asesmen Literasi Data (Watson-Callingham).
             </p>
             
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "20px", padding: "0 40px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "8px", padding: "0 40px" }}>
               <div style={{ textAlign: "center" }}>
                 <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>Skor Total</p>
                 <p style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--color-emerald-700)" }}>{totalScore}</p>
@@ -139,6 +148,11 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
                 <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>Experience Points</p>
                 <p style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--color-amber-600)" }}>{xp} XP</p>
               </div>
+            </div>
+
+            <div style={{ position: "absolute", bottom: "18px", left: 0, right: 0, display: "flex", justifyContent: "space-between", padding: "0 40px", fontSize: "0.8rem", color: "#64748b" }}>
+              <span>No. Sertifikat: {certificateId}</span>
+              <span>Diterbitkan: {issuedDate}</span>
             </div>
           </div>
         </div>

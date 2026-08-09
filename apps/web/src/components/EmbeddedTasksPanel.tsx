@@ -22,6 +22,8 @@ interface EmbeddedTasksPanelProps {
   onOpenCertificate?: () => void;
   onSelectTaskForChart?: (taskId: string | null) => void;
   activePblTaskId?: string | null;
+  chartSelection?: { taskId: string; label: string } | null;
+  onClearChartSelection?: () => void;
   onTabayyunTrigger?: () => void;
 }
 
@@ -30,6 +32,8 @@ export default function EmbeddedTasksPanel({
   onOpenCertificate,
   onSelectTaskForChart,
   activePblTaskId,
+  chartSelection,
+  onClearChartSelection,
   onTabayyunTrigger,
 }: EmbeddedTasksPanelProps) {
   const { taskResponses, submitTaskAnswer, currentLevel, totalScore, badges, sessionId } = useStatsLabStore();
@@ -52,7 +56,8 @@ export default function EmbeddedTasksPanel({
   };
 
   const handleSubmit = async (task: Task) => {
-    const text = answers[task.id] || "";
+    const selection = chartSelection && chartSelection.taskId === task.id ? chartSelection.label : null;
+    const text = selection || answers[task.id] || "";
     if (!text.trim()) return;
 
     // Trigger Tabayyun modal before submitting high-level tasks (Level 6: task 7 or 8)
@@ -73,6 +78,8 @@ export default function EmbeddedTasksPanel({
     ) {
       score = 2; // Full credit
     }
+
+    if (selection && onClearChartSelection) onClearChartSelection();
 
     // Save to Zustand
     submitTaskAnswer(task.id, text, score);
@@ -115,7 +122,7 @@ export default function EmbeddedTasksPanel({
             Tugas Literasi Data (Watson-Callingham)
           </h3>
           <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-            Jawab 8 tugas berjenjang untuk menguji kemampuan membaca dan mengevaluasi data.
+            Jawab tugas berjenjang pada modul ini untuk menguji kemampuan membaca dan mengevaluasi data.
           </p>
         </div>
 
@@ -140,6 +147,7 @@ export default function EmbeddedTasksPanel({
           const isSubmitted = !!response;
           const isChartTask = task.inputType === "chart";
           const isActivePbl = activePblTaskId === task.id;
+          const selectedForTask = chartSelection && chartSelection.taskId === task.id ? chartSelection.label : null;
 
           return (
             <div
@@ -216,7 +224,7 @@ export default function EmbeddedTasksPanel({
 
               {/* Interactive Chart Task Action */}
               {isChartTask && !isSubmitted && (
-                <div style={{ marginBottom: "12px" }}>
+                <div style={{ marginBottom: "12px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
                   <button
                     type="button"
                     onClick={() => onSelectTaskForChart && onSelectTaskForChart(isActivePbl ? null : task.id)}
@@ -231,8 +239,40 @@ export default function EmbeddedTasksPanel({
                     }}
                   >
                     <MousePointer size={16} />
-                    {isActivePbl ? "Sedang Menunggu Klik pada Grafik..." : "Jawab Lewat Klik Grafik"}
+                    {isActivePbl
+                      ? "Sedang Menunggu Klik pada Grafik..."
+                      : selectedForTask
+                      ? "Ulangi Klik Grafik"
+                      : "Jawab Lewat Klik Grafik"}
                   </button>
+
+                  {selectedForTask && (
+                    <span
+                      style={{
+                        fontSize: "0.85rem",
+                        color: "var(--color-emerald-700)",
+                        backgroundColor: "var(--color-emerald-50)",
+                        padding: "6px 12px",
+                        borderRadius: "var(--radius-md)",
+                      }}
+                    >
+                      ✅ Titik terpilih: {selectedForTask.replace("[Grafik] ", "")}
+                      <button
+                        type="button"
+                        onClick={onClearChartSelection}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "var(--color-red-600)",
+                          cursor: "pointer",
+                          fontWeight: 600,
+                          marginLeft: "8px",
+                        }}
+                      >
+                        Batalkan
+                      </button>
+                    </span>
+                  )}
                 </div>
               )}
 
@@ -242,7 +282,7 @@ export default function EmbeddedTasksPanel({
                   type="text"
                   placeholder={isSubmitted ? response.answerText : "Tulis analisis data Anda di sini..."}
                   disabled={isSubmitted}
-                  value={answers[task.id] || ""}
+                  value={selectedForTask ?? answers[task.id] ?? ""}
                   onChange={(e) => handleTextChange(task.id, e.target.value)}
                   style={{
                     flex: 1,

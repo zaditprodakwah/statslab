@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140" viewBox="0 0 140 140">
+  <defs>
+    <pattern id="statlab-pattern" width="70" height="70" patternUnits="userSpaceOnUse">
+      <rect width="70" height="70" fill="#f8fafc"/>
+      <path d="M0 35 L17.5 0 L35 35 L17.5 70 Z" fill="#059669" opacity="0.06"/>
+      <path d="M35 35 L52.5 0 L70 35 L52.5 70 Z" fill="#10b981" opacity="0.05"/>
+      <circle cx="35" cy="35" r="3" fill="#059669" opacity="0.10"/>
+      <path d="M70 0 L0 70 M0 0 L70 70" stroke="#059669" stroke-opacity="0.04" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#statlab-pattern)"/>
+</svg>
