@@ -7,7 +7,6 @@ neonConfig.webSocketConstructor = ws;
 
 const connectionString = `${process.env.DATABASE_URL}`;
 const pool = new Pool({ connectionString });
-// @ts-expect-error PrismaNeon types are out of sync with @neondatabase/serverless
 const adapter = new PrismaNeon(pool as any);
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
