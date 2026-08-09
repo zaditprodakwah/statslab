@@ -16,5 +16,8 @@
     "apps/*",
     "packages/*"
   ],
+  "devDependencies": {
+    "next": "16.3.0-canary.32"
+  },
   "packageManager": "npm@10.8.2"
 }
