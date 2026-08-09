@@ -51,14 +51,14 @@ export default function AdminLoginPage() {
             Panel Peneliti & Admin
           </h2>
           <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-            Masukkan PIN Akses Peneliti StatsLab (Default: STAI26)
+            Masukkan PIN Akses Peneliti StatsLab
           </p>
         </div>
 
         <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <input
             type="password"
-            placeholder="PIN Admin (misal: STAI26)"
+            placeholder="PIN Admin"
             className="form-input text-center"
             style={{ fontSize: "1.2rem", letterSpacing: "4px" }}
             value={pin}

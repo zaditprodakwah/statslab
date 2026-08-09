@@ -242,7 +242,7 @@ export default function HomePage() {
                 Akses panel kontrol peneliti untuk mengekspor data mentah ke format Winsteps (.ctl) & LISREL (.csv).
               </p>
               <Link href="/admin" className="btn-premium flex-center" style={{ textDecoration: "none", display: "inline-flex", padding: "12px 24px", backgroundColor: "#9333ea" }}>
-                Masuk ke Panel Peneliti (PIN STAI26)
+                Masuk ke Panel Peneliti
               </Link>
             </div>
           )}

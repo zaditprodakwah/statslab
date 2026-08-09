@@ -17,8 +17,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "PIN wajib diisi" }, { status: 400 });
     }
 
-    // Default admin PIN for development/initial setup: STAI26
-    const DEFAULT_PIN = "STAI26";
+    // Default admin PIN for development/initial setup is provided via process.env.ADMIN_PIN
+    const DEFAULT_PIN = process.env.ADMIN_PIN || "000000"; // fallback so it's not guessed easily if missing
 
     // Check DB for admin PIN or fallback to default
     const adminPinRecord = await prisma.adminPin.findFirst();
