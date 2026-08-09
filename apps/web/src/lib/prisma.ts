@@ -4,7 +4,7 @@ import { Pool, neonConfig } from "@neondatabase/serverless";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import ws from "ws";
 
-neonConfig.webSocketConstructor = ws;
+neonConfig.webSocketConstructor = (ws as any).default || ws;
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
