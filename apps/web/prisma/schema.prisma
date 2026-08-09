@@ -30,6 +30,9 @@ model Task {
   watsonLevel  Int      @map("watson_level") @db.SmallInt
   indicator    String   @db.VarChar(100)
   prompt       String   @db.Text
+  clue         String?  @db.Text
+  modelAnswer  String?  @map("model_answer") @db.Text
+  inputType    String   @default("text") @map("input_type") @db.VarChar(50)
 
   dataset      Dataset  @relation(fields: [datasetId], references: [id])
   responses    TaskResponse[]
@@ -130,4 +133,22 @@ model ExpertValidation {
   validator    Validator @relation(fields: [validatorId], references: [id])
 
   @@map("expert_validations")
+}
+
+model AdminPin {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pinHash   String   @unique @map("pin_hash") @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("admin_pins")
+}
+
+model SessionPin {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pinCode   String   @unique @map("pin_code") @db.VarChar(10)
+  testPhase String   @map("test_phase") @db.VarChar(50)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  expiresAt DateTime? @map("expires_at") @db.Timestamptz
+
+  @@map("session_pins")
 }

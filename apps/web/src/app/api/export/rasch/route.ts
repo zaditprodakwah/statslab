@@ -1,44 +1,60 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { Pool } from "pg";
 
-const connectionString = process.env.DATABASE_URL;
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+export const dynamic = "force-dynamic";
 
-export async function GET(req: Request) {
+let prisma: PrismaClient;
+
+export async function GET() {
+  if (!prisma) prisma = new PrismaClient();
+
   try {
-    const { searchParams } = new URL(req.url);
-    const format = searchParams.get("format") || "csv";
-
-    const responses = await prisma.taskResponse.findMany({
-      include: {
-        task: true,
-        session: true
-      },
-      orderBy: { createdAt: "desc" }
+    const tasks = await prisma.task.findMany({
+      orderBy: { taskNumber: "asc" }
     });
 
-    if (format === "csv") {
-      // Generate Winsteps-compatible CSV (Session ID, Task Number, Score 0-2)
-      let csvContent = "session_token,student_name,task_number,watson_level,score\n";
-      responses.forEach((r: any) => {
-        csvContent += `${r.session.sessionToken},"${r.session.studentName || "Anonim"}",${r.task.taskNumber},${r.task.watsonLevel},${r.score}\n`;
+    const sessions = await prisma.session.findMany({
+      include: {
+        taskResponses: true
+      },
+      orderBy: { createdAt: "asc" }
+    });
+
+    const taskCount = tasks.length || 8;
+
+    // Build Winsteps Control File Header & Polytomous CSV
+    let csv = `; Winsteps Control File - StatsLab Rasch PCM Analysis\n`;
+    csv += `; Generated on: ${new Date().toISOString()}\n`;
+    csv += `; Total Respondents: ${sessions.length}\n`;
+    csv += `; Total Items: ${taskCount}\n`;
+    csv += `TITLE = StatsLab Data Literacy Watson-Callingham Evaluation\n`;
+    csv += `NI = ${taskCount}\n`;
+    csv += `NAME1 = 1\n`;
+    csv += `NAMELEN = 30\n`;
+    csv += `CODES = 012\n`;
+    csv += `DATA =\n`;
+
+    // Add CSV rows
+    sessions.forEach((s) => {
+      const studentLabel = (s.studentName || "Anonim").padEnd(30, " ");
+      const scoresMap: Record<string, number> = {};
+      s.taskResponses.forEach((tr) => {
+        scoresMap[tr.taskId] = tr.score;
       });
 
-      return new NextResponse(csvContent, {
-        headers: {
-          "Content-Type": "text/csv; charset=utf-8",
-          "Content-Disposition": `attachment; filename="statslab_winsteps_export_${Date.now()}.csv"`
-        }
-      });
-    }
+      const scoresList = tasks.map((t) => (scoresMap[t.id] !== undefined ? scoresMap[t.id] : 0));
+      csv += `${studentLabel},${scoresList.join(",")}\n`;
+    });
 
-    return NextResponse.json({ success: true, count: responses.length, data: responses });
-  } catch (error) {
-    console.error("GET /api/export/rasch error:", error);
-    return NextResponse.json({ success: false, error: "Gagal mengekspor data Rasch" }, { status: 500 });
+    return new NextResponse(csv, {
+      status: 200,
+      headers: {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": `attachment; filename="statslab-rasch-winsteps-${Date.now()}.ctl"`
+      }
+    });
+  } catch (err) {
+    console.error("Export Rasch error:", err);
+    return NextResponse.json({ error: "Gagal membuat berkas ekspor Rasch" }, { status: 500 });
   }
 }

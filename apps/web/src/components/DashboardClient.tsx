@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import InteractiveChart from "@/components/InteractiveChart";
 import EmbeddedTasksPanel from "@/components/EmbeddedTasksPanel";
 import SusFormModal from "@/components/SusFormModal";
 import OnboardingTour from "@/components/OnboardingTour";
 import CertificateModal from "@/components/CertificateModal";
-import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Download, Award } from "lucide-react";
+import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Download, Award, ArrowRight } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
+import Link from "next/link";
 
 export default function DashboardClient() {
   const [datasets, setDatasets] = useState<any[]>([]);
@@ -15,13 +17,10 @@ export default function DashboardClient() {
   const [isSusOpen, setIsSusOpen] = useState(false);
   const [susResult, setSusResult] = useState<{ score: number; adjective: string } | null>(null);
   const [isCertOpen, setIsCertOpen] = useState(false);
-  const currentLevel = useStatsLabStore((state) => state.currentLevel);
+  const [activePblTaskId, setActivePblTaskId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (currentLevel >= 6) {
-      setIsCertOpen(true);
-    }
-  }, [currentLevel]);
+  const { currentLevel, submitTaskAnswer, sessionId } = useStatsLabStore();
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchDatasets() {
@@ -40,6 +39,36 @@ export default function DashboardClient() {
     fetchDatasets();
   }, []);
 
+  const handleChartClick = (payload: any) => {
+    if (!activePblTaskId) return;
+
+    // Active PBL task being answered via chart click
+    const activeTask = allTasks.find((t) => t.id === activePblTaskId);
+    if (!activeTask) return;
+
+    const pointData = payload?.activePayload ? payload.activePayload[0]?.payload : payload;
+    const clickedLabel = pointData ? JSON.stringify(pointData) : "Chart Element Clicked";
+
+    // Auto submit answer with full score (2) for correct graph interaction
+    submitTaskAnswer(activePblTaskId, `[Grafik Clicked] ${clickedLabel}`, 2);
+
+    if (sessionId) {
+      fetch("/api/task-responses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          taskId: activePblTaskId,
+          answerText: `[Grafik Clicked] ${clickedLabel}`,
+          score: 2,
+          interactionLog: { clickedPoint: pointData, timestamp: new Date().toISOString() }
+        })
+      }).catch((e) => console.error(e));
+    }
+
+    setActivePblTaskId(null);
+  };
+
   if (loading) {
     return (
       <div style={{ textAlign: "center", padding: "80px 20px" }}>
@@ -56,7 +85,7 @@ export default function DashboardClient() {
   return (
     <main className="page-enter" style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}>
       <OnboardingTour />
-      
+
       {/* Hero Banner Header */}
       <header style={{ marginBottom: "40px", textAlign: "center" }}>
         <div
@@ -83,14 +112,22 @@ export default function DashboardClient() {
           Analisis Outlier Tabayyun, dan Audit Skala Amanah.
         </p>
 
-        {/* Action Buttons for SUS Instrument & Data Export */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "12px" }}>
+        {/* Action Buttons for SUS Instrument, Summary & Data Export */}
+        <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
+          <Link
+            href="/dashboard/summary"
+            className="btn-premium btn-emerald flex-center"
+            style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}
+          >
+            <Award size={18} /> Ringkasan Capaian & Sertifikat
+          </Link>
+
           <button
             onClick={() => setIsSusOpen(true)}
             className="btn-premium"
-            style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "var(--color-emerald-700)" }}
+            style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "var(--color-amber-500)" }}
           >
-            <ClipboardCheck size={18} /> Isikan Kuesioner SUS (14 Butir)
+            <ClipboardCheck size={18} /> Evaluasi SUS (14 Butir)
           </button>
           <a
             href="/api/export/rasch"
@@ -108,7 +145,7 @@ export default function DashboardClient() {
               fontSize: "0.9rem"
             }}
           >
-            <Download size={18} /> Ekspor Data Rasch (CSV)
+            <Download size={18} /> Ekspor Data Rasch
           </a>
         </div>
 
@@ -133,10 +170,7 @@ export default function DashboardClient() {
             xAxisKey={dataset.chartConfig?.xAxis || "wilayah"}
             dataKeys={dataset.chartConfig?.dataKeys || ["zakat"]}
             data={dataset.rawData}
-            onChartClick={(data) => {
-              console.log("Chart clicked:", data);
-              alert(`Anda mengklik data: ${JSON.stringify(data.activePayload ? data.activePayload[0].payload : data)}`);
-            }}
+            onChartClick={handleChartClick}
           />
         ))}
       </section>
@@ -146,7 +180,12 @@ export default function DashboardClient() {
         <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px" }}>
           <BookOpen style={{ color: "var(--accent-primary)" }} /> Modul Asesmen Literasi Data
         </h2>
-        <EmbeddedTasksPanel tasks={allTasks} />
+        <EmbeddedTasksPanel
+          tasks={allTasks}
+          onOpenCertificate={() => setIsCertOpen(true)}
+          onSelectTaskForChart={(taskId) => setActivePblTaskId(taskId)}
+          activePblTaskId={activePblTaskId}
+        />
       </section>
 
       {/* Footer Info */}
@@ -160,7 +199,7 @@ export default function DashboardClient() {
         }}
       >
         <p>© 2026 StatsLab R&D Open Source Ecosystem. Terintegrasi Nilai Keislaman & Standar Watson-Callingham.</p>
-        
+
         {currentLevel >= 6 && (
           <button
             onClick={() => setIsCertOpen(true)}
@@ -188,11 +227,11 @@ export default function DashboardClient() {
         onClose={() => setIsSusOpen(false)}
         onSubmitSuccess={(score, adjective) => setSusResult({ score, adjective })}
       />
-      
+
       {/* Certificate Modal */}
-      <CertificateModal 
-        isOpen={isCertOpen} 
-        onClose={() => setIsCertOpen(false)} 
+      <CertificateModal
+        isOpen={isCertOpen}
+        onClose={() => setIsCertOpen(false)}
       />
     </main>
   );

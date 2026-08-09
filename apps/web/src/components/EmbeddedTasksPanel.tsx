@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
-import { CheckCircle2, Award, FileSpreadsheet } from "lucide-react";
+import { CheckCircle2, Award, HelpCircle, ChevronDown, ChevronUp, MousePointer, Sparkles } from "lucide-react";
+import VoiceInput from "@/components/VoiceInput";
 import confetti from "canvas-confetti";
 
 interface Task {
@@ -11,34 +12,89 @@ interface Task {
   watsonLevel: number;
   indicator: string;
   prompt: string;
+  clue?: string;
+  modelAnswer?: string;
+  inputType?: string; // "text" | "voice" | "chart"
 }
 
-export default function EmbeddedTasksPanel({ tasks }: { tasks: Task[] }) {
-  const { taskResponses, submitTaskAnswer, currentLevel, totalScore, badges } = useStatsLabStore();
+interface EmbeddedTasksPanelProps {
+  tasks: Task[];
+  onOpenCertificate?: () => void;
+  onSelectTaskForChart?: (taskId: string | null) => void;
+  activePblTaskId?: string | null;
+}
+
+export default function EmbeddedTasksPanel({
+  tasks,
+  onOpenCertificate,
+  onSelectTaskForChart,
+  activePblTaskId
+}: EmbeddedTasksPanelProps) {
+  const { taskResponses, submitTaskAnswer, currentLevel, totalScore, badges, sessionId } = useStatsLabStore();
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [openClues, setOpenClues] = useState<Record<string, boolean>>({});
 
   const handleTextChange = (taskId: string, text: string) => {
     setAnswers((prev) => ({ ...prev, [taskId]: text }));
   };
 
-  const handleSubmit = (task: Task) => {
+  const toggleClue = (taskId: string) => {
+    setOpenClues((prev) => ({ ...prev, [taskId]: !prev[taskId] }));
+  };
+
+  const handleVoiceResult = (taskId: string, transcript: string) => {
+    setAnswers((prev) => ({
+      ...prev,
+      [taskId]: prev[taskId] ? `${prev[taskId]} ${transcript}` : transcript
+    }));
+  };
+
+  const handleSubmit = async (task: Task) => {
     const text = answers[task.id] || "";
     if (!text.trim()) return;
 
-    // Automated Scoring Logic (Politomi 0, 1, 2) based on keyword heuristics
+    // Automated Scoring Logic (Politomi 0, 1, 2)
     let score = 1; // Default partial credit
-    if (text.length > 20 && (text.toLowerCase().includes("nol") || text.toLowerCase().includes("tabayyun") || text.toLowerCase().includes("tawazun") || text.toLowerCase().includes("zakat"))) {
+    if (
+      text.length > 15 &&
+      (text.toLowerCase().includes("nol") ||
+        text.toLowerCase().includes("tabayyun") ||
+        text.toLowerCase().includes("tawazun") ||
+        text.toLowerCase().includes("zakat") ||
+        text.toLowerCase().includes("tertinggi") ||
+        text.toLowerCase().includes("outlier"))
+    ) {
       score = 2; // Full credit
     }
 
+    // Save to Zustand
     submitTaskAnswer(task.id, text, score);
+
+    // Save to PostgreSQL database if sessionId exists
+    if (sessionId) {
+      try {
+        await fetch("/api/task-responses", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId,
+            taskId: task.id,
+            answerText: text,
+            score,
+            interactionLog: { timestamp: new Date().toISOString(), inputType: task.inputType || "text" }
+          })
+        });
+      } catch (err) {
+        console.error("Failed to sync task response to DB:", err);
+      }
+    }
 
     // Trigger celebration confetti if Watson Level 6 reached
     if (currentLevel >= 5 && score === 2) {
       confetti({
-        particleCount: 80,
-        spread: 60,
-        origin: { y: 0.7 }
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
       });
     }
   };
@@ -75,15 +131,24 @@ export default function EmbeddedTasksPanel({ tasks }: { tasks: Task[] }) {
         {tasks.map((task) => {
           const response = taskResponses[task.id];
           const isSubmitted = !!response;
+          const isChartTask = task.inputType === "chart";
+          const isActivePbl = activePblTaskId === task.id;
 
           return (
             <div
               key={task.id}
               style={{
-                border: "1px solid var(--color-slate-200)",
+                border: isActivePbl
+                  ? "2px solid var(--color-amber-500)"
+                  : "1px solid var(--color-slate-200)",
                 borderRadius: "var(--radius-md)",
                 padding: "16px",
-                backgroundColor: isSubmitted ? "var(--color-emerald-50)" : "var(--bg-surface)"
+                backgroundColor: isSubmitted
+                  ? "var(--color-emerald-50)"
+                  : isActivePbl
+                  ? "var(--color-amber-50)"
+                  : "var(--bg-surface)",
+                transition: "all 0.3s ease"
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
@@ -101,8 +166,71 @@ export default function EmbeddedTasksPanel({ tasks }: { tasks: Task[] }) {
                 {task.prompt}
               </p>
 
-              {/* Text Input & Submit */}
-              <div style={{ display: "flex", gap: "12px" }}>
+              {/* Clue / Kunci Jawaban Toggle */}
+              {task.clue && (
+                <div style={{ marginBottom: "12px" }}>
+                  <button
+                    onClick={() => toggleClue(task.id)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "var(--color-amber-600)",
+                      fontSize: "0.85rem",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      padding: 0
+                    }}
+                  >
+                    <HelpCircle size={14} />
+                    {openClues[task.id] ? "Sembunyikan Clue" : "Lihat Clue / Petunjuk Soal"}
+                    {openClues[task.id] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  </button>
+
+                  {openClues[task.id] && (
+                    <div
+                      style={{
+                        marginTop: "6px",
+                        padding: "10px 14px",
+                        backgroundColor: "var(--color-amber-50)",
+                        borderLeft: "3px solid var(--color-amber-500)",
+                        borderRadius: "4px",
+                        fontSize: "0.85rem",
+                        color: "var(--color-slate-800)"
+                      }}
+                    >
+                      💡 <strong>Clue Tabayyun:</strong> {task.clue}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Interactive Chart Task Action */}
+              {isChartTask && !isSubmitted && (
+                <div style={{ marginBottom: "12px" }}>
+                  <button
+                    type="button"
+                    onClick={() => onSelectTaskForChart && onSelectTaskForChart(isActivePbl ? null : task.id)}
+                    className="btn-premium"
+                    style={{
+                      backgroundColor: isActivePbl ? "var(--color-amber-500)" : "var(--color-emerald-700)",
+                      fontSize: "0.85rem",
+                      padding: "8px 14px",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px"
+                    }}
+                  >
+                    <MousePointer size={16} />
+                    {isActivePbl ? "Sedang Menunggu Klik pada Grafik..." : "Jawab Lewat Klik Grafik"}
+                  </button>
+                </div>
+              )}
+
+              {/* Text / Voice Input & Submit */}
+              <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                 <input
                   type="text"
                   placeholder={isSubmitted ? response.answerText : "Tulis analisis data Anda di sini..."}
@@ -118,6 +246,11 @@ export default function EmbeddedTasksPanel({ tasks }: { tasks: Task[] }) {
                     fontSize: "0.9rem"
                   }}
                 />
+
+                {!isSubmitted && (
+                  <VoiceInput onResult={(transcript) => handleVoiceResult(task.id, transcript)} />
+                )}
+
                 <button
                   onClick={() => handleSubmit(task)}
                   disabled={isSubmitted}
@@ -150,15 +283,15 @@ export default function EmbeddedTasksPanel({ tasks }: { tasks: Task[] }) {
           }}
         >
           <div>
-            <h4 style={{ fontSize: "1.1rem", marginBottom: "4px", color: "#fff" }}>
-              🎉 Selamat! Anda Membuka Sertifikat Kelulusan Literasi Data
+            <h4 style={{ fontSize: "1.1rem", marginBottom: "4px", color: "#fff", display: "flex", alignItems: "center", gap: "8px" }}>
+              <Sparkles size={20} color="var(--color-amber-500)" /> 🎉 Selamat! Anda Membuka Sertifikat Kelulusan Literasi Data
             </h4>
             <p style={{ fontSize: "0.875rem", opacity: 0.9 }}>
               Anda telah menyelesaikan seluruh tugas dengan penalaran kritis berprinsip Keislaman.
             </p>
           </div>
           <button
-            onClick={() => window.print()}
+            onClick={() => onOpenCertificate && onOpenCertificate()}
             style={{
               padding: "10px 18px",
               borderRadius: "var(--radius-md)",
@@ -169,7 +302,7 @@ export default function EmbeddedTasksPanel({ tasks }: { tasks: Task[] }) {
               cursor: "pointer"
             }}
           >
-            Cetak Sertifikat
+            Lihat & Unduh Sertifikat
           </button>
         </div>
       )}

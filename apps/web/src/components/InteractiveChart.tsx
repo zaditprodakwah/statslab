@@ -11,145 +11,105 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
+import { ShieldCheck, HelpCircle, Eye, RefreshCw, MoveVertical } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
-import { ShieldCheck, Scale, AlertTriangle } from "lucide-react";
 
-interface ChartProps {
-  data: any[];
-  type: "bar" | "line";
-  xAxisKey: string;
-  dataKeys: string[];
+interface InteractiveChartProps {
   title: string;
   islamicValue: string;
-  onChartClick?: (data: any) => void;
+  type?: "bar" | "line";
+  xAxisKey?: string;
+  dataKeys?: string[];
+  data: any[];
+  onChartClick?: (payload: any) => void;
+  compactMode?: boolean;
 }
 
 export default function InteractiveChart({
-  data,
-  type,
-  xAxisKey,
-  dataKeys,
   title,
   islamicValue,
-  onChartClick
-}: ChartProps) {
-  const { amanahZeroScale, toggleAmanahScale, confirmTawazun, tawazunConfirmed } = useStatsLabStore();
-  const [activeTabayyun, setActiveTabayyun] = useState(false);
+  type = "bar",
+  xAxisKey = "wilayah",
+  dataKeys = ["zakat"],
+  data: initialData,
+  onChartClick,
+  compactMode = false
+}: InteractiveChartProps) {
+  const [data, setData] = useState(initialData);
+  const [showTabayyunModal, setShowTabayyunModal] = useState(false);
+  const [selectedPoint, setSelectedPoint] = useState<any>(null);
 
-  // Calculate Mean and Median for Tawazun check
-  const values = data.map((d) => d[dataKeys[0]] || 0);
-  const mean = values.reduce((a, b) => a + b, 0) / (values.length || 1);
-  const sorted = [...values].sort((a, b) => a - b);
-  const median =
-    sorted.length % 2 === 0
-      ? (sorted[sorted.length / 2 - 1] + sorted[sorted.length / 2]) / 2
-      : sorted[Math.floor(sorted.length / 2)];
+  // Zustand state for 3 Pilar Islam
+  const { amanahZeroScale, toggleAmanahScale } = useStatsLabStore();
 
-  // Outlier detection threshold (20% from median for Tabayyun)
-  const isOutlierDetected = values.some((v) => Math.abs(v - median) > 0.2 * median);
+  const handleOutlierClick = (item: any) => {
+    setSelectedPoint(item);
+    setShowTabayyunModal(true);
+  };
+
+  const handleResetData = () => {
+    setData(initialData);
+  };
 
   return (
-    <div className="dataset-card glass-panel" style={{ padding: "24px", marginBottom: "24px" }}>
-      {/* Header & Islamic Value Badge */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+    <div className="dataset-card glass-panel" style={{ padding: compactMode ? "16px" : "24px", marginBottom: "24px" }}>
+      {/* Card Header & Islamic Value Badge */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
         <div>
-          <h3 style={{ fontSize: "1.25rem", color: "var(--text-primary)" }}>{title}</h3>
-          <span style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-            Nilai Keislaman: <strong style={{ color: "var(--accent-primary)" }}>Pilar {islamicValue}</strong>
-          </span>
+          <h3 style={{ fontSize: compactMode ? "1.1rem" : "1.25rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "8px" }}>
+            {title}
+          </h3>
+          <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "4px" }}>
+            Visualisasi Data Statistika Terintegrasi Nilai <strong>{islamicValue}</strong>
+          </p>
         </div>
 
-        {/* 3 Islamic Pillars Control Tools */}
-        <div style={{ display: "flex", gap: "10px" }}>
-          {/* Pilar Amanah Toggle */}
+        {/* 3 Pilar Islam Control Toggles */}
+        <div style={{ display: "flex", gap: "8px" }}>
           <button
             onClick={toggleAmanahScale}
             className="btn-premium"
             style={{
+              padding: "6px 12px",
+              fontSize: "0.8rem",
+              backgroundColor: amanahZeroScale ? "var(--color-emerald-700)" : "var(--color-amber-500)",
               display: "flex",
               alignItems: "center",
-              gap: "6px",
-              fontSize: "0.85rem",
-              backgroundColor: amanahZeroScale ? "var(--color-emerald-700)" : "var(--color-amber-500)"
+              gap: "4px"
             }}
-            title="Klik untuk menguji skala sumbu Y nol-based vs truncated (QS. Al-Mutaffifin: 1-3)"
+            title={
+              amanahZeroScale
+                ? "Prinsip Amanah: Skala Sumbu Y dimulai dari Nol (Jujur & Transparan)"
+                : "Skala Potong: Sumbu Y dipotong (Dapat Memanipulasi Visual)"
+            }
           >
-            <ShieldCheck size={16} />
-            {amanahZeroScale ? "Amanah: Skala V-Zero" : "Amanah: Skala Dipotong"}
+            <ShieldCheck size={14} />
+            {amanahZeroScale ? "Amanah: Skala Nol (Aktif)" : "Skala Dipotong (Non-Amanah)"}
           </button>
 
-          {/* Pilar Tabayyun Trigger */}
-          {isOutlierDetected && (
-            <button
-              onClick={() => setActiveTabayyun(!activeTabayyun)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "8px 12px",
-                borderRadius: "var(--radius-md)",
-                border: "1px solid var(--color-amber-500)",
-                backgroundColor: activeTabayyun ? "var(--color-amber-500)" : "transparent",
-                color: activeTabayyun ? "#fff" : "var(--color-amber-500)",
-                fontSize: "0.85rem",
-                cursor: "pointer"
-              }}
-            >
-              <AlertTriangle size={16} />
-              {activeTabayyun ? "Tabayyun: Outlier Dideteksi" : "Uji Tabayyun"}
-            </button>
-          )}
-
-          {/* Pilar Tawazun Trigger */}
           <button
-            onClick={confirmTawazun}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "8px 12px",
-              borderRadius: "var(--radius-md)",
-              border: "1px solid var(--color-emerald-600)",
-              backgroundColor: tawazunConfirmed ? "var(--color-emerald-600)" : "transparent",
-              color: tawazunConfirmed ? "#fff" : "var(--color-emerald-600)",
-              fontSize: "0.85rem",
-              cursor: "pointer"
-            }}
+            onClick={handleResetData}
+            className="control-btn"
+            style={{ padding: "6px" }}
+            title="Reset Data ke Semula"
           >
-            <Scale size={16} />
-            {tawazunConfirmed ? "Tawazun OK" : "Cek Tawazun"}
+            <RefreshCw size={16} />
           </button>
         </div>
       </div>
 
-      {/* Tabayyun Verification Alert */}
-      {activeTabayyun && (
-        <div
-          style={{
-            backgroundColor: "rgba(245, 158, 11, 0.1)",
-            borderLeft: "4px solid var(--color-amber-500)",
-            padding: "12px 16px",
-            borderRadius: "4px",
-            marginBottom: "16px",
-            fontSize: "0.9rem"
-          }}
-        >
-          <strong>⚠️ Peringatan Tabayyun (QS. Al-Hujurat: 6):</strong> Ditemukan indikasi pencatatan lonjakan ekstrem (outlier &gt; 20% dari median). Lakukan verifikasi sumber data sebelum menarik kesimpulan akhir.
-        </div>
-      )}
-
-      {/* Recharts Render Container */}
-      <div style={{ width: "100%", height: 350, marginTop: "16px" }}>
+      {/* Chart Visualization */}
+      <div style={{ width: "100%", height: compactMode ? 240 : 300, marginTop: "12px" }}>
         <ResponsiveContainer width="100%" height="100%">
           {type === "bar" ? (
             <BarChart data={data}>
               <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-              <XAxis dataKey={xAxisKey} />
-              <YAxis domain={amanahZeroScale ? [0, "auto"] : ["dataMin - 5000000", "auto"]} />
-              <Tooltip contentStyle={{ borderRadius: "var(--radius-md)" }} />
-              <Legend />
+              <XAxis dataKey={xAxisKey} tick={{ fontSize: 12 }} />
+              <YAxis domain={amanahZeroScale ? [0, "auto"] : ["dataMin - 20", "auto"]} tick={{ fontSize: 12 }} />
+              <Tooltip contentStyle={{ borderRadius: "var(--radius-md)", fontSize: "0.85rem" }} />
+              <Legend wrapperStyle={{ fontSize: "0.85rem" }} />
               {dataKeys.map((key, idx) => (
                 <Bar
                   key={key}
@@ -157,18 +117,20 @@ export default function InteractiveChart({
                   fill={idx === 0 ? "var(--color-emerald-600)" : "var(--color-amber-500)"}
                   radius={[6, 6, 0, 0]}
                   animationDuration={800}
-                  onClick={(data) => onChartClick && onChartClick(data)}
-                  style={{ cursor: onChartClick ? "pointer" : "default" }}
+                  onClick={(payload) => {
+                    if (onChartClick) onChartClick(payload);
+                  }}
+                  style={{ cursor: "pointer" }}
                 />
               ))}
             </BarChart>
           ) : (
             <LineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-              <XAxis dataKey={xAxisKey} />
-              <YAxis domain={amanahZeroScale ? [0, "auto"] : ["dataMin - 20", "auto"]} />
-              <Tooltip contentStyle={{ borderRadius: "var(--radius-md)" }} />
-              <Legend />
+              <XAxis dataKey={xAxisKey} tick={{ fontSize: 12 }} />
+              <YAxis domain={amanahZeroScale ? [0, "auto"] : ["dataMin - 20", "auto"]} tick={{ fontSize: 12 }} />
+              <Tooltip contentStyle={{ borderRadius: "var(--radius-md)", fontSize: "0.85rem" }} />
+              <Legend wrapperStyle={{ fontSize: "0.85rem" }} />
               {dataKeys.map((key) => (
                 <Line
                   key={key}
@@ -176,9 +138,15 @@ export default function InteractiveChart({
                   dataKey={key}
                   stroke="var(--color-emerald-700)"
                   strokeWidth={3}
-                  dot={{ r: 6 }}
+                  dot={{ r: 6, cursor: "grab" }}
                   animationDuration={800}
-                  activeDot={{ onClick: (e, payload) => onChartClick && onChartClick(payload), cursor: onChartClick ? "pointer" : "default" }}
+                  activeDot={{
+                    r: 9,
+                    onClick: (e, payload) => {
+                      if (onChartClick) onChartClick(payload);
+                    },
+                    cursor: "grab"
+                  }}
                 />
               ))}
             </LineChart>
@@ -186,22 +154,43 @@ export default function InteractiveChart({
         </ResponsiveContainer>
       </div>
 
-      {/* Mean vs Median Analytical Footer (Tawazun Indicator) */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          marginTop: "16px",
-          paddingTop: "12px",
-          borderTop: "1px stroke var(--color-slate-200)",
-          fontSize: "0.875rem",
-          color: "var(--text-secondary)"
-        }}
-      >
-        <span>Rata-Rata (Mean): <strong>{mean.toLocaleString("id-ID", { maximumFractionDigits: 1 })}</strong></span>
-        <span>Nilai Tengah (Median): <strong>{median.toLocaleString("id-ID", { maximumFractionDigits: 1 })}</strong></span>
-        <span>Status Distribusi (Tawazun): <strong style={{ color: Math.abs(mean - median) < 10 ? "var(--color-emerald-700)" : "var(--color-amber-500)" }}>{Math.abs(mean - median) < 10 ? "Seimbang" : "Miring (Asimetris)"}</strong></span>
-      </div>
+      {/* Tabayyun Verification Modal */}
+      {showTabayyunModal && selectedPoint && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+            padding: "16px"
+          }}
+        >
+          <div className="glass-panel" style={{ width: "100%", maxWidth: "450px", padding: "24px" }}>
+            <h4 style={{ fontSize: "1.2rem", color: "var(--color-emerald-700)", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
+              <ShieldCheck size={20} /> Peringatan Etika Tabayyun (QS. Al-Hujurat: 6)
+            </h4>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "16px" }}>
+              Anda memilih titik data nilai ekstrem/outlier pada <strong>{selectedPoint[xAxisKey]}</strong>.
+              Sebelum menyimpulkan data ini, lakukan verifikasi ulang apakah ada kesalahan input data.
+            </p>
+
+            <button
+              onClick={() => setShowTabayyunModal(false)}
+              className="btn-premium btn-emerald w-full"
+              style={{ padding: "10px" }}
+            >
+              Saya Mengerti (Konfirmasi Tabayyun)
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

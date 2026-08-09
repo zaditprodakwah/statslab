@@ -523,3 +523,40 @@ h1, h2, h3, h4, h5, h6 {
 .btn-logout:hover {
   background-color: rgba(239, 68, 68, 0.1);
 }
+
+/* === ACCESSIBILITY & PROJECTOR HIGH CONTRAST MODE === */
+body.projector-mode {
+  --bg-primary: #000000;
+  --bg-surface: #121212;
+  --text-primary: #ffffff;
+  --text-secondary: #e2e8f0;
+  --accent-primary: #10b981;
+  font-size: 110%;
+}
+
+body.projector-mode .glass-panel {
+  background: #18181b;
+  border: 2px solid #10b981;
+}
+
+body.projector-mode button,
+body.projector-mode a {
+  outline: 3px solid #f59e0b !important;
+}
+
+/* Microphone Pulsing Animation */
+@keyframes pulseRed {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.pulse-red {
+  animation: pulseRed 1.5s infinite;
+}

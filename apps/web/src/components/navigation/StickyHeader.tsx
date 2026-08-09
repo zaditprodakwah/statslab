@@ -1,104 +1,104 @@
 "use client";
 
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { 
-  Menu,
-  ChevronDown,
-  Monitor,
-  Type,
-  LogOut,
-  Moon,
-  Sun
-} from 'lucide-react';
-import { useStatsLabStore } from '@/store/useStatsLabStore';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { useStatsLabStore } from "@/store/useStatsLabStore";
+import { Award, Sun, Moon, LogOut, Type, Eye, ShieldCheck } from "lucide-react";
 
 export default function StickyHeader() {
-  const { taskResponses, studentName, currentLevel, xp } = useStatsLabStore();
-  const taskProgress = Object.keys(taskResponses || {}).length;
-  const totalTasks = 8;
-  const progressPercent = Math.min((taskProgress / totalTasks) * 100, 100);
+  const { studentName, schoolName, currentLevel, xp, totalScore } = useStatsLabStore();
+  const [fontSizeLevel, setFontSizeLevel] = useState(0); // 0: Normal, 1: Besar, 2: Ultra
+  const [projectorMode, setProjectorMode] = useState(false);
+
+  useEffect(() => {
+    // Apply font size adjustment to root html
+    const root = document.documentElement;
+    if (fontSizeLevel === 1) {
+      root.style.fontSize = "18px";
+    } else if (fontSizeLevel === 2) {
+      root.style.fontSize = "20px";
+    } else {
+      root.style.fontSize = "16px";
+    }
+  }, [fontSizeLevel]);
+
+  const toggleFontSize = () => {
+    setFontSizeLevel((prev) => (prev + 1) % 3);
+  };
+
+  const toggleProjectorMode = () => {
+    setProjectorMode((prev) => {
+      const next = !prev;
+      if (next) {
+        document.body.classList.add("projector-mode");
+      } else {
+        document.body.classList.remove("projector-mode");
+      }
+      return next;
+    });
+  };
 
   return (
     <header className="header-sticky">
       <div className="header-container">
-        
-        {/* Logos & Branding */}
+        {/* Brand Logo */}
         <div className="header-brand">
-          <Link href="/" className="brand-logo">
+          <Link href="/" className="brand-logo" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <ShieldCheck style={{ color: "var(--color-emerald-700)" }} size={24} />
             <span>StatsLab</span>
           </Link>
-          <div className="brand-sponsor">
-            <a 
-              href="https://staialbahjah.ac.id/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="sponsor-link"
-            >
-              <Image 
-                src="/logo-institut.jpg" 
-                alt="STAI Al-Bahjah Logo" 
-                width={24} 
-                height={24} 
-                className="sponsor-img"
-              />
-              <span className="sponsor-text">Sponsored by STAI Al-Bahjah</span>
-            </a>
+        </div>
+
+        {/* Watson-Callingham Level & Progress */}
+        <div className="progress-indicator">
+          <div className="progress-labels">
+            <span className="progress-title">Watson-Callingham Level {currentLevel}</span>
+            <span className="progress-status">Skor: {totalScore} / 16 ({xp} XP)</span>
+          </div>
+          <div className="progress-bar-bg">
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${Math.min((totalScore / 16) * 100, 100)}%` }}
+            />
           </div>
         </div>
 
-        {/* Mobile Nav Toggle */}
-        <button className="mobile-toggle" aria-label="Toggle Menu">
-          <Menu className="icon-md" />
-        </button>
+        {/* Accessibility & Controls */}
+        <div className="header-controls">
+          {/* Font Size Toggle */}
+          <button
+            onClick={toggleFontSize}
+            className="control-btn"
+            title={`Ukuran Teks: ${fontSizeLevel === 0 ? "Normal" : fontSizeLevel === 1 ? "Besar" : "Sangat Besar"}`}
+          >
+            <Type size={18} />
+          </button>
 
-        <div className="header-nav">
-          
-          {/* Module Switcher */}
-          <div className="module-switcher">
-            <button className="module-btn">
-              <span>Modul: Zakat</span>
-              <ChevronDown className="icon-sm" />
-            </button>
-          </div>
+          {/* Projector High Contrast Toggle */}
+          <button
+            onClick={toggleProjectorMode}
+            className="control-btn"
+            title={projectorMode ? "Matikan Mode Kontras Proyektor" : "Mode Kontras Proyektor Kelas (High Contrast)"}
+            style={{ color: projectorMode ? "var(--color-amber-500)" : "inherit" }}
+          >
+            <Eye size={18} />
+          </button>
 
-          {/* Sticky Progress Indicator */}
-          <div className="progress-indicator">
-            <div className="progress-labels">
-              <span className="progress-title">Tugas Literasi Data</span>
-              <span className="progress-status">{taskProgress}/{totalTasks} Selesai</span>
+          {/* Student Profile Widget */}
+          {studentName && (
+            <div className="session-control">
+              <span className="session-id">
+                👤 <strong>{studentName}</strong> ({schoolName || "Siswa"})
+              </span>
+              <button
+                onClick={() => window.location.reload()}
+                className="btn-logout"
+                title="Keluar / Ganti Sesi"
+              >
+                <LogOut size={16} />
+              </button>
             </div>
-            <div className="progress-bar-bg">
-              <div 
-                className="progress-bar-fill" 
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Accessibility & Session Controls */}
-          <nav className="header-controls">
-            <button className="control-btn" aria-label="Toggle Font Size">
-              <Type className="icon-sm" />
-            </button>
-            <button className="control-btn" aria-label="Toggle High Contrast">
-              <Monitor className="icon-sm" />
-            </button>
-            <button className="control-btn" aria-label="Toggle Theme">
-              <Moon className="icon-sm hidden dark-block" />
-              <Sun className="icon-sm dark-hidden" />
-            </button>
-            
-            <div className="session-control" style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginRight: "12px" }}>
-              <span className="session-id" style={{ fontWeight: "bold" }}>{studentName || "Siswa"}</span>
-              <span style={{ fontSize: "0.75rem", color: "var(--color-amber-600)" }}>Lvl {currentLevel} • {xp} XP</span>
-            </div>
-            <button className="btn-logout" aria-label="Keluar Sesi">
-              <LogOut className="icon-sm" />
-            </button>
-          </nav>
-
+          )}
         </div>
       </div>
     </header>
