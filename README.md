@@ -3,74 +3,97 @@
   <em>Media Pembelajaran Statistika Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa</em>
 </p>
 
+<p align="center">
+  <a href="https://statslabmedia.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-StatsLab_V2-059669?style=for-the-badge&logo=vercel" alt="Live Demo" /></a>
+  <img src="https://img.shields.io/badge/Next.js-15_App_Router-000000?style=for-the-badge&logo=nextdotjs" alt="Next.js 15" />
+  <img src="https://img.shields.io/badge/Prisma-v7-2D3748?style=for-the-badge&logo=prisma" alt="Prisma v7" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Neon_Serverless-4169E1?style=for-the-badge&logo=postgresql" alt="Neon PostgreSQL" />
+</p>
+
 ---
 
 ## 📖 Tentang Proyek
 
-**StatsLab** adalah repositori R&D (Research & Development) EdTech *open source* berbasis keislaman pertama di Indonesia. Awalnya dikembangkan sebagai instrumen penelitian skripsi, StatsLab kini berevolusi menjadi infrastruktur terbuka (*Learning Analytics*) untuk komunitas peneliti, guru, dan pengembang teknologi pendidikan.
+**StatsLab** adalah repositori R&D (*Research & Development*) EdTech *open source* berbasis keislaman pertama di Indonesia. Dikembangkan sebagai instrumen penelitian skripsi sekaligus infrastruktur terbuka (*Learning Analytics*) untuk komunitas peneliti, guru, dan pengembang teknologi pendidikan.
 
-Proyek ini dibangun berdasarkan **Cognitive Load Theory**, menyajikan antarmuka visualisasi data yang bersih dan meminimalisasi beban kognitif ekstra bagi siswa.
-
-### Arsitektur Tiga Pilar
-1. **Web App (Layer 1 & 2)**: Antarmuka Next.js 15 interaktif dengan integrasi gamifikasi dan *clean UI*.
-2. **Dataset & Instrumen (Open Data)**: Repositori JSON data bernuansa Islami (Zakat, Wakaf, Tajwid) dan instrumen literasi (Hierarki Watson-Callingham).
-3. **Analitik Psikometri (Open Science)**: Skrip analitik R (`eRm`, `lavaan`) untuk reproduksi akademis (Rasch Model, CFA, Aiken's V).
-
-Untuk pemahaman mendalam tentang batasan antara pilar penelitian dan pengayaan produk, silakan baca [Arsitektur Master](docs/master.md).
+Proyek ini dibangun berdasarkan **Cognitive Load Theory (CLT)** dan **Taste Skill Design System**, menyajikan antarmuka visualisasi data yang bersih (*clean UI*), elegan, dan meminimalisasi beban kognitif ekstra bagi siswa.
 
 ---
 
-## 🚀 Instalasi & Pengembangan
+## 🌟 Fitur Utama & Keunggulan
 
-StatsLab menggunakan arsitektur *monorepo* (pnpm workspace) dan basis data PostgreSQL.
+### 1. Integrasi 3 Pilar Islam
+- **Pilar Amanah (QS. Al-Mutaffifin: 1–3)**: Sakelar audit visual skala sumbu Y (*zero-based* vs *truncated*) untuk melatih kecermatan dan kejujuran membaca grafik.
+- **Pilar Tabayyun (QS. Al-Hujurat: 6)**: Deteksi outlier/lonjakan data otomatis (>20% dari median) disertai peringatan verifikasi data.
+- **Pilar Tawazun (QS. Al-Infitar: 7)**: Indikator keseimbangan distribusi data kuantitatif (*Mean vs Median*).
+
+### 2. Modul Asesmen Literasi Data Watson-Callingham
+- **8 Embedded Tasks**: Tugas berjenjang Level 4–6 (*Reading Data*, *Reading Between*, *Reading Beyond*, hingga *Data-Driven Decision Making*).
+- **Penilaian Politomi (0, 1, 2)**: Heuristik skoring analitis otomatis.
+- **Sertifikat Digital (Level 6)**: Buka otomatis disertai efek *confetti* saat siswa menyelesaikan seluruh tingkat literasi.
+
+### 3. Instrumen Kepraktisan Media & Ekspor Psikometri
+- **System Usability Scale (SUS 14 Butir Adaptif)**: Kuesioner evaluasi UX otomatis dengan pengkategorian predikat (*Best Imaginable*, *Excellent*, *Good*).
+- **Winsteps & Rasch PCM Export**: Ekspor matriks data `.csv` siap impor untuk analisis *Item/Person Reliability* dan *Item Fit*.
+
+### 4. Advanced SEO / GEO / AEO
+- **JSON-LD Schema Markup**: Terstruktur untuk `SoftwareApplication` & `Organization`.
+- **AI Agent Friendly**: Dilengkapi `public/llms.txt`, `robots.txt`, dan `sitemap.xml` dinamis.
+
+---
+
+## 🚀 Instalasi & Pengembangan Lokal
+
+StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 15, Prisma v7, dan Neon PostgreSQL.
 
 ### Prasyarat
-- Node.js 20.x
-- `pnpm` (direkomendasikan versi 9)
-- PostgreSQL database (lokal atau menggunakan [Neon.tech](https://neon.tech))
+- Node.js >= 20.x
+- `pnpm` (v9.x)
+- Basis data PostgreSQL (atau akun [Neon.tech](https://neon.tech))
 
 ### Langkah Menjalankan Aplikasi
-1. Clone repositori:
+
+1. **Clone Repositori**:
    ```bash
    git clone https://github.com/zaditprodakwah/statslab.git
    cd statslab
    ```
-2. Instal dependensi:
+
+2. **Instal Dependensi Workspace**:
    ```bash
    pnpm install
    ```
-3. Siapkan database di folder `apps/web`:
+
+3. **Konfigurasi Environment Variables**:
+   Salin file `.env.example` ke `apps/web/.env` dan atur URL PostgreSQL Anda:
+   ```env
+   DATABASE_URL="postgresql://neondb_owner:YOUR_POOLER_URL/neondb?sslmode=require"
+   DATABASE_URL_UNPOOLED="postgresql://neondb_owner:YOUR_DIRECT_URL/neondb?sslmode=require"
+   ```
+
+4. **Generate Prisma & Seed Database**:
    ```bash
    cd apps/web
-   cp .env.example .env
-   # Masukkan kredensial DATABASE_URL Anda di .env
-   
    pnpm prisma generate
-   pnpm prisma db push
+   pnpm prisma migrate dev --name init
+   npx tsx prisma/seed.ts
    ```
-4. Jalankan *development server*:
+
+5. **Jalankan Server Lokal**:
    ```bash
+   cd ../..
    pnpm dev
    ```
-5. Buka `http://localhost:3000` di *browser*.
+   Akses antarmuka di `http://localhost:3000`.
 
 ---
 
-## 🤝 Berkontribusi (Community & Open Source)
+## 🤝 Berkontribusi & Lisensi
 
-Kami mengundang Anda untuk bergabung memperkaya ekosistem ini! Anda dapat berkontribusi melalui:
-- **Pengajuan Dataset Islami Baru**: Punya data menarik seputar ekonomi syariah atau demografi muslim? Ajukan via *Issues*.
-- **Perbaikan UI/UX**: Bantu kurangi beban kognitif siswa lebih jauh lagi.
-- **Skrip Psikometri**: Tambahkan modul analisis data statistik (*Learning Analytics*).
-
-Silakan baca pedoman kontribusi lengkap kami di [CONTRIBUTING.md](CONTRIBUTING.md) dan pastikan interaksi mematuhi nilai Tabayyun & Amanah di [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
-
----
-
-## 📜 Lisensi & Atribusi
+Kami mengundang Anda untuk bergabung memperkaya ekosistem ini! Silakan baca pedoman kontribusi lengkap kami di [CONTRIBUTING.md](CONTRIBUTING.md) dan pastikan interaksi mematuhi nilai etika di [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 Proyek ini menggunakan model lisensi ganda:
-- **MIT License**: Untuk semua *source code* perangkat lunak web (berada di `apps/web/`).
-- **CC-BY 4.0 International**: Untuk dataset (`packages/datasets`), instrumen tugas, dan skrip psikometri. Hal ini memungkinkan kutipan akademis terbuka yang terhubung ke Zenodo DOI.
+- **MIT License**: Untuk semua *source code* perangkat lunak web (`apps/web/`).
+- **CC-BY 4.0 International**: Untuk dataset (`packages/datasets`), instrumen tugas, dan skrip psikometri.
 
 Info lengkap dapat dilihat di [LICENSE](LICENSE).
