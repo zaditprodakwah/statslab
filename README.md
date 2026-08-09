@@ -32,6 +32,19 @@ Proyek ini dibangun berdasarkan **Cognitive Load Theory (CLT)** dan **Taste Skil
 - **Penilaian Politomi (0, 1, 2)**: Heuristik skoring analitis otomatis.
 - **Sertifikat Digital (Level 6)**: Buka otomatis disertai efek *confetti* saat siswa menyelesaikan seluruh tingkat literasi.
 
+### Deployment (Vercel Monorepo)
+
+Due to Vercel's interaction with `pnpm`'s `fetch` implementation during monorepo resolution, this project is configured to build successfully using `vercel.json` with the following configuration:
+```json
+{
+  "buildCommand": "pnpm -r build",
+  "outputDirectory": "apps/web/.next",
+  "framework": "nextjs"
+}
+```
+
+The live application features advanced SEO/AEO/GEO optimization, explicitly identifying STAI Al-Bahjah Cirebon as the sponsoring institution via JSON-LD metadata.
+
 ### 3. Instrumen Kepraktisan Media & Ekspor Psikometri
 - **System Usability Scale (SUS 14 Butir Adaptif)**: Kuesioner evaluasi UX otomatis dengan pengkategorian predikat (*Best Imaginable*, *Excellent*, *Good*).
 - **Winsteps & Rasch PCM Export**: Ekspor matriks data `.csv` siap impor untuk analisis *Item/Person Reliability* dan *Item Fit*.
@@ -47,9 +60,10 @@ Proyek ini dibangun berdasarkan **Cognitive Load Theory (CLT)** dan **Taste Skil
 StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 15, Prisma v7, dan Neon PostgreSQL.
 
 ### Prasyarat
-- Node.js >= 20.x
-- `pnpm` (v9.x)
-- Basis data PostgreSQL (atau akun [Neon.tech](https://neon.tech))
+- **Frontend:** Next.js 14+ (App Router), React, Tailwind CSS, Recharts
+- **Backend:** Prisma ORM, PostgreSQL (via Supabase/Neon)
+- **Deployment:** Vercel Edge Runtime (Monorepo setup using `pnpm -r build` and Node.js 22.x)
+- **Onboarding:** Interactive Role-based entry with Zero-Auth PIN sessions
 
 ### Langkah Menjalankan Aplikasi
 
