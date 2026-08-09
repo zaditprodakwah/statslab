@@ -34,10 +34,11 @@ Proyek ini dibangun berdasarkan **Cognitive Load Theory (CLT)** dan **Taste Skil
 
 ### Deployment (Vercel Monorepo)
 
-Due to Vercel's interaction with `pnpm`'s `fetch` implementation during monorepo resolution, this project is configured to build successfully using `vercel.json` with the following configuration:
+Due to Vercel's interaction with `pnpm`'s `fetch` implementation during monorepo resolution, this project has been fully migrated to use **NPM Workspaces**. It is configured to build successfully using `vercel.json` with the following configuration:
 ```json
 {
-  "buildCommand": "pnpm -r build",
+  "buildCommand": "npm run build --workspace=apps/web",
+  "installCommand": "npm install",
   "outputDirectory": "apps/web/.next",
   "framework": "nextjs"
 }
@@ -62,7 +63,7 @@ StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 1
 ### Prasyarat
 - **Frontend:** Next.js 14+ (App Router), React, Tailwind CSS, Recharts
 - **Backend:** Prisma ORM, PostgreSQL (via Supabase/Neon)
-- **Deployment:** Vercel Edge Runtime (Monorepo setup using `pnpm -r build` and Node.js 22.x)
+- **Deployment:** Vercel Edge Runtime (Monorepo setup using NPM Workspaces and Node.js 22.x)
 - **Onboarding:** Interactive Role-based entry with Zero-Auth PIN sessions
 
 ### Langkah Menjalankan Aplikasi
