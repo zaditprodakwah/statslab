@@ -1,0 +1,28 @@
+name: Bug Report
+description: Create a report to help us improve the ecosystem
+title: "[BUG] "
+labels: ["bug"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Terima kasih telah melaporkan bug di StatsLab! Laporkan bug terkait UX, error kalkulasi, atau UI yang tidak responsif.
+  - type: textarea
+    id: description
+    attributes:
+      label: Deskripsi Bug
+      description: Jelaskan bug secara spesifik.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Langkah Reproduksi (Steps to Reproduce)
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & OS

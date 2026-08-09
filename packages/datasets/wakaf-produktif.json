@@ -1,0 +1,32 @@
+[
+  {
+    "tahun": 2021,
+    "total_titik_tanah": 415000,
+    "tanah_produktif_persen": 6.8,
+    "wakaf_uang_triliun": 0.85
+  },
+  {
+    "tahun": 2022,
+    "total_titik_tanah": 430000,
+    "tanah_produktif_persen": 7.5,
+    "wakaf_uang_triliun": 1.4
+  },
+  {
+    "tahun": 2023,
+    "total_titik_tanah": 438000,
+    "tanah_produktif_persen": 8.2,
+    "wakaf_uang_triliun": 2.1
+  },
+  {
+    "tahun": 2024,
+    "total_titik_tanah": 445000,
+    "tanah_produktif_persen": 8.9,
+    "wakaf_uang_triliun": 2.8
+  },
+  {
+    "tahun": 2025,
+    "total_titik_tanah": 451000,
+    "tanah_produktif_persen": 9.5,
+    "wakaf_uang_triliun": 3.4
+  }
+]

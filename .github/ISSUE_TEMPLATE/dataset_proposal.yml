@@ -1,0 +1,41 @@
+name: Dataset Proposal
+description: Submit a new Islamic-context dataset for the ecosystem
+title: "[DATASET] "
+labels: ["dataset", "enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Terima kasih telah berkontribusi data untuk StatsLab! 
+        Pastikan data sesuai dengan nilai Tabayyun (terverifikasi dari sumber valid).
+  - type: input
+    id: dataset_name
+    attributes:
+      label: Nama Dataset
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Sumber Referensi Valid
+      description: Link atau kutipan jurnal/buku dari data yang diajukan.
+    validations:
+      required: true
+  - type: dropdown
+    id: islamic_value
+    attributes:
+      label: Nilai Islam Dominan
+      options:
+        - Amanah
+        - Tabayyun
+        - Tawazun
+        - Lainnya
+  - type: textarea
+    id: sample_data
+    attributes:
+      label: Contoh Struktur Data (JSON)
+      render: json
+    validations:
+      required: true

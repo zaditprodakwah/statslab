@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model Dataset {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug         String   @unique @db.VarChar(100)
+  title        String   @db.VarChar(255)
+  category     String   @db.VarChar(100)
+  islamicValue String   @map("islamic_value") @db.VarChar(50)
+  description  String?
+  rawData      Json     @map("raw_data")
+  chartConfig  Json?    @map("chart_config")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  tasks        Task[]
+
+  @@map("datasets")
+}
+
+model Task {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  datasetId    String   @map("dataset_id") @db.Uuid
+  taskNumber   Int      @map("task_number") @db.SmallInt
+  watsonLevel  Int      @map("watson_level") @db.SmallInt
+  indicator    String   @db.VarChar(100)
+  prompt       String   @db.Text
+
+  dataset      Dataset  @relation(fields: [datasetId], references: [id])
+  responses    TaskResponse[]
+
+  @@map("tasks")
+}
+
+model Session {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionToken String   @unique @map("session_token") @db.VarChar(64)
+  studentName  String?  @map("student_name") @db.VarChar(255)
+  studentClass String?  @map("student_class") @db.VarChar(50)
+  schoolName   String?  @map("school_name") @db.VarChar(255)
+  testPhase    String   @map("test_phase") @db.VarChar(50)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  // Layer 2: Ecosystem Features
+  xp           Int      @default(0)
+  currentLevel Int      @default(1) @map("current_level") @db.SmallInt
+  badges       Json?
+
+  taskResponses TaskResponse[]
+  susResponse   SusResponse?
+
+  @@map("sessions")
+}
+
+model TaskResponse {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId    String   @map("session_id") @db.Uuid
+  taskId       String   @map("task_id") @db.Uuid
+  answerText   String?  @map("answer_text") @db.Text
+  score        Int      @db.SmallInt
+  scoredBy     String   @default("system") @map("scored_by") @db.VarChar(50)
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  session      Session  @relation(fields: [sessionId], references: [id])
+  task         Task     @relation(fields: [taskId], references: [id])
+
+  @@unique([sessionId, taskId])
+  @@map("task_responses")
+}
+
+model SusResponse {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sessionId      String   @unique @map("session_id") @db.Uuid
+  q1             Int      @db.SmallInt
+  q2             Int      @db.SmallInt
+  q3             Int      @db.SmallInt
+  q4             Int      @db.SmallInt
+  q5             Int      @db.SmallInt
+  q6             Int      @db.SmallInt
+  q7             Int      @db.SmallInt
+  q8             Int      @db.SmallInt
+  q9             Int      @db.SmallInt
+  q10            Int      @db.SmallInt
+  q11            Int      @db.SmallInt
+  q12            Int      @db.SmallInt
+  q13            Int      @db.SmallInt
+  q14            Int      @db.SmallInt
+  totalScore     Decimal  @map("total_score") @db.Decimal(5, 2)
+  adjectiveRating String? @map("adjective_rating") @db.VarChar(20)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  session        Session  @relation(fields: [sessionId], references: [id])
+
+  @@map("sus_responses")
+}
+
+model Validator {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String   @db.VarChar(100)
+  domain       String   @db.VarChar(50)
+
+  validations  ExpertValidation[]
+
+  @@map("validators")
+}
+
+model ExpertValidation {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  validatorId  String   @map("validator_id") @db.Uuid
+  itemNumber   Int      @map("item_number") @db.SmallInt
+  score        Int      @db.SmallInt
+  feedback     String?  @db.Text
+
+  validator    Validator @relation(fields: [validatorId], references: [id])
+
+  @@map("expert_validations")
+}

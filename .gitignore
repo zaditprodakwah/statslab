@@ -1,0 +1,13 @@
+.env
+.env.*
+node_modules/
+.next/
+dist/
+build/
+.DS_Store
+*.log
+.vercel
+
+# Exclude internal documentation & AI agent configuration folders
+docs/
+.agents/
