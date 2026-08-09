@@ -17,7 +17,7 @@ export default function VoiceInput({ onResult, lang = "id-ID" }: VoiceInputProps
   useEffect(() => {
     if (typeof window !== "undefined") {
       const SpeechRecognition =
-        ((window as unknown as { SpeechRecognition: unknown, webkitSpeechRecognition: unknown })).SpeechRecognition || ((window as unknown as { SpeechRecognition: unknown, webkitSpeechRecognition: unknown })).webkitSpeechRecognition;
+        (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsSupported(true);
