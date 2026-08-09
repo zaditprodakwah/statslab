@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true, data: dataset });
-  } catch {
+  } catch (err) {
     console.error("Dataset creation error:", err);
     return NextResponse.json({ error: "Gagal membuat dataset baru" }, { status: 500 });
   }
