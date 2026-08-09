@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
 import CertificateModal from "@/components/CertificateModal";
 import SusFormModal from "@/components/SusFormModal";
-import { Award, CheckCircle2, ClipboardCheck, ArrowLeft, Share2, Sparkles } from "lucide-react";
+import { Award, CheckCircle2, ClipboardCheck, ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 export default function SummaryPage() {

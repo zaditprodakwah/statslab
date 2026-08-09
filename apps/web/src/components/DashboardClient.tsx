@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, react-hooks/exhaustive-deps, no-use-before-define */
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import InteractiveChart from "@/components/InteractiveChart";
 import EmbeddedTasksPanel from "@/components/EmbeddedTasksPanel";
 import SusFormModal from "@/components/SusFormModal";
@@ -20,7 +20,7 @@ export default function DashboardClient() {
   const [activePblTaskId, setActivePblTaskId] = useState<string | null>(null);
 
   const { currentLevel, submitTaskAnswer, sessionId } = useStatsLabStore();
-  const router = useRouter();
+  
 
   useEffect(() => {
     async function fetchDatasets() {

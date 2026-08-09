@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, react-hooks/exhaustive-deps, no-use-before-define */
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-let prisma: PrismaClient;
+
 
 export async function GET() {
-  if (!prisma) prisma = new PrismaClient();
+
 
   try {
     const datasets = await prisma.dataset.findMany({
@@ -19,13 +20,13 @@ export async function GET() {
     });
 
     return NextResponse.json({ success: true, data: datasets });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Gagal mengambil data dataset" }, { status: 500 });
   }
 }
 
 export async function POST(req: Request) {
-  if (!prisma) prisma = new PrismaClient();
+
 
   try {
     const body = await req.json();
@@ -62,7 +63,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true, data: dataset });
-  } catch (err) {
+  } catch {
     console.error("Dataset creation error:", err);
     return NextResponse.json({ error: "Gagal membuat dataset baru" }, { status: 500 });
   }

@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-let prisma: PrismaClient;
+
 
 export async function GET() {
-  if (!prisma) prisma = new PrismaClient();
+
 
   try {
     const sessions = await prisma.session.findMany({
@@ -28,13 +28,13 @@ export async function GET() {
         sessionPins
       }
     });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Gagal mengambil data sesi" }, { status: 500 });
   }
 }
 
 export async function POST(req: Request) {
-  if (!prisma) prisma = new PrismaClient();
+
 
   try {
     const { testPhase } = await req.json();
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true, data: newPin });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Gagal membuat PIN Sesi Baru" }, { status: 500 });
   }
 }

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
-import { Award, Sun, Moon, LogOut, Type, Eye, ShieldCheck } from "lucide-react";
+import { LogOut, Type, Eye, ShieldCheck } from "lucide-react";
 
 export default function StickyHeader() {
   const { studentName, schoolName, currentLevel, xp, totalScore } = useStatsLabStore();

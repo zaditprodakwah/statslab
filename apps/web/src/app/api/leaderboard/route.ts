@@ -1,14 +1,12 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-let prisma: PrismaClient;
+
 
 export async function GET() {
-  if (!prisma) {
-    prisma = new PrismaClient();
-  }
+
 
   try {
     const sessions = await prisma.session.findMany({

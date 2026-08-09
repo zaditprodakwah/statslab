@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ShieldCheck, Lock, ArrowRight, Loader2 } from "lucide-react";
+import { Lock, ArrowRight, Loader2 } from "lucide-react";
 
 export default function AdminLoginPage() {
   const [pin, setPin] = useState("");
@@ -33,7 +33,7 @@ export default function AdminLoginPage() {
       } else {
         setErrorMsg(data.error || "PIN Admin Salah");
       }
-    } catch (err) {
+    } catch {
       setErrorMsg("Koneksi gagal");
     } finally {
       setLoading(false);

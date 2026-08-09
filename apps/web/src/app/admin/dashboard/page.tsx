@@ -16,7 +16,7 @@ export default function AdminDashboardPage() {
         if (json.success) {
           setStats({
             totalSessions: json.data.sessions.length,
-            totalResponses: json.data.sessions.reduce((acc: number, s: any) => acc + s.taskResponses.length, 0),
+            totalResponses: json.data.sessions.reduce((acc: number, s: { taskResponses: unknown[] }) => acc + s.taskResponses.length, 0),
             activePins: json.data.sessionPins.length
           });
         }

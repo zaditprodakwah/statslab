@@ -62,7 +62,7 @@ export default function HomePage() {
       } else {
         setErrorMsg(data.error || "Gagal membuat sesi");
       }
-    } catch (err) {
+    } catch {
       setErrorMsg("Terjadi kesalahan koneksi jaringan");
     } finally {
       setLoading(false);

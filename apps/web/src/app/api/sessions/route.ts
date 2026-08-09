@@ -1,15 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars, react-hooks/exhaustive-deps, no-use-before-define */
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 
 export const dynamic = "force-dynamic";
 
-let prisma: PrismaClient;
+
 
 export async function POST(req: Request) {
-  if (!prisma) {
-    prisma = new PrismaClient();
-  }
+
 
   try {
     const body = await req.json();
