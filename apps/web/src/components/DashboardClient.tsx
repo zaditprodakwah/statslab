@@ -1,13 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import InteractiveChart from "@/components/InteractiveChart";
 import EmbeddedTasksPanel from "@/components/EmbeddedTasksPanel";
 import SusFormModal from "@/components/SusFormModal";
-import OnboardingTour from "@/components/OnboardingTour";
+import GuidedTour from "@/components/GuidedTour";
+import EthicalModal from "@/components/EthicalModal";
 import CertificateModal from "@/components/CertificateModal";
-import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Download, Award, ArrowRight } from "lucide-react";
+import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Download, Award } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
 import Link from "next/link";
 
@@ -18,18 +19,25 @@ export default function DashboardClient() {
   const [susResult, setSusResult] = useState<{ score: number; adjective: string } | null>(null);
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [activePblTaskId, setActivePblTaskId] = useState<string | null>(null);
+  const [tourRun, setTourRun] = useState(false);
+  const [ethicalModal, setEthicalModal] = useState<"tabayyun" | "amanah" | null>(null);
 
-  const { currentLevel, submitTaskAnswer, sessionId } = useStatsLabStore();
-  
+  const {
+    currentLevel,
+    submitTaskAnswer,
+    sessionId,
+    activeDataset,
+    toggleAmanahScale,
+    amanahZeroScale,
+  } = useStatsLabStore();
 
+  // Fetch all datasets
   useEffect(() => {
     async function fetchDatasets() {
       try {
         const res = await fetch("/api/datasets");
         const json = await res.json();
-        if (json.success) {
-          setDatasets(json.data);
-        }
+        if (json.success) setDatasets(json.data);
       } catch (err) {
         console.error("Failed to load datasets:", err);
       } finally {
@@ -39,17 +47,30 @@ export default function DashboardClient() {
     fetchDatasets();
   }, []);
 
-  const handleChartClick = (payload: any) => {
-    if (!activePblTaskId) return;
+  // Auto-start tour for first-time visitors
+  useEffect(() => {
+    if (!loading) {
+      const toured = sessionStorage.getItem("statslab_toured");
+      if (!toured) {
+        setTimeout(() => setTourRun(true), 800);
+      }
+    }
+  }, [loading]);
 
-    // Active PBL task being answered via chart click
-    const activeTask = allTasks.find((t) => t.id === activePblTaskId);
+  const handleTourFinish = () => {
+    sessionStorage.setItem("statslab_toured", "1");
+    setTourRun(false);
+  };
+
+  const handleChartClick = useCallback((payload: any) => {
+    if (!activePblTaskId) return;
+    const tasks = datasets.flatMap((d: any) => d.tasks || []);
+    const activeTask = tasks.find((t: any) => t.id === activePblTaskId);
     if (!activeTask) return;
 
     const pointData = payload?.activePayload ? payload.activePayload[0]?.payload : payload;
     const clickedLabel = pointData ? JSON.stringify(pointData) : "Chart Element Clicked";
 
-    // Auto submit answer with full score (2) for correct graph interaction
     submitTaskAnswer(activePblTaskId, `[Grafik Clicked] ${clickedLabel}`, 2);
 
     if (sessionId) {
@@ -61,12 +82,16 @@ export default function DashboardClient() {
           taskId: activePblTaskId,
           answerText: `[Grafik Clicked] ${clickedLabel}`,
           score: 2,
-          interactionLog: { clickedPoint: pointData, timestamp: new Date().toISOString() }
-        })
+          interactionLog: { clickedPoint: pointData, timestamp: new Date().toISOString() },
+        }),
       }).catch((e) => console.error(e));
     }
-
     setActivePblTaskId(null);
+  }, [activePblTaskId, datasets, sessionId, submitTaskAnswer]);
+
+  const handleAmanahToggle = () => {
+    setEthicalModal("amanah");
+    toggleAmanahScale();
   };
 
   if (loading) {
@@ -79,14 +104,19 @@ export default function DashboardClient() {
     );
   }
 
-  // Extract all tasks from datasets
-  const allTasks = datasets.flatMap((d) => d.tasks || []);
+  const allTasks = datasets.flatMap((d: any) => d.tasks || []);
+  // Active dataset object
+  const activeDs = datasets.find((d: any) => d.slug === activeDataset) ?? datasets[0];
 
   return (
     <main className="page-enter" style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}>
-      <OnboardingTour />
+      {/* Guided Tour (react-joyride) */}
+      <GuidedTour run={tourRun} onFinish={handleTourFinish} />
 
-      {/* Hero Banner Header */}
+      {/* Ethical Modal */}
+      <EthicalModal type={ethicalModal} onClose={() => setEthicalModal(null)} />
+
+      {/* Hero Banner */}
       <header style={{ marginBottom: "40px", textAlign: "center" }}>
         <div
           style={{
@@ -99,7 +129,7 @@ export default function DashboardClient() {
             color: "var(--accent-primary)",
             fontSize: "0.875rem",
             fontWeight: 600,
-            marginBottom: "16px"
+            marginBottom: "16px",
           }}
         >
           <ShieldCheck size={18} /> Media Pembelajaran R&D Terintegrasi Nilai Keislaman
@@ -107,12 +137,12 @@ export default function DashboardClient() {
         <h1 style={{ fontSize: "2.5rem", marginBottom: "12px", color: "var(--text-primary)" }}>
           StatsLab — Dasbor Statistika Interaktif
         </h1>
-        <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", maxWidth: "750px", margin: "0 auto", marginBottom: "20px" }}>
-          Memfasilitasi Literasi Data Siswa melalui Eksplorasi Visualisasi Interaktif, 
+        <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", maxWidth: "750px", margin: "0 auto 20px" }}>
+          Memfasilitasi Literasi Data Siswa melalui Eksplorasi Visualisasi Interaktif,
           Analisis Outlier Tabayyun, dan Audit Skala Amanah.
         </p>
 
-        {/* Action Buttons for SUS Instrument, Summary & Data Export */}
+        {/* Action Buttons */}
         <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap" }}>
           <Link
             href="/dashboard/summary"
@@ -129,6 +159,7 @@ export default function DashboardClient() {
           >
             <ClipboardCheck size={18} /> Evaluasi SUS (14 Butir)
           </button>
+
           <a
             href="/api/export/rasch"
             download
@@ -142,7 +173,7 @@ export default function DashboardClient() {
               color: "var(--text-primary)",
               textDecoration: "none",
               fontWeight: 600,
-              fontSize: "0.9rem"
+              fontSize: "0.9rem",
             }}
           >
             <Download size={18} /> Ekspor Data Rasch
@@ -156,27 +187,58 @@ export default function DashboardClient() {
         )}
       </header>
 
-      {/* Grid of Interactive Charts */}
-      <section style={{ marginBottom: "40px" }}>
+      {/* Pilar Amanah Toggle */}
+      <div
+        id="amanah-scale-toggle"
+        className="glass-panel"
+        style={{ marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px" }}
+      >
+        <div>
+          <strong style={{ fontSize: "0.95rem" }}>⚖️ Prinsip Amanah — Skala Sumbu Y</strong>
+          <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "2px" }}>
+            {amanahZeroScale ? "Skala berbasis nol (Zero-based) — Jujur & Proporsional" : "⚠️ Skala Terpotong — Risiko Misleading"}
+          </p>
+        </div>
+        <button
+          onClick={handleAmanahToggle}
+          className="btn-premium"
+          style={{
+            backgroundColor: amanahZeroScale ? "var(--color-emerald-700)" : "#dc2626",
+            fontSize: "0.85rem",
+            padding: "8px 16px",
+          }}
+        >
+          {amanahZeroScale ? "✅ Skala Jujur Aktif" : "❌ Skala Terpotong"}
+        </button>
+      </div>
+
+      {/* Active Dataset Chart */}
+      <section id="chart-interactive" style={{ marginBottom: "40px" }}>
         <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px" }}>
-          <BarChart2 style={{ color: "var(--accent-primary)" }} /> Modul Visualisasi Dataset
+          <BarChart2 style={{ color: "var(--accent-primary)" }} />
+          {activeDs ? `📊 ${activeDs.title}` : "Modul Visualisasi Dataset"}
         </h2>
-        {datasets.map((dataset) => (
+
+        {activeDs ? (
           <InteractiveChart
-            key={dataset.id}
-            title={dataset.title}
-            islamicValue={dataset.islamicValue}
-            type={dataset.chartConfig?.type || "bar"}
-            xAxisKey={dataset.chartConfig?.xAxis || "wilayah"}
-            dataKeys={dataset.chartConfig?.dataKeys || ["zakat"]}
-            data={dataset.rawData}
+            key={activeDs.id}
+            title={activeDs.title}
+            islamicValue={activeDs.islamicValue}
+            type={activeDs.chartConfig?.type || "bar"}
+            xAxisKey={activeDs.chartConfig?.xAxis || "wilayah"}
+            dataKeys={activeDs.chartConfig?.dataKeys || ["zakat"]}
+            data={activeDs.rawData}
             onChartClick={handleChartClick}
           />
-        ))}
+        ) : (
+          <div className="glass-panel" style={{ padding: "40px", textAlign: "center", color: "var(--text-secondary)" }}>
+            Dataset tidak ditemukan. Coba pilih modul lain di Header.
+          </div>
+        )}
       </section>
 
-      {/* Embedded Tasks Watson-Callingham */}
-      <section style={{ marginBottom: "40px" }}>
+      {/* Tasks Panel */}
+      <section id="tasks-panel" style={{ marginBottom: "40px" }}>
         <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px" }}>
           <BookOpen style={{ color: "var(--accent-primary)" }} /> Modul Asesmen Literasi Data
         </h2>
@@ -185,21 +247,21 @@ export default function DashboardClient() {
           onOpenCertificate={() => setIsCertOpen(true)}
           onSelectTaskForChart={(taskId) => setActivePblTaskId(taskId)}
           activePblTaskId={activePblTaskId}
+          onTabayyunTrigger={() => setEthicalModal("tabayyun")}
         />
       </section>
 
-      {/* Footer Info */}
+      {/* Footer */}
       <footer
         style={{
           textAlign: "center",
           paddingTop: "24px",
           borderTop: "1px solid var(--color-slate-200)",
           color: "var(--text-secondary)",
-          fontSize: "0.875rem"
+          fontSize: "0.875rem",
         }}
       >
         <p>© 2026 StatsLab R&D Open Source Ecosystem. Terintegrasi Nilai Keislaman & Standar Watson-Callingham.</p>
-
         {currentLevel >= 6 && (
           <button
             onClick={() => setIsCertOpen(true)}
@@ -213,7 +275,7 @@ export default function DashboardClient() {
               cursor: "pointer",
               display: "inline-flex",
               alignItems: "center",
-              gap: "8px"
+              gap: "8px",
             }}
           >
             <Award size={16} /> Lihat Sertifikat
@@ -221,18 +283,13 @@ export default function DashboardClient() {
         )}
       </footer>
 
-      {/* SUS Instrument Modal */}
+      {/* Modals */}
       <SusFormModal
         isOpen={isSusOpen}
         onClose={() => setIsSusOpen(false)}
         onSubmitSuccess={(score, adjective) => setSusResult({ score, adjective })}
       />
-
-      {/* Certificate Modal */}
-      <CertificateModal
-        isOpen={isCertOpen}
-        onClose={() => setIsCertOpen(false)}
-      />
+      <CertificateModal isOpen={isCertOpen} onClose={() => setIsCertOpen(false)} />
     </main>
   );
 }

@@ -66,7 +66,59 @@ async function main() {
     }
   });
 
-  console.log("✅ Datasets Seeded:", zakatDataset.title, "|", perpusDataset.title);
+  const tajwidDataset = await prisma.dataset.upsert({
+    where: { slug: "tajwid-juz-30" },
+    update: {},
+    create: {
+      slug: "tajwid-juz-30",
+      title: "Hukum Tajwid Juz 30",
+      category: "Statistika Kategorikal",
+      islamicValue: "Amanah",
+      description: "Frekuensi kemunculan hukum bacaan (Izhar, Ikhfa, Idgham, Iqlab) pada beberapa surah di Juz 30.",
+      rawData: [
+        { surat: "An-Naba'", jumlah_ayat: 40, izhar: 3, ikhfa: 12, idgham: 15, iqlab: 2 },
+        { surat: "An-Nazi'at", jumlah_ayat: 46, izhar: 4, ikhfa: 14, idgham: 11, iqlab: 1 },
+        { surat: "Abasa", jumlah_ayat: 42, izhar: 5, ikhfa: 10, idgham: 12, iqlab: 0 },
+        { surat: "Al-Lail", jumlah_ayat: 21, izhar: 1, ikhfa: 4, idgham: 5, iqlab: 1 },
+        { surat: "Al-Bayyinah", jumlah_ayat: 8, izhar: 2, ikhfa: 5, idgham: 8, iqlab: 0 }
+      ],
+      chartConfig: {
+        type: "stacked-bar",
+        xAxis: "surat",
+        dataKeys: ["izhar", "ikhfa", "idgham", "iqlab"]
+      }
+    }
+  });
+
+  const wakafDataset = await prisma.dataset.upsert({
+    where: { slug: "wakaf-produktif" },
+    update: {},
+    create: {
+      slug: "wakaf-produktif",
+      title: "Perkembangan Wakaf Produktif",
+      category: "Time Series & Korelasi",
+      islamicValue: "Tawazun",
+      description: "Perkembangan titik tanah wakaf dan persentase produktivitasnya dari tahun 2021 hingga 2025.",
+      rawData: [
+        { tahun: 2021, total_titik_tanah: 415000, tanah_produktif_persen: 6.8, wakaf_uang_triliun: 0.85 },
+        { tahun: 2022, total_titik_tanah: 430000, tanah_produktif_persen: 7.5, wakaf_uang_triliun: 1.4 },
+        { tahun: 2023, total_titik_tanah: 438000, tanah_produktif_persen: 8.2, wakaf_uang_triliun: 2.1 },
+        { tahun: 2024, total_titik_tanah: 445000, tanah_produktif_persen: 8.9, wakaf_uang_triliun: 2.8 },
+        { tahun: 2025, total_titik_tanah: 451000, tanah_produktif_persen: 9.5, wakaf_uang_triliun: 3.4 }
+      ],
+      chartConfig: {
+        type: "multi-axis-line",
+        xAxis: "tahun",
+        dataKeys: ["tanah_produktif_persen", "wakaf_uang_triliun"]
+      }
+    }
+  });
+
+  console.log("✅ Datasets seeded:");
+  console.log(`- ${zakatDataset.title}`);
+  console.log(`- ${perpusDataset.title}`);
+  console.log(`- ${tajwidDataset.title}`);
+  console.log(`- ${wakafDataset.title}`);
 
   // 2. Seed 8 Tasks (Embedded Tasks Watson-Callingham Level 4-6)
   const tasksData = [

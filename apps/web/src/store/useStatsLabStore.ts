@@ -6,6 +6,8 @@ interface TaskResponse {
   score: number;
 }
 
+export type DatasetSlug = "zakat-infak" | "sirkulasi-perpustakaan" | "tajwid-juz-30" | "wakaf-produktif";
+
 interface StatsLabState {
   // Session & Student Info
   sessionId: string | null;
@@ -14,6 +16,9 @@ interface StatsLabState {
   schoolName: string;
   testPhase: "small_scale" | "large_scale" | "think_aloud";
   
+  // Active Dataset (Module Switcher)
+  activeDataset: DatasetSlug;
+
   // Gamification & Watson-Callingham Level
   xp: number;
   currentLevel: number;
@@ -30,6 +35,7 @@ interface StatsLabState {
   
   // Actions
   setStudentInfo: (info: { studentName: string; studentClass: string; schoolName: string; sessionId?: string }) => void;
+  setActiveDataset: (slug: DatasetSlug) => void;
   toggleAmanahScale: () => void;
   confirmTawazun: () => void;
   submitTaskAnswer: (taskId: string, answerText: string, score: number) => void;
@@ -43,6 +49,8 @@ export const useStatsLabStore = create<StatsLabState>((set) => ({
   schoolName: "",
   testPhase: "large_scale",
   
+  activeDataset: "zakat-infak",
+
   xp: 0,
   currentLevel: 1,
   badges: ["Pencari Data"],
@@ -55,6 +63,7 @@ export const useStatsLabStore = create<StatsLabState>((set) => ({
   totalScore: 0,
   
   setStudentInfo: (info) => set((state) => ({ ...state, ...info })),
+  setActiveDataset: (slug) => set({ activeDataset: slug }),
   
   toggleAmanahScale: () =>
     set((state) => {

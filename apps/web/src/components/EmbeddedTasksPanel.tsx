@@ -22,13 +22,15 @@ interface EmbeddedTasksPanelProps {
   onOpenCertificate?: () => void;
   onSelectTaskForChart?: (taskId: string | null) => void;
   activePblTaskId?: string | null;
+  onTabayyunTrigger?: () => void;
 }
 
 export default function EmbeddedTasksPanel({
   tasks,
   onOpenCertificate,
   onSelectTaskForChart,
-  activePblTaskId
+  activePblTaskId,
+  onTabayyunTrigger,
 }: EmbeddedTasksPanelProps) {
   const { taskResponses, submitTaskAnswer, currentLevel, totalScore, badges, sessionId } = useStatsLabStore();
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -52,6 +54,11 @@ export default function EmbeddedTasksPanel({
   const handleSubmit = async (task: Task) => {
     const text = answers[task.id] || "";
     if (!text.trim()) return;
+
+    // Trigger Tabayyun modal before submitting high-level tasks (Level 6: task 7 or 8)
+    if (task.watsonLevel >= 6 && onTabayyunTrigger) {
+      onTabayyunTrigger();
+    }
 
     // Automated Scoring Logic (Politomi 0, 1, 2)
     let score = 1; // Default partial credit
