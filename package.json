@@ -10,7 +10,7 @@
     "lint": "npm run lint --workspaces --if-present"
   },
   "engines": {
-    "node": "22.x"
+    "node": ">=24.0.0"
   },
   "workspaces": [
     "apps/*",

@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -10,11 +12,13 @@ import {
   Moon,
   Sun
 } from 'lucide-react';
+import { useStatsLabStore } from '@/store/useStatsLabStore';
 
 export default function StickyHeader() {
-  const taskProgress = 3;
+  const taskResponses = useStatsLabStore((state) => state.taskResponses);
+  const taskProgress = Object.keys(taskResponses || {}).length;
   const totalTasks = 8;
-  const progressPercent = (taskProgress / totalTasks) * 100;
+  const progressPercent = Math.min((taskProgress / totalTasks) * 100, 100);
 
   return (
     <header className="header-sticky">
