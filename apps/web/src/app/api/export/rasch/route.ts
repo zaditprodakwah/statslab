@@ -24,7 +24,7 @@ export async function GET(req: Request) {
     if (format === "csv") {
       // Generate Winsteps-compatible CSV (Session ID, Task Number, Score 0-2)
       let csvContent = "session_token,student_name,task_number,watson_level,score\n";
-      responses.forEach((r) => {
+      responses.forEach((r: any) => {
         csvContent += `${r.session.sessionToken},"${r.session.studentName || "Anonim"}",${r.task.taskNumber},${r.task.watsonLevel},${r.score}\n`;
       });
 
