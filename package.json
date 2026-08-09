@@ -7,7 +7,9 @@
     "dev": "npm run dev --workspace=apps/web",
     "build": "npm run build --workspaces --if-present",
     "postinstall": "npm run postinstall --workspace=apps/web",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"apps/web/src/**/*.{ts,tsx,css}\" \"packages/datasets/*.json\"",
+    "format:check": "prettier --check \"apps/web/src/**/*.{ts,tsx,css}\" \"packages/datasets/*.json\""
   },
   "engines": {
     "node": "24.x"
@@ -17,7 +19,8 @@
     "packages/*"
   ],
   "devDependencies": {
-    "next": "16.3.0-canary.32"
+    "next": "16.3.0-canary.32",
+    "tsx": "^4.23.11"
   },
   "packageManager": "npm@10.8.2"
 }

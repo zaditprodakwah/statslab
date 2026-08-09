@@ -3,24 +3,27 @@ name: Dataset Validation
 on:
   push:
     paths:
-      - 'packages/datasets/**/*.json'
+      - 'packages/datasets/**'
+      - 'apps/web/src/lib/datasetSchema.ts'
   pull_request:
     paths:
-      - 'packages/datasets/**/*.json'
+      - 'packages/datasets/**'
+      - 'apps/web/src/lib/datasetSchema.ts'
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
-    # Placeholder for Zod / Ajv validation script
-    # It will run a Node.js script to ensure all new datasets
-    # conform to the StatsLab Dataset Schema (Layer 2 compatibility)
+
     - name: Use Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20.x'
-        
-    - name: Run Schema Validator
-      run: echo "Validasi schema JSON akan diimplementasi di sini"
+        node-version: '24.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run Schema Validator (Zod)
+      run: npx tsx packages/datasets/validate.mts

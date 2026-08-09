@@ -80,7 +80,7 @@ StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 1
    ```
 
 3. **Konfigurasi Environment Variables**:
-   Salin file `.env.example` ke `apps/web/.env` dan atur URL PostgreSQL Anda:
+   Salin file `apps/web/.env.example` ke `apps/web/.env` dan atur URL PostgreSQL Anda:
    ```env
    DATABASE_URL="postgresql://neondb_owner:YOUR_POOLER_URL/neondb?sslmode=require"
    DATABASE_URL_UNPOOLED="postgresql://neondb_owner:YOUR_DIRECT_URL/neondb?sslmode=require"
@@ -91,7 +91,7 @@ StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 1
 4. **Generate Prisma & Seed Database**:
    ```bash
    npm run postinstall --workspace=apps/web
-   npx tsx apps/web/prisma/seed.ts
+   cd apps/web && npx tsx prisma/seed.ts
    ```
 
 5. **Jalankan Server Lokal**:

@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   BarChart,
   Bar,
   LineChart,
   Line,
+  PieChart,
+  Pie,
+  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -20,13 +23,20 @@ import { useStatsLabStore } from "@/store/useStatsLabStore";
 interface InteractiveChartProps {
   title: string;
   islamicValue: string;
-  type?: "bar" | "line";
+  type?: "bar" | "line" | "pie";
   xAxisKey?: string;
   dataKeys?: string[];
   data: unknown[];
   onChartClick?: (payload: unknown) => void;
   compactMode?: boolean;
 }
+
+const PIE_COLORS = [
+  "var(--color-emerald-600)",
+  "var(--color-amber-500)",
+  "var(--color-emerald-400)",
+  "var(--color-amber-600)",
+];
 
 export default function InteractiveChart({
   title,
@@ -36,7 +46,7 @@ export default function InteractiveChart({
   dataKeys = ["penghimpunan_miliar"],
   data: initialData,
   onChartClick,
-  compactMode = false
+  compactMode = false,
 }: InteractiveChartProps) {
   const [data, setData] = useState(initialData);
   const [showTabayyunModal, setShowTabayyunModal] = useState(false);
@@ -54,12 +64,44 @@ export default function InteractiveChart({
     setData(initialData);
   };
 
+  // Diagram lingkaran: agregasi nilai tiap dataKey ke satu irisan (distribusi kategori)
+  const pieData = useMemo(() => {
+    if (type !== "pie") return [];
+    return dataKeys.map((key) => ({
+      name: key,
+      value: (data as Record<string, number | undefined>[]).reduce(
+        (sum, row) => sum + (Number(row[key]) || 0),
+        0
+      ),
+    }));
+  }, [type, dataKeys, data]);
+
   return (
-    <div className="dataset-card glass-panel" style={{ padding: compactMode ? "16px" : "24px", marginBottom: "24px" }}>
+    <div
+      className="dataset-card glass-panel"
+      style={{ padding: compactMode ? "16px" : "24px", marginBottom: "24px" }}
+    >
       {/* Card Header & Islamic Value Badge */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px", flexWrap: "wrap", gap: "10px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          marginBottom: "16px",
+          flexWrap: "wrap",
+          gap: "10px",
+        }}
+      >
         <div>
-          <h3 style={{ fontSize: compactMode ? "1.1rem" : "1.25rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "8px" }}>
+          <h3
+            style={{
+              fontSize: compactMode ? "1.1rem" : "1.25rem",
+              color: "var(--text-primary)",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
             {title}
           </h3>
           <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", marginTop: "4px" }}>
@@ -75,10 +117,12 @@ export default function InteractiveChart({
             style={{
               padding: "6px 12px",
               fontSize: "0.8rem",
-              backgroundColor: amanahZeroScale ? "var(--color-emerald-700)" : "var(--color-amber-500)",
+              backgroundColor: amanahZeroScale
+                ? "var(--color-emerald-700)"
+                : "var(--color-amber-500)",
               display: "flex",
               alignItems: "center",
-              gap: "4px"
+              gap: "4px",
             }}
             title={
               amanahZeroScale
@@ -108,7 +152,10 @@ export default function InteractiveChart({
             <BarChart data={data}>
               <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
               <XAxis dataKey={xAxisKey} tick={{ fontSize: 12 }} />
-              <YAxis domain={amanahZeroScale ? [0, "auto"] : ["dataMin - 20", "auto"]} tick={{ fontSize: 12 }} />
+              <YAxis
+                domain={amanahZeroScale ? [0, "auto"] : ["dataMin - 20", "auto"]}
+                tick={{ fontSize: 12 }}
+              />
               <Tooltip contentStyle={{ borderRadius: "var(--radius-md)", fontSize: "0.85rem" }} />
               <Legend wrapperStyle={{ fontSize: "0.85rem" }} />
               {dataKeys.map((key, idx) => (
@@ -125,11 +172,14 @@ export default function InteractiveChart({
                 />
               ))}
             </BarChart>
-          ) : (
+          ) : type === "line" ? (
             <LineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
               <XAxis dataKey={xAxisKey} tick={{ fontSize: 12 }} />
-              <YAxis domain={amanahZeroScale ? [0, "auto"] : ["dataMin - 20", "auto"]} tick={{ fontSize: 12 }} />
+              <YAxis
+                domain={amanahZeroScale ? [0, "auto"] : ["dataMin - 20", "auto"]}
+                tick={{ fontSize: 12 }}
+              />
               <Tooltip contentStyle={{ borderRadius: "var(--radius-md)", fontSize: "0.85rem" }} />
               <Legend wrapperStyle={{ fontSize: "0.85rem" }} />
               {dataKeys.map((key) => (
@@ -146,11 +196,39 @@ export default function InteractiveChart({
                     onClick: (e, payload) => {
                       if (onChartClick) onChartClick(payload);
                     },
-                    cursor: "grab"
+                    cursor: "grab",
                   }}
                 />
               ))}
             </LineChart>
+          ) : (
+            <PieChart>
+              <Tooltip contentStyle={{ borderRadius: "var(--radius-md)", fontSize: "0.85rem" }} />
+              <Legend wrapperStyle={{ fontSize: "0.85rem" }} />
+              <Pie
+                data={pieData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={compactMode ? 70 : 90}
+                label
+                animationDuration={800}
+                onClick={(payload: any) => {
+                  if (onChartClick)
+                    onChartClick({
+                      ...payload.payload,
+                      [xAxisKey]: payload.name,
+                      value: payload.value,
+                    });
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                {pieData.map((entry, idx) => (
+                  <Cell key={`cell-${entry.name}`} fill={PIE_COLORS[idx % PIE_COLORS.length]} />
+                ))}
+              </Pie>
+            </PieChart>
           )}
         </ResponsiveContainer>
       </div>
@@ -170,16 +248,29 @@ export default function InteractiveChart({
             justifyContent: "center",
             alignItems: "center",
             zIndex: 9999,
-            padding: "16px"
+            padding: "16px",
           }}
         >
-          <div className="glass-panel" style={{ width: "100%", maxWidth: "450px", padding: "24px" }}>
-            <h4 style={{ fontSize: "1.2rem", color: "var(--color-emerald-700)", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
+          <div
+            className="glass-panel"
+            style={{ width: "100%", maxWidth: "450px", padding: "24px" }}
+          >
+            <h4
+              style={{
+                fontSize: "1.2rem",
+                color: "var(--color-emerald-700)",
+                marginBottom: "8px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
               <ShieldCheck size={20} /> Peringatan Etika Tabayyun (QS. Al-Hujurat: 6)
             </h4>
             <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "16px" }}>
-              Anda memilih titik data nilai ekstrem/outlier pada <strong>{selectedPoint[xAxisKey]}</strong>.
-              Sebelum menyimpulkan data ini, lakukan verifikasi ulang apakah ada kesalahan input data.
+              Anda memilih titik data nilai ekstrem/outlier pada{" "}
+              <strong>{selectedPoint[xAxisKey]}</strong>. Sebelum menyimpulkan data ini, lakukan
+              verifikasi ulang apakah ada kesalahan input data.
             </p>
 
             <button

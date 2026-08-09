@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+.vercel
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+*.min.js
+.next/types
+apps/web/prisma/migrations
+apps/web/.next

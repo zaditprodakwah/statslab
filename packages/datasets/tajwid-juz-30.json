@@ -5,7 +5,7 @@
   "islamicValue": "Amanah",
   "description": "Frekuensi kemunculan hukum bacaan (Izhar, Ikhfa, Idgham, Iqlab) pada beberapa surah di Juz 30.",
   "chartConfig": {
-    "type": "bar",
+    "type": "pie",
     "xAxis": "surat",
     "dataKeys": ["izhar", "ikhfa", "idgham", "iqlab"]
   },
