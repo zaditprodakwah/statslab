@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import DashboardClient from "@/components/DashboardClient";
 import StickyHeader from "@/components/navigation/StickyHeader";
