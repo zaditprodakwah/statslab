@@ -225,8 +225,8 @@ export default function DashboardClient() {
             title={activeDs.title}
             islamicValue={activeDs.islamicValue}
             type={activeDs.chartConfig?.type || "bar"}
-            xAxisKey={activeDs.chartConfig?.xAxis || "wilayah"}
-            dataKeys={activeDs.chartConfig?.dataKeys || ["zakat"]}
+            xAxisKey={activeDs.chartConfig?.xAxis || "provinsi"}
+            dataKeys={activeDs.chartConfig?.dataKeys || ["penghimpunan_miliar"]}
             data={activeDs.rawData}
             onChartClick={handleChartClick}
           />

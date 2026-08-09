@@ -1,37 +1,49 @@
-[
-  {
-    "bulan": "Januari",
-    "buku_agama": 150,
-    "buku_sains": 80,
-    "buku_fiksi": 210,
-    "total_pengunjung": 400
+{
+  "slug": "perpus-madrasah",
+  "title": "Sirkulasi Peminjaman Buku Perpustakaan",
+  "category": "Literasi Data & Frekuensi",
+  "islamicValue": "Tabayyun",
+  "description": "Statistik peminjaman buku agama, sains, dan fiksi serta total pengunjung perpustakaan madrasah selama 5 bulan untuk melatih verifikasi data.",
+  "chartConfig": {
+    "type": "line",
+    "xAxis": "bulan",
+    "dataKeys": ["buku_agama", "buku_sains", "buku_fiksi"]
   },
-  {
-    "bulan": "Februari",
-    "buku_agama": 165,
-    "buku_sains": 95,
-    "buku_fiksi": 230,
-    "total_pengunjung": 450
-  },
-  {
-    "bulan": "Maret",
-    "buku_agama": 180,
-    "buku_sains": 110,
-    "buku_fiksi": 250,
-    "total_pengunjung": 510
-  },
-  {
-    "bulan": "April",
-    "buku_agama": 140,
-    "buku_sains": 75,
-    "buku_fiksi": 180,
-    "total_pengunjung": 380
-  },
-  {
-    "bulan": "Mei",
-    "buku_agama": 190,
-    "buku_sains": 120,
-    "buku_fiksi": 260,
-    "total_pengunjung": 550
-  }
-]
+  "rawData": [
+    {
+      "bulan": "Januari",
+      "buku_agama": 150,
+      "buku_sains": 80,
+      "buku_fiksi": 210,
+      "total_pengunjung": 400
+    },
+    {
+      "bulan": "Februari",
+      "buku_agama": 165,
+      "buku_sains": 95,
+      "buku_fiksi": 230,
+      "total_pengunjung": 450
+    },
+    {
+      "bulan": "Maret",
+      "buku_agama": 180,
+      "buku_sains": 110,
+      "buku_fiksi": 250,
+      "total_pengunjung": 510
+    },
+    {
+      "bulan": "April",
+      "buku_agama": 140,
+      "buku_sains": 75,
+      "buku_fiksi": 180,
+      "total_pengunjung": 380
+    },
+    {
+      "bulan": "Mei",
+      "buku_agama": 190,
+      "buku_sains": 120,
+      "buku_fiksi": 260,
+      "total_pengunjung": 550
+    }
+  ]
+}

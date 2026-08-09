@@ -1,42 +1,54 @@
-[
-  {
-    "surat": "An-Naba'",
-    "jumlah_ayat": 40,
-    "izhar": 3,
-    "ikhfa": 12,
-    "idgham": 15,
-    "iqlab": 2
+{
+  "slug": "tajwid-juz-30",
+  "title": "Hukum Tajwid Juz 30",
+  "category": "Statistika Kategorikal",
+  "islamicValue": "Amanah",
+  "description": "Frekuensi kemunculan hukum bacaan (Izhar, Ikhfa, Idgham, Iqlab) pada beberapa surah di Juz 30.",
+  "chartConfig": {
+    "type": "bar",
+    "xAxis": "surat",
+    "dataKeys": ["izhar", "ikhfa", "idgham", "iqlab"]
   },
-  {
-    "surat": "An-Nazi'at",
-    "jumlah_ayat": 46,
-    "izhar": 4,
-    "ikhfa": 14,
-    "idgham": 11,
-    "iqlab": 1
-  },
-  {
-    "surat": "Abasa",
-    "jumlah_ayat": 42,
-    "izhar": 5,
-    "ikhfa": 10,
-    "idgham": 12,
-    "iqlab": 0
-  },
-  {
-    "surat": "Al-Lail",
-    "jumlah_ayat": 21,
-    "izhar": 1,
-    "ikhfa": 4,
-    "idgham": 5,
-    "iqlab": 1
-  },
-  {
-    "surat": "Al-Bayyinah",
-    "jumlah_ayat": 8,
-    "izhar": 2,
-    "ikhfa": 5,
-    "idgham": 8,
-    "iqlab": 0
-  }
-]
+  "rawData": [
+    {
+      "surat": "An-Naba'",
+      "jumlah_ayat": 40,
+      "izhar": 3,
+      "ikhfa": 12,
+      "idgham": 15,
+      "iqlab": 2
+    },
+    {
+      "surat": "An-Nazi'at",
+      "jumlah_ayat": 46,
+      "izhar": 4,
+      "ikhfa": 14,
+      "idgham": 11,
+      "iqlab": 1
+    },
+    {
+      "surat": "Abasa",
+      "jumlah_ayat": 42,
+      "izhar": 5,
+      "ikhfa": 10,
+      "idgham": 12,
+      "iqlab": 0
+    },
+    {
+      "surat": "Al-Lail",
+      "jumlah_ayat": 21,
+      "izhar": 1,
+      "ikhfa": 4,
+      "idgham": 5,
+      "iqlab": 1
+    },
+    {
+      "surat": "Al-Bayyinah",
+      "jumlah_ayat": 8,
+      "izhar": 2,
+      "ikhfa": 5,
+      "idgham": 8,
+      "iqlab": 0
+    }
+  ]
+}

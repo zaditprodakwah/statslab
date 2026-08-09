@@ -32,8 +32,8 @@ export default function InteractiveChart({
   title,
   islamicValue,
   type = "bar",
-  xAxisKey = "wilayah",
-  dataKeys = ["zakat"],
+  xAxisKey = "provinsi",
+  dataKeys = ["penghimpunan_miliar"],
   data: initialData,
   onChartClick,
   compactMode = false

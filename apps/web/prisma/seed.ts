@@ -2,6 +2,9 @@ import { PrismaClient } from "@prisma/client";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import dotenv from "dotenv";
+import { readFileSync } from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -14,169 +17,122 @@ const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
+interface DatasetSeed {
+  slug: string;
+  title: string;
+  category: string;
+  islamicValue: string;
+  description?: string;
+  chartConfig?: unknown;
+  rawData: unknown[];
+}
+
+const datasetsDir = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../../packages/datasets"
+);
+
+function loadDataset(file: string): DatasetSeed {
+  const raw = readFileSync(path.join(datasetsDir, file), "utf8");
+  return JSON.parse(raw) as DatasetSeed;
+}
+
 async function main() {
   console.log("🌱 Starting Database Seeding...");
 
-  // 1. Seed Datasets
-  const zakatDataset = await prisma.dataset.upsert({
-    where: { slug: "zakat-infak" },
-    update: {},
-    create: {
-      slug: "zakat-infak",
-      title: "Distribusi Zakat & Infak Lembaga Ziswaf",
-      category: "Statistika Deskriptif & Distribusi",
-      islamicValue: "Amanah",
-      description: "Data penyaluran zakat dan infak pada 5 wilayah madrasah binaan untuk menguji transparansi dan ketepatan alokasi.",
-      rawData: [
-        { wilayah: "Madrasah A", zakat: 45000000, infak: 12000000 },
-        { wilayah: "Madrasah B", zakat: 38000000, infak: 9500000 },
-        { wilayah: "Madrasah C", zakat: 62000000, infak: 18000000 },
-        { wilayah: "Madrasah D", zakat: 29000000, infak: 7000000 },
-        { wilayah: "Madrasah E", zakat: 51000000, infak: 14500000 }
-      ],
-      chartConfig: {
-        type: "bar",
-        xAxis: "wilayah",
-        dataKeys: ["zakat", "infak"]
-      }
-    }
-  });
+  // 1. Seed Datasets (single source of truth: packages/datasets/*.json)
+  const datasetFiles = [
+    "zakat-infak.json",
+    "perpus-madrasah.json",
+    "tajwid-juz-30.json",
+    "wakaf-produktif.json"
+  ];
 
-  const perpusDataset = await prisma.dataset.upsert({
-    where: { slug: "perpus-madrasah" },
-    update: {},
-    create: {
-      slug: "perpus-madrasah",
-      title: "Sirkulasi Peminjaman Buku Perpustakaan",
-      category: "Literasi Data & Frekuensi",
-      islamicValue: "Tabayyun",
-      description: "Statistik peminjaman buku ensiklopedia Islam dan sains di perpustakaan madrasah selama 1 semester.",
-      rawData: [
-        { bulan: "Januari", peminjaman: 120 },
-        { bulan: "Februari", peminjaman: 145 },
-        { bulan: "Maret", peminjaman: 310 }, // Outlier untuk pengujian Tabayyun
-        { bulan: "April", peminjaman: 135 },
-        { bulan: "Mei", peminjaman: 150 }
-      ],
-      chartConfig: {
-        type: "line",
-        xAxis: "bulan",
-        dataKeys: ["peminjaman"]
-      }
-    }
-  });
-
-  const tajwidDataset = await prisma.dataset.upsert({
-    where: { slug: "tajwid-juz-30" },
-    update: {},
-    create: {
-      slug: "tajwid-juz-30",
-      title: "Hukum Tajwid Juz 30",
-      category: "Statistika Kategorikal",
-      islamicValue: "Amanah",
-      description: "Frekuensi kemunculan hukum bacaan (Izhar, Ikhfa, Idgham, Iqlab) pada beberapa surah di Juz 30.",
-      rawData: [
-        { surat: "An-Naba'", jumlah_ayat: 40, izhar: 3, ikhfa: 12, idgham: 15, iqlab: 2 },
-        { surat: "An-Nazi'at", jumlah_ayat: 46, izhar: 4, ikhfa: 14, idgham: 11, iqlab: 1 },
-        { surat: "Abasa", jumlah_ayat: 42, izhar: 5, ikhfa: 10, idgham: 12, iqlab: 0 },
-        { surat: "Al-Lail", jumlah_ayat: 21, izhar: 1, ikhfa: 4, idgham: 5, iqlab: 1 },
-        { surat: "Al-Bayyinah", jumlah_ayat: 8, izhar: 2, ikhfa: 5, idgham: 8, iqlab: 0 }
-      ],
-      chartConfig: {
-        type: "stacked-bar",
-        xAxis: "surat",
-        dataKeys: ["izhar", "ikhfa", "idgham", "iqlab"]
-      }
-    }
-  });
-
-  const wakafDataset = await prisma.dataset.upsert({
-    where: { slug: "wakaf-produktif" },
-    update: {},
-    create: {
-      slug: "wakaf-produktif",
-      title: "Perkembangan Wakaf Produktif",
-      category: "Time Series & Korelasi",
-      islamicValue: "Tawazun",
-      description: "Perkembangan titik tanah wakaf dan persentase produktivitasnya dari tahun 2021 hingga 2025.",
-      rawData: [
-        { tahun: 2021, total_titik_tanah: 415000, tanah_produktif_persen: 6.8, wakaf_uang_triliun: 0.85 },
-        { tahun: 2022, total_titik_tanah: 430000, tanah_produktif_persen: 7.5, wakaf_uang_triliun: 1.4 },
-        { tahun: 2023, total_titik_tanah: 438000, tanah_produktif_persen: 8.2, wakaf_uang_triliun: 2.1 },
-        { tahun: 2024, total_titik_tanah: 445000, tanah_produktif_persen: 8.9, wakaf_uang_triliun: 2.8 },
-        { tahun: 2025, total_titik_tanah: 451000, tanah_produktif_persen: 9.5, wakaf_uang_triliun: 3.4 }
-      ],
-      chartConfig: {
-        type: "multi-axis-line",
-        xAxis: "tahun",
-        dataKeys: ["tanah_produktif_persen", "wakaf_uang_triliun"]
-      }
-    }
-  });
-
+  const datasetIds: Record<string, string> = {};
   console.log("✅ Datasets seeded:");
-  console.log(`- ${zakatDataset.title}`);
-  console.log(`- ${perpusDataset.title}`);
-  console.log(`- ${tajwidDataset.title}`);
-  console.log(`- ${wakafDataset.title}`);
+  for (const file of datasetFiles) {
+    const data = loadDataset(file);
+    const record = await prisma.dataset.upsert({
+      where: { slug: data.slug },
+      update: {
+        title: data.title,
+        category: data.category,
+        islamicValue: data.islamicValue,
+        description: data.description,
+        rawData: data.rawData,
+        chartConfig: data.chartConfig
+      },
+      create: {
+        slug: data.slug,
+        title: data.title,
+        category: data.category,
+        islamicValue: data.islamicValue,
+        description: data.description,
+        rawData: data.rawData,
+        chartConfig: data.chartConfig
+      }
+    });
+    datasetIds[data.slug] = record.id;
+    console.log(`- ${record.title} (${record.slug})`);
+  }
 
   // 2. Seed 8 Tasks (Embedded Tasks Watson-Callingham Level 4-6)
   const tasksData = [
     {
-      datasetId: zakatDataset.id,
+      datasetId: datasetIds["zakat-infak"],
       taskNumber: 1,
       watsonLevel: 4,
       indicator: "Reading Data",
-      prompt: "Berdasarkan grafik distribusi, wilayah manakah yang menerima alokasi zakat paling tinggi?"
+      prompt: "Berdasarkan grafik distribusi, provinsi manakah yang penghimpunan zakatnya paling tinggi?"
     },
     {
-      datasetId: zakatDataset.id,
+      datasetId: datasetIds["zakat-infak"],
       taskNumber: 2,
       watsonLevel: 4,
       indicator: "Reading Between Data",
-      prompt: "Berapa selisih antara penyaluran zakat tertinggi dan terendah pada data tersebut?"
+      prompt: "Berapa selisih penghimpunan zakat antara provinsi tertinggi (DKI Jakarta) dan terendah (Banten)?"
     },
     {
-      datasetId: zakatDataset.id,
+      datasetId: datasetIds["zakat-infak"],
       taskNumber: 3,
       watsonLevel: 5,
       indicator: "Reading Beyond Data",
-      prompt: "Jika rata-rata infak naik 15% bulan depan, buatlah estimasi total infak yang terkumpul."
+      prompt: "Jika potensi zakat nasional (total 5 provinsi) meningkat 15% tahun depan, buatlah estimasi potensi zakat nasional."
     },
     {
-      datasetId: zakatDataset.id,
+      datasetId: datasetIds["zakat-infak"],
       taskNumber: 4,
       watsonLevel: 5,
       indicator: "Amanah Scale Audit",
       prompt: "Aktifkan sakelar Pilar Amanah. Jelaskan perbedaan impresi visual ketika sumbu Y dimulai dari nol vs dipotong."
     },
     {
-      datasetId: perpusDataset.id,
+      datasetId: datasetIds["perpus-madrasah"],
       taskNumber: 5,
       watsonLevel: 5,
       indicator: "Tabayyun Outlier Detection",
-      prompt: "Gunakan modul Tabayyun untuk mendeteksi lonjakan data pada bulan Maret. Apakah data ini tepercaya atau merupakan pencatatan ganda?"
+      prompt: "Gunakan modul Tabayyun untuk mendeteksi penurunan ekstrem jumlah pengunjung pada bulan April. Apakah penurunan ini wajar (konteks kegiatan madrasah) atau indikasi pencatatan ganda/kesalahan input?"
     },
     {
-      datasetId: perpusDataset.id,
+      datasetId: datasetIds["perpus-madrasah"],
       taskNumber: 6,
-      watsonLevel: 6,
+      watsonLevel: 5,
       indicator: "Tawazun Distribution Analysis",
-      prompt: "Bandingkan nilai Mean dan Median peminjaman buku. Apakah distribusi data seimbang (Tawazun) atau miring?"
+      prompt: "Bandingkan nilai Mean dan Median total pengunjung. Apakah distribusi data seimbang (Tawazun) atau miring?"
     },
     {
-      datasetId: perpusDataset.id,
+      datasetId: datasetIds["perpus-madrasah"],
       taskNumber: 7,
       watsonLevel: 6,
       indicator: "Critical Mathematical Reasoning",
-      prompt: "Evaluasi kesimpulan: 'Perpustakaan paling ramai di bulan Maret'. Berikan kritik statistik berbasis konteks kegiatan madrasah."
+      prompt: "Evaluasi kesimpulan: 'Perpustakaan paling ramai di bulan Mei'. Berikan kritik statistik berbasis konteks kegiatan madrasah."
     },
     {
-      datasetId: perpusDataset.id,
+      datasetId: datasetIds["perpus-madrasah"],
       taskNumber: 8,
       watsonLevel: 6,
       indicator: "Data-Driven Decision Making",
-      prompt: "Rumuskan rekomendasi pengadaan buku berbasis data kuartil yang telah dianalisis secara tabayyun."
+      prompt: "Rumuskan rekomendasi pengadaan buku berbasis data kuartil (misalnya kategori buku_fiksi yang paling tinggi) yang telah dianalisis secara tabayyun."
     }
   ];
 
@@ -185,7 +141,16 @@ async function main() {
       where: { datasetId: t.datasetId, taskNumber: t.taskNumber }
     });
 
-    if (!existingTask) {
+    if (existingTask) {
+      await prisma.task.update({
+        where: { id: existingTask.id },
+        data: {
+          watsonLevel: t.watsonLevel,
+          indicator: t.indicator,
+          prompt: t.prompt
+        }
+      });
+    } else {
       await prisma.task.create({ data: t });
     }
   }

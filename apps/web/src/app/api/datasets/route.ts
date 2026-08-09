@@ -29,13 +29,13 @@ export async function GET() {
             category: "Zakat",
             islamicValue: "Amanah",
             rawData: [
-              { wilayah: "DKI Jakarta", zakat: 2500, potensi: 40000 },
-              { wilayah: "Jawa Barat", zakat: 1500, potensi: 30000 },
-              { wilayah: "Jawa Timur", zakat: 1200, potensi: 25000 },
-              { wilayah: "Jawa Tengah", zakat: 950, potensi: 22000 },
-              { wilayah: "Banten", zakat: 750, potensi: 15000 }
+              { provinsi: "DKI Jakarta", potensi_miliar: 40000, penghimpunan_miliar: 2500, penyaluran_miliar: 2350, pertumbuhan_persen: 18.5 },
+              { provinsi: "Jawa Barat", potensi_miliar: 30000, penghimpunan_miliar: 1500, penyaluran_miliar: 1400, pertumbuhan_persen: 25.5 },
+              { provinsi: "Jawa Timur", potensi_miliar: 25000, penghimpunan_miliar: 1200, penyaluran_miliar: 1150, pertumbuhan_persen: 22.0 },
+              { provinsi: "Jawa Tengah", potensi_miliar: 22000, penghimpunan_miliar: 950, penyaluran_miliar: 900, pertumbuhan_persen: 15.3 },
+              { provinsi: "Banten", potensi_miliar: 15000, penghimpunan_miliar: 750, penyaluran_miliar: 700, pertumbuhan_persen: 20.1 }
             ],
-            chartConfig: { type: "bar", xAxis: "wilayah", dataKeys: ["zakat", "potensi"] },
+            chartConfig: { type: "bar", xAxis: "provinsi", dataKeys: ["penghimpunan_miliar", "penyaluran_miliar"] },
             tasks: [
               {
                 id: "t1",
@@ -43,7 +43,7 @@ export async function GET() {
                 watsonLevel: 1,
                 indicator: "Information Reading",
                 prompt: "Tuliskan nilai penghimpunan zakat di provinsi DKI Jakarta berdasarkan data di atas.",
-                clue: "Perhatikan batang grafik berwarna hijau untuk wilayah DKI Jakarta.",
+                clue: "Perhatikan batang grafik berwarna hijau untuk provinsi DKI Jakarta.",
                 inputType: "chart"
               },
               {
@@ -88,7 +88,7 @@ export async function GET() {
                 watsonLevel: 6,
                 indicator: "Critical Evaluation",
                 prompt: "Buat usulan kebijakan redistribusi zakat berlandaskan prinsip Tawazun (keseimbangan).",
-                clue: "Redistribusi dari wilayah surplus ke wilayah yang membutuhkan.",
+                clue: "Redistribusi dari provinsi surplus ke wilayah yang membutuhkan.",
                 inputType: "text"
               }
             ]

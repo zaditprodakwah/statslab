@@ -1,37 +1,49 @@
-[
-  {
-    "provinsi": "DKI Jakarta",
-    "potensi_miliar": 40000,
-    "penghimpunan_miliar": 2500,
-    "penyaluran_miliar": 2350,
-    "pertumbuhan_persen": 18.5
+{
+  "slug": "zakat-infak",
+  "title": "Distribusi Zakat & Infak Lembaga Ziswaf",
+  "category": "Statistika Deskriptif & Distribusi",
+  "islamicValue": "Amanah",
+  "description": "Potensi, penghimpunan, dan penyaluran zakat pada 5 provinsi (dalam miliar rupiah) untuk menguji transparansi dan ketepatan alokasi.",
+  "chartConfig": {
+    "type": "bar",
+    "xAxis": "provinsi",
+    "dataKeys": ["penghimpunan_miliar", "penyaluran_miliar"]
   },
-  {
-    "provinsi": "Jawa Barat",
-    "potensi_miliar": 30000,
-    "penghimpunan_miliar": 1500,
-    "penyaluran_miliar": 1400,
-    "pertumbuhan_persen": 25.5
-  },
-  {
-    "provinsi": "Jawa Timur",
-    "potensi_miliar": 25000,
-    "penghimpunan_miliar": 1200,
-    "penyaluran_miliar": 1150,
-    "pertumbuhan_persen": 22.0
-  },
-  {
-    "provinsi": "Jawa Tengah",
-    "potensi_miliar": 22000,
-    "penghimpunan_miliar": 950,
-    "penyaluran_miliar": 900,
-    "pertumbuhan_persen": 15.3
-  },
-  {
-    "provinsi": "Banten",
-    "potensi_miliar": 15000,
-    "penghimpunan_miliar": 750,
-    "penyaluran_miliar": 700,
-    "pertumbuhan_persen": 20.1
-  }
-]
+  "rawData": [
+    {
+      "provinsi": "DKI Jakarta",
+      "potensi_miliar": 40000,
+      "penghimpunan_miliar": 2500,
+      "penyaluran_miliar": 2350,
+      "pertumbuhan_persen": 18.5
+    },
+    {
+      "provinsi": "Jawa Barat",
+      "potensi_miliar": 30000,
+      "penghimpunan_miliar": 1500,
+      "penyaluran_miliar": 1400,
+      "pertumbuhan_persen": 25.5
+    },
+    {
+      "provinsi": "Jawa Timur",
+      "potensi_miliar": 25000,
+      "penghimpunan_miliar": 1200,
+      "penyaluran_miliar": 1150,
+      "pertumbuhan_persen": 22.0
+    },
+    {
+      "provinsi": "Jawa Tengah",
+      "potensi_miliar": 22000,
+      "penghimpunan_miliar": 950,
+      "penyaluran_miliar": 900,
+      "pertumbuhan_persen": 15.3
+    },
+    {
+      "provinsi": "Banten",
+      "potensi_miliar": 15000,
+      "penghimpunan_miliar": 750,
+      "penyaluran_miliar": 700,
+      "pertumbuhan_persen": 20.1
+    }
+  ]
+}
