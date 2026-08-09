@@ -11,3 +11,5 @@ build/
 # Exclude internal documentation & AI agent configuration folders
 docs/
 .agents/
+docs/
+.agents/

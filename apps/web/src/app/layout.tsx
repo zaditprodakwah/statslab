@@ -17,6 +17,15 @@ export const metadata: Metadata = {
   title: "StatsLab | Dasbor Statistika Islami",
   description: "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://statslabmedia.vercel.app'),
+  authors: [{ name: "Muhammad Khoiruzzadittaqwa" }],
+  publisher: "STAI Al-Bahjah",
+  robots: {
+    index: true,
+    follow: true,
+    "max-snippet": -1,
+    "max-image-preview": "large",
+    "max-video-preview": -1,
+  },
   openGraph: {
     title: "StatsLab | Dasbor Statistika Islami",
     description: "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman.",
@@ -32,6 +41,12 @@ export const metadata: Metadata = {
     ],
     locale: "id_ID",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "StatsLab | Dasbor Statistika Islami",
+    description: "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman.",
+    images: ["/opengraph-image.png"],
   },
   icons: {
     icon: "/logo.png",
@@ -53,8 +68,19 @@ export default function RootLayout({
     "name": "StatsLab",
     "operatingSystem": "Web",
     "applicationCategory": "EducationalApplication",
-    "description": "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman",
+    "description": "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa.",
     "url": "https://statslabmedia.vercel.app",
+    "author": {
+      "@type": "Person",
+      "name": "Muhammad Khoiruzzadittaqwa",
+      "url": "https://scholar.google.com/citations?user=CbR250MAAAAJ"
+    },
+    "sponsor": {
+      "@type": "CollegeOrUniversity",
+      "name": "STAI Al-Bahjah Cirebon",
+      "url": "https://staialbahjah.ac.id/",
+      "logo": "https://statslabmedia.vercel.app/logo-institut.jpg"
+    },
     "offers": {
       "@type": "Offer",
       "price": "0",
