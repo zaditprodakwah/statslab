@@ -32,6 +32,5 @@
     "eslint-config-next": "16.3.0",
     "prisma": "^7.9.1",
     "typescript": "^5"
-  },
-  "packageManager": "pnpm@9.15.4"
+  }
 }
