@@ -61,9 +61,9 @@ The live application features advanced SEO/AEO/GEO optimization, explicitly iden
 StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 15, Prisma v7, dan Neon PostgreSQL.
 
 ### Prasyarat
-- **Frontend:** Next.js 14+ (App Router), React, Tailwind CSS, Recharts
+- **Frontend:** Next.js 14+ (App Router), React, Vanilla CSS (Strict Anti-AI Slop), Recharts, Zustand
 - **Backend:** Prisma ORM, PostgreSQL (via Supabase/Neon)
-- **Deployment:** Vercel Edge Runtime (Monorepo setup using NPM Workspaces and Node.js 22.x)
+- **Deployment:** Vercel Edge Runtime (Monorepo setup using NPM Workspaces and Node.js >=24.x)
 - **Onboarding:** Interactive Role-based entry with Zero-Auth PIN sessions
 
 ### Langkah Menjalankan Aplikasi
@@ -76,7 +76,7 @@ StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 1
 
 2. **Instal Dependensi Workspace**:
    ```bash
-   pnpm install
+   npm install
    ```
 
 3. **Konfigurasi Environment Variables**:
@@ -88,16 +88,13 @@ StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 1
 
 4. **Generate Prisma & Seed Database**:
    ```bash
-   cd apps/web
-   pnpm prisma generate
-   pnpm prisma migrate dev --name init
-   npx tsx prisma/seed.ts
+   npm run postinstall --workspace=apps/web
+   npx tsx apps/web/prisma/seed.ts
    ```
 
 5. **Jalankan Server Lokal**:
    ```bash
-   cd ../..
-   pnpm dev
+   npm run dev
    ```
    Akses antarmuka di `http://localhost:3000`.
 
