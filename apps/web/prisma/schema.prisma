@@ -50,6 +50,12 @@ model Session {
   xp           Int      @default(0)
   currentLevel Int      @default(1) @map("current_level") @db.SmallInt
   badges       Json?
+  
+  // Gamification & Leaderboard Metrics
+  totalScore   Int      @default(0) @map("total_score")
+  timeSpentMs  Int      @default(0) @map("time_spent_ms")
+  completedAt  DateTime? @map("completed_at") @db.Timestamptz
+  certificateId String? @unique @map("certificate_id") @db.VarChar(100)
 
   taskResponses TaskResponse[]
   susResponse   SusResponse?
@@ -64,6 +70,11 @@ model TaskResponse {
   answerText   String?  @map("answer_text") @db.Text
   score        Int      @db.SmallInt
   scoredBy     String   @default("system") @map("scored_by") @db.VarChar(50)
+  
+  // PBL Tracking
+  interactionLog Json?  @map("interaction_log")
+  attempts     Int      @default(1) @db.SmallInt
+  
   createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
 
   session      Session  @relation(fields: [sessionId], references: [id])

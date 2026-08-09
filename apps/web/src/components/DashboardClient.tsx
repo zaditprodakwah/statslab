@@ -4,13 +4,24 @@ import React, { useEffect, useState } from "react";
 import InteractiveChart from "@/components/InteractiveChart";
 import EmbeddedTasksPanel from "@/components/EmbeddedTasksPanel";
 import SusFormModal from "@/components/SusFormModal";
-import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Download } from "lucide-react";
+import OnboardingTour from "@/components/OnboardingTour";
+import CertificateModal from "@/components/CertificateModal";
+import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Download, Award } from "lucide-react";
+import { useStatsLabStore } from "@/store/useStatsLabStore";
 
 export default function DashboardClient() {
   const [datasets, setDatasets] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSusOpen, setIsSusOpen] = useState(false);
   const [susResult, setSusResult] = useState<{ score: number; adjective: string } | null>(null);
+  const [isCertOpen, setIsCertOpen] = useState(false);
+  const currentLevel = useStatsLabStore((state) => state.currentLevel);
+
+  useEffect(() => {
+    if (currentLevel >= 6) {
+      setIsCertOpen(true);
+    }
+  }, [currentLevel]);
 
   useEffect(() => {
     async function fetchDatasets() {
@@ -44,6 +55,8 @@ export default function DashboardClient() {
 
   return (
     <main className="page-enter" style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}>
+      <OnboardingTour />
+      
       {/* Hero Banner Header */}
       <header style={{ marginBottom: "40px", textAlign: "center" }}>
         <div
@@ -120,6 +133,10 @@ export default function DashboardClient() {
             xAxisKey={dataset.chartConfig?.xAxis || "wilayah"}
             dataKeys={dataset.chartConfig?.dataKeys || ["zakat"]}
             data={dataset.rawData}
+            onChartClick={(data) => {
+              console.log("Chart clicked:", data);
+              alert(`Anda mengklik data: ${JSON.stringify(data.activePayload ? data.activePayload[0].payload : data)}`);
+            }}
           />
         ))}
       </section>
@@ -143,6 +160,26 @@ export default function DashboardClient() {
         }}
       >
         <p>© 2026 StatsLab R&D Open Source Ecosystem. Terintegrasi Nilai Keislaman & Standar Watson-Callingham.</p>
+        
+        {currentLevel >= 6 && (
+          <button
+            onClick={() => setIsCertOpen(true)}
+            style={{
+              marginTop: "16px",
+              padding: "8px 16px",
+              backgroundColor: "var(--color-amber-500)",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px"
+            }}
+          >
+            <Award size={16} /> Lihat Sertifikat
+          </button>
+        )}
       </footer>
 
       {/* SUS Instrument Modal */}
@@ -150,6 +187,12 @@ export default function DashboardClient() {
         isOpen={isSusOpen}
         onClose={() => setIsSusOpen(false)}
         onSubmitSuccess={(score, adjective) => setSusResult({ score, adjective })}
+      />
+      
+      {/* Certificate Modal */}
+      <CertificateModal 
+        isOpen={isCertOpen} 
+        onClose={() => setIsCertOpen(false)} 
       />
     </main>
   );

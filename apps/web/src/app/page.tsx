@@ -3,11 +3,59 @@
 import React, { useState } from 'react';
 import DashboardClient from "@/components/DashboardClient";
 import StickyHeader from "@/components/navigation/StickyHeader";
-import { User, GraduationCap, Microscope, ArrowRight } from "lucide-react";
+import Leaderboard from "@/components/Leaderboard";
+import { useStatsLabStore } from "@/store/useStatsLabStore";
+import { BookOpen, ShieldCheck, Scale, ArrowRight, User, Loader2 } from "lucide-react";
 
 export default function HomePage() {
   const [activeRole, setActiveRole] = useState<'none' | 'student' | 'teacher' | 'researcher'>('none');
   const [sessionActive, setSessionActive] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const [formData, setFormData] = useState({
+    studentName: "",
+    schoolName: "",
+    studentClass: "",
+    pinCode: ""
+  });
+
+  const setStudentInfo = useStatsLabStore(state => state.setStudentInfo);
+
+  const handleStartSession = async () => {
+    if (!formData.studentName || !formData.schoolName) {
+      setErrorMsg("Nama dan Asal Sekolah wajib diisi!");
+      return;
+    }
+    setErrorMsg("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        setStudentInfo({
+          sessionId: data.data.sessionId,
+          studentName: data.data.studentName,
+          schoolName: data.data.schoolName,
+          studentClass: data.data.studentClass,
+        });
+        setSessionActive(true);
+      } else {
+        setErrorMsg(data.error || "Gagal membuat sesi");
+      }
+    } catch (err) {
+      setErrorMsg("Terjadi kesalahan koneksi jaringan");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (sessionActive) {
     return (
@@ -19,95 +67,91 @@ export default function HomePage() {
   }
 
   return (
-    <div className="landing-container">
-      <div className="landing-content">
+    <div className="landing-container" style={{ paddingBottom: "64px" }}>
+      <div className="landing-content" style={{ maxWidth: "800px", margin: "0 auto" }}>
         
         {/* Hero Section */}
-        <div className="hero-section text-center">
-          <h1 className="hero-title">
-            Dasbor Statistika Interaktif
+        <div className="hero-section text-center" style={{ padding: "40px 0" }}>
+          <h1 className="hero-title" style={{ fontSize: "2.5rem", marginBottom: "16px", color: "var(--color-emerald-700)" }}>
+            StatsLab: Literasi Data Interaktif
           </h1>
-          <p className="hero-subtitle">
-            Media Pembelajaran Statistika Terintegrasi Nilai Keislaman. Silakan pilih mode masuk untuk memulai.
+          <p className="hero-subtitle" style={{ fontSize: "1.2rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
+            Mengembangkan kemampuan literasi data tingkat lanjut (Watson-Callingham) melalui eksplorasi visual interaktif, berlandaskan prinsip islami <strong>Tabayyun</strong>, <strong>Amanah</strong>, dan <strong>Tawazun</strong>.
           </p>
         </div>
 
-        {/* Role Selector */}
-        <div className="role-grid">
+        {/* Edukasi Konsep (3 Pilar Islam) */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px", marginBottom: "40px" }}>
+          <div className="glass-panel" style={{ padding: "20px", textAlign: "center" }}>
+            <div style={{ display: "inline-flex", padding: "12px", background: "var(--color-emerald-50)", color: "var(--color-emerald-600)", borderRadius: "50%", marginBottom: "16px" }}>
+              <ShieldCheck size={28} />
+            </div>
+            <h3 style={{ fontSize: "1.2rem", marginBottom: "8px" }}>Tabayyun (Kritis)</h3>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>Memeriksa validitas data dan mendeteksi anomali/outlier sebelum menyimpulkan.</p>
+          </div>
           
-          <button 
-            onClick={() => setActiveRole('student')}
-            className={`role-card ${activeRole === 'student' ? 'active-student' : ''}`}
-          >
-            <div className="role-icon-wrapper text-emerald-600 bg-emerald-100">
-              <User size={24} />
+          <div className="glass-panel" style={{ padding: "20px", textAlign: "center" }}>
+            <div style={{ display: "inline-flex", padding: "12px", background: "var(--color-blue-50)", color: "var(--color-blue-600)", borderRadius: "50%", marginBottom: "16px" }}>
+              <BookOpen size={28} />
             </div>
-            <h3 className="role-title">Mode Siswa</h3>
-            <p className="role-description">Masuk ke sesi kelas menggunakan 4-Digit PIN tanpa perlu mendaftar akun.</p>
-          </button>
-
-          <button 
-            onClick={() => setActiveRole('teacher')}
-            className={`role-card ${activeRole === 'teacher' ? 'active-teacher' : ''}`}
-          >
-            <div className="role-icon-wrapper text-blue-600 bg-blue-100">
-              <GraduationCap size={24} />
+            <h3 style={{ fontSize: "1.2rem", marginBottom: "8px" }}>Amanah (Integritas)</h3>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>Menyajikan data secara jujur tanpa distorsi manipulasi skala grafik (Zero-based).</p>
+          </div>
+          
+          <div className="glass-panel" style={{ padding: "20px", textAlign: "center" }}>
+            <div style={{ display: "inline-flex", padding: "12px", background: "var(--color-purple-50)", color: "var(--color-purple-600)", borderRadius: "50%", marginBottom: "16px" }}>
+              <Scale size={28} />
             </div>
-            <h3 className="role-title">Mode Guru</h3>
-            <p className="role-description">Buat sesi kelas baru dan pantau progres literasi data siswa secara real-time.</p>
-          </button>
-
-          <button 
-            onClick={() => setActiveRole('researcher')}
-            className={`role-card ${activeRole === 'researcher' ? 'active-researcher' : ''}`}
-          >
-            <div className="role-icon-wrapper text-purple-600 bg-purple-100">
-              <Microscope size={24} />
-            </div>
-            <h3 className="role-title">Eksplorasi Mandiri</h3>
-            <p className="role-description">Akses penuh ke dashboard untuk pengunjung, peneliti, atau pengujian.</p>
-          </button>
+            <h3 style={{ fontSize: "1.2rem", marginBottom: "8px" }}>Tawazun (Keseimbangan)</h3>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>Memahami distribusi data secara objektif (Mean vs Median) secara seimbang.</p>
+          </div>
         </div>
 
-        {/* Dynamic Action Area */}
-        <div className="action-area">
-          {activeRole === 'student' && (
-            <div className="glass-panel text-center page-enter">
-              <h4 className="action-title">Masuk Sesi Kelas</h4>
-              <div className="form-group">
-                <input type="text" placeholder="Nama / Presensi (misal: Ahmad - 04)" className="form-input" />
-                <input type="text" placeholder="Kode PIN (misal: AK-8B)" maxLength={5} className="form-input text-uppercase" />
-                <button 
-                  onClick={() => setSessionActive(true)}
-                  className="btn-premium btn-emerald w-full flex-center"
-                >
-                  Mulai Belajar <ArrowRight size={18} className="icon-right" />
-                </button>
-              </div>
-            </div>
-          )}
+        {/* Form Identitas */}
+        <div className="glass-panel" style={{ padding: "32px" }}>
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "8px", textAlign: "center", color: "var(--text-primary)" }}>Mulai Sesi Belajar</h2>
+          <p style={{ textAlign: "center", color: "var(--text-secondary)", marginBottom: "24px" }}>Masukkan identitas Anda untuk mencatat progres dan mendapatkan Sertifikat Kelulusan.</p>
           
-          {activeRole === 'teacher' && (
-            <div className="glass-panel text-center page-enter">
-              <p className="action-desc">Teacher Panel masih dalam tahap pengembangan.</p>
-              <button disabled className="btn-disabled w-full">
-                Masuk Teacher Panel
-              </button>
-            </div>
-          )}
-
-          {activeRole === 'researcher' && (
-            <div className="glass-panel text-center page-enter">
-              <p className="action-desc">Lanjutkan eksplorasi modul tanpa login.</p>
-              <button 
-                onClick={() => setSessionActive(true)}
-                className="btn-premium btn-purple w-full flex-center"
-              >
-                Eksplorasi Modul <ArrowRight size={18} className="icon-right" />
-              </button>
-            </div>
-          )}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxWidth: "400px", margin: "0 auto" }}>
+            <input 
+              type="text" 
+              placeholder="Nama Lengkap" 
+              className="form-input"
+              value={formData.studentName}
+              onChange={e => setFormData({...formData, studentName: e.target.value})}
+            />
+            <input 
+              type="text" 
+              placeholder="Asal Sekolah" 
+              className="form-input"
+              value={formData.schoolName}
+              onChange={e => setFormData({...formData, schoolName: e.target.value})}
+            />
+            <input 
+              type="text" 
+              placeholder="Kelas (Opsional)" 
+              className="form-input"
+              value={formData.studentClass}
+              onChange={e => setFormData({...formData, studentClass: e.target.value})}
+            />
+            
+            {errorMsg && <div style={{ color: "var(--color-red-600)", fontSize: "0.9rem", textAlign: "center" }}>{errorMsg}</div>}
+            
+            <button 
+              onClick={handleStartSession}
+              disabled={loading}
+              className="btn-premium btn-emerald w-full flex-center"
+              style={{ padding: "14px", marginTop: "8px" }}
+            >
+              {loading ? <Loader2 size={18} className="spin" style={{ marginRight: "8px" }} /> : null}
+              {loading ? "Menyiapkan Sesi..." : "Masuk Dasbor"}
+              {!loading && <ArrowRight size={18} style={{ marginLeft: "8px" }} />}
+            </button>
+          </div>
         </div>
+
+        <Leaderboard />
+
       </div>
     </div>
   );

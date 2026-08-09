@@ -15,7 +15,7 @@ import {
 import { useStatsLabStore } from '@/store/useStatsLabStore';
 
 export default function StickyHeader() {
-  const taskResponses = useStatsLabStore((state) => state.taskResponses);
+  const { taskResponses, studentName, currentLevel, xp } = useStatsLabStore();
   const taskProgress = Object.keys(taskResponses || {}).length;
   const totalTasks = 8;
   const progressPercent = Math.min((taskProgress / totalTasks) * 100, 100);
@@ -90,12 +90,13 @@ export default function StickyHeader() {
               <Sun className="icon-sm dark-hidden" />
             </button>
             
-            <div className="session-control">
-              <span className="session-id">Sesi: AK-8B</span>
-              <button className="btn-logout" aria-label="Keluar Sesi">
-                <LogOut className="icon-sm" />
-              </button>
+            <div className="session-control" style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", marginRight: "12px" }}>
+              <span className="session-id" style={{ fontWeight: "bold" }}>{studentName || "Siswa"}</span>
+              <span style={{ fontSize: "0.75rem", color: "var(--color-amber-600)" }}>Lvl {currentLevel} • {xp} XP</span>
             </div>
+            <button className="btn-logout" aria-label="Keluar Sesi">
+              <LogOut className="icon-sm" />
+            </button>
           </nav>
 
         </div>

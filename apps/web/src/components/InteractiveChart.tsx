@@ -23,6 +23,7 @@ interface ChartProps {
   dataKeys: string[];
   title: string;
   islamicValue: string;
+  onChartClick?: (data: any) => void;
 }
 
 export default function InteractiveChart({
@@ -31,7 +32,8 @@ export default function InteractiveChart({
   xAxisKey,
   dataKeys,
   title,
-  islamicValue
+  islamicValue,
+  onChartClick
 }: ChartProps) {
   const { amanahZeroScale, toggleAmanahScale, confirmTawazun, tawazunConfirmed } = useStatsLabStore();
   const [activeTabayyun, setActiveTabayyun] = useState(false);
@@ -155,6 +157,8 @@ export default function InteractiveChart({
                   fill={idx === 0 ? "var(--color-emerald-600)" : "var(--color-amber-500)"}
                   radius={[6, 6, 0, 0]}
                   animationDuration={800}
+                  onClick={(data) => onChartClick && onChartClick(data)}
+                  style={{ cursor: onChartClick ? "pointer" : "default" }}
                 />
               ))}
             </BarChart>
@@ -174,6 +178,7 @@ export default function InteractiveChart({
                   strokeWidth={3}
                   dot={{ r: 6 }}
                   animationDuration={800}
+                  activeDot={{ onClick: (e, payload) => onChartClick && onChartClick(payload), cursor: onChartClick ? "pointer" : "default" }}
                 />
               ))}
             </LineChart>

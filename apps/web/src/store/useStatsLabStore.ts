@@ -29,7 +29,7 @@ interface StatsLabState {
   totalScore: number; // Max 16
   
   // Actions
-  setStudentInfo: (info: { studentName: string; studentClass: string; schoolName: string }) => void;
+  setStudentInfo: (info: { studentName: string; studentClass: string; schoolName: string; sessionId?: string }) => void;
   toggleAmanahScale: () => void;
   confirmTawazun: () => void;
   submitTaskAnswer: (taskId: string, answerText: string, score: number) => void;
