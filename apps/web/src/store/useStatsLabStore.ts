@@ -6,7 +6,7 @@ interface TaskResponse {
   score: number;
 }
 
-export type DatasetSlug = "zakat-infak" | "sirkulasi-perpustakaan" | "tajwid-juz-30" | "wakaf-produktif";
+export type DatasetSlug = "zakat-infak" | "perpus-madrasah" | "tajwid-juz-30" | "wakaf-produktif";
 
 interface StatsLabState {
   // Session & Student Info

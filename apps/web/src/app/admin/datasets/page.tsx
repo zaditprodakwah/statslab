@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Database, Upload, FileJson } from "lucide-react";
+import { getAdminAuthHeaders } from "@/lib/adminToken";
 
 export default function AdminDatasetsPage() {
   const [datasets, setDatasets] = useState<any[]>([]);
@@ -17,7 +18,7 @@ export default function AdminDatasetsPage() {
 
   async function fetchDatasets() {
     try {
-      const res = await fetch("/api/admin/datasets");
+      const res = await fetch("/api/admin/datasets", { headers: getAdminAuthHeaders() });
       const json = await res.json();
       if (json.success) {
         setDatasets(json.data);
@@ -36,7 +37,7 @@ export default function AdminDatasetsPage() {
       const parsed = JSON.parse(jsonInput);
       const res = await fetch("/api/admin/datasets", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...getAdminAuthHeaders() },
         body: JSON.stringify(parsed)
       });
       const json = await res.json();

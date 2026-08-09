@@ -17,8 +17,7 @@ export default function HomePage() {
   const [formData, setFormData] = useState({
     studentName: "",
     schoolName: "",
-    studentClass: "",
-    pinCode: "AK-8B"
+    studentClass: ""
   });
 
   const setStudentInfo = useStatsLabStore((state) => state.setStudentInfo);
@@ -120,7 +119,7 @@ export default function HomePage() {
               <User size={24} />
             </div>
             <h4 className="role-title">Mode Siswa</h4>
-            <p className="role-description">Masuk Sesi Kelas dengan Kode PIN 4-Digit (AK-8B)</p>
+            <p className="role-description">Masuk Sesi Kelas untuk Asesmen Literasi Data</p>
           </div>
 
           {/* Mode Guru */}
@@ -170,7 +169,7 @@ export default function HomePage() {
             <div>
               <h3 style={{ fontSize: "1.3rem", marginBottom: "8px", textAlign: "center" }}>Masuk Sesi Pembelajaran Siswa</h3>
               <p style={{ textAlign: "center", color: "var(--text-secondary)", marginBottom: "24px", fontSize: "0.9rem" }}>
-                Masukkan nama dan asal sekolah Anda. Kode PIN Sesi diperoleh dari Guru pengajar.
+                Masukkan nama, asal sekolah, dan kelas Anda untuk memulai asesmen.
               </p>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "14px", maxWidth: "420px", margin: "0 auto" }}>
@@ -183,29 +182,18 @@ export default function HomePage() {
                 />
                 <input
                   type="text"
-                  placeholder="Asal Sekolah / Madraisah"
+                  placeholder="Asal Sekolah / Madrasah"
                   className="form-input"
                   value={formData.schoolName}
                   onChange={(e) => setFormData({ ...formData, schoolName: e.target.value })}
                 />
-                <div style={{ display: "flex", gap: "10px" }}>
-                  <input
-                    type="text"
-                    placeholder="Kelas (contoh: XI IPA 1)"
-                    className="form-input"
-                    style={{ flex: 1 }}
-                    value={formData.studentClass}
-                    onChange={(e) => setFormData({ ...formData, studentClass: e.target.value })}
-                  />
-                  <input
-                    type="text"
-                    placeholder="PIN Sesi"
-                    className="form-input text-uppercase text-center"
-                    style={{ width: "120px", fontWeight: "bold" }}
-                    value={formData.pinCode}
-                    onChange={(e) => setFormData({ ...formData, pinCode: e.target.value })}
-                  />
-                </div>
+                <input
+                  type="text"
+                  placeholder="Kelas (contoh: XI IPA 1)"
+                  className="form-input"
+                  value={formData.studentClass}
+                  onChange={(e) => setFormData({ ...formData, studentClass: e.target.value })}
+                />
 
                 {errorMsg && <div style={{ color: "var(--color-red-600)", fontSize: "0.875rem", textAlign: "center" }}>{errorMsg}</div>}
 
@@ -227,7 +215,7 @@ export default function HomePage() {
             <div style={{ textAlign: "center" }}>
               <h3 style={{ fontSize: "1.3rem", marginBottom: "8px" }}>Mode Guru / Pengajar</h3>
               <p style={{ color: "var(--text-secondary)", marginBottom: "20px", fontSize: "0.9rem" }}>
-                Gunakan Panel Admin untuk membuat PIN sesi kelas baru (contoh: AK-8B) dan mengunduh rekap nilai siswa.
+                Gunakan Panel Admin untuk mengelola sesi kelas, mengunduh rekap nilai siswa, dan mengelola instrumen soal.
               </p>
               <Link href="/admin" className="btn-premium flex-center" style={{ textDecoration: "none", display: "inline-flex", padding: "12px 24px", backgroundColor: "#2563eb" }}>
                 Masuk ke Panel Guru & Admin

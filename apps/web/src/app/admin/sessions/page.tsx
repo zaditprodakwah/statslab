@@ -1,23 +1,21 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, KeyRound, Plus, Users, Download, Loader2 } from "lucide-react";
+import { ArrowLeft, Users, Download } from "lucide-react";
+import { getAdminAuthHeaders } from "@/lib/adminToken";
 
 export default function AdminSessionsPage() {
   const [sessions, setSessions] = useState<any[]>([]);
-  const [sessionPins, setSessionPins] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [generating, setGenerating] = useState(false);
 
   const fetchSessions = async () => {
     try {
-      const res = await fetch("/api/admin/sessions");
+      const res = await fetch("/api/admin/sessions", { headers: getAdminAuthHeaders() });
       const json = await res.json();
       if (json.success) {
         setSessions(json.data.sessions);
-        setSessionPins(json.data.sessionPins);
       }
     } catch (err) {
       console.error("Error fetching sessions:", err);
@@ -31,23 +29,25 @@ export default function AdminSessionsPage() {
     fetchSessions();
   }, []);
 
-  const handleCreatePin = async () => {
-    setGenerating(true);
-    try {
-      const res = await fetch("/api/admin/sessions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ testPhase: "large_scale" })
-      });
-      const json = await res.json();
-      if (json.success) {
-        setSessionPins((prev) => [json.data, ...prev]);
-      }
-    } catch (err) {
-      console.error("Error generating PIN:", err);
-    } finally {
-      setGenerating(false);
-    }
+  const exportCsv = () => {
+    const header = ["Nama Siswa", "Sekolah", "Kelas", "Skor Total", "Level", "Jawaban", "Skor SUS"];
+    const rows = sessions.map((s) => [
+      s.studentName || "Anonim",
+      s.schoolName || "-",
+      s.studentClass || "-",
+      String(s.totalScore),
+      String(s.currentLevel),
+      String(s.taskResponses?.length || 0),
+      s.susResponse ? `${s.susResponse.totalScore} (${s.susResponse.adjectiveRating})` : "-"
+    ]);
+    const csv = [header, ...rows].map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "statslab-sessions.csv";
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -60,50 +60,20 @@ export default function AdminSessionsPage() {
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
         <div>
-          <h1 style={{ fontSize: "1.8rem", color: "var(--text-primary)" }}>Kelola Sesi Siswa & PIN Kelas</h1>
+          <h1 style={{ fontSize: "1.8rem", color: "var(--text-primary)" }}>Kelola Sesi Siswa</h1>
           <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
-            Daftar responden siswa dan generator kode PIN sesi kelas.
+            Daftar responden siswa beserta hasil tugas dan skor SUS.
           </p>
         </div>
 
         <button
-          onClick={handleCreatePin}
-          disabled={generating}
+          onClick={exportCsv}
+          disabled={sessions.length === 0}
           className="btn-premium btn-emerald flex-center"
           style={{ padding: "10px 18px" }}
         >
-          {generating ? <Loader2 size={18} className="spin" style={{ marginRight: "8px" }} /> : <Plus size={18} style={{ marginRight: "8px" }} />}
-          {generating ? "Membuat..." : "Buat PIN Sesi Baru (AK-XX)"}
+          <Download size={18} style={{ marginRight: "8px" }} /> Ekspor CSV
         </button>
-      </div>
-
-      {/* Active PIN List */}
-      <div className="glass-panel" style={{ padding: "20px", marginBottom: "32px" }}>
-        <h3 style={{ fontSize: "1.1rem", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px" }}>
-          <KeyRound size={18} color="var(--color-amber-500)" /> Daftar Kode PIN Sesi Aktif
-        </h3>
-        {sessionPins.length === 0 ? (
-          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>Belum ada PIN sesi. Klik tombol di atas untuk membuat PIN kelas baru.</p>
-        ) : (
-          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-            {sessionPins.map((pin) => (
-              <div
-                key={pin.id}
-                style={{
-                  padding: "8px 16px",
-                  borderRadius: "var(--radius-md)",
-                  backgroundColor: "var(--color-amber-50)",
-                  border: "1px solid var(--color-amber-400)",
-                  fontWeight: "bold",
-                  fontSize: "1.1rem",
-                  color: "var(--color-amber-700)"
-                }}
-              >
-                🔑 {pin.pinCode}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Sessions Data Table */}

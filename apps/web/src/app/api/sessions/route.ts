@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
@@ -12,7 +11,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { studentName, studentClass, schoolName, pinCode } = body;
+    const { studentName, studentClass, schoolName } = body;
 
     // Validate request
     if (!studentName || !schoolName) {

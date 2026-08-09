@@ -5,15 +5,15 @@ import { useRouter } from "next/navigation";
 import { Lock, ArrowRight, Loader2 } from "lucide-react";
 
 export default function AdminLoginPage() {
-  const [pin, setPin] = useState("");
+  const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!pin) {
-      setErrorMsg("Masukkan PIN Admin 6-digit");
+    if (!token.trim()) {
+      setErrorMsg("Masukkan Token Admin");
       return;
     }
     setErrorMsg("");
@@ -23,7 +23,7 @@ export default function AdminLoginPage() {
       const res = await fetch("/api/admin/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pin })
+        body: JSON.stringify({ token: token.trim() })
       });
       const data = await res.json();
 
@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
         sessionStorage.setItem("admin_token", data.token);
         router.push("/admin/dashboard");
       } else {
-        setErrorMsg(data.error || "PIN Admin Salah");
+        setErrorMsg(data.error || "Token Admin Salah");
       }
     } catch {
       setErrorMsg("Koneksi gagal");
@@ -51,18 +51,19 @@ export default function AdminLoginPage() {
             Panel Peneliti & Admin
           </h2>
           <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-            Masukkan PIN Akses Peneliti StatsLab
+            Masukkan Token Akses Peneliti StatsLab
           </p>
         </div>
 
         <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <input
             type="password"
-            placeholder="PIN Admin"
+            placeholder="Token Admin"
             className="form-input text-center"
-            style={{ fontSize: "1.2rem", letterSpacing: "4px" }}
-            value={pin}
-            onChange={(e) => setPin(e.target.value)}
+            style={{ fontSize: "1rem" }}
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+            autoComplete="current-password"
           />
 
           {errorMsg && (
@@ -78,7 +79,7 @@ export default function AdminLoginPage() {
             style={{ padding: "12px" }}
           >
             {loading ? <Loader2 size={18} className="spin" style={{ marginRight: "8px" }} /> : null}
-            {loading ? "Verifikasi PIN..." : "Masuk Dashboard Admin"}
+            {loading ? "Verifikasi Token..." : "Masuk Dashboard Admin"}
             {!loading && <ArrowRight size={18} style={{ marginLeft: "8px" }} />}
           </button>
         </form>

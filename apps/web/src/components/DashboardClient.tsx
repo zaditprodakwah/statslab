@@ -288,6 +288,7 @@ export default function DashboardClient() {
         isOpen={isSusOpen}
         onClose={() => setIsSusOpen(false)}
         onSubmitSuccess={(score, adjective) => setSusResult({ score, adjective })}
+        sessionId={sessionId}
       />
       <CertificateModal isOpen={isCertOpen} onClose={() => setIsCertOpen(false)} />
     </main>

@@ -2,22 +2,22 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Users, Database, Download, KeyRound, LogOut, FileSpreadsheet, ShieldCheck } from "lucide-react";
+import { Users, Database, Download, LogOut, FileSpreadsheet, ShieldCheck } from "lucide-react";
+import { getAdminAuthHeaders } from "@/lib/adminToken";
 
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState({ totalSessions: 0, totalResponses: 0, activePins: 0 });
+  const [stats, setStats] = useState({ totalSessions: 0, totalResponses: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadStats() {
       try {
-        const res = await fetch("/api/admin/sessions");
+        const res = await fetch("/api/admin/sessions", { headers: getAdminAuthHeaders() });
         const json = await res.json();
         if (json.success) {
           setStats({
             totalSessions: json.data.sessions.length,
-            totalResponses: json.data.sessions.reduce((acc: number, s: { taskResponses: unknown[] }) => acc + s.taskResponses.length, 0),
-            activePins: json.data.sessionPins.length
+            totalResponses: json.data.sessions.reduce((acc: number, s: { taskResponses: unknown[] }) => acc + s.taskResponses.length, 0)
           });
         }
       } catch (err) {
@@ -64,27 +64,19 @@ export default function AdminDashboardPage() {
           </div>
           <h2 style={{ fontSize: "2.2rem", color: "var(--color-amber-600)" }}>{loading ? "..." : stats.totalResponses}</h2>
         </div>
-
-        <div className="glass-panel" style={{ padding: "20px" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
-            <span style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>PIN Sesi Kelas Aktif</span>
-            <KeyRound color="#3b82f6" size={24} />
-          </div>
-          <h2 style={{ fontSize: "2.2rem", color: "#2563eb" }}>{loading ? "..." : stats.activePins}</h2>
-        </div>
       </div>
 
       {/* Quick Navigation Action Grid */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "24px", marginBottom: "40px" }}>
         <div className="glass-panel" style={{ padding: "24px" }}>
           <h3 style={{ fontSize: "1.2rem", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
-            <Users size={20} color="var(--color-emerald-700)" /> Kelola Sesi Siswa & PIN
+            <Users size={20} color="var(--color-emerald-700)" /> Kelola Sesi Siswa
           </h3>
           <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "16px" }}>
-            Lihat daftar lengkap responden siswa, hasil SUS, dan buat Kode PIN Sesi Kelas baru (format AK-XX).
+            Lihat daftar lengkap responden siswa beserta hasil SUS dan rekap nilai.
           </p>
           <Link href="/admin/sessions" className="btn-premium btn-emerald flex-center" style={{ textDecoration: "none", width: "100%", padding: "10px" }}>
-            Buka Tabel Sesi & PIN
+            Buka Tabel Sesi
           </Link>
         </div>
 

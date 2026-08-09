@@ -22,11 +22,13 @@ const SUS_QUESTIONS = [
 export default function SusFormModal({
   isOpen,
   onClose,
-  onSubmitSuccess
+  onSubmitSuccess,
+  sessionId
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSubmitSuccess: (score: number, adjective: string) => void;
+  sessionId?: string | null;
 }) {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -73,7 +75,8 @@ export default function SusFormModal({
         body: JSON.stringify({
           answers,
           totalScore,
-          adjectiveRating: adjective
+          adjectiveRating: adjective,
+          sessionId
         })
       });
     } catch (e) {

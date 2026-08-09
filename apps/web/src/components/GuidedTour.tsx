@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
+import { Joyride, STATUS, Step } from "react-joyride";
 
 const TOUR_STEPS: Step[] = [
   {
@@ -10,7 +10,7 @@ const TOUR_STEPS: Step[] = [
     content:
       "Ini adalah grafik utama dataset Anda. Klik bar atau titik data untuk menyeleksi nilai — hasilnya akan digunakan untuk menjawab tugas Watson-Callingham.",
     placement: "bottom",
-    disableBeacon: true,
+    skipBeacon: true,
   },
   {
     target: "#module-switcher-btn",
@@ -51,7 +51,7 @@ export default function GuidedTour({ run, onFinish }: GuidedTourProps) {
   // Guard against SSR — react-joyride requires browser APIs
   if (typeof window === "undefined") return null;
 
-  const handleCallback = (data: CallBackProps) => {
+  const handleCallback = (data: { status?: string }) => {
     const { status } = data;
     if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
       onFinish();
@@ -63,9 +63,16 @@ export default function GuidedTour({ run, onFinish }: GuidedTourProps) {
       steps={TOUR_STEPS}
       run={run}
       continuous
-      showSkipButton
-      showProgress
-      callback={handleCallback}
+      onEvent={handleCallback}
+      options={{
+        showProgress: true,
+        buttons: ["back", "close", "primary", "skip"],
+        primaryColor: "#047857",
+        textColor: "#1e293b",
+        backgroundColor: "#ffffff",
+        arrowColor: "#ffffff",
+        zIndex: 150,
+      }}
       locale={{
         back: "Kembali",
         close: "Tutup",
@@ -74,13 +81,6 @@ export default function GuidedTour({ run, onFinish }: GuidedTourProps) {
         skip: "Lewati Tur",
       }}
       styles={{
-        options: {
-          primaryColor: "#047857",
-          textColor: "#1e293b",
-          backgroundColor: "#ffffff",
-          arrowColor: "#ffffff",
-          zIndex: 150,
-        },
         tooltip: {
           borderRadius: "12px",
           boxShadow: "0 24px 60px -12px rgba(0,0,0,0.3)",
@@ -97,7 +97,7 @@ export default function GuidedTour({ run, onFinish }: GuidedTourProps) {
           lineHeight: 1.6,
           paddingTop: "4px",
         },
-        buttonNext: {
+        buttonPrimary: {
           backgroundColor: "#047857",
           borderRadius: "8px",
           padding: "8px 18px",
@@ -111,9 +111,11 @@ export default function GuidedTour({ run, onFinish }: GuidedTourProps) {
           color: "#94a3b8",
           fontSize: "0.8rem",
         },
-        beacon: {
-          inner: "#047857",
-          outer: "#059669",
+        beaconInner: {
+          backgroundColor: "#047857",
+        },
+        beaconOuter: {
+          borderColor: "#059669",
         },
       }}
     />

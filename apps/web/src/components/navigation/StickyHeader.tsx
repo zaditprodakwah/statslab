@@ -7,7 +7,7 @@ import { LogOut, Type, Eye, ShieldCheck, ChevronDown, Check } from "lucide-react
 
 const MODULES: { slug: DatasetSlug; label: string; emoji: string }[] = [
   { slug: "zakat-infak", label: "Distribusi Zakat & Infak", emoji: "🕌" },
-  { slug: "sirkulasi-perpustakaan", label: "Sirkulasi Perpustakaan", emoji: "📚" },
+  { slug: "perpus-madrasah", label: "Sirkulasi Perpustakaan", emoji: "📚" },
   { slug: "tajwid-juz-30", label: "Hukum Tajwid Juz 30", emoji: "📖" },
   { slug: "wakaf-produktif", label: "Wakaf Produktif", emoji: "🌿" },
 ];

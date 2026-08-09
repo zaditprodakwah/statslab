@@ -64,7 +64,7 @@ StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 1
 - **Frontend:** Next.js 14+ (App Router), React, Vanilla CSS (Strict Anti-AI Slop), Recharts, Zustand
 - **Backend:** Prisma ORM, PostgreSQL (via Supabase/Neon)
 - **Deployment:** Vercel Edge Runtime (Monorepo setup using NPM Workspaces and Node.js >=24.x)
-- **Onboarding:** Interactive Role-based entry with Zero-Auth PIN sessions
+- **Onboarding:** Interactive Role-based entry (Siswa / Guru / Peneliti) with zero-registration session creation
 
 ### Langkah Menjalankan Aplikasi
 
@@ -84,6 +84,8 @@ StatsLab menggunakan arsitektur *monorepo* (`pnpm workspace`) berbasis Next.js 1
    ```env
    DATABASE_URL="postgresql://neondb_owner:YOUR_POOLER_URL/neondb?sslmode=require"
    DATABASE_URL_UNPOOLED="postgresql://neondb_owner:YOUR_DIRECT_URL/neondb?sslmode=require"
+   # Token akses Panel Guru & Admin (dibuat dengan: openssl rand -hex 24)
+   ADMIN_TOKEN="GANTI_DENGAN_TOKEN_ACAK"
    ```
 
 4. **Generate Prisma & Seed Database**:
