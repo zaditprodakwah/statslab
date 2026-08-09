@@ -33,4 +33,8 @@ jobs:
       run: npm run lint --if-present
       
     - name: Build Next.js
+      env:
+        # Build only imports route modules (no DB queries; all DB routes are
+        # force-dynamic/POST). A placeholder URL satisfies prisma.ts's import guard.
+        DATABASE_URL: postgresql://user:password@localhost:5432/statslab_ci
       run: npm run build
