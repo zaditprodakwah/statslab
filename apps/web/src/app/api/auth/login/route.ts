@@ -58,6 +58,7 @@ export async function POST(req: Request) {
     const store = await cookies();
     store.set(buildAuthCookie({ id: user.id, role: user.role }));
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { passwordHash: _hash, ...safeUser } = user;
     return NextResponse.json({ success: true, data: { user: safeUser } });
   } catch (error) {

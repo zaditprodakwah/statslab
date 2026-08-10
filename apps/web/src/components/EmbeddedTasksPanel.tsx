@@ -159,7 +159,7 @@ export default function EmbeddedTasksPanel({
           sessionId,
           taskId: task.id,
           timeSpentMs: useStatsLabStore.getState().sessionStartedAt
-            ? Date.now() - useStatsLabStore.getState().sessionStartedAt!
+            ? new Date().getTime() - useStatsLabStore.getState().sessionStartedAt!
             : 0,
           attempts: 1,
           answerHistory: [choiceText],
@@ -233,7 +233,7 @@ export default function EmbeddedTasksPanel({
           sessionId,
           taskId: task.id,
           timeSpentMs: useStatsLabStore.getState().sessionStartedAt
-            ? Date.now() - useStatsLabStore.getState().sessionStartedAt!
+            ? new Date().getTime() - useStatsLabStore.getState().sessionStartedAt!
             : 0,
           attempts: 1,
           answerHistory: [text],

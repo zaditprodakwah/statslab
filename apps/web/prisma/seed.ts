@@ -24,7 +24,9 @@ interface DatasetSeed {
   category: string;
   islamicValue: string;
   description?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   chartConfig?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rawData: any;
 }
 

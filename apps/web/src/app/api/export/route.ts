@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
@@ -55,7 +53,5 @@ export async function GET() {
   } catch (error) {
     console.error('Export error:', error);
     return NextResponse.json({ error: 'Failed to export data' }, { status: 500 });
-  } finally {
-    await prisma.$disconnect();
   }
 }

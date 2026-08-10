@@ -55,6 +55,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       joinedAt: e.createdAt,
       sessions: sessions
         .filter((s) => s.userId === e.student.id)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .map(({ userId: _u, ...rest }) => rest),
     }));
 
