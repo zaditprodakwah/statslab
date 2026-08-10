@@ -279,6 +279,11 @@ STATSLAB/
 *Daftar artikel akademik terbaru yang ditarik secara otomatis dari jurnal OJS, Repositori DSpace, dan portal edukasi matematika global.*
 
 <!-- GLOBAL_RESEARCH_LIST:START -->
+- [Analisis Kesulitan Siswa SMP dalam Menyelesaikan Soal Matematika Berbasis High Order Thinking Skills &lpar;HOTS&rpar;](https://jurnal.staialbahjah.ac.id/index.php/abjme/article/view/1181)
+- [Kesalahan dan Keyakinan Siswa terhadap Jawaban dalam Menyelesaikan Soal Cerita Operasi Bilangan Bulat: Analisis Newman–Watson Berbasis Think-Aloud](https://jurnal.staialbahjah.ac.id/index.php/abjme/article/view/1170)
+- [Pengembangan Multimedia Pembelajaran dengan Konteks Arsitektur Rumah Adat Sunda pada materi Kekongruenan dan Kesebangunan](https://jurnal.staialbahjah.ac.id/index.php/abjme/article/view/1144)
+- [Recognising UK Problem Gambling Signs And Support With Lucki Casino](https://intomath.org/post/recognising-uk-problem-gambling-signs-and-support-with-lucki-casino/)
+- [Bet Panda No Deposit Bonus For Canadian Players](https://intomath.org/post/bet-panda-no-deposit-bonus-for-canadian-players/)
 <!-- GLOBAL_RESEARCH_LIST:END -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
