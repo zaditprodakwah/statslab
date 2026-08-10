@@ -1,5 +1,6 @@
 .env
 .env.*
+!.env.example
 node_modules/
 .next/
 dist/
@@ -9,7 +10,5 @@ build/
 .vercel
 
 # Exclude internal documentation & AI agent configuration folders
-docs/
-.agents/
 docs/
 .agents/

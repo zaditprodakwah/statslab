@@ -1,8 +1,6 @@
 name: Latest Global Mathematics Education Research
 
 on:
-  schedule:
-    - cron: '0 0 * * *' # Berjalan otomatis setiap hari pukul 00:00 UTC
   workflow_dispatch:
 
 permissions:

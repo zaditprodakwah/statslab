@@ -11,11 +11,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.1.0",
-    "@prisma/adapter-neon": "^7.9.1",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
-    "@types/ws": "^8.18.1",
     "canvas-confetti": "^1.9.4",
     "dotenv": "^16.4.7",
     "html2canvas": "^1.4.1",
@@ -25,7 +22,6 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "recharts": "^3.10.1",
-    "ws": "^8.21.3",
     "zod": "^3.25.76",
     "zustand": "^5.0.14"
   },
