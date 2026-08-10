@@ -1,14 +1,23 @@
 {
   "name": "@statslab/analysis",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Rasch PCM and CFA analysis scripts and exporters for StatsLab",
   "main": "dist/exporter.js",
   "types": "dist/exporter.d.ts",
   "scripts": {
     "build": "tsc",
+    "prepublishOnly": "npm run build",
     "export-data": "npm run build && node dist/exporter.js"
   },
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "scripts",
+    "README.md"
+  ],
   "dependencies": {
     "@prisma/client": "^7.9.1",
     "dotenv": "^16.4.5"
