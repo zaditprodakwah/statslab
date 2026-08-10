@@ -1,28 +1,34 @@
-name: Bug Report
-description: Create a report to help us improve the ecosystem
-title: "[BUG] "
-labels: ["bug"]
-assignees: []
-
+name: 🐛 Laporan Bug (Bug Report)
+description: Laporkan masalah atau error teknis pada antarmuka web, API, atau skrip psikometri.
+title: "[BUG]: "
+labels: ["bug", "triage"]
 body:
   - type: markdown
     attributes:
-      value: |
-        Terima kasih telah melaporkan bug di StatsLab! Laporkan bug terkait UX, error kalkulasi, atau UI yang tidak responsif.
+      value: Terima kasih telah melaporkan bug di StatsLab! Mohon isi detail di bawah ini agar kami dapat memverifikasi (*Tabayyun*).
   - type: textarea
     id: description
     attributes:
       label: Deskripsi Bug
-      description: Jelaskan bug secara spesifik.
+      description: Jelaskan apa yang terjadi dan perilaku yang seharusnya muncul.
+      placeholder: Saat membuka grafik Zakat di halaman summary, terjadi crash...
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Langkah Reproduksi (Steps to Reproduce)
+      label: Langkah-Langkah Reproduksi
+      description: Urutan langkah untuk memicu bug tersebut.
+      placeholder: |
+        1. Buka halaman '/dashboard'
+        2. Klik sakelar 'Pilar Amanah'
+        3. Lihat komponen grafik
     validations:
       required: true
   - type: input
-    id: browser
+    id: environment
     attributes:
-      label: Browser & OS
+      label: Peramban / Lingkungan
+      placeholder: Chrome 125, macOS Sonoma, Next.js 15
+    validations:
+      required: false

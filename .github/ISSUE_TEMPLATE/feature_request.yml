@@ -1,0 +1,23 @@
+name: ✨ Usulan Fitur Baru (Feature Request)
+description: Usulkan gagasan, modul visualisasi data baru, atau modul analisis psikometri.
+title: "[FEAT]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: Usulkan fitur baru untuk memperkaya ekosistem StatsLab!
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Deskripsi Fitur
+      description: Jelaskan gagasan fitur baru dan manfaat kognitif / akademiknya.
+      placeholder: Tambahkan modul ekspor LISREL syntax generator untuk SEM-PLS...
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Alasan / Latar Belakang
+      description: Mengapa fitur ini dibutuhkan oleh siswa, guru, atau peneliti?
+    validations:
+      required: false

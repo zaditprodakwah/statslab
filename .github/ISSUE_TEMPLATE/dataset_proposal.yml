@@ -1,41 +1,22 @@
-name: Dataset Proposal
-description: Submit a new Islamic-context dataset for the ecosystem
-title: "[DATASET] "
-labels: ["dataset", "enhancement"]
-assignees: []
-
+name: 📊 Usulan Dataset Baru (Dataset Proposal)
+description: Usulkan dataset JSON berkonteks Keislaman atau Pendidikan Matematika untuk disetorkan ke packages/datasets.
+title: "[DATASET]: "
+labels: ["dataset", "open-science"]
 body:
   - type: markdown
     attributes:
-      value: |
-        Terima kasih telah berkontribusi data untuk StatsLab! 
-        Pastikan data sesuai dengan nilai Tabayyun (terverifikasi dari sumber valid).
+      value: Usulkan dataset baru yang autentik dan terverifikasi (*Tabayyun*).
   - type: input
-    id: dataset_name
+    id: dataset-title
     attributes:
-      label: Nama Dataset
+      label: Judul / Topik Dataset
+      placeholder: Dataset Distribusi Wakaf Produktif Madrasah 2026
     validations:
       required: true
-  - type: input
-    id: source
-    attributes:
-      label: Sumber Referensi Valid
-      description: Link atau kutipan jurnal/buku dari data yang diajukan.
-    validations:
-      required: true
-  - type: dropdown
-    id: islamic_value
-    attributes:
-      label: Nilai Islam Dominan
-      options:
-        - Amanah
-        - Tabayyun
-        - Tawazun
-        - Lainnya
   - type: textarea
-    id: sample_data
+    id: data-source
     attributes:
-      label: Contoh Struktur Data (JSON)
-      render: json
+      label: Sumber Data & Verifikasi (*Tabayyun*)
+      description: Dari mana data ini diperoleh dan bagaimana keabsahannya diverifikasi?
     validations:
       required: true
