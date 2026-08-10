@@ -29,6 +29,8 @@
     <a href="https://github.com/zaditprodakwah/statslab/issues"><img src="https://img.shields.io/github/issues/zaditprodakwah/statslab?style=for-the-badge&color=059669" alt="Issues" /></a>
     <a href="https://statslabmedia.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-Vercel_V2-059669?style=for-the-badge&logo=vercel" alt="Vercel Live" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT_%26_CC--BY_4.0-blue?style=for-the-badge" alt="License" /></a>
+    <a href="https://www.npmjs.com/package/@statslab/datasets"><img src="https://img.shields.io/npm/v/@statslab/datasets?style=for-the-badge&color=CB3837&logo=npm" alt="NPM Datasets" /></a>
+    <a href="https://www.npmjs.com/package/@statslab/analysis"><img src="https://img.shields.io/npm/v/@statslab/analysis?style=for-the-badge&color=CB3837&logo=npm" alt="NPM Analysis" /></a>
   </p>
 
   <!-- AUTHOR ACADEMIC BADGES -->
@@ -294,9 +296,12 @@ Repositori ini memanfaatkan ekosistem rilis standar industri dan akademik untuk 
 
 1. **GitHub Releases:** Versi stabil (*stable versions*) dari keseluruhan repositori dipublikasikan melalui tab [Releases](https://github.com/zaditprodakwah/statslab/releases). Anda dapat mengunduh *source code* (ZIP/Tarball) untuk dipelajari atau digunakan ulang secara luring.
 2. **Zenodo DOI:** Setiap rilis besar yang kami publikasikan di GitHub akan secara otomatis diarsipkan ke [Zenodo](https://zenodo.org) via *GitHub Actions workflow* (`release-zenodo.yml`) untuk menjamin preservasi data akademik jangka panjang (berstatus DOI permanen).
-3. **NPM Packages:** Komponen spesifik dari arsitektur monorepo (seperti modul di `packages/analysis` atau `packages/datasets`) dikonfigurasi untuk dapat diterbitkan sebagai paket NPM *open-source*, sehingga pengembang lain dapat meng-`install` dependensi edukasi/psikometri secara parsial.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+3. **NPM Packages:** Komponen arsitektur riset dipublikasikan secara publik di direktori NPM. Anda dapat memasangnya pada proyek riset atau aplikasi Node.js Anda dengan perintah berikut:
+   ```bash
+   npm install @statslab/datasets @statslab/analysis
+   ```
+   * *`@statslab/datasets`: Kumpulan raw data, validator, dan skema konten edukasi Islami.*
+   * *`@statslab/analysis`: Skrip dan abstraksi psikometri (Winsteps export, Rasch PCM, CFA).*
 
 ---
 
