@@ -8,7 +8,9 @@ import { ArrowLeft, BookOpenCheck, Save, Loader2 } from "lucide-react";
 import { SCORE_SCALE, WATSON_LEVELS } from "@/lib/standards";
 
 const WATSON_LEVEL_OPTIONS = [...WATSON_LEVELS];
-const SCORE_KEYS = Array.from({ length: SCORE_SCALE.max - SCORE_SCALE.min + 1 }, (_, i) => String(SCORE_SCALE.min + i));
+const SCORE_KEYS = Array.from({ length: SCORE_SCALE.max - SCORE_SCALE.min + 1 }, (_, i) =>
+  String(SCORE_SCALE.min + i)
+);
 
 export default function AdminRubricsPage() {
   const router = useRouter();
@@ -80,8 +82,8 @@ export default function AdminRubricsPage() {
           indicators: parseList(r.indicatorsInput ?? r.indicators.join("\n")),
           keywords: parseList(r.keywordsInput ?? r.keywords.join("\n")),
           criteria: r.criteria,
-          active: r.active
-        })
+          active: r.active,
+        }),
       });
       const json = await res.json();
       if (json.success) {
@@ -100,52 +102,134 @@ export default function AdminRubricsPage() {
   return (
     <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "40px 20px" }}>
       <div style={{ marginBottom: "20px" }}>
-        <Link href="/admin/dashboard" style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--color-emerald-700)", textDecoration: "none", fontWeight: 600 }}>
+        <Link
+          href="/admin/dashboard"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            color: "var(--color-emerald-700)",
+            textDecoration: "none",
+            fontWeight: 600,
+          }}
+        >
           <ArrowLeft size={18} /> Kembali ke Dashboard Admin
         </Link>
       </div>
 
       <div style={{ marginBottom: "24px" }}>
-        <h1 style={{ fontSize: "1.8rem", color: "var(--text-primary)" }}>CMS Rubrik Skoring Watson-Callingham</h1>
+        <h1 style={{ fontSize: "1.8rem", color: "var(--text-primary)" }}>
+          CMS Rubrik Skoring Watson-Callingham
+        </h1>
         <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
-          Kelola kata kunci dan kriteria skor untuk skoring otomatis jawaban siswa.
-          Skala skor <strong>{SCORE_SCALE.min}–{SCORE_SCALE.max}</strong> ({SCORE_SCALE.label}) dan level W-C {WATSON_LEVEL_OPTIONS.join(", ")} adalah standar terkunci.
+          Kelola kata kunci dan kriteria skor untuk skoring otomatis jawaban siswa. Skala skor{" "}
+          <strong>
+            {SCORE_SCALE.min}–{SCORE_SCALE.max}
+          </strong>{" "}
+          ({SCORE_SCALE.label}) dan level W-C {WATSON_LEVEL_OPTIONS.join(", ")} adalah standar
+          terkunci.
         </p>
       </div>
 
       {msg && (
-        <div style={{ padding: "12px 16px", borderRadius: "var(--radius-md)", marginBottom: "20px", fontWeight: 600, fontSize: "0.9rem", backgroundColor: msg.type === "ok" ? "var(--color-emerald-50)" : "#fee2e2", color: msg.type === "ok" ? "var(--color-emerald-700)" : "#b91c1c" }}>
+        <div
+          style={{
+            padding: "12px 16px",
+            borderRadius: "var(--radius-md)",
+            marginBottom: "20px",
+            fontWeight: 600,
+            fontSize: "0.9rem",
+            backgroundColor: msg.type === "ok" ? "var(--color-emerald-50)" : "#fee2e2",
+            color: msg.type === "ok" ? "var(--color-emerald-700)" : "#b91c1c",
+          }}
+        >
           {msg.text}
         </div>
       )}
 
       <div className="glass-panel" style={{ padding: "24px" }}>
-        <h3 style={{ fontSize: "1.1rem", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
-          <BookOpenCheck size={18} color="var(--color-emerald-700)" /> Rubrik per Level ({rubrics.length})
+        <h3
+          style={{
+            fontSize: "1.1rem",
+            marginBottom: "16px",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          <BookOpenCheck size={18} color="var(--color-emerald-700)" /> Rubrik per Level (
+          {rubrics.length})
         </h3>
 
         {loading ? (
           <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>Memuat rubrik...</p>
         ) : rubrics.length === 0 ? (
-          <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>Belum ada rubrik. Jalankan seeder: <code>npx tsx prisma/seed.ts</code></p>
+          <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
+            Belum ada rubrik. Jalankan seeder: <code>npx tsx prisma/seed.ts</code>
+          </p>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
             {rubrics.map((r) => {
               const indicatorsText = r.indicatorsInput ?? r.indicators.join("\n");
               const keywordsText = r.keywordsInput ?? r.keywords.join("\n");
               return (
-                <div key={r.id} style={{ padding: "18px", borderRadius: "var(--radius-md)", border: "1px solid var(--color-slate-200)", backgroundColor: "var(--bg-surface)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
-                    <h4 style={{ margin: 0, color: "var(--color-emerald-700)", fontSize: "1.1rem" }}>
-                      Level Watson-Callingham {r.watsonLevel} <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)", fontWeight: 400 }}>(terkunci)</span>
+                <div
+                  key={r.id}
+                  style={{
+                    padding: "18px",
+                    borderRadius: "var(--radius-md)",
+                    border: "1px solid var(--color-slate-200)",
+                    backgroundColor: "var(--bg-surface)",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "14px",
+                    }}
+                  >
+                    <h4
+                      style={{ margin: 0, color: "var(--color-emerald-700)", fontSize: "1.1rem" }}
+                    >
+                      Level Watson-Callingham {r.watsonLevel}{" "}
+                      <span
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "var(--text-secondary)",
+                          fontWeight: 400,
+                        }}
+                      >
+                        (terkunci)
+                      </span>
                     </h4>
-                    <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-                      <input type="checkbox" checked={!!r.active} onChange={(e) => update(r.id, "active", e.target.checked)} />
+                    <label
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        fontSize: "0.85rem",
+                        color: "var(--text-secondary)",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={!!r.active}
+                        onChange={(e) => update(r.id, "active", e.target.checked)}
+                      />
                       Aktif (dipakai skoring)
                     </label>
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px", marginBottom: "14px" }}>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "14px",
+                      marginBottom: "14px",
+                    }}
+                  >
                     <label style={smallLabel}>
                       Indikator (satu per baris)
                       <textarea
@@ -166,18 +250,43 @@ export default function AdminRubricsPage() {
                     </label>
                   </div>
 
-                  <h5 style={{ fontSize: "0.85rem", margin: "0 0 8px", color: "var(--text-primary)" }}>Kriteria Skor (skala {SCORE_SCALE.min}–{SCORE_SCALE.max}, terkunci)</h5>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "14px" }}>
+                  <h5
+                    style={{ fontSize: "0.85rem", margin: "0 0 8px", color: "var(--text-primary)" }}
+                  >
+                    Kriteria Skor (skala {SCORE_SCALE.min}–{SCORE_SCALE.max}, terkunci)
+                  </h5>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                      marginBottom: "14px",
+                    }}
+                  >
                     {SCORE_KEYS.map((key) => (
                       <label key={key} style={smallLabel}>
                         Skor {key}
-                        <textarea rows={2} value={r.criteria?.[key] || ""} onChange={(e) => updateCriteria(r.id, key, e.target.value)} style={textareaStyle} />
+                        <textarea
+                          rows={2}
+                          value={r.criteria?.[key] || ""}
+                          onChange={(e) => updateCriteria(r.id, key, e.target.value)}
+                          style={textareaStyle}
+                        />
                       </label>
                     ))}
                   </div>
 
-                  <button onClick={() => save(r)} disabled={savingId === r.id} className="btn-premium btn-emerald flex-center" style={{ padding: "9px 16px" }}>
-                    {savingId === r.id ? <Loader2 size={16} className="spin" style={{ marginRight: "8px" }} /> : <Save size={16} style={{ marginRight: "8px" }} />}
+                  <button
+                    onClick={() => save(r)}
+                    disabled={savingId === r.id}
+                    className="btn-premium btn-emerald flex-center"
+                    style={{ padding: "9px 16px" }}
+                  >
+                    {savingId === r.id ? (
+                      <Loader2 size={16} className="spin" style={{ marginRight: "8px" }} />
+                    ) : (
+                      <Save size={16} style={{ marginRight: "8px" }} />
+                    )}
                     {savingId === r.id ? "Menyimpan..." : "Simpan Rubrik"}
                   </button>
                 </div>
@@ -197,7 +306,7 @@ const textareaStyle: React.CSSProperties = {
   border: "1px solid var(--color-slate-200)",
   fontSize: "0.85rem",
   fontFamily: "inherit",
-  backgroundColor: "#fff"
+  backgroundColor: "#fff",
 };
 
 const smallLabel: React.CSSProperties = {
@@ -205,5 +314,5 @@ const smallLabel: React.CSSProperties = {
   flexDirection: "column",
   gap: "5px",
   fontSize: "0.8rem",
-  color: "var(--text-secondary)"
+  color: "var(--text-secondary)",
 };

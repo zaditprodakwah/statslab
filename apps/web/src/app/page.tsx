@@ -5,11 +5,23 @@ import DashboardClient from "@/components/DashboardClient";
 import StickyHeader from "@/components/navigation/StickyHeader";
 import Leaderboard from "@/components/Leaderboard";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
-import { BookOpen, ShieldCheck, Scale, ArrowRight, User, Loader2, GraduationCap, Eye, KeyRound } from "lucide-react";
+import {
+  BookOpen,
+  ShieldCheck,
+  Scale,
+  ArrowRight,
+  User,
+  Loader2,
+  GraduationCap,
+  Eye,
+  KeyRound,
+} from "lucide-react";
 import Link from "next/link";
 
 export default function HomePage() {
-  const [activeRole, setActiveRole] = useState<"student" | "teacher" | "researcher" | "guest">("student");
+  const [activeRole, setActiveRole] = useState<"student" | "teacher" | "researcher" | "guest">(
+    "student"
+  );
   const [sessionActive, setSessionActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -17,7 +29,7 @@ export default function HomePage() {
   const [formData, setFormData] = useState({
     studentName: "",
     schoolName: "",
-    studentClass: ""
+    studentClass: "",
   });
 
   const setStudentInfo = useStatsLabStore((state) => state.setStudentInfo);
@@ -31,7 +43,7 @@ export default function HomePage() {
         sessionId: undefined,
         studentName: "Pengunjung / Tamu",
         schoolName: "Eksplorasi Mandiri",
-        studentClass: "-"
+        studentClass: "-",
       });
       setSessionActive(true);
       return;
@@ -48,7 +60,7 @@ export default function HomePage() {
       const res = await fetch("/api/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, testPhase })
+        body: JSON.stringify({ ...formData, testPhase }),
       });
 
       const data = await res.json();
@@ -60,7 +72,7 @@ export default function HomePage() {
           studentName: data.data.studentName,
           schoolName: data.data.schoolName,
           studentClass: data.data.studentClass,
-          testPhase: data.data.testPhase
+          testPhase: data.data.testPhase,
         });
         setSessionActive(true);
       } else {
@@ -86,7 +98,6 @@ export default function HomePage() {
   return (
     <div className="landing-container" style={{ paddingBottom: "64px" }}>
       <div className="landing-content" style={{ maxWidth: "900px", margin: "0 auto" }}>
-        
         {/* Hero Section */}
         <div className="hero-section text-center" style={{ padding: "40px 0" }}>
           <div
@@ -100,28 +111,46 @@ export default function HomePage() {
               color: "var(--accent-primary)",
               fontSize: "0.875rem",
               fontWeight: 600,
-              marginBottom: "16px"
+              marginBottom: "16px",
             }}
           >
             <ShieldCheck size={18} /> R&D Ekosistem Literasi Data STAI Al-Bahjah Cirebon
           </div>
 
-          <h1 className="hero-title" style={{ fontSize: "2.5rem", marginBottom: "16px", color: "var(--color-emerald-700)" }}>
+          <h1
+            className="hero-title"
+            style={{ fontSize: "2.5rem", marginBottom: "16px", color: "var(--color-emerald-700)" }}
+          >
             StatsLab: Dasbor Statistika Interaktif
           </h1>
-          <p className="hero-subtitle" style={{ fontSize: "1.15rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>
-            Mengembangkan kemampuan literasi data tingkat lanjut (Watson-Callingham) melalui eksplorasi visual interaktif, berlandaskan prinsip islami <strong>Tabayyun</strong>, <strong>Amanah</strong>, dan <strong>Tawazun</strong>.
+          <p
+            className="hero-subtitle"
+            style={{ fontSize: "1.15rem", color: "var(--text-secondary)", lineHeight: 1.6 }}
+          >
+            Mengembangkan kemampuan literasi data tingkat lanjut (Watson-Callingham) melalui
+            eksplorasi visual interaktif, berlandaskan prinsip islami <strong>Tabayyun</strong>,{" "}
+            <strong>Amanah</strong>, dan <strong>Tawazun</strong>.
           </p>
         </div>
 
         {/* 4 Mode Entry Selector Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "32px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+            gap: "16px",
+            marginBottom: "32px",
+          }}
+        >
           {/* Mode Siswa */}
           <div
             onClick={() => setActiveRole("student")}
             className={`role-card ${activeRole === "student" ? "active-student" : ""}`}
           >
-            <div className="role-icon-wrapper" style={{ background: "var(--color-emerald-50)", color: "var(--color-emerald-600)" }}>
+            <div
+              className="role-icon-wrapper"
+              style={{ background: "var(--color-emerald-50)", color: "var(--color-emerald-600)" }}
+            >
               <User size={24} />
             </div>
             <h4 className="role-title">Mode Siswa</h4>
@@ -157,11 +186,16 @@ export default function HomePage() {
             onClick={() => setActiveRole("guest")}
             className="role-card"
             style={{
-              borderColor: activeRole === "guest" ? "var(--color-amber-500)" : "var(--color-slate-200)",
-              backgroundColor: activeRole === "guest" ? "var(--color-amber-50)" : "var(--bg-surface)"
+              borderColor:
+                activeRole === "guest" ? "var(--color-amber-500)" : "var(--color-slate-200)",
+              backgroundColor:
+                activeRole === "guest" ? "var(--color-amber-50)" : "var(--bg-surface)",
             }}
           >
-            <div className="role-icon-wrapper" style={{ background: "var(--color-amber-50)", color: "var(--color-amber-600)" }}>
+            <div
+              className="role-icon-wrapper"
+              style={{ background: "var(--color-amber-50)", color: "var(--color-amber-600)" }}
+            >
               <Eye size={24} />
             </div>
             <h4 className="role-title">Eksplorasi Bebas</h4>
@@ -173,12 +207,29 @@ export default function HomePage() {
         <div className="glass-panel" style={{ padding: "32px", marginBottom: "40px" }}>
           {activeRole === "student" && (
             <div>
-              <h3 style={{ fontSize: "1.3rem", marginBottom: "8px", textAlign: "center" }}>Masuk Sesi Pembelajaran Siswa</h3>
-              <p style={{ textAlign: "center", color: "var(--text-secondary)", marginBottom: "24px", fontSize: "0.9rem" }}>
+              <h3 style={{ fontSize: "1.3rem", marginBottom: "8px", textAlign: "center" }}>
+                Masuk Sesi Pembelajaran Siswa
+              </h3>
+              <p
+                style={{
+                  textAlign: "center",
+                  color: "var(--text-secondary)",
+                  marginBottom: "24px",
+                  fontSize: "0.9rem",
+                }}
+              >
                 Masukkan nama, asal sekolah, dan kelas Anda untuk memulai asesmen.
               </p>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "14px", maxWidth: "420px", margin: "0 auto" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "14px",
+                  maxWidth: "420px",
+                  margin: "0 auto",
+                }}
+              >
                 <input
                   type="text"
                   placeholder="Nama Lengkap Siswa"
@@ -201,7 +252,17 @@ export default function HomePage() {
                   onChange={(e) => setFormData({ ...formData, studentClass: e.target.value })}
                 />
 
-                {errorMsg && <div style={{ color: "var(--color-red-600)", fontSize: "0.875rem", textAlign: "center" }}>{errorMsg}</div>}
+                {errorMsg && (
+                  <div
+                    style={{
+                      color: "var(--color-red-600)",
+                      fontSize: "0.875rem",
+                      textAlign: "center",
+                    }}
+                  >
+                    {errorMsg}
+                  </div>
+                )}
 
                 <button
                   onClick={handleStartSession}
@@ -209,7 +270,9 @@ export default function HomePage() {
                   className="btn-premium btn-emerald w-full flex-center"
                   style={{ padding: "12px" }}
                 >
-                  {loading ? <Loader2 size={18} className="spin" style={{ marginRight: "8px" }} /> : null}
+                  {loading ? (
+                    <Loader2 size={18} className="spin" style={{ marginRight: "8px" }} />
+                  ) : null}
                   {loading ? "Menyiapkan Sesi..." : "Mulai Belajar di Dasbor"}
                   {!loading && <ArrowRight size={18} style={{ marginLeft: "8px" }} />}
                 </button>
@@ -220,10 +283,22 @@ export default function HomePage() {
           {activeRole === "teacher" && (
             <div style={{ textAlign: "center" }}>
               <h3 style={{ fontSize: "1.3rem", marginBottom: "8px" }}>Mode Guru / Pengajar</h3>
-              <p style={{ color: "var(--text-secondary)", marginBottom: "20px", fontSize: "0.9rem" }}>
-                Gunakan Panel Admin untuk mengelola sesi kelas, mengunduh rekap nilai siswa, dan mengelola instrumen soal.
+              <p
+                style={{ color: "var(--text-secondary)", marginBottom: "20px", fontSize: "0.9rem" }}
+              >
+                Gunakan Panel Admin untuk mengelola sesi kelas, mengunduh rekap nilai siswa, dan
+                mengelola instrumen soal.
               </p>
-              <Link href="/admin" className="btn-premium flex-center" style={{ textDecoration: "none", display: "inline-flex", padding: "12px 24px", backgroundColor: "#2563eb" }}>
+              <Link
+                href="/admin"
+                className="btn-premium flex-center"
+                style={{
+                  textDecoration: "none",
+                  display: "inline-flex",
+                  padding: "12px 24px",
+                  backgroundColor: "#2563eb",
+                }}
+              >
                 Masuk ke Panel Guru & Admin
               </Link>
             </div>
@@ -232,10 +307,22 @@ export default function HomePage() {
           {activeRole === "researcher" && (
             <div style={{ textAlign: "center" }}>
               <h3 style={{ fontSize: "1.3rem", marginBottom: "8px" }}>Mode Peneliti R&D</h3>
-              <p style={{ color: "var(--text-secondary)", marginBottom: "20px", fontSize: "0.9rem" }}>
-                Akses panel kontrol peneliti untuk mengekspor data mentah ke format Winsteps (.ctl) & LISREL (.csv).
+              <p
+                style={{ color: "var(--text-secondary)", marginBottom: "20px", fontSize: "0.9rem" }}
+              >
+                Akses panel kontrol peneliti untuk mengekspor data mentah ke format Winsteps (.ctl)
+                & LISREL (.csv).
               </p>
-              <Link href="/admin" className="btn-premium flex-center" style={{ textDecoration: "none", display: "inline-flex", padding: "12px 24px", backgroundColor: "#9333ea" }}>
+              <Link
+                href="/admin"
+                className="btn-premium flex-center"
+                style={{
+                  textDecoration: "none",
+                  display: "inline-flex",
+                  padding: "12px 24px",
+                  backgroundColor: "#9333ea",
+                }}
+              >
                 Masuk ke Panel Peneliti
               </Link>
             </div>
@@ -244,10 +331,21 @@ export default function HomePage() {
           {activeRole === "guest" && (
             <div style={{ textAlign: "center" }}>
               <h3 style={{ fontSize: "1.3rem", marginBottom: "8px" }}>Mode Eksplorasi Bebas</h3>
-              <p style={{ color: "var(--text-secondary)", marginBottom: "20px", fontSize: "0.9rem" }}>
-                Uji coba visualisasi grafik dan instrumen tugas tanpa pendaftaran identitas atau penyimpanan database.
+              <p
+                style={{ color: "var(--text-secondary)", marginBottom: "20px", fontSize: "0.9rem" }}
+              >
+                Uji coba visualisasi grafik dan instrumen tugas tanpa pendaftaran identitas atau
+                penyimpanan database.
               </p>
-              <button onClick={handleStartSession} className="btn-premium flex-center" style={{ display: "inline-flex", padding: "12px 24px", backgroundColor: "var(--color-amber-500)" }}>
+              <button
+                onClick={handleStartSession}
+                className="btn-premium flex-center"
+                style={{
+                  display: "inline-flex",
+                  padding: "12px 24px",
+                  backgroundColor: "var(--color-amber-500)",
+                }}
+              >
                 Langsung Masuk Dasbor (Tamu)
               </button>
             </div>
@@ -255,29 +353,69 @@ export default function HomePage() {
         </div>
 
         {/* 3 Pilar Islam Educational Grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "20px", marginBottom: "40px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gap: "20px",
+            marginBottom: "40px",
+          }}
+        >
           <div className="glass-panel" style={{ padding: "20px", textAlign: "center" }}>
-            <div style={{ display: "inline-flex", padding: "12px", background: "var(--color-emerald-50)", color: "var(--color-emerald-600)", borderRadius: "50%", marginBottom: "16px" }}>
+            <div
+              style={{
+                display: "inline-flex",
+                padding: "12px",
+                background: "var(--color-emerald-50)",
+                color: "var(--color-emerald-600)",
+                borderRadius: "50%",
+                marginBottom: "16px",
+              }}
+            >
               <ShieldCheck size={28} />
             </div>
             <h3 style={{ fontSize: "1.2rem", marginBottom: "8px" }}>Tabayyun (Kritis)</h3>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>Memeriksa validitas data dan mendeteksi anomali/outlier sebelum menyimpulkan.</p>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
+              Memeriksa validitas data dan mendeteksi anomali/outlier sebelum menyimpulkan.
+            </p>
           </div>
 
           <div className="glass-panel" style={{ padding: "20px", textAlign: "center" }}>
-            <div style={{ display: "inline-flex", padding: "12px", background: "var(--color-blue-50)", color: "#2563eb", borderRadius: "50%", marginBottom: "16px" }}>
+            <div
+              style={{
+                display: "inline-flex",
+                padding: "12px",
+                background: "var(--color-blue-50)",
+                color: "#2563eb",
+                borderRadius: "50%",
+                marginBottom: "16px",
+              }}
+            >
               <BookOpen size={28} />
             </div>
             <h3 style={{ fontSize: "1.2rem", marginBottom: "8px" }}>Amanah (Integritas)</h3>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>Menyajikan data secara jujur tanpa distorsi manipulasi skala grafik (Zero-based).</p>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
+              Menyajikan data secara jujur tanpa distorsi manipulasi skala grafik (Zero-based).
+            </p>
           </div>
 
           <div className="glass-panel" style={{ padding: "20px", textAlign: "center" }}>
-            <div style={{ display: "inline-flex", padding: "12px", background: "var(--color-purple-50)", color: "#9333ea", borderRadius: "50%", marginBottom: "16px" }}>
+            <div
+              style={{
+                display: "inline-flex",
+                padding: "12px",
+                background: "var(--color-purple-50)",
+                color: "#9333ea",
+                borderRadius: "50%",
+                marginBottom: "16px",
+              }}
+            >
               <Scale size={28} />
             </div>
             <h3 style={{ fontSize: "1.2rem", marginBottom: "8px" }}>Tawazun (Keseimbangan)</h3>
-            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>Memahami distribusi data secara objektif (Mean vs Median) secara seimbang.</p>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
+              Memahami distribusi data secara objektif (Mean vs Median) secara seimbang.
+            </p>
           </div>
         </div>
 

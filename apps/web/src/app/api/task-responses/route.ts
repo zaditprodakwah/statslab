@@ -1,32 +1,33 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { scoreAnswer, clampScore } from "@/lib/scoring";
+import { scoreAnswer, clampScore, scoreChoice } from "@/lib/scoring";
+import type { TaskOptions } from "@/lib/scoring";
+import { isPrerequisiteLocked } from "@/lib/taskPrereq";
+import type { ModuleState } from "@/lib/taskPrereq";
 import { computeWatsonLevel } from "@/lib/watsonLevel";
 
 export const dynamic = "force-dynamic";
 
-
-
 export async function POST(req: Request) {
-
-
   try {
     const body = await req.json();
-    const { sessionId, sessionToken, taskId, answerText, interactionLog } = body;
+    const {
+      sessionId,
+      sessionToken,
+      taskId,
+      answerText,
+      answerIndex,
+      interactionLog,
+      moduleState,
+    } = body;
 
     if (!sessionId || !taskId) {
-      return NextResponse.json(
-        { error: "sessionId dan taskId wajib diisi" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "sessionId dan taskId wajib diisi" }, { status: 400 });
     }
 
     // F1.3: Verifikasi sessionToken — hanya pemilik sesi yang boleh mencatat jawaban.
     if (!sessionToken) {
-      return NextResponse.json(
-        { error: "sessionToken wajib diisi" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "sessionToken wajib diisi" }, { status: 401 });
     }
     const session = await prisma.session.findUnique({ where: { id: sessionId } });
     if (!session || session.sessionToken !== sessionToken) {
@@ -39,34 +40,69 @@ export async function POST(req: Request) {
     // F1.2: Skoring dilakukan server-side (shared util + rubrik dari DB).
     const task = await prisma.task.findUnique({
       where: { id: taskId },
-      select: { id: true, modelAnswer: true, watsonLevel: true }
+      select: {
+        id: true,
+        modelAnswer: true,
+        watsonLevel: true,
+        options: true,
+        inputType: true,
+      },
     });
     if (!task) {
-      return NextResponse.json(
-        { error: "Task tidak ditemukan" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Task tidak ditemukan" }, { status: 404 });
     }
-    const rubric = await prisma.rubric.findUnique({
-      where: { watsonLevel: task.watsonLevel },
-      select: { keywords: true }
-    });
-    const score = clampScore(
-      scoreAnswer(answerText || "", task.modelAnswer, rubric?.keywords || [])
-    );
+
+    const taskOptions = (task.options ?? null) as TaskOptions | null;
+
+    // Gembok prasyarat 🔒: verifikasi kedua di server (defense terhadap panggilan API langsung).
+    if (taskOptions?.prerequisite) {
+      const locked = isPrerequisiteLocked(
+        taskOptions.prerequisite,
+        (moduleState ?? {}) as ModuleState
+      );
+      if (locked) {
+        return NextResponse.json(
+          {
+            error: "Prasyarat modul belum terpenuhi. Operasikan modul di dasbor terlebih dahulu.",
+            locked: true,
+          },
+          { status: 403 }
+        );
+      }
+    }
+
+    // Exact Match untuk pilihan ganda; fallback keyword (rubrik) untuk tugas isian lama.
+    let score: number;
+    if (taskOptions) {
+      score = clampScore(scoreChoice(taskOptions, answerIndex ?? null, answerText ?? null));
+    } else {
+      const rubric = await prisma.rubric.findUnique({
+        where: { watsonLevel: task.watsonLevel },
+        select: { keywords: true }
+      });
+      score = clampScore(scoreAnswer(answerText || "", task.modelAnswer, rubric?.keywords || []));
+    }
+
+    // Multiple Attempts: jawaban salah (0) TIDAK disimpan agar tugas tetap bisa dicoba ulang.
+    if (taskOptions && score === 0) {
+      return NextResponse.json({
+        success: true,
+        data: { responseId: null, score, totalScore: null, currentLevel: null, retry: true },
+      });
+    }
 
     // Upsert task response
     const response = await prisma.taskResponse.upsert({
       where: {
         sessionId_taskId: {
           sessionId,
-          taskId
-        }
+          taskId,
+        },
       },
       update: {
         answerText: answerText || "",
         score,
-        interactionLog: interactionLog || null
+        interactionLog: interactionLog || null,
       },
       create: {
         sessionId,
@@ -74,14 +110,14 @@ export async function POST(req: Request) {
         answerText: answerText || "",
         score,
         interactionLog: interactionLog || null,
-        scoredBy: "system"
-      }
+        scoredBy: "system",
+      },
     });
 
     // Calculate sum of scores for this session
     const aggregate = await prisma.taskResponse.aggregate({
       where: { sessionId },
-      _sum: { score: true }
+      _sum: { score: true },
     });
 
     const newTotalScore = aggregate._sum.score || 0;
@@ -91,8 +127,8 @@ export async function POST(req: Request) {
       prisma.task.findMany({ select: { id: true, watsonLevel: true } }),
       prisma.taskResponse.findMany({
         where: { sessionId },
-        select: { taskId: true, score: true }
-      })
+        select: { taskId: true, score: true },
+      }),
     ]);
 
     const responsesMap: Record<string, { score: number }> = {};
@@ -106,8 +142,8 @@ export async function POST(req: Request) {
       where: { id: sessionId },
       data: {
         totalScore: newTotalScore,
-        currentLevel: newLevel
-      }
+        currentLevel: newLevel,
+      },
     });
 
     return NextResponse.json({
@@ -116,8 +152,8 @@ export async function POST(req: Request) {
         responseId: response.id,
         score,
         totalScore: newTotalScore,
-        currentLevel: newLevel
-      }
+        currentLevel: newLevel,
+      },
     });
   } catch (error) {
     console.error("Error saving task response:", error);

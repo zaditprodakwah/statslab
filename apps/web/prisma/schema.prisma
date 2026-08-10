@@ -98,6 +98,7 @@ model Task {
   clue         String?  @db.Text
   modelAnswer  String?  @map("model_answer") @db.Text
   inputType    InputType @default(text) @map("input_type")
+  options      Json?
 
   dataset      Dataset  @relation(fields: [datasetId], references: [id])
   responses    TaskResponse[]

@@ -3,20 +3,21 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 
 // Using Inter for readable text, Outfit for premium headers
-const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
-const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 export const viewport: Viewport = {
-  themeColor: '#ffffff',
-  width: 'device-width',
+  themeColor: "#ffffff",
+  width: "device-width",
   initialScale: 1,
   maximumScale: 1,
 };
 
 export const metadata: Metadata = {
   title: "StatsLab | Dasbor Statistika Islami",
-  description: "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://statslabmedia.vercel.app'),
+  description:
+    "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://statslabmedia.vercel.app"),
   authors: [{ name: "Muhammad Khoiruzzadittaqwa" }],
   publisher: "STAI Al-Bahjah",
   robots: {
@@ -60,81 +61,86 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://statslabmedia.vercel.app').replace(/\/$/, '');
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://statslabmedia.vercel.app").replace(
+    /\/$/,
+    ""
+  );
 
   // JSON-LD Schema for Organization & SoftwareApplication
   const schemaOrg = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "StatsLab",
-    "operatingSystem": "Web",
-    "applicationCategory": "EducationalApplication",
-    "description": "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa.",
-    "url": siteUrl,
-    "author": {
+    name: "StatsLab",
+    operatingSystem: "Web",
+    applicationCategory: "EducationalApplication",
+    description:
+      "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa.",
+    url: siteUrl,
+    author: {
       "@type": "Person",
-      "name": "Muhammad Khoiruzzadittaqwa",
-      "url": "https://scholar.google.com/citations?user=CbR250MAAAAJ"
+      name: "Muhammad Khoiruzzadittaqwa",
+      url: "https://scholar.google.com/citations?user=CbR250MAAAAJ",
     },
-    "sponsor": {
+    sponsor: {
       "@type": "CollegeOrUniversity",
-      "name": "STAI Al-Bahjah Cirebon",
-      "url": "https://staialbahjah.ac.id/",
-      "logo": `${siteUrl}/logo-institut.jpg`
+      name: "STAI Al-Bahjah Cirebon",
+      url: "https://staialbahjah.ac.id/",
+      logo: `${siteUrl}/logo-institut.jpg`,
     },
-    "offers": {
+    offers: {
       "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "IDR"
-    }
+      price: "0",
+      priceCurrency: "IDR",
+    },
   };
 
   const learningResourceSchema = {
     "@context": "https://schema.org",
     "@type": "LearningResource",
-    "name": "StatsLab: Dasbor Statistika Interaktif",
-    "description": "Media pembelajaran statistika interaktif terintegrasi nilai keislaman untuk mengembangkan literasi data siswa (kerangka Watson-Callingham).",
-    "educationalLevel": "SMA / Madrasah Aliyah",
-    "learningResourceType": "Interactive Learning Dashboard",
-    "inLanguage": "id",
-    "provider": {
+    name: "StatsLab: Dasbor Statistika Interaktif",
+    description:
+      "Media pembelajaran statistika interaktif terintegrasi nilai keislaman untuk mengembangkan literasi data siswa (kerangka Watson-Callingham).",
+    educationalLevel: "SMA / Madrasah Aliyah",
+    learningResourceType: "Interactive Learning Dashboard",
+    inLanguage: "id",
+    provider: {
       "@type": "Organization",
-      "name": "STAI Al-Bahjah Cirebon",
-      "url": "https://staialbahjah.ac.id/"
+      name: "STAI Al-Bahjah Cirebon",
+      url: "https://staialbahjah.ac.id/",
     },
-    "about": "Literasi Data dan Statistika",
-    "url": siteUrl
+    about: "Literasi Data dan Statistika",
+    url: siteUrl,
   };
 
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
+    mainEntity: [
       {
         "@type": "Question",
-        "name": "Apa itu StatsLab?",
-        "acceptedAnswer": {
+        name: "Apa itu StatsLab?",
+        acceptedAnswer: {
           "@type": "Answer",
-          "text": "StatsLab adalah dasbor statistika interaktif berbasis web yang memfasilitasi literasi data siswa dengan mengintegrasikan nilai keislaman seperti Tabayyun, Amanah, dan Tawazun."
-        }
+          text: "StatsLab adalah dasbor statistika interaktif berbasis web yang memfasilitasi literasi data siswa dengan mengintegrasikan nilai keislaman seperti Tabayyun, Amanah, dan Tawazun.",
+        },
       },
       {
         "@type": "Question",
-        "name": "Apakah StatsLab gratis digunakan?",
-        "acceptedAnswer": {
+        name: "Apakah StatsLab gratis digunakan?",
+        acceptedAnswer: {
           "@type": "Answer",
-          "text": "Ya, StatsLab gratis digunakan untuk pembelajaran, termasuk mode eksplorasi tanpa perlu mendaftarkan akun."
-        }
+          text: "Ya, StatsLab gratis digunakan untuk pembelajaran, termasuk mode eksplorasi tanpa perlu mendaftarkan akun.",
+        },
       },
       {
         "@type": "Question",
-        "name": "Kerangka apa yang dipakai untuk mengukur literasi data?",
-        "acceptedAnswer": {
+        name: "Kerangka apa yang dipakai untuk mengukur literasi data?",
+        acceptedAnswer: {
           "@type": "Answer",
-          "text": "StatsLab menggunakan kerangka literasi data Watson-Callingham yang memetakan kemampuan siswa dari memahami struktur data hingga mengambil keputusan berbasis data."
-        }
-      }
-    ]
+          text: "StatsLab menggunakan kerangka literasi data Watson-Callingham yang memetakan kemampuan siswa dari memahami struktur data hingga mengambil keputusan berbasis data.",
+        },
+      },
+    ],
   };
 
   return (

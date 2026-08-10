@@ -63,10 +63,7 @@ export function proxy(request: NextRequest) {
     // Manajemen pengguna khusus ADMIN
     if (role !== "ADMIN") {
       if (pathname.startsWith("/api/admin/users")) {
-        return NextResponse.json(
-          { success: false, message: "Akses ditolak." },
-          { status: 403 }
-        );
+        return NextResponse.json({ success: false, message: "Akses ditolak." }, { status: 403 });
       }
       if (pathname === "/admin/users") {
         return NextResponse.redirect(new URL("/admin/dashboard", request.url));

@@ -48,7 +48,10 @@ export async function PATCH(req: Request) {
     if (!existing) {
       return NextResponse.json({ error: "Rubrik tidak ditemukan" }, { status: 404 });
     }
-    if (existing.watsonLevel < WATSON_MIN_TASK_LEVEL || existing.watsonLevel > WATSON_MAX_TASK_LEVEL) {
+    if (
+      existing.watsonLevel < WATSON_MIN_TASK_LEVEL ||
+      existing.watsonLevel > WATSON_MAX_TASK_LEVEL
+    ) {
       return NextResponse.json(
         { error: "Level Watson-Callingham hanya diperbolehkan 4–6 (standar terkunci)." },
         { status: 400 }

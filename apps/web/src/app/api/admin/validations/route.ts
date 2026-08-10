@@ -24,7 +24,10 @@ export async function GET(req: Request) {
     return NextResponse.json({ success: true, data: { validators, validations } });
   } catch (err) {
     console.error("GET /api/admin/validations error:", err);
-    return NextResponse.json({ success: false, error: "Gagal mengambil data validasi pakar" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Gagal mengambil data validasi pakar" },
+      { status: 500 }
+    );
   }
 }
 
@@ -37,7 +40,11 @@ export async function POST(req: Request) {
     const parsed = upsertValidationSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { success: false, error: "Data validasi tidak valid", issues: parsed.error.flatten().fieldErrors },
+        {
+          success: false,
+          error: "Data validasi tidak valid",
+          issues: parsed.error.flatten().fieldErrors,
+        },
         { status: 400 }
       );
     }
@@ -45,7 +52,10 @@ export async function POST(req: Request) {
 
     const validator = await prisma.validator.findUnique({ where: { id: validatorId } });
     if (!validator) {
-      return NextResponse.json({ success: false, error: "Validator tidak ditemukan" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, error: "Validator tidak ditemukan" },
+        { status: 404 }
+      );
     }
 
     const created = await prisma.expertValidation.upsert({
@@ -57,6 +67,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, data: created });
   } catch (err) {
     console.error("POST /api/admin/validations error:", err);
-    return NextResponse.json({ success: false, error: "Gagal menyimpan validasi pakar" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Gagal menyimpan validasi pakar" },
+      { status: 500 }
+    );
   }
 }

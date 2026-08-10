@@ -65,13 +65,9 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
 }
 
 export type AuthResult =
-  | { ok: true; user: SessionUser }
-  | { ok: false; status: number; message: string };
+  { ok: true; user: SessionUser } | { ok: false; status: number; message: string };
 
-export async function authorize(
-  req: Request,
-  roles: Role[]
-): Promise<AuthResult> {
+export async function authorize(req: Request, roles: Role[]): Promise<AuthResult> {
   const payload = getSessionPayloadFromRequest(req);
   if (!payload) {
     return { ok: false, status: 401, message: "Tidak terautentikasi." };
@@ -98,14 +94,8 @@ export async function authorize(
   return { ok: true, user };
 }
 
-export async function authorizeOrReject(
-  req: Request,
-  roles: Role[]
-): Promise<NextResponse | null> {
+export async function authorizeOrReject(req: Request, roles: Role[]): Promise<NextResponse | null> {
   const result = await authorize(req, roles);
   if (result.ok) return null;
-  return NextResponse.json(
-    { success: false, error: result.message },
-    { status: result.status }
-  );
+  return NextResponse.json({ success: false, error: result.message }, { status: result.status });
 }

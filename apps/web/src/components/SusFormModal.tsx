@@ -17,7 +17,7 @@ const SUS_QUESTIONS = [
   "Nilai-nilai Keislaman (Amanah/Tabayyun) yang terintegrasi memperjelas pemahaman saya.",
   "Visualisasi grafik memberikan pemahaman yang tepercaya dan tidak menyesatkan.",
   "Tampilan antarmuka sangat responsif dan nyaman digunakan di perangkat mobile/tablet.",
-  "Secara keseluruhan, media dasbor statistika ini sangat membantu literasi data saya."
+  "Secara keseluruhan, media dasbor statistika ini sangat membantu literasi data saya.",
 ];
 
 export default function SusFormModal({
@@ -25,7 +25,7 @@ export default function SusFormModal({
   onClose,
   onSubmitSuccess,
   sessionId,
-  sessionToken
+  sessionToken,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -98,8 +98,8 @@ export default function SusFormModal({
           totalScore,
           adjectiveRating: adjective,
           sessionId,
-          sessionToken
-        })
+          sessionToken,
+        }),
       });
 
       // F1.8: Persist waktu pengerjaan & status selesai ke sesi
@@ -112,8 +112,8 @@ export default function SusFormModal({
             sessionId,
             sessionToken,
             timeSpentMs,
-            completedAt: new Date().toISOString()
-          })
+            completedAt: new Date().toISOString(),
+          }),
         }).catch((e) => console.error("Gagal menyimpan waktu sesi:", e));
       }
     } catch (e) {
@@ -138,7 +138,7 @@ export default function SusFormModal({
         justifyContent: "center",
         alignItems: "center",
         zIndex: 1000,
-        padding: "20px"
+        padding: "20px",
       }}
     >
       <div
@@ -150,14 +150,15 @@ export default function SusFormModal({
           maxHeight: "90vh",
           overflowY: "auto",
           padding: "32px",
-          borderRadius: "var(--radius-xl)"
+          borderRadius: "var(--radius-xl)",
         }}
       >
         <h3 style={{ fontSize: "1.3rem", marginBottom: "8px", color: "var(--text-primary)" }}>
           📋 Kuesioner Kepraktisan Media (System Usability Scale — 14 Butir)
         </h3>
         <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "24px" }}>
-          Mohon berikan penilaian objektif Anda terhadap pengalaman menggunakan Dasbor Statistika Interaktif ini (Skala 1 = Sangat Tidak Setuju, 5 = Sangat Setuju).
+          Mohon berikan penilaian objektif Anda terhadap pengalaman menggunakan Dasbor Statistika
+          Interaktif ini (Skala 1 = Sangat Tidak Setuju, 5 = Sangat Setuju).
         </p>
 
         {/* Questions List */}
@@ -171,14 +172,28 @@ export default function SusFormModal({
                 key={qNum}
                 style={{
                   borderBottom: "1px stroke var(--color-slate-200)",
-                  paddingBottom: "16px"
+                  paddingBottom: "16px",
                 }}
               >
-                <p style={{ fontSize: "0.95rem", fontWeight: 500, marginBottom: "10px", color: "var(--text-primary)" }}>
+                <p
+                  style={{
+                    fontSize: "0.95rem",
+                    fontWeight: 500,
+                    marginBottom: "10px",
+                    color: "var(--text-primary)",
+                  }}
+                >
                   {qNum}. {qText}
                 </p>
 
-                <div style={{ display: "flex", gap: "12px", justifyContent: "space-between", maxWidth: "400px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "12px",
+                    justifyContent: "space-between",
+                    maxWidth: "400px",
+                  }}
+                >
                   {[1, 2, 3, 4, 5].map((val) => (
                     <label
                       key={val}
@@ -187,7 +202,7 @@ export default function SusFormModal({
                         alignItems: "center",
                         gap: "4px",
                         cursor: "pointer",
-                        fontSize: "0.85rem"
+                        fontSize: "0.85rem",
                       }}
                     >
                       <input
@@ -207,7 +222,9 @@ export default function SusFormModal({
         </div>
 
         {/* Submit Action */}
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "28px" }}>
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "28px" }}
+        >
           <button
             onClick={onClose}
             style={{
@@ -215,7 +232,7 @@ export default function SusFormModal({
               borderRadius: "var(--radius-md)",
               border: "1px solid var(--color-slate-200)",
               backgroundColor: "transparent",
-              cursor: "pointer"
+              cursor: "pointer",
             }}
           >
             Batal
@@ -226,7 +243,7 @@ export default function SusFormModal({
             className="btn-premium"
             style={{
               opacity: !isComplete || submitting ? 0.5 : 1,
-              cursor: !isComplete || submitting ? "not-allowed" : "pointer"
+              cursor: !isComplete || submitting ? "not-allowed" : "pointer",
             }}
           >
             {submitting ? "Mengirim..." : "Kirim Respon SUS"}

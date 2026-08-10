@@ -29,10 +29,7 @@ export async function GET(req: Request) {
   try {
     const auth = await authorize(req, ["GURU", "ADMIN"]);
     if (!auth.ok) {
-      return NextResponse.json(
-        { success: false, message: auth.message },
-        { status: auth.status }
-      );
+      return NextResponse.json({ success: false, message: auth.message }, { status: auth.status });
     }
 
     const classes = await prisma.class.findMany({
@@ -55,10 +52,7 @@ export async function POST(req: Request) {
   try {
     const auth = await authorize(req, ["GURU", "ADMIN"]);
     if (!auth.ok) {
-      return NextResponse.json(
-        { success: false, message: auth.message },
-        { status: auth.status }
-      );
+      return NextResponse.json({ success: false, message: auth.message }, { status: auth.status });
     }
 
     const body = await req.json();

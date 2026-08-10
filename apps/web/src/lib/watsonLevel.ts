@@ -1,14 +1,6 @@
-import {
-  WATSON_BASE_LEVEL,
-  WATSON_MIN_TASK_LEVEL,
-  WATSON_MAX_TASK_LEVEL,
-} from "@/lib/standards";
+import { WATSON_BASE_LEVEL, WATSON_MIN_TASK_LEVEL, WATSON_MAX_TASK_LEVEL } from "@/lib/standards";
 
-export {
-  WATSON_BASE_LEVEL,
-  WATSON_MIN_TASK_LEVEL,
-  WATSON_MAX_TASK_LEVEL,
-};
+export { WATSON_BASE_LEVEL, WATSON_MIN_TASK_LEVEL, WATSON_MAX_TASK_LEVEL };
 
 export function computeWatsonLevel(
   responses: Record<string, { score: number }>,

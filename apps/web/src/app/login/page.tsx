@@ -53,8 +53,7 @@ export default function LoginPage() {
 
       const user: SafeUser | undefined = json.data?.user;
       const requested = new URLSearchParams(window.location.search).get("redirect");
-      const target =
-        safeRedirect(requested) ?? (user ? defaultRedirect(user.role) : "/");
+      const target = safeRedirect(requested) ?? (user ? defaultRedirect(user.role) : "/");
       router.replace(target);
     } catch {
       setErrorMsg("Terjadi kesalahan koneksi jaringan.");
@@ -66,16 +65,37 @@ export default function LoginPage() {
   return (
     <div className="landing-container flex-center" style={{ minHeight: "100vh", padding: "20px" }}>
       <div className="glass-panel" style={{ width: "100%", maxWidth: "420px", padding: "36px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px", color: "var(--color-emerald-700)" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            marginBottom: "8px",
+            color: "var(--color-emerald-700)",
+          }}
+        >
           <ShieldCheck size={22} />
-          <h1 style={{ fontSize: "1.4rem", margin: 0, color: "var(--text-primary)" }}>Masuk ke StatsLab</h1>
+          <h1 style={{ fontSize: "1.4rem", margin: 0, color: "var(--text-primary)" }}>
+            Masuk ke StatsLab
+          </h1>
         </div>
         <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "24px" }}>
           Untuk Guru, Peneliti, dan Admin panel manajemen.
         </p>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-          <label style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: "14px" }}
+        >
+          <label
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "4px",
+              fontSize: "0.8rem",
+              color: "var(--text-secondary)",
+            }}
+          >
             Email
             <input
               type="email"
@@ -88,7 +108,15 @@ export default function LoginPage() {
             />
           </label>
 
-          <label style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+          <label
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "4px",
+              fontSize: "0.8rem",
+              color: "var(--text-secondary)",
+            }}
+          >
             Kata Sandi
             <input
               type="password"
@@ -102,18 +130,48 @@ export default function LoginPage() {
           </label>
 
           {errorMsg && (
-            <div style={{ padding: "10px 12px", borderRadius: "var(--radius-md)", backgroundColor: "#fee2e2", color: "#b91c1c", fontSize: "0.85rem", fontWeight: 600 }}>
+            <div
+              style={{
+                padding: "10px 12px",
+                borderRadius: "var(--radius-md)",
+                backgroundColor: "#fee2e2",
+                color: "#b91c1c",
+                fontSize: "0.85rem",
+                fontWeight: 600,
+              }}
+            >
               {errorMsg}
             </div>
           )}
 
-          <button type="submit" disabled={loading} className="btn-premium btn-emerald flex-center" style={{ padding: "12px" }}>
-            {loading ? <Loader2 size={18} className="spin" style={{ marginRight: "8px" }} /> : <LogIn size={18} style={{ marginRight: "8px" }} />}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-premium btn-emerald flex-center"
+            style={{ padding: "12px" }}
+          >
+            {loading ? (
+              <Loader2 size={18} className="spin" style={{ marginRight: "8px" }} />
+            ) : (
+              <LogIn size={18} style={{ marginRight: "8px" }} />
+            )}
             {loading ? "Memeriksa..." : "Masuk"}
           </button>
         </form>
 
-        <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "6px", marginTop: "20px", color: "var(--color-emerald-700)", textDecoration: "none", fontWeight: 600, fontSize: "0.9rem" }}>
+        <Link
+          href="/"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            marginTop: "20px",
+            color: "var(--color-emerald-700)",
+            textDecoration: "none",
+            fontWeight: 600,
+            fontSize: "0.9rem",
+          }}
+        >
           <ArrowLeft size={16} /> Kembali ke Beranda
         </Link>
       </div>

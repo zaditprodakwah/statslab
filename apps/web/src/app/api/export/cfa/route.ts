@@ -13,15 +13,15 @@ export async function GET(req: Request) {
 
   try {
     const tasks = await prisma.task.findMany({
-      orderBy: { taskNumber: "asc" }
+      orderBy: { taskNumber: "asc" },
     });
 
     const sessions = await prisma.session.findMany({
       include: {
         taskResponses: true,
-        susResponse: true
+        susResponse: true,
       },
-      orderBy: { createdAt: "asc" }
+      orderBy: { createdAt: "asc" },
     });
 
     const scoresMatrix = sessions.map((s) => {

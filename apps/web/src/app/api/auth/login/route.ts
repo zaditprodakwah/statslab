@@ -56,9 +56,7 @@ export async function POST(req: Request) {
     }
 
     const store = await cookies();
-    store.set(
-      buildAuthCookie({ id: user.id, role: user.role })
-    );
+    store.set(buildAuthCookie({ id: user.id, role: user.role }));
 
     const { passwordHash: _hash, ...safeUser } = user;
     return NextResponse.json({ success: true, data: { user: safeUser } });

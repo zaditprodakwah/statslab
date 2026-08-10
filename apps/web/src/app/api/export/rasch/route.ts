@@ -10,14 +10,14 @@ export async function GET(req: Request) {
 
   try {
     const tasks = await prisma.task.findMany({
-      orderBy: { taskNumber: "asc" }
+      orderBy: { taskNumber: "asc" },
     });
 
     const sessions = await prisma.session.findMany({
       include: {
-        taskResponses: true
+        taskResponses: true,
       },
-      orderBy: { createdAt: "asc" }
+      orderBy: { createdAt: "asc" },
     });
 
     const taskCount = tasks.length || 8;
@@ -50,8 +50,8 @@ export async function GET(req: Request) {
       status: 200,
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": `attachment; filename="statslab-rasch-winsteps-${Date.now()}.ctl"`
-      }
+        "Content-Disposition": `attachment; filename="statslab-rasch-winsteps-${Date.now()}.ctl"`,
+      },
     });
   } catch (err) {
     console.error("Export Rasch error:", err);

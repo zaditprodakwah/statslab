@@ -115,14 +115,32 @@ export default function EthicalModal({ type, onClose }: EthicalModalProps) {
             marginBottom: "16px",
           }}
         >
-          <p style={{ fontSize: "1.25rem", fontFamily: "serif", lineHeight: 2, direction: "rtl", marginBottom: "8px", color: content.color }}>
+          <p
+            style={{
+              fontSize: "1.25rem",
+              fontFamily: "serif",
+              lineHeight: 2,
+              direction: "rtl",
+              marginBottom: "8px",
+              color: content.color,
+            }}
+          >
             {content.arabicAyat}
           </p>
-          <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)", fontStyle: "italic" }}>{content.reference}</span>
+          <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)", fontStyle: "italic" }}>
+            {content.reference}
+          </span>
         </div>
 
         {/* Message */}
-        <p style={{ fontSize: "0.95rem", color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "24px" }}>
+        <p
+          style={{
+            fontSize: "0.95rem",
+            color: "var(--text-secondary)",
+            lineHeight: 1.7,
+            marginBottom: "24px",
+          }}
+        >
           {content.message}
         </p>
 
@@ -130,7 +148,12 @@ export default function EthicalModal({ type, onClose }: EthicalModalProps) {
         <button
           onClick={onClose}
           className="btn-premium w-full"
-          style={{ backgroundColor: content.color, width: "100%", padding: "12px", fontSize: "0.95rem" }}
+          style={{
+            backgroundColor: content.color,
+            width: "100%",
+            padding: "12px",
+            fontSize: "0.95rem",
+          }}
         >
           {content.confirmText}
         </button>

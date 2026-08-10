@@ -18,7 +18,11 @@ export async function POST(req: Request) {
     const parsed = susBodySchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(
-        { success: false, error: "Data SUS tidak valid", issues: parsed.error.flatten().fieldErrors },
+        {
+          success: false,
+          error: "Data SUS tidak valid",
+          issues: parsed.error.flatten().fieldErrors,
+        },
         { status: 400 }
       );
     }
@@ -40,7 +44,7 @@ export async function POST(req: Request) {
       q13: answers[13] ?? 3,
       q14: answers[14] ?? 3,
       totalScore,
-      adjectiveRating
+      adjectiveRating,
     };
 
     // F1.3: SUS harus terkait sesi valid — verifikasi sessionToken pemilik.
@@ -55,11 +59,14 @@ export async function POST(req: Request) {
     await prisma.susResponse.upsert({
       where: { sessionId },
       create: { ...susData, sessionId },
-      update: { ...susData }
+      update: { ...susData },
     });
     return NextResponse.json({ success: true, sessionId, totalScore, adjectiveRating });
   } catch (error) {
     console.error("POST /api/sus error:", error);
-    return NextResponse.json({ success: false, error: "Gagal menyimpan respon SUS" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Gagal menyimpan respon SUS" },
+      { status: 500 }
+    );
   }
 }

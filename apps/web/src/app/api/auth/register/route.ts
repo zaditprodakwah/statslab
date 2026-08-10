@@ -25,16 +25,10 @@ export async function POST(req: Request) {
     const role = (body.role as Role) || "SISWA";
 
     if (!name) {
-      return NextResponse.json(
-        { success: false, message: "Nama wajib diisi." },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: "Nama wajib diisi." }, { status: 400 });
     }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return NextResponse.json(
-        { success: false, message: "Email tidak valid." },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: "Email tidak valid." }, { status: 400 });
     }
     if (password.length < 8) {
       return NextResponse.json(

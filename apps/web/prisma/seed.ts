@@ -123,143 +123,276 @@ async function main() {
     console.log(`- ${record.title} (${record.slug})`);
   }
 
-  // 2. Seed 8 Tasks (Embedded Tasks Watson-Callingham Level 4-6)
+  // 2. Seed 16 Tasks (Pilihan Ganda Berskenario — Click & Click, Watson-Callingham Level 1-6)
+  // Silsilah: setiap soal mengikat modul spesifik (chart click, amanah toggle, tabayyun threshold, tawazun).
+  // options: { choices: string[], correctIndex, explanation, chartClickAnswer?, prerequisite? }
   const tasksData = [
+    // ===== ZAKAT-INFAK (4 soal) =====
     {
       datasetId: datasetIds["zakat-infak"],
       taskNumber: 1,
-      watsonLevel: 4,
-      indicator: "Reading Data",
+      watsonLevel: 1,
+      indicator: "Idiosyncratic — Klik Titik Data",
       prompt:
-        "Berdasarkan grafik distribusi, provinsi manakah yang penghimpunan zakatnya paling tinggi?",
+        "Klik batang grafik provinsi dengan penghimpunan zakat TERTINGGI pada grafik di atas. Lalu pilih jawaban yang sesuai.",
       inputType: "chart",
+      options: {
+        choices: ["DKI Jakarta", "Jawa Barat", "Banten", "Jawa Tengah"],
+        correctIndex: 0,
+        explanation: "DKI Jakarta memiliki batang tertinggi — pusat ekonomi nasional.",
+        chartClickAnswer: "DKI Jakarta",
+      },
     },
     {
       datasetId: datasetIds["zakat-infak"],
       taskNumber: 2,
-      watsonLevel: 4,
-      indicator: "Reading Between Data",
+      watsonLevel: 2,
+      indicator: "Informal — Identifikasi Pola Tren",
       prompt:
-        "Berapa selisih penghimpunan zakat antara provinsi tertinggi (DKI Jakarta) dan terendah (Banten)?",
-      inputType: "voice",
+        "Ubah tipe grafik menjadi Line (gunakan Chart Type Switcher) untuk melihat pola tren. Bagaimana pola penghimpunan zakat dari 5 provinsi?",
+      inputType: "choice",
+      options: {
+        choices: [
+          "Meningkat seiring provinsi",
+          "Tidak beraturan — sangat bervariasi",
+          "Semua sama rata",
+          "Menurun drastis",
+        ],
+        correctIndex: 1,
+        explanation: "Data penghimpunan zakat 5 provinsi sangat bervariasi, tidak mengikuti pola naik/turun beraturan.",
+        prerequisite: "chartType",
+      },
     },
     {
       datasetId: datasetIds["zakat-infak"],
       taskNumber: 3,
-      watsonLevel: 5,
-      indicator: "Reading Beyond Data",
+      watsonLevel: 3,
+      indicator: "Tabayyun — Saring Data Ekstrem",
       prompt:
-        "Jika potensi zakat nasional (total 5 provinsi) meningkat 15% tahun depan, buatlah estimasi potensi zakat nasional.",
+        "Geser Tabayyun Threshold Slider untuk mendeteksi outlier. Provinsi mana yang TERLIHAT sebagai outlier (sangat tinggi) dan perlu verifikasi Tabayyun?",
+      inputType: "choice",
+      options: {
+        choices: ["Banten", "DKI Jakarta", "Jawa Tengah", "Jawa Barat"],
+        correctIndex: 1,
+        explanation: "DKI Jakarta nilainya jauh di atas rata-rata — wajar karena pusat ekonomi, tapi tetap perlu verifikasi sumber data (Tabayyun).",
+        prerequisite: "tabayyunThreshold",
+      },
     },
     {
       datasetId: datasetIds["zakat-infak"],
       taskNumber: 4,
-      watsonLevel: 6,
-      indicator: "Amanah Scale Audit",
+      watsonLevel: 4,
+      indicator: "Amanah — Skala Sumbu Y",
       prompt:
-        "Aktifkan sakelar Pilar Amanah. Jelaskan perbedaan impresi visual ketika sumbu Y dimulai dari nol vs dipotong.",
+        "Aktifkan sakelar Amanah (Zero-Based Scale). Bandingkan dengan skala terpotong. Pernyataan mana yang BENAR tentang perbedaan impresi visual?",
+      inputType: "choice",
+      options: {
+        choices: [
+          "Skala terpotong membuat perbedaan antar provinsi terlihat lebih kecil",
+          "Skala terpotong membuat perbedaan terlihat lebih dramatis/exaggerated",
+          "Tidak ada perbedaan visual",
+          "Zero-based menyembunyikan data rendah",
+        ],
+        correctIndex: 1,
+        explanation: "Sumbu Y yang dipotong (non-zero) mengexaggerasi perbedaan — prinsip Amanah: gunakan zero-based untuk kejujuran visual.",
+        prerequisite: "amanahZeroScale",
+      },
     },
+
+    // ===== PERPUS-MADRASAH (4 soal) =====
     {
       datasetId: datasetIds["perpus-madrasah"],
       taskNumber: 5,
-      watsonLevel: 4,
-      indicator: "Tabayyun Outlier Detection",
+      watsonLevel: 1,
+      indicator: "Idiosyncratic — Klik Titik Data",
       prompt:
-        "Gunakan modul Tabayyun untuk mendeteksi penurunan ekstrem jumlah pengunjung pada bulan April. Apakah penurunan ini wajar (konteks kegiatan madrasah) atau indikasi pencatatan ganda/kesalahan input?",
+        "Klik titik/batang pada grafik untuk bulan dengan jumlah pengunjung TERENDAH di perpustakaan madrasah.",
+      inputType: "chart",
+      options: {
+        choices: ["Januari", "April", "Mei", "Juni"],
+        correctIndex: 1,
+        explanation: "April memiliki jumlah pengunjung terendah — perlu investigasi (libur? kegiatan khusus?).",
+        chartClickAnswer: "April",
+      },
     },
     {
       datasetId: datasetIds["perpus-madrasah"],
       taskNumber: 6,
-      watsonLevel: 5,
-      indicator: "Tawazun Distribution Analysis",
+      watsonLevel: 3,
+      indicator: "Tabayyun — Verifikasi Outlier",
       prompt:
-        "Bandingkan nilai Mean dan Median total pengunjung. Apakah distribusi data seimbang (Tawazun) atau miring?",
+        "Gunakan Tabayyun Threshold Slider. Penurunan pengunjung di April wajar atau indikasi kesalahan input data?",
+      inputType: "choice",
+      options: {
+        choices: [
+          "Wajar — kemungkinan libur/kgiatan khusus madrasah",
+          "Pasti kesalahan input data",
+          "Tidak perlu verifikasi (Tabayyun tidak relevan)",
+          "Data harus dihapus langsung",
+        ],
+        correctIndex: 0,
+        explanation: "Tabayyun: verifikasi konteks dulu. Penurunan musiman (libur Ramadhan/ujian) wajar, bukan otomatis kesalahan input.",
+        prerequisite: "tabayyunThreshold",
+      },
     },
     {
       datasetId: datasetIds["perpus-madrasah"],
       taskNumber: 7,
-      watsonLevel: 6,
-      indicator: "Critical Mathematical Reasoning",
+      watsonLevel: 5,
+      indicator: "Tawazun — Mean vs Median",
       prompt:
-        "Evaluasi kesimpulan: 'Perpustakaan paling ramai di bulan Mei'. Berikan kritik statistik berbasis konteks kegiatan madrasah.",
+        "Aktifkan Tawazun Toggle untuk menampilkan garis Mean & Median. Apa yang dapat Anda amati tentang distribusi pengunjung?",
+      inputType: "choice",
+      options: {
+        choices: [
+          "Mean > Median → distribusi miring ke kanan (skewed)",
+          "Mean = Median → distribusi seimbang (simetris)",
+          "Mean < Median → miring ke kiri",
+          "Mean & Median tidak relevan untuk data ini",
+        ],
+        correctIndex: 0,
+        explanation: "Jika Mean lebih besar dari Median, distribusi miring ke kanan (ada nilai tinggi yang menarik rata-rata). Tawazun = seimbangkan interpretasi.",
+        prerequisite: "tawazunConfirmed",
+      },
     },
     {
       datasetId: datasetIds["perpus-madrasah"],
       taskNumber: 8,
       watsonLevel: 6,
-      indicator: "Data-Driven Decision Making",
+      indicator: "Critical — Keputusan Berbasis Data",
       prompt:
-        "Rumuskan rekomendasi pengadaan buku berbasis data kuartil (misalnya kategori buku_fiksi yang paling tinggi) yang telah dianalisis secara tabayyun.",
+        "Berdasarkan analisis data perpus madrasah (tren + Tabayyun + Tawazun), rekomendasi pengadaan buku terbaik adalah:",
+      inputType: "choice",
+      options: {
+        choices: [
+          "Tambah stok buku fiksi karena peminjam tertinggi",
+          "Tunda pengadaan karena data tidak reliable",
+          "Pengadaan berbasis kategori paling tinggi + verifikasi konteks musiman",
+          "Belilah semua kategori secara merata",
+        ],
+        correctIndex: 2,
+        explanation: "Keputusan kritis: gunakan kategori tertinggi setelah verifikasi Tabayyun (musiman) — gabungkan data + konteks.",
+      },
     },
+
+    // ===== TAJWID-JUZ-30 (4 soal) =====
     {
       datasetId: datasetIds["tajwid-juz-30"],
       taskNumber: 9,
-      watsonLevel: 4,
-      indicator: "Reading Data",
+      watsonLevel: 1,
+      indicator: "Idiosyncratic — Klik Irisan Pie",
       prompt:
-        "Berdasarkan diagram lingkaran distribusi hukum bacaan pada 5 surat Juz 30, sebutkan hukum bacaan yang paling banyak ditemukan beserta jumlahnya.",
-      modelAnswer: "Idgham, yaitu 51 dari total 115 bacaan.",
+        "Klik irisan diagram lingkaran (Pie) untuk hukum bacaan yang PALING BANYAK ditemukan pada 5 surat Juz 30.",
       inputType: "chart",
+      options: {
+        choices: ["Idgham", "Ikhfa", "Izhar", "Iqlab"],
+        correctIndex: 0,
+        explanation: "Idgham = 51 dari 115 bacaan — paling banyak.",
+        chartClickAnswer: "Idgham",
+      },
     },
     {
       datasetId: datasetIds["tajwid-juz-30"],
       taskNumber: 10,
       watsonLevel: 4,
-      indicator: "Reading Between Data",
+      indicator: "Reading Between Data — Proporsi",
       prompt:
-        "Hitunglah total seluruh hukum bacaan pada 5 surat tersebut, lalu tentukan berapa persen proporsi hukum bacaan Ikhfa terhadap total tersebut.",
-      modelAnswer: "Total 115 bacaan; Ikhfa 45 dari 115 sehingga proporsinya sekitar 39,1%.",
-      inputType: "voice",
+        "Total 115 bacaan, Ikhfa 45 bacaan. Berapa proporsi (persen) hukum Ikhfa terhadap total?",
+      inputType: "choice",
+      options: {
+        choices: ["25,1%", "39,1%", "44,3%", "51,0%"],
+        correctIndex: 1,
+        explanation: "45 / 115 × 100 = 39,1% — Ikhfa hampir 2/5 dari total bacaan.",
+      },
     },
     {
       datasetId: datasetIds["tajwid-juz-30"],
       taskNumber: 11,
       watsonLevel: 5,
-      indicator: "Reading Beyond Data",
+      indicator: "Reading Beyond Data — Estimasi",
       prompt:
-        "Data hanya memuat 5 dari 37 surat Juz 30. Buatlah estimasi total hukum bacaan Izhar pada seluruh Juz 30, lalu jelaskan asumsi dan keterbatasan estimasimu.",
-      modelAnswer:
-        "Estimasi kasar: 15 bacaan pada 5 surat, maka ±15 × (37/5) ≈ 111 bacaan. Asumsinya pola kemunculan seragam; keterbatasannya ukuran sampel kecil dan panjang surat sangat bervariasi (8–46 ayat).",
+        "Data hanya 5 dari 37 surat Juz 30 (Izhar 15 bacaan). Estimasi total Izhar pada seluruh Juz 30 dan asumsinya:",
+      inputType: "choice",
+      options: {
+        choices: [
+          "±111 bacaan (asumsi seragam, sampel kecil)",
+          "Pasti 111 bacaan (eksak)",
+          "50 bacaan sampai 200 bacaan tidak dapat diestimasi",
+          "15 bacaan (tidak berubah)",
+        ],
+        correctIndex: 0,
+        explanation: "Estimasi: 15 × (37/5) ≈ 111. Asumsi seragam, keterbatasan: sampel kecil & panjang surat bervariasi.",
+      },
     },
     {
       datasetId: datasetIds["tajwid-juz-30"],
       taskNumber: 12,
       watsonLevel: 6,
-      indicator: "Critical Mathematical Reasoning",
+      indicator: "Critical — Validitas Kesimpulan",
       prompt:
-        "Evaluasi kesimpulan: 'Surat An-Naba' adalah surat dengan hukum bacaan Ikhfa terbanyak di Juz 30'. Apakah kesimpulan ini valid berdasarkan data yang tersedia? Jelaskan.",
-      modelAnswer:
-        "Tidak valid. Dalam sampel ini, An-Nazi'at justru memiliki Ikhfa terbanyak (14) dibandingkan An-Naba' (12), dan sampel 5 surat tidak cukup untuk digeneralisasi ke seluruh Juz 30.",
+        "Kesimpulan: 'An-Naba adalah surat dengan Ikhfa terbanyak di Juz 30'. Apakah valid berdasarkan data?",
+      inputType: "choice",
+      options: {
+        choices: [
+          "Tidak valid — sampel 5 surat, An-Nazi'at justru Ikhfa terbanyak (14 vs 12)",
+          "Valid karena An-Naba surat awal Juz 30",
+          "Tidak dapat dievaluasi",
+          "Valid jika An-Naba surat terpanjang",
+        ],
+        correctIndex: 0,
+        explanation: "Tidak valid: (1) An-Nazi'at 14 > An-Naba 12 pada sampel, (2) sampel 5 surat tak cukup generalisasi 37 surat.",
+      },
     },
+
+    // ===== WAKAF-PRODUKTIF (4 soal) =====
     {
       datasetId: datasetIds["wakaf-produktif"],
       taskNumber: 13,
-      watsonLevel: 4,
-      indicator: "Reading Data",
+      watsonLevel: 1,
+      indicator: "Idiosyncratic — Klik Titik Tertinggi",
       prompt:
-        "Pada tahun berapa persentase tanah wakaf produktif mencapai nilai tertinggi? Sebutkan nilai persentasenya.",
-      modelAnswer: "Tahun 2025, dengan nilai 9,5%.",
+        "Klik titik pada grafik untuk tahun dengan persentase tanah wakaf produktif TERTINGGI.",
       inputType: "chart",
+      options: {
+        choices: ["2021", "2023", "2024", "2025"],
+        correctIndex: 3,
+        explanation: "2025 = 9,5% — tertinggi dalam tren 2021–2025.",
+        chartClickAnswer: "2025",
+      },
     },
     {
       datasetId: datasetIds["wakaf-produktif"],
       taskNumber: 14,
       watsonLevel: 5,
-      indicator: "Reading Beyond Data",
+      indicator: "Reading Beyond Data — Estimasi Tren",
       prompt:
-        "Berdasarkan tren 2021–2025, perkirakan nilai wakaf uang (dalam triliun rupiah) pada tahun 2026. Jelaskan metode estimasimu.",
-      modelAnswer:
-        "Rata-rata kenaikan per tahun ±0,64 triliun, sehingga estimasi 2026 sekitar 3,4 + 0,64 ≈ 4,0 triliun rupiah.",
+        "Berdasarkan tren 2021–2025 (wakaf uang naik ±0,64 triliun/tahun), estimasi wakaf uang 2026:",
+      inputType: "choice",
+      options: {
+        choices: ["±3,4 triliun", "±4,0 triliun", "±5,5 triliun", "±2,8 triliun"],
+        correctIndex: 1,
+        explanation: "3,4 + 0,64 ≈ 4,0 triliun — asumsi tren linear berlanjut.",
+      },
     },
     {
       datasetId: datasetIds["wakaf-produktif"],
       taskNumber: 15,
       watsonLevel: 5,
-      indicator: "Tabayyun Correlation Audit",
+      indicator: "Tabayyun — Audit Korelasi",
       prompt:
-        "Apakah pertumbuhan wakaf uang selalu sejalan dengan peningkatan persentase tanah wakaf produktif? Bandingkan pola kedua seri data sebelum menarik kesimpulan.",
-      modelAnswer:
-        "Keduanya naik bersama (korelasi positif), tetapi pertumbuhannya tidak identik: tanah produktif naik perlahan (6,8% → 9,5%) sementara wakaf uang tumbuh sekitar 4 kali lipat (0,85 → 3,4 triliun). Dengan n = 5 titik data, hubungan belum cukup kuat untuk disimpulkan sebagai sebab-akibat.",
+        "Apakah pertumbuhan wakaf uang SELALU sejalan dengan peningkatan % tanah wakaf produktif?",
+      inputType: "choice",
+      options: {
+        choices: [
+          "Ya, keduanya identik (naik sama persis)",
+          "Korelasi positif tapi tidak identik — tanah naik perlahan (6,8%→9,5%), wakaf uang 4× lipat",
+          "Tidak ada hubungan sama sekali",
+          "Tanah produktif menurun saat wakaf uang naik",
+        ],
+        correctIndex: 1,
+        explanation: "Korelasi positif tapi tidak sebab-akibat. n=5 titik terlalu kecil; Tabayyun: verifikasi sebelum klaim kausalitas.",
+        prerequisite: "tabayyunThreshold",
+      },
     },
     {
       datasetId: datasetIds["wakaf-produktif"],
@@ -267,9 +400,18 @@ async function main() {
       watsonLevel: 6,
       indicator: "Data-Driven Decision Making",
       prompt:
-        "Rumuskan satu keputusan strategis berbasis data untuk meningkatkan wakaf produktif di Indonesia.",
-      modelAnswer:
-        "Contoh: proporsi tanah produktif masih di bawah 10% (9,5% pada 2025) padahal wakaf uang tumbuh pesat — maka prioritaskan alokasi pertumbuhan wakaf uang untuk pengembangan dan sertifikasi tanah wakaf agar menjadi aset produktif.",
+        "Berdasarkan data (wakaf uang tumbuh 4× lipat, tanah produktif <10%), keputusan strategis terbaik:",
+      inputType: "choice",
+      options: {
+        choices: [
+          "Alokasikan pertumbuhan wakaf uang untuk pengembangan/sertifikasi tanah wakaf produktif",
+          "Hentikan kampanye wakaf uang, fokus tanah saja",
+          "Tidak perlu intervensi",
+          "Beli tanah baru tanpa sertifikasi",
+        ],
+        correctIndex: 0,
+        explanation: "Strategi: gunakan momentum wakaf uang untuk sertifikasi tanah agar menjadi aset produktif (9,5% → target lebih tinggi).",
+      },
     },
   ];
 
@@ -278,6 +420,10 @@ async function main() {
       where: { datasetId: t.datasetId, taskNumber: t.taskNumber },
     });
 
+    const modelAnswer =
+      t.modelAnswer ??
+      (t.options ? t.options.choices[t.options.correctIndex] : null);
+
     if (existingTask) {
       await prisma.task.update({
         where: { id: existingTask.id },
@@ -285,13 +431,26 @@ async function main() {
           watsonLevel: t.watsonLevel,
           indicator: t.indicator,
           prompt: t.prompt,
-          modelAnswer: t.modelAnswer ?? null,
+          modelAnswer,
           clue: t.clue ?? null,
           inputType: t.inputType ?? "text",
+          options: t.options ?? null,
         },
       });
     } else {
-      await prisma.task.create({ data: t });
+      await prisma.task.create({
+        data: {
+          datasetId: t.datasetId,
+          taskNumber: t.taskNumber,
+          watsonLevel: t.watsonLevel,
+          indicator: t.indicator,
+          prompt: t.prompt,
+          modelAnswer,
+          clue: t.clue ?? null,
+          inputType: t.inputType ?? "text",
+          options: t.options,
+        },
+      });
     }
   }
 

@@ -8,7 +8,19 @@ import { Award, CheckCircle2, ClipboardCheck, ArrowLeft, Sparkles } from "lucide
 import Link from "next/link";
 
 export default function SummaryPage() {
-  const { studentName, schoolName, totalScore, maxTotalScore, totalTasks, currentLevel, xp, badges, taskResponses, sessionId, sessionToken } = useStatsLabStore();
+  const {
+    studentName,
+    schoolName,
+    totalScore,
+    maxTotalScore,
+    totalTasks,
+    currentLevel,
+    xp,
+    badges,
+    taskResponses,
+    sessionId,
+    sessionToken,
+  } = useStatsLabStore();
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [isSusOpen, setIsSusOpen] = useState(false);
   const [susSubmitted, setSusSubmitted] = useState<number | null>(null);
@@ -24,15 +36,40 @@ export default function SummaryPage() {
   };
 
   return (
-    <div style={{ maxWidth: "900px", margin: "0 auto", padding: "40px 20px" }} className="page-enter">
+    <div
+      style={{ maxWidth: "900px", margin: "0 auto", padding: "40px 20px" }}
+      className="page-enter"
+    >
       <div style={{ marginBottom: "20px" }}>
-        <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--color-emerald-700)", textDecoration: "none", fontWeight: 600 }}>
+        <Link
+          href="/"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            color: "var(--color-emerald-700)",
+            textDecoration: "none",
+            fontWeight: 600,
+          }}
+        >
           <ArrowLeft size={18} /> Kembali ke Dasbor
         </Link>
       </div>
 
-      <div className="glass-panel" style={{ padding: "36px", textAlign: "center", marginBottom: "32px" }}>
-        <div style={{ display: "inline-flex", padding: "16px", background: "var(--color-emerald-50)", color: "var(--color-emerald-600)", borderRadius: "50%", marginBottom: "16px" }}>
+      <div
+        className="glass-panel"
+        style={{ padding: "36px", textAlign: "center", marginBottom: "32px" }}
+      >
+        <div
+          style={{
+            display: "inline-flex",
+            padding: "16px",
+            background: "var(--color-emerald-50)",
+            color: "var(--color-emerald-600)",
+            borderRadius: "50%",
+            marginBottom: "16px",
+          }}
+        >
           <Sparkles size={40} />
         </div>
 
@@ -40,25 +77,73 @@ export default function SummaryPage() {
           🎉 Selamat, {studentName || "Siswa"}!
         </h1>
         <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", marginBottom: "24px" }}>
-          Anda telah menyelesaikan Modul Literasi Data Terintegrasi Nilai Keislaman ({schoolName || "Instansi"}).
+          Anda telah menyelesaikan Modul Literasi Data Terintegrasi Nilai Keislaman (
+          {schoolName || "Instansi"}).
         </p>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px", marginBottom: "32px" }}>
-          <div style={{ padding: "16px", backgroundColor: "var(--bg-surface)", border: "1px solid var(--color-slate-200)", borderRadius: "var(--radius-md)" }}>
-            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>Watson Level</span>
-            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>Level {currentLevel}</h3>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "16px",
+            marginBottom: "32px",
+          }}
+        >
+          <div
+            style={{
+              padding: "16px",
+              backgroundColor: "var(--bg-surface)",
+              border: "1px solid var(--color-slate-200)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
+            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+              Watson Level
+            </span>
+            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>
+              Level {currentLevel}
+            </h3>
           </div>
-          <div style={{ padding: "16px", backgroundColor: "var(--bg-surface)", border: "1px solid var(--color-slate-200)", borderRadius: "var(--radius-md)" }}>
+          <div
+            style={{
+              padding: "16px",
+              backgroundColor: "var(--bg-surface)",
+              border: "1px solid var(--color-slate-200)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
             <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>Skor Total</span>
-            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>{totalScore} / {maxTotalScore}</h3>
+            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>
+              {totalScore} / {maxTotalScore}
+            </h3>
           </div>
-          <div style={{ padding: "16px", backgroundColor: "var(--bg-surface)", border: "1px solid var(--color-slate-200)", borderRadius: "var(--radius-md)" }}>
-            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>Experience Points</span>
+          <div
+            style={{
+              padding: "16px",
+              backgroundColor: "var(--bg-surface)",
+              border: "1px solid var(--color-slate-200)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
+            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+              Experience Points
+            </span>
             <h3 style={{ fontSize: "1.5rem", color: "var(--color-amber-600)" }}>{xp} XP</h3>
           </div>
-          <div style={{ padding: "16px", backgroundColor: "var(--bg-surface)", border: "1px solid var(--color-slate-200)", borderRadius: "var(--radius-md)" }}>
-            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>Tugas Selesai</span>
-            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>{completedCount} / {totalTasks}</h3>
+          <div
+            style={{
+              padding: "16px",
+              backgroundColor: "var(--bg-surface)",
+              border: "1px solid var(--color-slate-200)",
+              borderRadius: "var(--radius-md)",
+            }}
+          >
+            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+              Tugas Selesai
+            </span>
+            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>
+              {completedCount} / {totalTasks}
+            </h3>
           </div>
         </div>
 
@@ -76,10 +161,16 @@ export default function SummaryPage() {
           <button
             onClick={() => setIsSusOpen(true)}
             className="btn-premium flex-center"
-            style={{ padding: "12px 24px", fontSize: "1rem", backgroundColor: "var(--color-amber-500)" }}
+            style={{
+              padding: "12px 24px",
+              fontSize: "1rem",
+              backgroundColor: "var(--color-amber-500)",
+            }}
           >
             <ClipboardCheck size={20} style={{ marginRight: "8px" }} />
-            {susSubmitted ? `Skor SUS: ${susSubmitted} / 100` : "Isi Kuesioner Evaluasi SUS (14 Butir)"}
+            {susSubmitted
+              ? `Skor SUS: ${susSubmitted} / 100`
+              : "Isi Kuesioner Evaluasi SUS (14 Butir)"}
           </button>
         </div>
       </div>
@@ -103,7 +194,7 @@ export default function SummaryPage() {
                 border: "1px solid var(--color-emerald-500)",
                 color: "var(--color-emerald-700)",
                 fontWeight: 600,
-                fontSize: "0.9rem"
+                fontSize: "0.9rem",
               }}
             >
               <CheckCircle2 size={16} /> {badge}

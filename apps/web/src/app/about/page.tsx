@@ -41,8 +41,13 @@ export default function AboutPage() {
   return (
     <div className="landing-container" style={{ paddingBottom: "64px" }}>
       <div className="landing-content" style={{ maxWidth: "900px", margin: "0 auto" }}>
-        <nav aria-label="Breadcrumb" style={{ padding: "24px 0 0", fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-          <Link href="/" style={{ color: "var(--accent-primary)" }}>Beranda</Link>
+        <nav
+          aria-label="Breadcrumb"
+          style={{ padding: "24px 0 0", fontSize: "0.875rem", color: "var(--text-secondary)" }}
+        >
+          <Link href="/" style={{ color: "var(--accent-primary)" }}>
+            Beranda
+          </Link>
           <span style={{ margin: "0 8px" }}>/</span>
           <span aria-current="page">Tentang</span>
         </nav>
@@ -64,10 +69,15 @@ export default function AboutPage() {
           >
             <Landmark size={18} /> R&D Ekosistem Literasi Data STAI Al-Bahjah Cirebon
           </div>
-          <h1 style={{ fontSize: "2.25rem", marginBottom: "16px", color: "var(--color-emerald-700)" }}>
+          <h1
+            style={{ fontSize: "2.25rem", marginBottom: "16px", color: "var(--color-emerald-700)" }}
+          >
             Tentang StatsLab
           </h1>
-          <p className="hero-subtitle" style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7 }}>
+          <p
+            className="hero-subtitle"
+            style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7 }}
+          >
             StatsLab adalah media pembelajaran statistika interaktif berbasis web yang memadukan
             eksplorasi visual data nyata dengan nilai-nilai keislaman. Platform ini dikembangkan
             sebagai bagian dari penelitian pengembangan (R&amp;D) untuk memfasilitasi kemampuan
@@ -78,7 +88,9 @@ export default function AboutPage() {
         <div className="glass-panel" style={{ padding: "32px", marginBottom: "32px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
             <BarChart3 size={24} style={{ color: "var(--color-emerald-600)" }} />
-            <h2 style={{ fontSize: "1.4rem" }}>Literasi Data Tingkat Lanjut: Kerangka Watson-Callingham</h2>
+            <h2 style={{ fontSize: "1.4rem" }}>
+              Literasi Data Tingkat Lanjut: Kerangka Watson-Callingham
+            </h2>
           </div>
           <p style={{ color: "var(--text-secondary)", lineHeight: 1.7 }}>
             Instrumen tugas pada StatsLab dikembangkan menggunakan kerangka literasi data
@@ -93,14 +105,41 @@ export default function AboutPage() {
             <BookOpen size={24} style={{ color: "var(--color-emerald-600)" }} />
             <h2 style={{ fontSize: "1.4rem" }}>Tiga Pilar Pendidikan Islam</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: "16px",
+            }}
+          >
             {pillars.map((p) => (
-              <div key={p.title} style={{ padding: "20px", borderRadius: "var(--radius-lg)", border: "1px solid var(--color-slate-200)", backgroundColor: "var(--bg-surface)" }}>
-                <div style={{ display: "inline-flex", padding: "10px", background: "var(--color-emerald-50)", color: "var(--color-emerald-600)", borderRadius: "50%", marginBottom: "12px" }}>
+              <div
+                key={p.title}
+                style={{
+                  padding: "20px",
+                  borderRadius: "var(--radius-lg)",
+                  border: "1px solid var(--color-slate-200)",
+                  backgroundColor: "var(--bg-surface)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "inline-flex",
+                    padding: "10px",
+                    background: "var(--color-emerald-50)",
+                    color: "var(--color-emerald-600)",
+                    borderRadius: "50%",
+                    marginBottom: "12px",
+                  }}
+                >
                   <p.icon size={22} />
                 </div>
                 <h3 style={{ fontSize: "1.05rem", marginBottom: "6px" }}>{p.title}</h3>
-                <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.65 }}>{p.description}</p>
+                <p
+                  style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.65 }}
+                >
+                  {p.description}
+                </p>
               </div>
             ))}
           </div>
@@ -113,37 +152,70 @@ export default function AboutPage() {
           </div>
           <ul style={{ color: "var(--text-secondary)", lineHeight: 1.8, paddingLeft: "20px" }}>
             <li>Validasi instrumen tugas melalui penilaian pakar (expert validation).</li>
-            <li>Uji keterbacaan dan kepraktisan dengan <em>System Usability Scale</em> (SUS).</li>
-            <li>Uji coba skala kecil (<em>small-scale</em>) sebelum implementasi skala besar (<em>large-scale</em>).</li>
-            <li>Analisis psikometri menggunakan model Rasch (Winsteps) dan analisis SEM (LISREL).</li>
+            <li>
+              Uji keterbacaan dan kepraktisan dengan <em>System Usability Scale</em> (SUS).
+            </li>
+            <li>
+              Uji coba skala kecil (<em>small-scale</em>) sebelum implementasi skala besar (
+              <em>large-scale</em>).
+            </li>
+            <li>
+              Analisis psikometri menggunakan model Rasch (Winsteps) dan analisis SEM (LISREL).
+            </li>
           </ul>
         </div>
 
         <div className="glass-panel" style={{ padding: "32px", marginBottom: "32px" }}>
           <h2 style={{ fontSize: "1.4rem", marginBottom: "12px" }}>Instrumen Penelitian</h2>
           <p style={{ color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "16px" }}>
-            <strong>SUS-Extended StatsLab (14 Butir)</strong> — adaptasi dari SUS standar Brooke (1996):
-            10 item standar + 4 item tambahan konteks Islamic EdTech (nilai keislaman,
+            <strong>SUS-Extended StatsLab (14 Butir)</strong> — adaptasi dari SUS standar Brooke
+            (1996): 10 item standar + 4 item tambahan konteks Islamic EdTech (nilai keislaman,
             kepercayaan visualisasi, responsivitas mobile, kepuasan media). Formula adaptif:
-            <code style={{ display: "block", margin: "8px 0", padding: "8px", background: "var(--bg-surface)", borderRadius: "var(--radius-md)" }}>
+            <code
+              style={{
+                display: "block",
+                margin: "8px 0",
+                padding: "8px",
+                background: "var(--bg-surface)",
+                borderRadius: "var(--radius-md)",
+              }}
+            >
               totalScore = ((oddSum + evenSum) / (14 × 4)) × 100
             </code>
-            Adjective rating: Poor &lt; 52 &lt; Good &lt; 72 &lt; Excellent &lt; 85 &lt; Best Imaginable (Bangor et al., 2009).
+            Adjective rating: Poor &lt; 52 &lt; Good &lt; 72 &lt; Excellent &lt; 85 &lt; Best
+            Imaginable (Bangor et al., 2009).
           </p>
           <p style={{ color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: "16px" }}>
             <strong>Aiken&apos;s V</strong> — koefisien validitas isi penilaian pakar:
-            <code style={{ display: "block", margin: "8px 0", padding: "8px", background: "var(--bg-surface)", borderRadius: "var(--radius-md)" }}>
-              V = Σs / [n(c − 1)],  s = skor − 1,  c = 5
+            <code
+              style={{
+                display: "block",
+                margin: "8px 0",
+                padding: "8px",
+                background: "var(--bg-surface)",
+                borderRadius: "var(--radius-md)",
+              }}
+            >
+              V = Σs / [n(c − 1)], s = skor − 1, c = 5
             </code>
-            Interpretasi: V ≥ 0.75 = valid (Aiken, 1985). Rekam skor via panel Admin → Validasi Pakar.
+            Interpretasi: V ≥ 0.75 = valid (Aiken, 1985). Rekam skor via panel Admin → Validasi
+            Pakar.
           </p>
           <p style={{ color: "var(--text-secondary)", lineHeight: 1.7 }}>
             <strong>Rasch PCM (Partial Credit Model)</strong> — analisis data jawaban tugas
             (Masters, 1982) dengan ekspor Winsteps <code>.ctl</code> dan CFA/SEM via
             <code> lavaan</code> (R) atau <code>LISREL</code>.
           </p>
-          <p style={{ color: "var(--text-secondary)", lineHeight: 1.7, marginTop: "12px", fontSize: "0.85rem" }}>
-            Referensi: Brooke (1996); Watson &amp; Callingham (2003); Masters (1982); Aiken (1985); Bangor et al. (2009); Jöreskog &amp; Sörbom (1996).
+          <p
+            style={{
+              color: "var(--text-secondary)",
+              lineHeight: 1.7,
+              marginTop: "12px",
+              fontSize: "0.85rem",
+            }}
+          >
+            Referensi: Brooke (1996); Watson &amp; Callingham (2003); Masters (1982); Aiken (1985);
+            Bangor et al. (2009); Jöreskog &amp; Sörbom (1996).
           </p>
         </div>
 
@@ -151,7 +223,12 @@ export default function AboutPage() {
           <Link
             href="/"
             className="btn-premium flex-center"
-            style={{ textDecoration: "none", display: "inline-flex", padding: "12px 28px", backgroundColor: "var(--accent-primary)" }}
+            style={{
+              textDecoration: "none",
+              display: "inline-flex",
+              padding: "12px 28px",
+              backgroundColor: "var(--accent-primary)",
+            }}
           >
             Mulai Belajar di Dasbor
           </Link>

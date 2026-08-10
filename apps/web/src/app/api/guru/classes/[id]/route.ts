@@ -8,10 +8,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   try {
     const auth = await authorize(req, ["GURU", "ADMIN"]);
     if (!auth.ok) {
-      return NextResponse.json(
-        { success: false, message: auth.message },
-        { status: auth.status }
-      );
+      return NextResponse.json({ success: false, message: auth.message }, { status: auth.status });
     }
 
     const { id } = await params;

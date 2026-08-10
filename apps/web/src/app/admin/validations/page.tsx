@@ -135,62 +135,149 @@ export default function ValidationsPage() {
     }
   }
 
-  const scoreColor = (V: number) => (V >= 0.75 ? "var(--color-emerald-600)" : V >= 0.6 ? "var(--color-amber-600)" : "var(--color-red-600)");
+  const scoreColor = (V: number) =>
+    V >= 0.75
+      ? "var(--color-emerald-600)"
+      : V >= 0.6
+        ? "var(--color-amber-600)"
+        : "var(--color-red-600)";
 
   if (loading) {
-    return <div style={{ textAlign: "center", padding: "80px" }}><Loader2 className="spin" /></div>;
+    return (
+      <div style={{ textAlign: "center", padding: "80px" }}>
+        <Loader2 className="spin" />
+      </div>
+    );
   }
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 20px" }}>
-      <Link href="/admin/dashboard" style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--color-emerald-700)", textDecoration: "none", fontWeight: 600, marginBottom: "16px" }}>
+      <Link
+        href="/admin/dashboard"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "6px",
+          color: "var(--color-emerald-700)",
+          textDecoration: "none",
+          fontWeight: 600,
+          marginBottom: "16px",
+        }}
+      >
         <ArrowLeft size={18} /> Kembali ke Dashboard
       </Link>
 
-      <h1 style={{ fontSize: "2rem", color: "var(--text-primary)", marginBottom: "8px", display: "flex", alignItems: "center", gap: "10px" }}>
+      <h1
+        style={{
+          fontSize: "2rem",
+          color: "var(--text-primary)",
+          marginBottom: "8px",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
         <Calculator style={{ color: "var(--color-emerald-700)" }} /> Validasi Pakar (Aiken&apos;s V)
       </h1>
       <p style={{ color: "var(--text-secondary)", marginBottom: "32px", fontSize: "0.95rem" }}>
-        Rekam skor penilaian pakar per item tugas (taskNumber). Sistem menghitung Aiken&apos;s V otomatis: V ≥ 0.75 = valid.
+        Rekam skor penilaian pakar per item tugas (taskNumber). Sistem menghitung Aiken&apos;s V
+        otomatis: V ≥ 0.75 = valid.
       </p>
 
-      {error && <div style={{ color: "var(--color-red-600)", marginBottom: "16px", fontSize: "0.9rem" }}>{error}</div>}
+      {error && (
+        <div style={{ color: "var(--color-red-600)", marginBottom: "16px", fontSize: "0.9rem" }}>
+          {error}
+        </div>
+      )}
 
       {/* Form Tambah/Edit */}
       <div className="glass-panel" style={{ padding: "24px", marginBottom: "32px" }}>
         <h2 style={{ fontSize: "1.1rem", marginBottom: "16px" }}>Rekam Skor Validasi</h2>
-        <form onSubmit={handleSubmit} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "12px" }}>
-          <label style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.85rem" }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "12px",
+          }}
+        >
+          <label
+            style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.85rem" }}
+          >
             Pakar Validator
-            <select required value={form.validatorId} onChange={(e) => setForm({ ...form, validatorId: e.target.value })} style={inputStyle}>
+            <select
+              required
+              value={form.validatorId}
+              onChange={(e) => setForm({ ...form, validatorId: e.target.value })}
+              style={inputStyle}
+            >
               <option value="">— Pilih —</option>
               {validators.map((v) => (
-                <option key={v.id} value={v.id}>{v.name} ({v.domain})</option>
+                <option key={v.id} value={v.id}>
+                  {v.name} ({v.domain})
+                </option>
               ))}
             </select>
           </label>
-          <label style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.85rem" }}>
+          <label
+            style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.85rem" }}
+          >
             Nomor Item (Task)
-            <select required value={form.itemNumber} onChange={(e) => setForm({ ...form, itemNumber: e.target.value })} style={inputStyle}>
+            <select
+              required
+              value={form.itemNumber}
+              onChange={(e) => setForm({ ...form, itemNumber: e.target.value })}
+              style={inputStyle}
+            >
               {Array.from({ length: 16 }, (_, i) => (
-                <option key={i + 1} value={String(i + 1)}>Item {i + 1}</option>
+                <option key={i + 1} value={String(i + 1)}>
+                  Item {i + 1}
+                </option>
               ))}
             </select>
           </label>
-          <label style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.85rem" }}>
+          <label
+            style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.85rem" }}
+          >
             Skor (1–5)
-            <select required value={form.score} onChange={(e) => setForm({ ...form, score: e.target.value })} style={inputStyle}>
+            <select
+              required
+              value={form.score}
+              onChange={(e) => setForm({ ...form, score: e.target.value })}
+              style={inputStyle}
+            >
               {[1, 2, 3, 4, 5].map((s) => (
-                <option key={s} value={String(s)}>{s}</option>
+                <option key={s} value={String(s)}>
+                  {s}
+                </option>
               ))}
             </select>
           </label>
-          <label style={{ display: "flex", flexDirection: "column", gap: "4px", fontSize: "0.85rem", gridColumn: "1 / -1" }}>
+          <label
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "4px",
+              fontSize: "0.85rem",
+              gridColumn: "1 / -1",
+            }}
+          >
             Catatan (opsional)
-            <input type="text" value={form.feedback} onChange={(e) => setForm({ ...form, feedback: e.target.value })} style={inputStyle} placeholder="Feedback pakar..." />
+            <input
+              type="text"
+              value={form.feedback}
+              onChange={(e) => setForm({ ...form, feedback: e.target.value })}
+              style={inputStyle}
+              placeholder="Feedback pakar..."
+            />
           </label>
           <div style={{ gridColumn: "1 / -1" }}>
-            <button type="submit" disabled={saving || !form.validatorId} className="btn-premium btn-emerald flex-center" style={{ padding: "10px 20px" }}>
+            <button
+              type="submit"
+              disabled={saving || !form.validatorId}
+              className="btn-premium btn-emerald flex-center"
+              style={{ padding: "10px 20px" }}
+            >
               {saving ? <Loader2 size={16} className="spin" /> : <Plus size={16} />} Simpan / Update
             </button>
           </div>
@@ -201,7 +288,9 @@ export default function ValidationsPage() {
       <div className="glass-panel" style={{ padding: "24px", marginBottom: "32px" }}>
         <h2 style={{ fontSize: "1.1rem", marginBottom: "16px" }}>Hasil Aiken&apos;s V per Item</h2>
         {aiken.length === 0 ? (
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>Belum ada data validasi. Rekam skor pakar untuk menghitung V.</p>
+          <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+            Belum ada data validasi. Rekam skor pakar untuk menghitung V.
+          </p>
         ) : (
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem" }}>
             <thead>
@@ -214,9 +303,14 @@ export default function ValidationsPage() {
             </thead>
             <tbody>
               {aiken.map((it) => (
-                <tr key={it.itemNumber} style={{ borderBottom: "1px solid var(--color-slate-200)" }}>
+                <tr
+                  key={it.itemNumber}
+                  style={{ borderBottom: "1px solid var(--color-slate-200)" }}
+                >
                   <td style={{ padding: "8px" }}>Item {it.itemNumber}</td>
-                  <td style={{ padding: "8px", fontWeight: 600, color: scoreColor(it.V) }}>{it.V.toFixed(3)}</td>
+                  <td style={{ padding: "8px", fontWeight: 600, color: scoreColor(it.V) }}>
+                    {it.V.toFixed(3)}
+                  </td>
                   <td style={{ padding: "8px" }}>{it.validatorCount}</td>
                   <td style={{ padding: "8px", color: scoreColor(it.V) }}>{it.interpretation}</td>
                 </tr>
@@ -245,12 +339,26 @@ export default function ValidationsPage() {
             <tbody>
               {validations.map((v) => (
                 <tr key={v.id} style={{ borderBottom: "1px solid var(--color-slate-200)" }}>
-                  <td style={{ padding: "8px" }}>{v.validator?.name ?? v.validatorId.slice(0, 8)}</td>
+                  <td style={{ padding: "8px" }}>
+                    {v.validator?.name ?? v.validatorId.slice(0, 8)}
+                  </td>
                   <td style={{ padding: "8px" }}>Item {v.itemNumber}</td>
                   <td style={{ padding: "8px" }}>{v.score}</td>
-                  <td style={{ padding: "8px", color: "var(--text-secondary)", maxWidth: "300px" }}>{v.feedback || "—"}</td>
+                  <td style={{ padding: "8px", color: "var(--text-secondary)", maxWidth: "300px" }}>
+                    {v.feedback || "—"}
+                  </td>
                   <td style={{ padding: "8px" }}>
-                    <button onClick={() => handleDelete(v.id)} className="btn-premium" style={{ padding: "6px", backgroundColor: "var(--color-red-600)", border: "none", cursor: "pointer" }} title="Hapus">
+                    <button
+                      onClick={() => handleDelete(v.id)}
+                      className="btn-premium"
+                      style={{
+                        padding: "6px",
+                        backgroundColor: "var(--color-red-600)",
+                        border: "none",
+                        cursor: "pointer",
+                      }}
+                      title="Hapus"
+                    >
                       <Trash2 size={14} color="#fff" />
                     </button>
                   </td>

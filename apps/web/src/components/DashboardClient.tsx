@@ -40,7 +40,9 @@ export default function DashboardClient() {
   const [susResult, setSusResult] = useState<{ score: number; adjective: string } | null>(null);
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [activePblTaskId, setActivePblTaskId] = useState<string | null>(null);
-  const [chartSelection, setChartSelection] = useState<{ taskId: string; label: string } | null>(null);
+  const [chartSelection, setChartSelection] = useState<{ taskId: string; label: string } | null>(
+    null
+  );
   const [ethicalModal, setEthicalModal] = useState<"tabayyun" | "amanah" | null>(null);
 
   const {
@@ -79,20 +81,23 @@ export default function DashboardClient() {
     setAssessmentMeta({
       maxTotalScore: tasks.length * 2,
       totalTasks: tasks.length,
-      tasks: tasks.map((t) => ({ id: t.id, watsonLevel: t.watsonLevel }))
+      tasks: tasks.map((t) => ({ id: t.id, watsonLevel: t.watsonLevel })),
     });
   }, [datasets, setAssessmentMeta]);
 
-  const handleChartClick = useCallback((payload: any) => {
-    if (!activePblTaskId) return;
+  const handleChartClick = useCallback(
+    (payload: any) => {
+      if (!activePblTaskId) return;
 
-    const pointData = payload?.activePayload ? payload.activePayload[0]?.payload : payload;
-    const label = pointData ? JSON.stringify(pointData) : "Chart Element Clicked";
+      const pointData = payload?.activePayload ? payload.activePayload[0]?.payload : payload;
+      const label = pointData ? JSON.stringify(pointData) : "Chart Element Clicked";
 
-    // Gesture only: catat titik yang dipilih, siswa tetap harus menekan "Kirim Jawaban"
-    setChartSelection({ taskId: activePblTaskId, label: `[Grafik] ${label}` });
-    setActivePblTaskId(null);
-  }, [activePblTaskId]);
+      // Gesture only: catat titik yang dipilih, siswa tetap harus menekan "Kirim Jawaban"
+      setChartSelection({ taskId: activePblTaskId, label: `[Grafik] ${label}` });
+      setActivePblTaskId(null);
+    },
+    [activePblTaskId]
+  );
 
   const handleAmanahToggle = () => {
     setEthicalModal("amanah");
@@ -114,7 +119,10 @@ export default function DashboardClient() {
   const activeTasks = activeDs?.tasks || [];
 
   return (
-    <main className="page-enter" style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}>
+    <main
+      className="page-enter"
+      style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}
+    >
       {/* Ethical Modal */}
       <EthicalModal type={ethicalModal} onClose={() => setEthicalModal(null)} />
 
@@ -139,9 +147,16 @@ export default function DashboardClient() {
         <h1 style={{ fontSize: "2.5rem", marginBottom: "12px", color: "var(--text-primary)" }}>
           StatsLab — Dasbor Statistika Interaktif
         </h1>
-        <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", maxWidth: "750px", margin: "0 auto 20px" }}>
-          Memfasilitasi Literasi Data Siswa melalui Eksplorasi Visualisasi Interaktif,
-          Analisis Outlier Tabayyun, dan Audit Skala Amanah.
+        <p
+          style={{
+            fontSize: "1.1rem",
+            color: "var(--text-secondary)",
+            maxWidth: "750px",
+            margin: "0 auto 20px",
+          }}
+        >
+          Memfasilitasi Literasi Data Siswa melalui Eksplorasi Visualisasi Interaktif, Analisis
+          Outlier Tabayyun, dan Audit Skala Amanah.
         </p>
 
         {/* Action Buttons */}
@@ -149,7 +164,12 @@ export default function DashboardClient() {
           <Link
             href="/dashboard/summary"
             className="btn-premium btn-emerald flex-center"
-            style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "8px" }}
+            style={{
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
           >
             <Award size={18} /> Ringkasan Capaian & Sertifikat
           </Link>
@@ -157,14 +177,26 @@ export default function DashboardClient() {
           <button
             onClick={() => setIsSusOpen(true)}
             className="btn-premium"
-            style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "var(--color-amber-500)" }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              backgroundColor: "var(--color-amber-500)",
+            }}
           >
             <ClipboardCheck size={18} /> Evaluasi SUS (14 Butir)
           </button>
         </div>
 
         {susResult && (
-          <div style={{ marginTop: "16px", fontSize: "0.9rem", color: "var(--color-emerald-700)", fontWeight: 600 }}>
+          <div
+            style={{
+              marginTop: "16px",
+              fontSize: "0.9rem",
+              color: "var(--color-emerald-700)",
+              fontWeight: 600,
+            }}
+          >
             ✅ Skor SUS Tersimpan: {susResult.score} / 100 ({susResult.adjective})
           </div>
         )}
@@ -174,12 +206,22 @@ export default function DashboardClient() {
       <div
         id="amanah-scale-toggle"
         className="glass-panel"
-        style={{ marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", flexWrap: "wrap", gap: "12px" }}
+        style={{
+          marginBottom: "24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "16px 20px",
+          flexWrap: "wrap",
+          gap: "12px",
+        }}
       >
         <div>
           <strong style={{ fontSize: "0.95rem" }}>⚖️ Prinsip Amanah — Skala Sumbu Y</strong>
           <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "2px" }}>
-            {amanahZeroScale ? "Skala berbasis nol (Zero-based) — Jujur & Proporsional" : "⚠️ Skala Terpotong — Risiko Misleading"}
+            {amanahZeroScale
+              ? "Skala berbasis nol (Zero-based) — Jujur & Proporsional"
+              : "⚠️ Skala Terpotong — Risiko Misleading"}
           </p>
         </div>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
@@ -199,7 +241,9 @@ export default function DashboardClient() {
             onClick={confirmTawazun}
             className="btn-premium"
             style={{
-              backgroundColor: tawazunConfirmed ? "var(--color-purple-600)" : "var(--color-slate-400)",
+              backgroundColor: tawazunConfirmed
+                ? "var(--color-purple-600)"
+                : "var(--color-slate-400)",
               fontSize: "0.85rem",
               padding: "8px 16px",
             }}
@@ -212,7 +256,15 @@ export default function DashboardClient() {
 
       {/* Active Dataset Chart */}
       <section id="chart-interactive" style={{ marginBottom: "40px" }}>
-        <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px" }}>
+        <h2
+          style={{
+            fontSize: "1.5rem",
+            marginBottom: "20px",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
           <BarChart2 style={{ color: "var(--accent-primary)" }} />
           {activeDs ? `📊 ${activeDs.title}` : "Modul Visualisasi Dataset"}
         </h2>
@@ -229,7 +281,10 @@ export default function DashboardClient() {
             onChartClick={handleChartClick}
           />
         ) : (
-          <div className="glass-panel" style={{ padding: "40px", textAlign: "center", color: "var(--text-secondary)" }}>
+          <div
+            className="glass-panel"
+            style={{ padding: "40px", textAlign: "center", color: "var(--text-secondary)" }}
+          >
             Dataset tidak ditemukan. Coba pilih modul lain di Header.
           </div>
         )}
@@ -237,7 +292,15 @@ export default function DashboardClient() {
 
       {/* Tasks Panel */}
       <section id="tasks-panel" style={{ marginBottom: "40px" }}>
-        <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", display: "flex", alignItems: "center", gap: "10px" }}>
+        <h2
+          style={{
+            fontSize: "1.5rem",
+            marginBottom: "20px",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
           <BookOpen style={{ color: "var(--accent-primary)" }} /> Modul Asesmen Literasi Data
         </h2>
         <EmbeddedTasksPanel
@@ -261,7 +324,10 @@ export default function DashboardClient() {
           fontSize: "0.875rem",
         }}
       >
-        <p>© 2026 StatsLab R&D Open Source Ecosystem. Terintegrasi Nilai Keislaman & Standar Watson-Callingham.</p>
+        <p>
+          © 2026 StatsLab R&D Open Source Ecosystem. Terintegrasi Nilai Keislaman & Standar
+          Watson-Callingham.
+        </p>
         {currentLevel >= 6 && (
           <button
             onClick={() => setIsCertOpen(true)}

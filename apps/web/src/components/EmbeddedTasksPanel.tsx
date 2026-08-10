@@ -4,7 +4,15 @@ import React, { useState } from "react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
 import { scoreAnswer } from "@/lib/scoring";
 import { getRubricKeywords } from "@/lib/rubricCache";
-import { CheckCircle2, Award, HelpCircle, ChevronDown, ChevronUp, MousePointer, Sparkles } from "lucide-react";
+import {
+  CheckCircle2,
+  Award,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  MousePointer,
+  Sparkles,
+} from "lucide-react";
 import VoiceInput from "@/components/VoiceInput";
 import confetti from "canvas-confetti";
 
@@ -38,7 +46,16 @@ export default function EmbeddedTasksPanel({
   onClearChartSelection,
   onTabayyunTrigger,
 }: EmbeddedTasksPanelProps) {
-  const { taskResponses, submitTaskAnswer, currentLevel, totalScore, maxTotalScore, badges, sessionId, sessionToken } = useStatsLabStore();
+  const {
+    taskResponses,
+    submitTaskAnswer,
+    currentLevel,
+    totalScore,
+    maxTotalScore,
+    badges,
+    sessionId,
+    sessionToken,
+  } = useStatsLabStore();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [openClues, setOpenClues] = useState<Record<string, boolean>>({});
 
@@ -53,12 +70,13 @@ export default function EmbeddedTasksPanel({
   const handleVoiceResult = (taskId: string, transcript: string) => {
     setAnswers((prev) => ({
       ...prev,
-      [taskId]: prev[taskId] ? `${prev[taskId]} ${transcript}` : transcript
+      [taskId]: prev[taskId] ? `${prev[taskId]} ${transcript}` : transcript,
     }));
   };
 
   const handleSubmit = async (task: Task) => {
-    const selection = chartSelection && chartSelection.taskId === task.id ? chartSelection.label : null;
+    const selection =
+      chartSelection && chartSelection.taskId === task.id ? chartSelection.label : null;
     const text = selection || answers[task.id] || "";
     if (!text.trim()) return;
 
@@ -82,8 +100,11 @@ export default function EmbeddedTasksPanel({
             sessionToken,
             taskId: task.id,
             answerText: text,
-            interactionLog: { timestamp: new Date().toISOString(), inputType: task.inputType || "text" }
-          })
+            interactionLog: {
+              timestamp: new Date().toISOString(),
+              inputType: task.inputType || "text",
+            },
+          }),
         });
         if (res.ok) {
           const json = await res.json();
@@ -107,7 +128,7 @@ export default function EmbeddedTasksPanel({
       confetti({
         particleCount: 100,
         spread: 70,
-        origin: { y: 0.6 }
+        origin: { y: 0.6 },
       });
     }
   };
@@ -115,26 +136,45 @@ export default function EmbeddedTasksPanel({
   return (
     <div className="glass-panel" style={{ padding: "24px", marginBottom: "32px" }}>
       {/* Task Header & Gamification Bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
         <div>
           <h3 style={{ fontSize: "1.25rem", color: "var(--text-primary)" }}>
             Tugas Literasi Data (Watson-Callingham)
           </h3>
           <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)" }}>
-            Jawab tugas berjenjang pada modul ini untuk menguji kemampuan membaca dan mengevaluasi data.
+            Jawab tugas berjenjang pada modul ini untuk menguji kemampuan membaca dan mengevaluasi
+            data.
           </p>
         </div>
 
         {/* Level & Certificate Status Badge */}
         <div style={{ textAlign: "right" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "flex-end" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              justifyContent: "flex-end",
+            }}
+          >
             <Award style={{ color: "var(--color-amber-500)" }} size={20} />
             <strong style={{ fontSize: "1.1rem", color: "var(--accent-primary)" }}>
               Level {currentLevel}: Watson-Callingham
             </strong>
           </div>
           <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-            Skor Total: <strong>{totalScore} / {maxTotalScore}</strong> | Badge: <strong>{badges.join(", ")}</strong>
+            Skor Total:{" "}
+            <strong>
+              {totalScore} / {maxTotalScore}
+            </strong>{" "}
+            | Badge: <strong>{badges.join(", ")}</strong>
           </span>
         </div>
       </div>
@@ -146,7 +186,8 @@ export default function EmbeddedTasksPanel({
           const isSubmitted = !!response;
           const isChartTask = task.inputType === "chart";
           const isActivePbl = activePblTaskId === task.id;
-          const selectedForTask = chartSelection && chartSelection.taskId === task.id ? chartSelection.label : null;
+          const selectedForTask =
+            chartSelection && chartSelection.taskId === task.id ? chartSelection.label : null;
 
           return (
             <div
@@ -160,23 +201,38 @@ export default function EmbeddedTasksPanel({
                 backgroundColor: isSubmitted
                   ? "var(--color-emerald-50)"
                   : isActivePbl
-                  ? "var(--color-amber-50)"
-                  : "var(--bg-surface)",
-                transition: "all 0.3s ease"
+                    ? "var(--color-amber-50)"
+                    : "var(--bg-surface)",
+                transition: "all 0.3s ease",
               }}
             >
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                <span style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--accent-primary)" }}>
+              <div
+                style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}
+              >
+                <span
+                  style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--accent-primary)" }}
+                >
                   Tugas #{task.taskNumber} — Watson Level {task.watsonLevel} ({task.indicator})
                 </span>
                 {isSubmitted && (
-                  <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "var(--color-emerald-700)", fontSize: "0.85rem", fontWeight: 600 }}>
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      color: "var(--color-emerald-700)",
+                      fontSize: "0.85rem",
+                      fontWeight: 600,
+                    }}
+                  >
                     <CheckCircle2 size={16} /> Skor: {response.score} / 2
                   </span>
                 )}
               </div>
 
-              <p style={{ fontSize: "0.95rem", color: "var(--text-primary)", marginBottom: "12px" }}>
+              <p
+                style={{ fontSize: "0.95rem", color: "var(--text-primary)", marginBottom: "12px" }}
+              >
                 {task.prompt}
               </p>
 
@@ -195,7 +251,7 @@ export default function EmbeddedTasksPanel({
                       display: "flex",
                       alignItems: "center",
                       gap: "4px",
-                      padding: 0
+                      padding: 0,
                     }}
                   >
                     <HelpCircle size={14} />
@@ -212,7 +268,7 @@ export default function EmbeddedTasksPanel({
                         borderLeft: "3px solid var(--color-amber-500)",
                         borderRadius: "4px",
                         fontSize: "0.85rem",
-                        color: "var(--color-slate-800)"
+                        color: "var(--color-slate-800)",
                       }}
                     >
                       💡 <strong>Clue Tabayyun:</strong> {task.clue}
@@ -223,26 +279,38 @@ export default function EmbeddedTasksPanel({
 
               {/* Interactive Chart Task Action */}
               {isChartTask && !isSubmitted && (
-                <div style={{ marginBottom: "12px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                <div
+                  style={{
+                    marginBottom: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    flexWrap: "wrap",
+                  }}
+                >
                   <button
                     type="button"
-                    onClick={() => onSelectTaskForChart && onSelectTaskForChart(isActivePbl ? null : task.id)}
+                    onClick={() =>
+                      onSelectTaskForChart && onSelectTaskForChart(isActivePbl ? null : task.id)
+                    }
                     className="btn-premium"
                     style={{
-                      backgroundColor: isActivePbl ? "var(--color-amber-500)" : "var(--color-emerald-700)",
+                      backgroundColor: isActivePbl
+                        ? "var(--color-amber-500)"
+                        : "var(--color-emerald-700)",
                       fontSize: "0.85rem",
                       padding: "8px 14px",
                       display: "inline-flex",
                       alignItems: "center",
-                      gap: "6px"
+                      gap: "6px",
                     }}
                   >
                     <MousePointer size={16} />
                     {isActivePbl
                       ? "Sedang Menunggu Klik pada Grafik..."
                       : selectedForTask
-                      ? "Ulangi Klik Grafik"
-                      : "Jawab Lewat Klik Grafik"}
+                        ? "Ulangi Klik Grafik"
+                        : "Jawab Lewat Klik Grafik"}
                   </button>
 
                   {selectedForTask && (
@@ -279,7 +347,9 @@ export default function EmbeddedTasksPanel({
               <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
                 <input
                   type="text"
-                  placeholder={isSubmitted ? response.answerText : "Tulis analisis data Anda di sini..."}
+                  placeholder={
+                    isSubmitted ? response.answerText : "Tulis analisis data Anda di sini..."
+                  }
                   disabled={isSubmitted}
                   value={selectedForTask ?? answers[task.id] ?? ""}
                   onChange={(e) => handleTextChange(task.id, e.target.value)}
@@ -289,7 +359,7 @@ export default function EmbeddedTasksPanel({
                     borderRadius: "var(--radius-md)",
                     border: "1px solid var(--color-slate-200)",
                     fontFamily: "var(--font-inter)",
-                    fontSize: "0.9rem"
+                    fontSize: "0.9rem",
                   }}
                 />
 
@@ -303,7 +373,7 @@ export default function EmbeddedTasksPanel({
                   className="btn-premium"
                   style={{
                     opacity: isSubmitted ? 0.6 : 1,
-                    cursor: isSubmitted ? "default" : "pointer"
+                    cursor: isSubmitted ? "default" : "pointer",
                   }}
                 >
                   {isSubmitted ? "Tersimpan" : "Kirim Jawaban"}
@@ -325,12 +395,22 @@ export default function EmbeddedTasksPanel({
             color: "#fff",
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <div>
-            <h4 style={{ fontSize: "1.1rem", marginBottom: "4px", color: "#fff", display: "flex", alignItems: "center", gap: "8px" }}>
-              <Sparkles size={20} color="var(--color-amber-500)" /> 🎉 Selamat! Anda Membuka Sertifikat Kelulusan Literasi Data
+            <h4
+              style={{
+                fontSize: "1.1rem",
+                marginBottom: "4px",
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              <Sparkles size={20} color="var(--color-amber-500)" /> 🎉 Selamat! Anda Membuka
+              Sertifikat Kelulusan Literasi Data
             </h4>
             <p style={{ fontSize: "0.875rem", opacity: 0.9 }}>
               Anda telah menyelesaikan seluruh tugas dengan penalaran kritis berprinsip Keislaman.
@@ -345,7 +425,7 @@ export default function EmbeddedTasksPanel({
               color: "#fff",
               border: "none",
               fontWeight: 600,
-              cursor: "pointer"
+              cursor: "pointer",
             }}
           >
             Lihat & Unduh Sertifikat

@@ -65,7 +65,7 @@ export default function VoiceInput({ onResult, lang = "id-ID" }: VoiceInputProps
           color: "#fff",
           cursor: "not-allowed",
           border: "none",
-          opacity: 0.7
+          opacity: 0.7,
         }}
       >
         <Mic size={16} />
@@ -101,9 +101,11 @@ export default function VoiceInput({ onResult, lang = "id-ID" }: VoiceInputProps
         display: "inline-flex",
         alignItems: "center",
         gap: "6px",
-        borderRadius: "var(--radius-md)"
+        borderRadius: "var(--radius-md)",
       }}
-      title={isListening ? "Merekam suara... Klik untuk berhenti" : "Input dengan Suara (Voice-to-Text)"}
+      title={
+        isListening ? "Merekam suara... Klik untuk berhenti" : "Input dengan Suara (Voice-to-Text)"
+      }
     >
       {isListening ? <MicOff size={16} /> : <Mic size={16} />}
       <span>{isListening ? "Mendengarkan..." : "Dikte Suara"}</span>

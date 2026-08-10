@@ -105,7 +105,7 @@ export async function PATCH(req: Request) {
 
     const updated = await prisma.session.update({
       where: { id: sessionId },
-      data
+      data,
     });
 
     return NextResponse.json({ success: true, data: updated });

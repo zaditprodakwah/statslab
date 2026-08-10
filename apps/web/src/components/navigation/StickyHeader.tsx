@@ -13,7 +13,16 @@ const MODULES: { slug: DatasetSlug; label: string; emoji: string }[] = [
 ];
 
 export default function StickyHeader() {
-  const { studentName, schoolName, currentLevel, xp, totalScore, maxTotalScore, activeDataset, setActiveDataset } = useStatsLabStore();
+  const {
+    studentName,
+    schoolName,
+    currentLevel,
+    xp,
+    totalScore,
+    maxTotalScore,
+    activeDataset,
+    setActiveDataset,
+  } = useStatsLabStore();
   const [fontSizeLevel, setFontSizeLevel] = useState(0); // 0: Normal, 1: Besar, 2: Ultra
   const [projectorMode, setProjectorMode] = useState(false);
   const [moduleOpen, setModuleOpen] = useState(false);
@@ -50,7 +59,12 @@ export default function StickyHeader() {
       <div className="header-container">
         {/* Brand Logo */}
         <div className="header-brand">
-          <Link href="/" className="brand-logo" aria-label="StatsLab — Kembali ke Beranda" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <Link
+            href="/"
+            className="brand-logo"
+            aria-label="StatsLab — Kembali ke Beranda"
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
             <ShieldCheck style={{ color: "var(--color-emerald-700)" }} size={24} />
             <span>StatsLab</span>
           </Link>
@@ -77,8 +91,16 @@ export default function StickyHeader() {
               cursor: "pointer",
             }}
           >
-            <span>{activeModule.emoji} {activeModule.label}</span>
-            <ChevronDown size={14} style={{ transform: moduleOpen ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.2s" }} />
+            <span>
+              {activeModule.emoji} {activeModule.label}
+            </span>
+            <ChevronDown
+              size={14}
+              style={{
+                transform: moduleOpen ? "rotate(180deg)" : "rotate(0)",
+                transition: "transform 0.2s",
+              }}
+            />
           </button>
 
           {moduleOpen && (
@@ -104,9 +126,17 @@ export default function StickyHeader() {
                   key={mod.slug}
                   role="option"
                   aria-selected={activeDataset === mod.slug}
-                  onClick={() => { setActiveDataset(mod.slug); setModuleOpen(false); }}
+                  onClick={() => {
+                    setActiveDataset(mod.slug);
+                    setModuleOpen(false);
+                  }}
                   tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { setActiveDataset(mod.slug); setModuleOpen(false); } }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      setActiveDataset(mod.slug);
+                      setModuleOpen(false);
+                    }
+                  }}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -116,8 +146,12 @@ export default function StickyHeader() {
                     cursor: "pointer",
                     fontSize: "0.875rem",
                     fontWeight: activeDataset === mod.slug ? 600 : 400,
-                    backgroundColor: activeDataset === mod.slug ? "var(--color-emerald-50)" : "transparent",
-                    color: activeDataset === mod.slug ? "var(--color-emerald-700)" : "var(--text-primary)",
+                    backgroundColor:
+                      activeDataset === mod.slug ? "var(--color-emerald-50)" : "transparent",
+                    color:
+                      activeDataset === mod.slug
+                        ? "var(--color-emerald-700)"
+                        : "var(--text-primary)",
                     transition: "background 0.15s",
                   }}
                 >
@@ -133,10 +167,21 @@ export default function StickyHeader() {
         <div className="progress-indicator">
           <div className="progress-labels">
             <span className="progress-title">Watson Level {currentLevel}</span>
-            <span className="progress-status">Skor: {totalScore} / {maxTotalScore} ({xp} XP)</span>
+            <span className="progress-status">
+              Skor: {totalScore} / {maxTotalScore} ({xp} XP)
+            </span>
           </div>
-          <div className="progress-bar-bg" role="progressbar" aria-valuenow={totalScore} aria-valuemin={0} aria-valuemax={maxTotalScore}>
-            <div className="progress-bar-fill" style={{ width: `${Math.min((totalScore / maxTotalScore) * 100, 100)}%` }} />
+          <div
+            className="progress-bar-bg"
+            role="progressbar"
+            aria-valuenow={totalScore}
+            aria-valuemin={0}
+            aria-valuemax={maxTotalScore}
+          >
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${Math.min((totalScore / maxTotalScore) * 100, 100)}%` }}
+            />
           </div>
         </div>
 

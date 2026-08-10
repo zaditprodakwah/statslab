@@ -12,16 +12,16 @@ export async function GET(req: Request) {
     const sessions = await prisma.session.findMany({
       include: {
         taskResponses: true,
-        susResponse: true
+        susResponse: true,
       },
-      orderBy: { createdAt: "desc" }
+      orderBy: { createdAt: "desc" },
     });
 
     return NextResponse.json({
       success: true,
       data: {
-        sessions
-      }
+        sessions,
+      },
     });
   } catch {
     return NextResponse.json({ error: "Gagal mengambil data sesi" }, { status: 500 });

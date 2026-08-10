@@ -9,16 +9,10 @@ export const dynamic = "force-dynamic";
 const ROLES: Role[] = ["SISWA", "GURU", "PENELITI", "ADMIN"];
 const STATUSES: UserStatus[] = ["PENDING", "ACTIVE", "SUSPENDED"];
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await authorize(req, ["ADMIN"]);
   if (!auth.ok) {
-    return NextResponse.json(
-      { success: false, message: auth.message },
-      { status: auth.status }
-    );
+    return NextResponse.json({ success: false, message: auth.message }, { status: auth.status });
   }
 
   try {
@@ -36,21 +30,14 @@ export async function PATCH(
 
     const body = await req.json();
     const role = typeof body.role === "string" ? (body.role as Role) : undefined;
-    const status =
-      typeof body.status === "string" ? (body.status as UserStatus) : undefined;
+    const status = typeof body.status === "string" ? (body.status as UserStatus) : undefined;
     const password = typeof body.password === "string" ? body.password : undefined;
 
     if (role !== undefined && !ROLES.includes(role)) {
-      return NextResponse.json(
-        { success: false, message: "Peran tidak valid." },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: "Peran tidak valid." }, { status: 400 });
     }
     if (status !== undefined && !STATUSES.includes(status)) {
-      return NextResponse.json(
-        { success: false, message: "Status tidak valid." },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, message: "Status tidak valid." }, { status: 400 });
     }
     if (password !== undefined && password.length < 8) {
       return NextResponse.json(

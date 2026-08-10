@@ -50,7 +50,9 @@ export default function GuruDashboardPage() {
   const [errorMsg, setErrorMsg] = useState("");
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [detail, setDetail] = useState<{ class: ClassSummary; students: StudentDetail[] } | null>(null);
+  const [detail, setDetail] = useState<{ class: ClassSummary; students: StudentDetail[] } | null>(
+    null
+  );
   const [loadingDetail, setLoadingDetail] = useState(false);
 
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -149,12 +151,38 @@ export default function GuruDashboardPage() {
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 20px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "28px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "28px",
+        }}
+      >
         <div>
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--color-emerald-700)", textDecoration: "none", fontWeight: 600, marginBottom: "10px" }}>
+          <Link
+            href="/"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              color: "var(--color-emerald-700)",
+              textDecoration: "none",
+              fontWeight: 600,
+              marginBottom: "10px",
+            }}
+          >
             <ArrowLeft size={18} /> Beranda StatsLab
           </Link>
-          <h1 style={{ fontSize: "2rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "10px" }}>
+          <h1
+            style={{
+              fontSize: "2rem",
+              color: "var(--text-primary)",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
             <GraduationCap style={{ color: "var(--color-emerald-700)" }} /> Panel Guru
           </h1>
           <p style={{ fontSize: "0.95rem", color: "var(--text-secondary)" }}>
@@ -162,24 +190,57 @@ export default function GuruDashboardPage() {
           </p>
         </div>
         <div style={{ display: "flex", gap: "10px" }}>
-          <button onClick={handleLogout} className="btn-premium" style={{ backgroundColor: "#ef4444", padding: "8px 16px", display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "0.875rem" }}>
+          <button
+            onClick={handleLogout}
+            className="btn-premium"
+            style={{
+              backgroundColor: "#ef4444",
+              padding: "8px 16px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "0.875rem",
+            }}
+          >
             <LogOut size={16} /> Keluar
           </button>
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-        <h2 style={{ fontSize: "1.2rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "8px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "16px",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "1.2rem",
+            color: "var(--text-primary)",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
           <Users size={20} color="var(--color-emerald-700)" /> Kelas Saya
         </h2>
-        <button onClick={() => setCreateOpen(!createOpen)} className="btn-premium btn-emerald flex-center" style={{ padding: "10px 16px" }}>
+        <button
+          onClick={() => setCreateOpen(!createOpen)}
+          className="btn-premium btn-emerald flex-center"
+          style={{ padding: "10px 16px" }}
+        >
           <Plus size={18} style={{ marginRight: "6px" }} /> Buat Kelas
         </button>
       </div>
 
       {createOpen && (
         <div className="glass-panel" style={{ padding: "20px", marginBottom: "24px" }}>
-          <form onSubmit={handleCreate} style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+          <form
+            onSubmit={handleCreate}
+            style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}
+          >
             <input
               className="form-input"
               style={{ flex: 1, minWidth: "220px", padding: "10px 12px" }}
@@ -187,10 +248,19 @@ export default function GuruDashboardPage() {
               value={className}
               onChange={(e) => setClassName(e.target.value)}
             />
-            <button type="submit" disabled={creating || !className.trim()} className="btn-premium btn-emerald flex-center" style={{ padding: "10px 18px" }}>
+            <button
+              type="submit"
+              disabled={creating || !className.trim()}
+              className="btn-premium btn-emerald flex-center"
+              style={{ padding: "10px 18px" }}
+            >
               {creating ? <Loader2 size={18} className="spin" /> : "Simpan"}
             </button>
-            {errorMsg && <div style={{ color: "var(--color-red-600)", fontSize: "0.85rem", width: "100%" }}>{errorMsg}</div>}
+            {errorMsg && (
+              <div style={{ color: "var(--color-red-600)", fontSize: "0.85rem", width: "100%" }}>
+                {errorMsg}
+              </div>
+            )}
           </form>
         </div>
       )}
@@ -212,7 +282,10 @@ export default function GuruDashboardPage() {
                   justifyContent: "space-between",
                   gap: "16px",
                   padding: "14px 16px",
-                  border: selectedId === c.id ? "1.5px solid var(--color-emerald-600)" : "1px solid rgba(0,0,0,0.08)",
+                  border:
+                    selectedId === c.id
+                      ? "1.5px solid var(--color-emerald-600)"
+                      : "1px solid rgba(0,0,0,0.08)",
                   borderRadius: "10px",
                   cursor: "pointer",
                   background: selectedId === c.id ? "var(--color-emerald-50)" : "transparent",
@@ -231,11 +304,19 @@ export default function GuruDashboardPage() {
                       copyCode(c.code);
                     }}
                     className="btn-premium flex-center"
-                    style={{ padding: "8px 12px", fontSize: "0.85rem", backgroundColor: "var(--color-emerald-600)" }}
+                    style={{
+                      padding: "8px 12px",
+                      fontSize: "0.85rem",
+                      backgroundColor: "var(--color-emerald-600)",
+                    }}
                     title="Salin kode undangan"
                   >
                     {copiedCode === c.code ? <Check size={16} /> : <Copy size={16} />}
-                    <span style={{ marginLeft: "6px", fontFamily: "monospace", letterSpacing: "1px" }}>{c.code}</span>
+                    <span
+                      style={{ marginLeft: "6px", fontFamily: "monospace", letterSpacing: "1px" }}
+                    >
+                      {c.code}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -246,10 +327,24 @@ export default function GuruDashboardPage() {
 
       {selectedId && (
         <div className="glass-panel" style={{ padding: "24px", marginTop: "24px" }}>
-          <h3 style={{ fontSize: "1.1rem", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+          <h3
+            style={{
+              fontSize: "1.1rem",
+              marginBottom: "16px",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
             <BookOpenCheck size={20} color="var(--color-emerald-700)" />
             {detail ? detail.class.name : "Detail Kelas"}
-            {detail && <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 400 }}>(kode: {detail.class.code})</span>}
+            {detail && (
+              <span
+                style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 400 }}
+              >
+                (kode: {detail.class.code})
+              </span>
+            )}
           </h3>
 
           {loadingDetail ? (
@@ -265,7 +360,13 @@ export default function GuruDashboardPage() {
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem" }}>
                   <thead>
-                    <tr style={{ textAlign: "left", color: "var(--text-secondary)", borderBottom: "1px solid rgba(0,0,0,0.1)" }}>
+                    <tr
+                      style={{
+                        textAlign: "left",
+                        color: "var(--text-secondary)",
+                        borderBottom: "1px solid rgba(0,0,0,0.1)",
+                      }}
+                    >
                       <th style={{ padding: "10px 8px" }}>Nama Siswa</th>
                       <th style={{ padding: "10px 8px" }}>Email</th>
                       <th style={{ padding: "10px 8px" }}>Sesi</th>
@@ -279,10 +380,16 @@ export default function GuruDashboardPage() {
                       return (
                         <tr key={s.id} style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
                           <td style={{ padding: "10px 8px", fontWeight: 600 }}>{s.name}</td>
-                          <td style={{ padding: "10px 8px", color: "var(--text-secondary)" }}>{s.email}</td>
+                          <td style={{ padding: "10px 8px", color: "var(--text-secondary)" }}>
+                            {s.email}
+                          </td>
                           <td style={{ padding: "10px 8px" }}>{s.sessions.length}</td>
-                          <td style={{ padding: "10px 8px" }}>{latest ? latest.totalScore : "-"}</td>
-                          <td style={{ padding: "10px 8px" }}>{latest ? latest.currentLevel : "-"}</td>
+                          <td style={{ padding: "10px 8px" }}>
+                            {latest ? latest.totalScore : "-"}
+                          </td>
+                          <td style={{ padding: "10px 8px" }}>
+                            {latest ? latest.currentLevel : "-"}
+                          </td>
                         </tr>
                       );
                     })}

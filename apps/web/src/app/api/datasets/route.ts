@@ -3,11 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-
-
 export async function GET() {
-
-
   try {
     const datasets = await prisma.dataset.findMany({
       include: {
@@ -21,9 +17,9 @@ export async function GET() {
             clue: true,
             inputType: true,
           },
-          orderBy: { taskNumber: "asc" }
-        }
-      }
+          orderBy: { taskNumber: "asc" },
+        },
+      },
     });
 
     return NextResponse.json({ success: true, data: datasets });

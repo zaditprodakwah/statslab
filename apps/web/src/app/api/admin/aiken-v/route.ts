@@ -44,6 +44,9 @@ export async function GET(req: Request) {
     return NextResponse.json({ success: true, data: { items } });
   } catch (err) {
     console.error("GET /api/admin/aiken-v error:", err);
-    return NextResponse.json({ success: false, error: "Gagal menghitung Aiken's V" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Gagal menghitung Aiken's V" },
+      { status: 500 }
+    );
   }
 }

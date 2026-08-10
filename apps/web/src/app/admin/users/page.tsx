@@ -3,16 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  ArrowLeft,
-  Users,
-  Loader2,
-  Check,
-  Ban,
-  KeyRound,
-  RefreshCw,
-  UserCog,
-} from "lucide-react";
+import { ArrowLeft, Users, Loader2, Check, Ban, KeyRound, RefreshCw, UserCog } from "lucide-react";
 
 type AdminUser = {
   id: string;
@@ -85,9 +76,7 @@ export default function AdminUsersPage() {
         alert(json.message || "Gagal memperbarui pengguna.");
         return;
       }
-      setUsers((prev) =>
-        prev.map((u) => (u.id === id ? { ...u, ...json.data.user } : u))
-      );
+      setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, ...json.data.user } : u)));
     } catch {
       alert("Koneksi gagal.");
     } finally {
@@ -126,21 +115,50 @@ export default function AdminUsersPage() {
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 20px" }}>
       <div style={{ marginBottom: "20px" }}>
-        <Link href="/admin/dashboard" style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--color-emerald-700)", textDecoration: "none", fontWeight: 600 }}>
+        <Link
+          href="/admin/dashboard"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            color: "var(--color-emerald-700)",
+            textDecoration: "none",
+            fontWeight: 600,
+          }}
+        >
           <ArrowLeft size={18} /> Kembali ke Dashboard Admin
         </Link>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "24px",
+        }}
+      >
         <div>
-          <h1 style={{ fontSize: "1.8rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: "10px" }}>
+          <h1
+            style={{
+              fontSize: "1.8rem",
+              color: "var(--text-primary)",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
             <UserCog style={{ color: "var(--color-emerald-700)" }} /> Kelola Pengguna
           </h1>
           <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
             Setujui guru baru, ubah peran, aktifkan/nonaktifkan, atau reset kata sandi.
           </p>
         </div>
-        <button onClick={fetchUsers} className="btn-premium flex-center" style={{ padding: "10px 16px", backgroundColor: "var(--color-emerald-600)" }}>
+        <button
+          onClick={fetchUsers}
+          className="btn-premium flex-center"
+          style={{ padding: "10px 16px", backgroundColor: "var(--color-emerald-600)" }}
+        >
           <RefreshCw size={16} style={{ marginRight: "6px" }} /> Muat Ulang
         </button>
       </div>
@@ -154,7 +172,13 @@ export default function AdminUsersPage() {
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem" }}>
               <thead>
-                <tr style={{ textAlign: "left", color: "var(--text-secondary)", borderBottom: "1px solid rgba(0,0,0,0.1)" }}>
+                <tr
+                  style={{
+                    textAlign: "left",
+                    color: "var(--text-secondary)",
+                    borderBottom: "1px solid rgba(0,0,0,0.1)",
+                  }}
+                >
                   <th style={{ padding: "10px 8px" }}>Nama</th>
                   <th style={{ padding: "10px 8px" }}>Email</th>
                   <th style={{ padding: "10px 8px" }}>Peran</th>
@@ -167,19 +191,33 @@ export default function AdminUsersPage() {
                 {users.map((u) => (
                   <tr key={u.id} style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
                     <td style={{ padding: "10px 8px", fontWeight: 600 }}>{u.name}</td>
-                    <td style={{ padding: "10px 8px", color: "var(--text-secondary)" }}>{u.email}</td>
+                    <td style={{ padding: "10px 8px", color: "var(--text-secondary)" }}>
+                      {u.email}
+                    </td>
                     <td style={{ padding: "10px 8px" }}>
                       <button
                         onClick={() => cycleRole(u)}
                         disabled={busyId === u.id}
                         className="btn-premium flex-center"
-                        style={{ padding: "6px 10px", fontSize: "0.8rem", backgroundColor: "var(--color-emerald-600)", border: "none", cursor: "pointer" }}
+                        style={{
+                          padding: "6px 10px",
+                          fontSize: "0.8rem",
+                          backgroundColor: "var(--color-emerald-600)",
+                          border: "none",
+                          cursor: "pointer",
+                        }}
                         title="Ubah peran"
                       >
                         <Users size={14} style={{ marginRight: "6px" }} /> {ROLE_LABEL[u.role]}
                       </button>
                     </td>
-                    <td style={{ padding: "10px 8px", color: STATUS_COLOR[u.status], fontWeight: 600 }}>
+                    <td
+                      style={{
+                        padding: "10px 8px",
+                        color: STATUS_COLOR[u.status],
+                        fontWeight: 600,
+                      }}
+                    >
                       {u.status}
                     </td>
                     <td style={{ padding: "10px 8px" }}>{u._count.sessions}</td>
@@ -190,9 +228,19 @@ export default function AdminUsersPage() {
                             onClick={() => approve(u)}
                             disabled={busyId === u.id}
                             className="btn-premium flex-center"
-                            style={{ padding: "6px 10px", fontSize: "0.8rem", backgroundColor: "var(--color-emerald-600)", border: "none", cursor: "pointer" }}
+                            style={{
+                              padding: "6px 10px",
+                              fontSize: "0.8rem",
+                              backgroundColor: "var(--color-emerald-600)",
+                              border: "none",
+                              cursor: "pointer",
+                            }}
                           >
-                            {busyId === u.id ? <Loader2 size={14} className="spin" /> : <Check size={14} style={{ marginRight: "4px" }} />}
+                            {busyId === u.id ? (
+                              <Loader2 size={14} className="spin" />
+                            ) : (
+                              <Check size={14} style={{ marginRight: "4px" }} />
+                            )}
                             Setujui
                           </button>
                         )}
@@ -200,16 +248,32 @@ export default function AdminUsersPage() {
                           onClick={() => toggleSuspend(u)}
                           disabled={busyId === u.id}
                           className="btn-premium flex-center"
-                          style={{ padding: "6px 10px", fontSize: "0.8rem", backgroundColor: "#f59e0b", border: "none", cursor: "pointer" }}
+                          style={{
+                            padding: "6px 10px",
+                            fontSize: "0.8rem",
+                            backgroundColor: "#f59e0b",
+                            border: "none",
+                            cursor: "pointer",
+                          }}
                         >
-                          {u.status === "SUSPENDED" ? <Check size={14} style={{ marginRight: "4px" }} /> : <Ban size={14} style={{ marginRight: "4px" }} />}
+                          {u.status === "SUSPENDED" ? (
+                            <Check size={14} style={{ marginRight: "4px" }} />
+                          ) : (
+                            <Ban size={14} style={{ marginRight: "4px" }} />
+                          )}
                           {u.status === "SUSPENDED" ? "Aktifkan" : "Nonaktifkan"}
                         </button>
                         <button
                           onClick={() => resetPassword(u)}
                           disabled={busyId === u.id}
                           className="btn-premium flex-center"
-                          style={{ padding: "6px 10px", fontSize: "0.8rem", backgroundColor: "#2563eb", border: "none", cursor: "pointer" }}
+                          style={{
+                            padding: "6px 10px",
+                            fontSize: "0.8rem",
+                            backgroundColor: "#2563eb",
+                            border: "none",
+                            cursor: "pointer",
+                          }}
                         >
                           <KeyRound size={14} style={{ marginRight: "4px" }} /> Reset PW
                         </button>

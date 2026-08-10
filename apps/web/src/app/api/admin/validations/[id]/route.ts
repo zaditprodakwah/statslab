@@ -19,13 +19,23 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     const body = await req.json();
     const parsed = patchSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ success: false, error: "Data tidak valid", issues: parsed.error.flatten().fieldErrors }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: "Data tidak valid", issues: parsed.error.flatten().fieldErrors },
+        { status: 400 }
+      );
     }
-    const updated = await prisma.expertValidation.update({ where: { id }, data: parsed.data, include: { validator: true } });
+    const updated = await prisma.expertValidation.update({
+      where: { id },
+      data: parsed.data,
+      include: { validator: true },
+    });
     return NextResponse.json({ success: true, data: updated });
   } catch (err) {
     console.error("PATCH /api/admin/validations/[id] error:", err);
-    return NextResponse.json({ success: false, error: "Gagal memperbarui validasi" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Gagal memperbarui validasi" },
+      { status: 500 }
+    );
   }
 }
 
@@ -39,6 +49,9 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("DELETE /api/admin/validations/[id] error:", err);
-    return NextResponse.json({ success: false, error: "Gagal menghapus validasi" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: "Gagal menghapus validasi" },
+      { status: 500 }
+    );
   }
 }

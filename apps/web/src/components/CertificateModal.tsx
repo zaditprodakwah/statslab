@@ -11,7 +11,18 @@ interface CertificateModalProps {
 }
 
 export default function CertificateModal({ isOpen, onClose }: CertificateModalProps) {
-  const { studentName, schoolName, totalScore, maxTotalScore, currentLevel, xp, sessionId, sessionToken, certificateId, setCertificateId } = useStatsLabStore();
+  const {
+    studentName,
+    schoolName,
+    totalScore,
+    maxTotalScore,
+    currentLevel,
+    xp,
+    sessionId,
+    sessionToken,
+    certificateId,
+    setCertificateId,
+  } = useStatsLabStore();
   const certRef = useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = useState(false);
 
@@ -21,7 +32,9 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
     month: "long",
     year: "numeric",
   });
-  const certificateNo = certificateId || `STATSLAB-${today.getFullYear()}-${(sessionId || "guest").slice(0, 8).toUpperCase()}`;
+  const certificateNo =
+    certificateId ||
+    `STATSLAB-${today.getFullYear()}-${(sessionId || "guest").slice(0, 8).toUpperCase()}`;
 
   useEffect(() => {
     if (isOpen && !certificateId) {
@@ -31,7 +44,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
         fetch("/api/sessions", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sessionId, sessionToken, certificateId: certificateNo })
+          body: JSON.stringify({ sessionId, sessionToken, certificateId: certificateNo }),
         }).catch((err) => console.error("Gagal menyimpan nomor sertifikat:", err));
       }
     }
@@ -86,10 +99,13 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
         justifyContent: "center",
         alignItems: "center",
         zIndex: 99999,
-        padding: "20px"
+        padding: "20px",
       }}
     >
-      <div className="glass-panel" style={{ width: "100%", maxWidth: "800px", position: "relative", padding: "24px" }}>
+      <div
+        className="glass-panel"
+        style={{ width: "100%", maxWidth: "800px", position: "relative", padding: "24px" }}
+      >
         <button
           onClick={onClose}
           style={{
@@ -99,17 +115,31 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
             background: "transparent",
             border: "none",
             cursor: "pointer",
-            color: "var(--text-secondary)"
+            color: "var(--text-secondary)",
           }}
         >
           <X size={24} />
         </button>
 
-        <h2 style={{ textAlign: "center", marginBottom: "24px", fontSize: "1.8rem", color: "var(--color-emerald-700)" }}>
+        <h2
+          style={{
+            textAlign: "center",
+            marginBottom: "24px",
+            fontSize: "1.8rem",
+            color: "var(--color-emerald-700)",
+          }}
+        >
           🎉 Selamat, {studentName || "Siswa"}! Sertifikat Anda Siap
         </h2>
 
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: "24px", overflow: "auto" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "24px",
+            overflow: "auto",
+          }}
+        >
           {/* Certificate DOM to capture */}
           <div
             ref={certRef}
@@ -126,45 +156,116 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
               backgroundSize: "140px",
               backgroundRepeat: "repeat",
               color: "#1e293b",
-              fontFamily: "'Inter', sans-serif"
+              fontFamily: "'Inter', sans-serif",
             }}
           >
             <div style={{ position: "absolute", top: "20px", left: "20px" }}>
               <Award size={48} color="var(--color-amber-500)" />
             </div>
-            
-            <h1 style={{ fontSize: "2.5rem", color: "var(--color-emerald-800)", marginTop: "20px", marginBottom: "8px", textTransform: "uppercase", letterSpacing: "2px" }}>
+
+            <h1
+              style={{
+                fontSize: "2.5rem",
+                color: "var(--color-emerald-800)",
+                marginTop: "20px",
+                marginBottom: "8px",
+                textTransform: "uppercase",
+                letterSpacing: "2px",
+              }}
+            >
               Sertifikat Penghargaan
             </h1>
             <p style={{ fontSize: "1.2rem", color: "#64748b", marginBottom: "40px" }}>
               Diberikan dengan bangga kepada
             </p>
-            
-            <h2 style={{ fontSize: "3rem", color: "#0f172a", marginBottom: "16px", borderBottom: "2px solid var(--color-emerald-500)", display: "inline-block", paddingBottom: "8px" }}>
+
+            <h2
+              style={{
+                fontSize: "3rem",
+                color: "#0f172a",
+                marginBottom: "16px",
+                borderBottom: "2px solid var(--color-emerald-500)",
+                display: "inline-block",
+                paddingBottom: "8px",
+              }}
+            >
               {studentName || "Nama Siswa"}
             </h2>
-            
+
             <p style={{ fontSize: "1.4rem", color: "#475569", marginBottom: "40px" }}>
-              dari <strong style={{ color: "var(--color-emerald-700)" }}>{schoolName || "Instansi"}</strong>
+              dari{" "}
+              <strong style={{ color: "var(--color-emerald-700)" }}>
+                {schoolName || "Instansi"}
+              </strong>
             </p>
-            
-            <p style={{ fontSize: "1.2rem", lineHeight: "1.6", maxWidth: "550px", margin: "0 auto", marginBottom: "32px" }}>
-              Atas pencapaian luar biasa dalam menyelesaikan Modul Literasi Data Terintegrasi Nilai Keislaman, 
-              mencapai <strong style={{ color: "var(--color-amber-600)" }}>Tingkat {currentLevel}</strong> pada Asesmen Literasi Data (Watson-Callingham).
+
+            <p
+              style={{
+                fontSize: "1.2rem",
+                lineHeight: "1.6",
+                maxWidth: "550px",
+                margin: "0 auto",
+                marginBottom: "32px",
+              }}
+            >
+              Atas pencapaian luar biasa dalam menyelesaikan Modul Literasi Data Terintegrasi Nilai
+              Keislaman, mencapai{" "}
+              <strong style={{ color: "var(--color-amber-600)" }}>Tingkat {currentLevel}</strong>{" "}
+              pada Asesmen Literasi Data (Watson-Callingham).
             </p>
-            
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "8px", padding: "0 40px" }}>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                marginTop: "8px",
+                padding: "0 40px",
+              }}
+            >
               <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>Skor Total</p>
-                <p style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--color-emerald-700)" }}>{totalScore} / {maxTotalScore}</p>
+                <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>
+                  Skor Total
+                </p>
+                <p
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "bold",
+                    color: "var(--color-emerald-700)",
+                  }}
+                >
+                  {totalScore} / {maxTotalScore}
+                </p>
               </div>
               <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>Experience Points</p>
-                <p style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--color-amber-600)" }}>{xp} XP</p>
+                <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>
+                  Experience Points
+                </p>
+                <p
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "bold",
+                    color: "var(--color-amber-600)",
+                  }}
+                >
+                  {xp} XP
+                </p>
               </div>
             </div>
 
-            <div style={{ position: "absolute", bottom: "18px", left: 0, right: 0, display: "flex", justifyContent: "space-between", padding: "0 40px", fontSize: "0.8rem", color: "#64748b" }}>
+            <div
+              style={{
+                position: "absolute",
+                bottom: "18px",
+                left: 0,
+                right: 0,
+                display: "flex",
+                justifyContent: "space-between",
+                padding: "0 40px",
+                fontSize: "0.8rem",
+                color: "#64748b",
+              }}
+            >
               <span>No. Sertifikat: {certificateNo}</span>
               <span>Diterbitkan: {issuedDate}</span>
             </div>
