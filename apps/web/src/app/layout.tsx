@@ -60,7 +60,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://statslabmedia.vercel.app').replace(/\/$/, '');
+
   // JSON-LD Schema for Organization & SoftwareApplication
   const schemaOrg = {
     "@context": "https://schema.org",
@@ -69,7 +70,7 @@ export default function RootLayout({
     "operatingSystem": "Web",
     "applicationCategory": "EducationalApplication",
     "description": "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa.",
-    "url": "https://statslabmedia.vercel.app",
+    "url": siteUrl,
     "author": {
       "@type": "Person",
       "name": "Muhammad Khoiruzzadittaqwa",
@@ -79,13 +80,61 @@ export default function RootLayout({
       "@type": "CollegeOrUniversity",
       "name": "STAI Al-Bahjah Cirebon",
       "url": "https://staialbahjah.ac.id/",
-      "logo": "https://statslabmedia.vercel.app/logo-institut.jpg"
+      "logo": `${siteUrl}/logo-institut.jpg`
     },
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "IDR"
     }
+  };
+
+  const learningResourceSchema = {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    "name": "StatsLab: Dasbor Statistika Interaktif",
+    "description": "Media pembelajaran statistika interaktif terintegrasi nilai keislaman untuk mengembangkan literasi data siswa (kerangka Watson-Callingham).",
+    "educationalLevel": "SMA / Madrasah Aliyah",
+    "learningResourceType": "Interactive Learning Dashboard",
+    "inLanguage": "id",
+    "provider": {
+      "@type": "Organization",
+      "name": "STAI Al-Bahjah Cirebon",
+      "url": "https://staialbahjah.ac.id/"
+    },
+    "about": "Literasi Data dan Statistika",
+    "url": siteUrl
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Apa itu StatsLab?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "StatsLab adalah dasbor statistika interaktif berbasis web yang memfasilitasi literasi data siswa dengan mengintegrasikan nilai keislaman seperti Tabayyun, Amanah, dan Tawazun."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Apakah StatsLab gratis digunakan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ya, StatsLab gratis digunakan untuk pembelajaran, termasuk mode eksplorasi tanpa perlu mendaftarkan akun."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Kerangka apa yang dipakai untuk mengukur literasi data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "StatsLab menggunakan kerangka literasi data Watson-Callingham yang memetakan kemampuan siswa dari memahami struktur data hingga mengambil keputusan berbasis data."
+        }
+      }
+    ]
   };
 
   return (
@@ -95,6 +144,14 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(learningResourceSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
         <div className="noise-overlay" aria-hidden="true" />
         {children}

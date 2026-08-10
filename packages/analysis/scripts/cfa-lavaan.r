@@ -1,24 +1,39 @@
 # StatsLab R Research Script — Confirmatory Factor Analysis (CFA) via lavaan
 # Requires: install.packages("lavaan")
+#
+# Input: CSV yang diekspor dari Admin Panel (/api/export/cfa),
+#        pola nama file: statslab-cfa-lisrel-*.csv
+# Item diambil dinamis dari header kolom (item_1 ... item_N).
 
 library(lavaan)
 
 cat("=== StatsLab Confirmatory Factor Analysis (CFA) ===\n")
 
-data_file <- "statslab-cfa-export.csv"
+data_file <- list.files(pattern = "^statslab-cfa-lisrel-.*\\.csv$", full.names = TRUE)
+data_file <- data_file[order(data_file, decreasing = TRUE)][1]
 
-if (file.exists(data_file)) {
-  df <- read.csv(data_file)
-  
-  # Specify Single-Factor Model for Watson-Callingham Data Literacy
-  cfa_model <- '
-    LiterasiData =~ item_1 + item_2 + item_3 + item_4 + item_5 + item_6 + item_7 + item_8
-  '
-  
-  fit <- cfa(cfa_model, data = df, ordered = c("item_1", "item_2", "item_3", "item_4", "item_5", "item_6", "item_7", "item_8"))
-  
+if (!is.na(data_file)) {
+  cat("Menggunakan file:", data_file, "\n")
+  df <- read.csv(data_file, stringsAsFactors = FALSE)
+
+  # Kolom item: semua kolom bernama item_*
+  item_cols <- grep("^item_", names(df), value = TRUE)
+  if (length(item_cols) == 0) {
+    cat("Tidak ditemukan kolom item_* pada file ekspor.\n")
+    quit(status = 1)
+  }
+  cat("Jumlah item:", length(item_cols), "\n")
+
+  # Spesifikasi model faktor tunggal "Literasi Data" Watson-Callingham
+  cfa_model <- paste0(
+    "LiterasiData =~ ",
+    paste(item_cols, collapse = " + ")
+  )
+
+  fit <- cfa(cfa_model, data = df, ordered = item_cols)
+
   cat("\n--- Fit Measures (CFI, TLI, RMSEA, SRMR) ---\n")
   print(summary(fit, fit.measures = TRUE, standardized = TRUE))
 } else {
-  cat("File 'statslab-cfa-export.csv' not found. Export data from StatsLab Admin Panel first.\n")
+  cat("File 'statslab-cfa-lisrel-*.csv' tidak ditemukan. Ekspor data dari Admin Panel dulu.\n")
 }

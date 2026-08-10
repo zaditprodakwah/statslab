@@ -6,6 +6,63 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  SISWA
+  GURU
+  PENELITI
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+model User {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email        String     @unique @db.VarChar(255)
+  passwordHash String     @map("password_hash") @db.VarChar(255)
+  name         String     @db.VarChar(255)
+  role         Role       @default(SISWA)
+  status       UserStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz
+
+  teacherClasses Class[]      @relation("TeacherClasses")
+  enrollments    Enrollment[]
+  sessions       Session[]
+
+  @@map("users")
+}
+
+model Class {
+  id        String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  teacherId String       @map("teacher_id") @db.Uuid
+  name      String       @db.VarChar(150)
+  code      String       @unique @db.VarChar(12)
+  active    Boolean      @default(true)
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamptz
+
+  teacher    User         @relation("TeacherClasses", fields: [teacherId], references: [id])
+  enrollments Enrollment[]
+
+  @@map("classes")
+}
+
+model Enrollment {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  classId   String   @map("class_id") @db.Uuid
+  studentId String   @map("student_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  class   Class @relation(fields: [classId], references: [id])
+  student User  @relation(fields: [studentId], references: [id])
+
+  @@unique([classId, studentId])
+  @@map("enrollments")
+}
+
 model Dataset {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   slug         String   @unique @db.VarChar(100)
@@ -37,12 +94,14 @@ model Task {
   dataset      Dataset  @relation(fields: [datasetId], references: [id])
   responses    TaskResponse[]
 
+  @@unique([datasetId, taskNumber])
   @@map("tasks")
 }
 
 model Session {
   id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   sessionToken String   @unique @map("session_token") @db.VarChar(64)
+  userId       String?  @map("user_id") @db.Uuid
   studentName  String?  @map("student_name") @db.VarChar(255)
   studentClass String?  @map("student_class") @db.VarChar(50)
   schoolName   String?  @map("school_name") @db.VarChar(255)
@@ -60,6 +119,9 @@ model Session {
   completedAt  DateTime? @map("completed_at") @db.Timestamptz
   certificateId String? @unique @map("certificate_id") @db.VarChar(100)
 
+  leaderboardVisible Boolean @default(true) @map("leaderboard_visible")
+
+  user         User?        @relation(fields: [userId], references: [id])
   taskResponses TaskResponse[]
   susResponse   SusResponse?
 
@@ -111,6 +173,19 @@ model SusResponse {
   session        Session  @relation(fields: [sessionId], references: [id])
 
   @@map("sus_responses")
+}
+
+model Rubric {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  watsonLevel Int      @unique @map("watson_level") @db.SmallInt
+  indicators  String[] @default([])
+  keywords    String[] @default([])
+  criteria    Json
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@map("rubrics")
 }
 
 model Validator {

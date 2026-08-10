@@ -5,32 +5,54 @@ import React, { useEffect, useState, useCallback } from "react";
 import InteractiveChart from "@/components/InteractiveChart";
 import EmbeddedTasksPanel from "@/components/EmbeddedTasksPanel";
 import SusFormModal from "@/components/SusFormModal";
-import GuidedTour from "@/components/GuidedTour";
 import EthicalModal from "@/components/EthicalModal";
 import CertificateModal from "@/components/CertificateModal";
 import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Award } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
 import Link from "next/link";
 
+interface DashboardTask {
+  id: string;
+  taskNumber: number;
+  watsonLevel: number;
+  indicator: string;
+  prompt: string;
+  clue?: string;
+  inputType?: string;
+}
+
+interface DashboardDataset {
+  id: string;
+  slug: string;
+  title: string;
+  category: string;
+  islamicValue: string;
+  description?: string | null;
+  rawData: unknown[];
+  chartConfig?: { type?: "bar" | "line" | "pie"; xAxis?: string; dataKeys?: string[] } | null;
+  tasks: DashboardTask[];
+}
+
 export default function DashboardClient() {
-  const [datasets, setDatasets] = useState<any[]>([]);
+  const [datasets, setDatasets] = useState<DashboardDataset[]>([]);
   const [loading, setLoading] = useState(true);
   const [isSusOpen, setIsSusOpen] = useState(false);
   const [susResult, setSusResult] = useState<{ score: number; adjective: string } | null>(null);
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [activePblTaskId, setActivePblTaskId] = useState<string | null>(null);
   const [chartSelection, setChartSelection] = useState<{ taskId: string; label: string } | null>(null);
-  const [tourRun, setTourRun] = useState(false);
   const [ethicalModal, setEthicalModal] = useState<"tabayyun" | "amanah" | null>(null);
 
   const {
     currentLevel,
     sessionId,
+    sessionToken,
     activeDataset,
     toggleAmanahScale,
     amanahZeroScale,
     tawazunConfirmed,
     confirmTawazun,
+    setAssessmentMeta,
   } = useStatsLabStore();
 
   // Fetch all datasets
@@ -50,19 +72,16 @@ export default function DashboardClient() {
   }, []);
 
   // Auto-start tour for first-time visitors
+  // (OnboardingTour dihapus; langsung masuk ke konten agar fokus pada tugas asesmen)
   useEffect(() => {
-    if (!loading) {
-      const toured = sessionStorage.getItem("statslab_toured");
-      if (!toured) {
-        setTimeout(() => setTourRun(true), 800);
-      }
-    }
-  }, [loading]);
-
-  const handleTourFinish = () => {
-    sessionStorage.setItem("statslab_toured", "1");
-    setTourRun(false);
-  };
+    const tasks = (datasets || []).flatMap((d) => d.tasks || []);
+    if (tasks.length === 0) return;
+    setAssessmentMeta({
+      maxTotalScore: tasks.length * 2,
+      totalTasks: tasks.length,
+      tasks: tasks.map((t) => ({ id: t.id, watsonLevel: t.watsonLevel }))
+    });
+  }, [datasets, setAssessmentMeta]);
 
   const handleChartClick = useCallback((payload: any) => {
     if (!activePblTaskId) return;
@@ -91,14 +110,11 @@ export default function DashboardClient() {
   }
 
   // Active dataset object
-  const activeDs = datasets.find((d: any) => d.slug === activeDataset) ?? datasets[0];
+  const activeDs = datasets.find((d) => d.slug === activeDataset) ?? datasets[0];
   const activeTasks = activeDs?.tasks || [];
 
   return (
     <main className="page-enter" style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}>
-      {/* Guided Tour (react-joyride) */}
-      <GuidedTour run={tourRun} onFinish={handleTourFinish} />
-
       {/* Ethical Modal */}
       <EthicalModal type={ethicalModal} onClose={() => setEthicalModal(null)} />
 
@@ -273,6 +289,7 @@ export default function DashboardClient() {
         onClose={() => setIsSusOpen(false)}
         onSubmitSuccess={(score, adjective) => setSusResult({ score, adjective })}
         sessionId={sessionId}
+        sessionToken={sessionToken}
       />
       <CertificateModal isOpen={isCertOpen} onClose={() => setIsCertOpen(false)} />
     </main>

@@ -22,6 +22,8 @@ export default function HomePage() {
 
   const setStudentInfo = useStatsLabStore((state) => state.setStudentInfo);
   const testPhase = useStatsLabStore((state) => state.testPhase);
+  const startSessionTimer = useStatsLabStore((state) => state.startSessionTimer);
+  const sessionStartedAt = useStatsLabStore((state) => state.sessionStartedAt);
 
   const handleStartSession = async () => {
     if (activeRole === "guest") {
@@ -54,6 +56,7 @@ export default function HomePage() {
       if (res.ok && data.success) {
         setStudentInfo({
           sessionId: data.data.sessionId,
+          sessionToken: data.data.sessionToken || null,
           studentName: data.data.studentName,
           schoolName: data.data.schoolName,
           studentClass: data.data.studentClass,
@@ -71,6 +74,7 @@ export default function HomePage() {
   };
 
   if (sessionActive) {
+    if (!sessionStartedAt) startSessionTimer();
     return (
       <>
         <StickyHeader />

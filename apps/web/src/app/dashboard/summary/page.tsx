@@ -8,7 +8,7 @@ import { Award, CheckCircle2, ClipboardCheck, ArrowLeft, Sparkles } from "lucide
 import Link from "next/link";
 
 export default function SummaryPage() {
-  const { studentName, schoolName, totalScore, currentLevel, xp, badges, taskResponses } = useStatsLabStore();
+  const { studentName, schoolName, totalScore, maxTotalScore, totalTasks, currentLevel, xp, badges, taskResponses, sessionId, sessionToken } = useStatsLabStore();
   const [isCertOpen, setIsCertOpen] = useState(false);
   const [isSusOpen, setIsSusOpen] = useState(false);
   const [susSubmitted, setSusSubmitted] = useState<number | null>(null);
@@ -50,7 +50,7 @@ export default function SummaryPage() {
           </div>
           <div style={{ padding: "16px", backgroundColor: "var(--bg-surface)", border: "1px solid var(--color-slate-200)", borderRadius: "var(--radius-md)" }}>
             <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>Skor Total</span>
-            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>{totalScore} / 16</h3>
+            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>{totalScore} / {maxTotalScore}</h3>
           </div>
           <div style={{ padding: "16px", backgroundColor: "var(--bg-surface)", border: "1px solid var(--color-slate-200)", borderRadius: "var(--radius-md)" }}>
             <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>Experience Points</span>
@@ -58,7 +58,7 @@ export default function SummaryPage() {
           </div>
           <div style={{ padding: "16px", backgroundColor: "var(--bg-surface)", border: "1px solid var(--color-slate-200)", borderRadius: "var(--radius-md)" }}>
             <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>Tugas Selesai</span>
-            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>{completedCount} / 8</h3>
+            <h3 style={{ fontSize: "1.5rem", color: "var(--color-emerald-700)" }}>{completedCount} / {totalTasks}</h3>
           </div>
         </div>
 
@@ -117,6 +117,8 @@ export default function SummaryPage() {
         isOpen={isSusOpen}
         onClose={() => setIsSusOpen(false)}
         onSubmitSuccess={(score) => setSusSubmitted(score)}
+        sessionId={sessionId}
+        sessionToken={sessionToken}
       />
     </div>
   );

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { scoreAnswer, clampScore } from "@/lib/scoring";
+import { computeWatsonLevel } from "@/lib/watsonLevel";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +12,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { sessionId, taskId, answerText, score, interactionLog } = body;
+    const { sessionId, sessionToken, taskId, answerText, interactionLog } = body;
 
     if (!sessionId || !taskId) {
       return NextResponse.json(
@@ -18,6 +20,40 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    // F1.3: Verifikasi sessionToken — hanya pemilik sesi yang boleh mencatat jawaban.
+    if (!sessionToken) {
+      return NextResponse.json(
+        { error: "sessionToken wajib diisi" },
+        { status: 401 }
+      );
+    }
+    const session = await prisma.session.findUnique({ where: { id: sessionId } });
+    if (!session || session.sessionToken !== sessionToken) {
+      return NextResponse.json(
+        { error: "Sesi tidak valid atau token tidak cocok" },
+        { status: 401 }
+      );
+    }
+
+    // F1.2: Skoring dilakukan server-side (shared util + rubrik dari DB).
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+      select: { id: true, modelAnswer: true, watsonLevel: true }
+    });
+    if (!task) {
+      return NextResponse.json(
+        { error: "Task tidak ditemukan" },
+        { status: 404 }
+      );
+    }
+    const rubric = await prisma.rubric.findUnique({
+      where: { watsonLevel: task.watsonLevel },
+      select: { keywords: true }
+    });
+    const score = clampScore(
+      scoreAnswer(answerText || "", task.modelAnswer, rubric?.keywords || [])
+    );
 
     // Upsert task response
     const response = await prisma.taskResponse.upsert({
@@ -29,14 +65,14 @@ export async function POST(req: Request) {
       },
       update: {
         answerText: answerText || "",
-        score: score || 0,
+        score,
         interactionLog: interactionLog || null
       },
       create: {
         sessionId,
         taskId,
         answerText: answerText || "",
-        score: score || 0,
+        score,
         interactionLog: interactionLog || null,
         scoredBy: "system"
       }
@@ -50,17 +86,20 @@ export async function POST(req: Request) {
 
     const newTotalScore = aggregate._sum.score || 0;
 
-    // Count completed tasks to calculate level
-    const completedCount = await prisma.taskResponse.count({
-      where: { sessionId }
-    });
+    // Mastery-based Watson-Callingham level via shared util (F1.1)
+    const [allTasks, allResponses] = await Promise.all([
+      prisma.task.findMany({ select: { id: true, watsonLevel: true } }),
+      prisma.taskResponse.findMany({
+        where: { sessionId },
+        select: { taskId: true, score: true }
+      })
+    ]);
 
-    let newLevel = 1;
-    if (completedCount >= 8) newLevel = 6;
-    else if (completedCount >= 6) newLevel = 5;
-    else if (completedCount >= 4) newLevel = 4;
-    else if (completedCount >= 2) newLevel = 3;
-    else if (completedCount >= 1) newLevel = 2;
+    const responsesMap: Record<string, { score: number }> = {};
+    for (const r of allResponses) {
+      responsesMap[r.taskId] = { score: r.score };
+    }
+    const newLevel = computeWatsonLevel(responsesMap, allTasks);
 
     // Update session stats
     await prisma.session.update({
@@ -75,6 +114,7 @@ export async function POST(req: Request) {
       success: true,
       data: {
         responseId: response.id,
+        score,
         totalScore: newTotalScore,
         currentLevel: newLevel
       }

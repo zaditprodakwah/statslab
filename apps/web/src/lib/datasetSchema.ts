@@ -1,13 +1,14 @@
 import { z } from "zod";
+import { WATSON_MIN_TASK_LEVEL, WATSON_MAX_TASK_LEVEL, INPUT_TYPES } from "@/lib/standards";
 
 export const TaskSchema = z.object({
   taskNumber: z.number().int().positive(),
-  watsonLevel: z.number().int().min(4).max(6),
+  watsonLevel: z.number().int().min(WATSON_MIN_TASK_LEVEL).max(WATSON_MAX_TASK_LEVEL),
   indicator: z.string().min(1),
   prompt: z.string().min(1),
   clue: z.string().optional().nullable(),
   modelAnswer: z.string().optional().nullable(),
-  inputType: z.enum(["text", "number", "choice"]).default("text"),
+  inputType: z.enum(INPUT_TYPES).default("text"),
 });
 
 export const ChartConfigSchema = z.object({

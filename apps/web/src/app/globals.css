@@ -3,14 +3,29 @@
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;
   --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
   --color-slate-800: #1e293b;
   --color-slate-900: #0f172a;
   
   --color-emerald-50: #ecfdf5;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
   --color-emerald-600: #059669;
   --color-emerald-700: #047857;
-  
+  --color-emerald-800: #065f46;
+
+  --color-amber-50: #fffbeb;
+  --color-amber-400: #fbbf24;
   --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
+
+  --color-blue-50: #eff6ff;
+
+  --color-purple-50: #faf5ff;
+  --color-purple-600: #9333ea;
+
+  --color-red-600: #dc2626;
 
   --bg-primary: var(--color-slate-50);
   --bg-surface: #ffffff;

@@ -48,7 +48,31 @@ export default function VoiceInput({ onResult, lang = "id-ID" }: VoiceInputProps
     }
   }, [lang, onResult]);
 
-  if (!isSupported) return null;
+  if (!isSupported) {
+    return (
+      <button
+        type="button"
+        disabled
+        title="Browser Anda tidak mendukung voice-to-text. Gunakan input teks atau fitur dikte bawaan perangkat."
+        style={{
+          padding: "8px 12px",
+          fontSize: "0.85rem",
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "6px",
+          borderRadius: "var(--radius-md)",
+          backgroundColor: "var(--color-slate-300)",
+          color: "#fff",
+          cursor: "not-allowed",
+          border: "none",
+          opacity: 0.7
+        }}
+      >
+        <Mic size={16} />
+        <span>Dikte Suara (Tidak Didukung)</span>
+      </button>
+    );
+  }
 
   const toggleListening = () => {
     if (!recognition) return;

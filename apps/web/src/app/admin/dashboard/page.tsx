@@ -2,19 +2,39 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Users, Database, Download, LogOut, FileSpreadsheet, ShieldCheck, Loader2 } from "lucide-react";
-import { getAdminAuthHeaders } from "@/lib/adminToken";
+import { useRouter } from "next/navigation";
+import { Users, Database, Download, LogOut, FileSpreadsheet, ShieldCheck, Loader2, BookOpenCheck, UserCog } from "lucide-react";
 import { downloadExport } from "@/lib/downloadExport";
 
 export default function AdminDashboardPage() {
+  const router = useRouter();
+  const [role, setRole] = useState<string | null>(null);
   const [stats, setStats] = useState({ totalSessions: 0, totalResponses: 0 });
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
 
   useEffect(() => {
-    async function loadStats() {
+    async function init() {
       try {
-        const res = await fetch("/api/admin/sessions", { headers: getAdminAuthHeaders() });
+        const me = await fetch("/api/auth/me");
+        const meJson = await me.json();
+        const current = meJson.data?.user;
+        if (!current || (current.role !== "PENELITI" && current.role !== "ADMIN")) {
+          router.replace("/login?redirect=/admin/dashboard");
+          return;
+        }
+        setRole(current.role);
+      } catch {
+        router.replace("/login?redirect=/admin/dashboard");
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/admin/sessions");
+        if (res.status === 401) {
+          router.replace("/login?redirect=/admin/dashboard");
+          return;
+        }
         const json = await res.json();
         if (json.success) {
           setStats({
@@ -28,8 +48,8 @@ export default function AdminDashboardPage() {
         setLoading(false);
       }
     }
-    loadStats();
-  }, []);
+    init();
+  }, [router]);
 
   async function handleExport(kind: "rasch" | "cfa") {
     setExporting(kind);
@@ -47,6 +67,15 @@ export default function AdminDashboardPage() {
     }
   }
 
+  async function handleLogout() {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // abaikan error logout
+    }
+    router.push("/");
+  }
+
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 20px" }}>
       {/* Header Admin */}
@@ -60,9 +89,9 @@ export default function AdminDashboardPage() {
           </p>
         </div>
 
-        <Link href="/" className="btn-premium" style={{ backgroundColor: "#ef4444", padding: "8px 16px", textDecoration: "none", fontSize: "0.875rem", display: "inline-flex", alignItems: "center", gap: "6px" }}>
-          <LogOut size={16} /> Keluar Admin
-        </Link>
+        <button onClick={handleLogout} className="btn-premium" style={{ backgroundColor: "#ef4444", padding: "8px 16px", textDecoration: "none", fontSize: "0.875rem", display: "inline-flex", alignItems: "center", gap: "6px", border: "none", cursor: "pointer" }}>
+          <LogOut size={16} /> Keluar
+        </button>
       </div>
 
       {/* Summary Stat Cards */}
@@ -109,6 +138,32 @@ export default function AdminDashboardPage() {
             Kelola Dataset & Soal
           </Link>
         </div>
+
+        <div className="glass-panel" style={{ padding: "24px" }}>
+          <h3 style={{ fontSize: "1.2rem", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
+            <BookOpenCheck size={20} color="var(--color-emerald-700)" /> CMS Rubrik Skoring
+          </h3>
+          <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "16px" }}>
+            Kelola kata kunci dan kriteria skor otomatis per level Watson-Callingham (standar W-C, skala 0–2 terkunci).
+          </p>
+          <Link href="/admin/rubrics" className="btn-premium btn-emerald flex-center" style={{ textDecoration: "none", width: "100%", padding: "10px" }}>
+            Kelola Rubrik
+          </Link>
+        </div>
+
+        {role === "ADMIN" && (
+          <div className="glass-panel" style={{ padding: "24px" }}>
+            <h3 style={{ fontSize: "1.2rem", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
+              <UserCog size={20} color="var(--color-emerald-700)" /> Kelola Pengguna
+            </h3>
+            <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "16px" }}>
+              Setujui akun guru, ubah peran (siswa/guru/peneliti), aktifkan atau nonaktifkan akun.
+            </p>
+            <Link href="/admin/users" className="btn-premium btn-emerald flex-center" style={{ textDecoration: "none", width: "100%", padding: "10px" }}>
+              Buka Manajemen Pengguna
+            </Link>
+          </div>
+        )}
       </div>
 
       {/* R&D Export Box */}

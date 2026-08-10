@@ -1,9 +1,7 @@
 "use client";
 
-import { getAdminAuthHeaders } from "@/lib/adminToken";
-
 export async function downloadExport(path: string, fallbackName: string) {
-  const res = await fetch(path, { headers: getAdminAuthHeaders() });
+  const res = await fetch(path);
   if (!res.ok) {
     const data = await res.json().catch(() => null);
     throw new Error(data?.error || `Gagal mengunduh (${res.status})`);

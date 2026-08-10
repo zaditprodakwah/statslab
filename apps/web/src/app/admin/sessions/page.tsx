@@ -1,18 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Users, Download } from "lucide-react";
-import { getAdminAuthHeaders } from "@/lib/adminToken";
 
 export default function AdminSessionsPage() {
+  const router = useRouter();
   const [sessions, setSessions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchSessions = async () => {
+  const fetchSessions = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/sessions", { headers: getAdminAuthHeaders() });
+      const res = await fetch("/api/admin/sessions");
+      if (res.status === 401 || res.status === 403) {
+        router.replace("/login?redirect=/admin/sessions");
+        return;
+      }
       const json = await res.json();
       if (json.success) {
         setSessions(json.data.sessions);
@@ -22,12 +27,26 @@ export default function AdminSessionsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [router]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchSessions();
-  }, []);
+    async function init() {
+      try {
+        const me = await fetch("/api/auth/me");
+        const meJson = await me.json();
+        const current = meJson.data?.user;
+        if (!current || (current.role !== "PENELITI" && current.role !== "ADMIN")) {
+          router.replace("/login?redirect=/admin/sessions");
+          return;
+        }
+      } catch {
+        router.replace("/login?redirect=/admin/sessions");
+        return;
+      }
+      fetchSessions();
+    }
+    init();
+  }, [router, fetchSessions]);
 
   const exportCsv = () => {
     const header = ["Nama Siswa", "Sekolah", "Kelas", "Skor Total", "Level", "Jawaban", "Skor SUS"];

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { computeWatsonLevel } from "@/lib/watsonLevel";
 
 interface TaskResponse {
   taskId: string;
@@ -8,9 +9,21 @@ interface TaskResponse {
 
 export type DatasetSlug = "zakat-infak" | "perpus-madrasah" | "tajwid-juz-30" | "wakaf-produktif";
 
+export interface TaskMeta {
+  id: string;
+  watsonLevel: number;
+}
+
+export interface AssessmentMeta {
+  maxTotalScore: number;
+  totalTasks: number;
+  tasks: TaskMeta[];
+}
+
 interface StatsLabState {
   // Session & Student Info
   sessionId: string | null;
+  sessionToken: string | null;
   studentName: string;
   studentClass: string;
   schoolName: string;
@@ -24,6 +37,14 @@ interface StatsLabState {
   currentLevel: number;
   badges: string[];
   
+  // Assessment Metadata (derived from active dataset tasks)
+  maxTotalScore: number;
+  totalTasks: number;
+  tasksMeta: TaskMeta[];
+  
+  // Certificate
+  certificateId: string | null;
+  
   // 3 Pilar Islam Toggles & States
   amanahZeroScale: boolean; // true = Zero-based scale (QS. Al-Mutaffifin)
   tabayyunThreshold: number; // 20% outlier detection (QS. Al-Hujurat)
@@ -31,11 +52,17 @@ interface StatsLabState {
   
   // Task Progress
   taskResponses: Record<string, TaskResponse>;
-  totalScore: number; // Max 16
-  
+  totalScore: number;
+
+  // F1.8: Waktu mulai sesi (untuk menghitung timeSpentMs saat selesai)
+  sessionStartedAt: number | null;
+
   // Actions
-  setStudentInfo: (info: { studentName: string; studentClass: string; schoolName: string; sessionId?: string; testPhase?: StatsLabState["testPhase"] }) => void;
+  setStudentInfo: (info: { studentName: string; studentClass: string; schoolName: string; sessionId?: string; sessionToken?: string | null; testPhase?: StatsLabState["testPhase"] }) => void;
   setActiveDataset: (slug: DatasetSlug) => void;
+  setAssessmentMeta: (meta: AssessmentMeta) => void;
+  setCertificateId: (id: string) => void;
+  startSessionTimer: () => void;
   toggleAmanahScale: () => void;
   confirmTawazun: () => void;
   submitTaskAnswer: (taskId: string, answerText: string, score: number) => void;
@@ -44,6 +71,7 @@ interface StatsLabState {
 
 export const useStatsLabStore = create<StatsLabState>((set) => ({
   sessionId: null,
+  sessionToken: null,
   studentName: "",
   studentClass: "",
   schoolName: "",
@@ -55,15 +83,31 @@ export const useStatsLabStore = create<StatsLabState>((set) => ({
   currentLevel: 1,
   badges: ["Pencari Data"],
   
+  maxTotalScore: 32,
+  totalTasks: 16,
+  tasksMeta: [],
+  
+  certificateId: null,
+  
   amanahZeroScale: true,
   tabayyunThreshold: 0.2,
   tawazunConfirmed: false,
   
   taskResponses: {},
   totalScore: 0,
-  
+
+  sessionStartedAt: null,
+
   setStudentInfo: (info) => set((state) => ({ ...state, ...info })),
   setActiveDataset: (slug) => set({ activeDataset: slug }),
+  setAssessmentMeta: (meta) =>
+    set({
+      maxTotalScore: meta.maxTotalScore,
+      totalTasks: meta.totalTasks,
+      tasksMeta: meta.tasks
+    }),
+  setCertificateId: (id) => set({ certificateId: id }),
+  startSessionTimer: () => set({ sessionStartedAt: Date.now() }),
   
   toggleAmanahScale: () =>
     set((state) => {
@@ -89,22 +133,18 @@ export const useStatsLabStore = create<StatsLabState>((set) => ({
     set((state) => {
       const existing = state.taskResponses[taskId];
       const oldScore = existing ? existing.score : 0;
-      const newTotalScore = state.totalScore - oldScore + score;
-      
-      // Calculate Watson Level based on completed tasks
-      const completedCount = Object.keys({ ...state.taskResponses, [taskId]: { taskId, answerText, score } }).length;
-      let newLevel = 1;
-      if (completedCount >= 8) newLevel = 6;
-      else if (completedCount >= 6) newLevel = 5;
-      else if (completedCount >= 4) newLevel = 4;
-      else if (completedCount >= 2) newLevel = 3;
-      else if (completedCount >= 1) newLevel = 2;
+      const newTotalScore = Math.max(0, Math.min(state.maxTotalScore, state.totalScore - oldScore + score));
+
+      const nextResponses = {
+        ...state.taskResponses,
+        [taskId]: { taskId, answerText, score }
+      };
+
+      // Watson-Callingham level berbasis mastery (F1.1)
+      const newLevel = computeWatsonLevel(nextResponses, state.tasksMeta);
 
       return {
-        taskResponses: {
-          ...state.taskResponses,
-          [taskId]: { taskId, answerText, score }
-        },
+        taskResponses: nextResponses,
         totalScore: newTotalScore,
         currentLevel: newLevel,
         xp: state.xp + (score * 25)

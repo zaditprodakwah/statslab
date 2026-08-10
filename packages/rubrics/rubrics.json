@@ -1,0 +1,70 @@
+{
+  "version": "1.0.0",
+  "description": "Rubrik skoring tugas Watson-Callingham Level 4-6 dengan integrasi nilai Islam (Amanah, Tabayyun, Tawazun).",
+  "scoreScale": {
+    "min": 0,
+    "max": 2,
+    "label": "Polytomous PCM 0-1-2"
+  },
+  "levelThresholds": {
+    "1": 0,
+    "2": 1,
+    "3": 2,
+    "4": 3,
+    "5": 4,
+    "6": 5
+  },
+  "rubrics": [
+    {
+      "watsonLevel": 4,
+      "indicators": ["Reading Data", "Reading Between Data"],
+      "keywords": [
+        "tertinggi", "terendah", "paling banyak", "terbanyak", "terbesar",
+        "terkecil", "selisih", "jumlah", "total", "proporsi", "persen",
+        "persentase", "nilai", "data", "grafik", "diagram", "tahun",
+        "provinsi", "bacaan", "ikhfa", "idgham", "izhar", "wakaf", "zakat"
+      ],
+      "criteria": {
+        "2": "Jawaban tepat menyebut nilai/angka spesifik yang terbaca langsung dari dataset atau dari perhitungan sederhana antar data.",
+        "1": "Jawaban relevan dan menyebut data, namun kurang tepat, tidak lengkap, atau tanpa angka pendukung.",
+        "0": "Tidak menjawab, jawaban tidak relevan, atau jawaban sangat pendek tanpa substansi."
+      }
+    },
+    {
+      "watsonLevel": 5,
+      "indicators": [
+        "Reading Beyond Data", "Tabayyun Outlier Detection",
+        "Tabayyun Correlation Audit", "Tawazun Distribution Analysis"
+      ],
+      "keywords": [
+        "estimasi", "asumsi", "keterbatasan", "prediksi", "tren", "rata-rata",
+        "mean", "median", "miring", "seimbang", "tawazun", "tabayyun",
+        "outlier", "anomali", "ekstrem", "korelasi", "pola", "konteks",
+        "sebab", "akibat", "tidak cukup", "belum cukup", "sampel"
+      ],
+      "criteria": {
+        "2": "Jawaban menunjukkan penalaran di luar data langsung: memuat estimasi dengan asumsi, kritik konteks, atau pengecekan keandalan (tabayyun) disertai alasan.",
+        "1": "Jawaban mengarah ke penalaran lanjut namun dangkal, tanpa asumsi/konteks/koreksi yang memadai.",
+        "0": "Hanya mengulang data atau tidak menjawab."
+      }
+    },
+    {
+      "watsonLevel": 6,
+      "indicators": [
+        "Amanah Scale Audit", "Critical Mathematical Reasoning",
+        "Data-Driven Decision Making"
+      ],
+      "keywords": [
+        "amanah", "nol", "dipotong", "impresi", "visual", "menyesatkan",
+        "skala", "valid", "tidak valid", "generalisasi", "kritik",
+        "keputusan", "rekomendasi", "strategis", "alokasi", "kebijakan",
+        "prioritas", "bukti", "data", "kesimpulan"
+      ],
+      "criteria": {
+        "2": "Jawaban memuat evaluasi kritis/reflektif berlandaskan data dan nilai Islam (amanah/tawazun), dengan keputusan atau sanggahan yang jelas dan beralasan.",
+        "1": "Jawaban memuat kritik/rekomendasi namun belum berbasis data yang eksplisit atau kurang alasan.",
+        "0": "Tidak menjawab atau jawaban normatif tanpa analisis."
+      }
+    }
+  ]
+}

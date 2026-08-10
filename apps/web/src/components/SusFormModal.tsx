@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useStatsLabStore } from "@/store/useStatsLabStore";
 
 const SUS_QUESTIONS = [
   "Saya berpikir akan menggunakan aplikasi ini lagi secara rutin.",
@@ -23,15 +24,18 @@ export default function SusFormModal({
   isOpen,
   onClose,
   onSubmitSuccess,
-  sessionId
+  sessionId,
+  sessionToken
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSubmitSuccess: (score: number, adjective: string) => void;
   sessionId?: string | null;
+  sessionToken?: string | null;
 }) {
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submitting, setSubmitting] = useState(false);
+  const sessionStartedAt = useStatsLabStore((state) => state.sessionStartedAt);
 
   if (!isOpen) return null;
 
@@ -69,16 +73,32 @@ export default function SusFormModal({
     const { totalScore, adjective } = calculateSusScore();
 
     try {
-      await fetch("/api/sus", {
+      const res = await fetch("/api/sus", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           answers,
           totalScore,
           adjectiveRating: adjective,
-          sessionId
+          sessionId,
+          sessionToken
         })
       });
+
+      // F1.8: Persist waktu pengerjaan & status selesai ke sesi
+      if (res.ok && sessionId && sessionToken && sessionStartedAt) {
+        const timeSpentMs = Date.now() - sessionStartedAt;
+        await fetch("/api/sessions", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId,
+            sessionToken,
+            timeSpentMs,
+            completedAt: new Date().toISOString()
+          })
+        }).catch((e) => console.error("Gagal menyimpan waktu sesi:", e));
+      }
     } catch (e) {
       console.error("Gagal mengirim SUS:", e);
     } finally {

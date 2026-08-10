@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { hashPassword } from "../src/lib/password";
 
 dotenv.config();
 
@@ -27,9 +28,21 @@ interface DatasetSeed {
   rawData: unknown[];
 }
 
+interface RubricSeed {
+  watsonLevel: number;
+  indicators: string[];
+  keywords: string[];
+  criteria: Record<string, string>;
+}
+
 const datasetsDir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../../packages/datasets"
+);
+
+const rubricsFile = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../../packages/rubrics/rubrics.json"
 );
 
 function loadDataset(file: string): DatasetSeed {
@@ -37,8 +50,42 @@ function loadDataset(file: string): DatasetSeed {
   return JSON.parse(raw) as DatasetSeed;
 }
 
+function loadRubrics(): { rubrics: RubricSeed[] } {
+  const raw = readFileSync(rubricsFile, "utf8");
+  return JSON.parse(raw) as { rubrics: RubricSeed[] };
+}
+
 async function main() {
   console.log("🌱 Starting Database Seeding...");
+
+  // 0. Seed Admin User (bootstrap: ADMIN_EMAIL + ADMIN_PASSWORD dari env)
+  const adminEmail = (process.env.ADMIN_EMAIL || "").toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (adminEmail && adminPassword) {
+    const passwordHash = await hashPassword(adminPassword);
+    const admin = await prisma.user.upsert({
+      where: { email: adminEmail },
+      update: {
+        passwordHash,
+        role: "ADMIN",
+        status: "ACTIVE",
+        name: "Admin StatsLab",
+      },
+      create: {
+        email: adminEmail,
+        passwordHash,
+        name: "Admin StatsLab",
+        role: "ADMIN",
+        status: "ACTIVE",
+      },
+    });
+    console.log(`✅ Admin user ensured: ${admin.email} (${admin.role})`);
+  } else {
+    console.log(
+      "⚠️ ADMIN_EMAIL / ADMIN_PASSWORD tidak diset — lewati seed akun admin."
+    );
+  }
 
   // 1. Seed Datasets (single source of truth: packages/datasets/*.json)
   const datasetFiles = [
@@ -85,6 +132,7 @@ async function main() {
       indicator: "Reading Data",
       prompt:
         "Berdasarkan grafik distribusi, provinsi manakah yang penghimpunan zakatnya paling tinggi?",
+      inputType: "chart",
     },
     {
       datasetId: datasetIds["zakat-infak"],
@@ -93,6 +141,7 @@ async function main() {
       indicator: "Reading Between Data",
       prompt:
         "Berapa selisih penghimpunan zakat antara provinsi tertinggi (DKI Jakarta) dan terendah (Banten)?",
+      inputType: "voice",
     },
     {
       datasetId: datasetIds["zakat-infak"],
@@ -105,7 +154,7 @@ async function main() {
     {
       datasetId: datasetIds["zakat-infak"],
       taskNumber: 4,
-      watsonLevel: 5,
+      watsonLevel: 6,
       indicator: "Amanah Scale Audit",
       prompt:
         "Aktifkan sakelar Pilar Amanah. Jelaskan perbedaan impresi visual ketika sumbu Y dimulai dari nol vs dipotong.",
@@ -113,7 +162,7 @@ async function main() {
     {
       datasetId: datasetIds["perpus-madrasah"],
       taskNumber: 5,
-      watsonLevel: 5,
+      watsonLevel: 4,
       indicator: "Tabayyun Outlier Detection",
       prompt:
         "Gunakan modul Tabayyun untuk mendeteksi penurunan ekstrem jumlah pengunjung pada bulan April. Apakah penurunan ini wajar (konteks kegiatan madrasah) atau indikasi pencatatan ganda/kesalahan input?",
@@ -150,6 +199,7 @@ async function main() {
       prompt:
         "Berdasarkan diagram lingkaran distribusi hukum bacaan pada 5 surat Juz 30, sebutkan hukum bacaan yang paling banyak ditemukan beserta jumlahnya.",
       modelAnswer: "Idgham, yaitu 51 dari total 115 bacaan.",
+      inputType: "chart",
     },
     {
       datasetId: datasetIds["tajwid-juz-30"],
@@ -159,6 +209,7 @@ async function main() {
       prompt:
         "Hitunglah total seluruh hukum bacaan pada 5 surat tersebut, lalu tentukan berapa persen proporsi hukum bacaan Ikhfa terhadap total tersebut.",
       modelAnswer: "Total 115 bacaan; Ikhfa 45 dari 115 sehingga proporsinya sekitar 39,1%.",
+      inputType: "voice",
     },
     {
       datasetId: datasetIds["tajwid-juz-30"],
@@ -188,6 +239,7 @@ async function main() {
       prompt:
         "Pada tahun berapa persentase tanah wakaf produktif mencapai nilai tertinggi? Sebutkan nilai persentasenya.",
       modelAnswer: "Tahun 2025, dengan nilai 9,5%.",
+      inputType: "chart",
     },
     {
       datasetId: datasetIds["wakaf-produktif"],
@@ -244,6 +296,28 @@ async function main() {
   }
 
   console.log(`✅ ${tasksData.length} Embedded Tasks Seeded successfully.`);
+
+  // 3. Seed Rubrics (single source of truth: packages/rubrics/rubrics.json)
+  const { rubrics } = loadRubrics();
+  console.log("✅ Rubrics seeded:");
+  for (const r of rubrics) {
+    await prisma.rubric.upsert({
+      where: { watsonLevel: r.watsonLevel },
+      update: {
+        indicators: r.indicators,
+        keywords: r.keywords,
+        criteria: r.criteria,
+        active: true,
+      },
+      create: {
+        watsonLevel: r.watsonLevel,
+        indicators: r.indicators,
+        keywords: r.keywords,
+        criteria: r.criteria,
+      },
+    });
+    console.log(`- Level ${r.watsonLevel} (${r.indicators.length} indikator, ${r.keywords.length} keyword)`);
+  }
 }
 
 main()

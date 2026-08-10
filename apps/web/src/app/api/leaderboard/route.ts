@@ -10,6 +10,7 @@ export async function GET() {
 
   try {
     const sessions = await prisma.session.findMany({
+      where: { leaderboardVisible: true },
       select: {
         id: true,
         studentName: true,

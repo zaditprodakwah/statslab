@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import { Download, Share2, X, Award } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
@@ -11,11 +11,9 @@ interface CertificateModalProps {
 }
 
 export default function CertificateModal({ isOpen, onClose }: CertificateModalProps) {
-  const { studentName, schoolName, totalScore, currentLevel, xp, sessionId } = useStatsLabStore();
+  const { studentName, schoolName, totalScore, maxTotalScore, currentLevel, xp, sessionId, sessionToken, certificateId, setCertificateId } = useStatsLabStore();
   const certRef = useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = useState(false);
-
-  if (!isOpen) return null;
 
   const today = new Date();
   const issuedDate = today.toLocaleDateString("id-ID", {
@@ -23,7 +21,23 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
     month: "long",
     year: "numeric",
   });
-  const certificateId = `STATSLAB-${today.getFullYear()}-${(sessionId || "guest").slice(0, 8).toUpperCase()}`;
+  const certificateNo = certificateId || `STATSLAB-${today.getFullYear()}-${(sessionId || "guest").slice(0, 8).toUpperCase()}`;
+
+  useEffect(() => {
+    if (isOpen && !certificateId) {
+      setCertificateId(certificateNo);
+      // F1.8: Persist nomor sertifikat ke sesi database
+      if (sessionId && sessionToken) {
+        fetch("/api/sessions", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId, sessionToken, certificateId: certificateNo })
+        }).catch((err) => console.error("Gagal menyimpan nomor sertifikat:", err));
+      }
+    }
+  }, [isOpen, certificateId, certificateNo, sessionId, sessionToken, setCertificateId]);
+
+  if (!isOpen) return null;
 
   const handleDownload = async () => {
     if (!certRef.current) return;
@@ -47,7 +61,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
       try {
         await navigator.share({
           title: "Sertifikat Literasi Data StatsLab",
-          text: `Saya telah menyelesaikan modul literasi data StatsLab (No. ${certificateId}) dan mencapai Tingkat ${currentLevel} dengan ${xp} XP!`,
+          text: `Saya telah menyelesaikan modul literasi data StatsLab (No. ${certificateNo}) dan mencapai Tingkat ${currentLevel} dengan ${xp} XP!`,
           url: window.location.href,
         });
       } catch (err) {
@@ -142,7 +156,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "8px", padding: "0 40px" }}>
               <div style={{ textAlign: "center" }}>
                 <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>Skor Total</p>
-                <p style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--color-emerald-700)" }}>{totalScore}</p>
+                <p style={{ fontSize: "1.5rem", fontWeight: "bold", color: "var(--color-emerald-700)" }}>{totalScore} / {maxTotalScore}</p>
               </div>
               <div style={{ textAlign: "center" }}>
                 <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>Experience Points</p>
@@ -151,7 +165,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
             </div>
 
             <div style={{ position: "absolute", bottom: "18px", left: 0, right: 0, display: "flex", justifyContent: "space-between", padding: "0 40px", fontSize: "0.8rem", color: "#64748b" }}>
-              <span>No. Sertifikat: {certificateId}</span>
+              <span>No. Sertifikat: {certificateNo}</span>
               <span>Diterbitkan: {issuedDate}</span>
             </div>
           </div>

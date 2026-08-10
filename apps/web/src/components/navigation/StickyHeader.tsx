@@ -13,7 +13,7 @@ const MODULES: { slug: DatasetSlug; label: string; emoji: string }[] = [
 ];
 
 export default function StickyHeader() {
-  const { studentName, schoolName, currentLevel, xp, totalScore, activeDataset, setActiveDataset } = useStatsLabStore();
+  const { studentName, schoolName, currentLevel, xp, totalScore, maxTotalScore, activeDataset, setActiveDataset } = useStatsLabStore();
   const [fontSizeLevel, setFontSizeLevel] = useState(0); // 0: Normal, 1: Besar, 2: Ultra
   const [projectorMode, setProjectorMode] = useState(false);
   const [moduleOpen, setModuleOpen] = useState(false);
@@ -133,10 +133,10 @@ export default function StickyHeader() {
         <div className="progress-indicator">
           <div className="progress-labels">
             <span className="progress-title">Watson Level {currentLevel}</span>
-            <span className="progress-status">Skor: {totalScore} / 16 ({xp} XP)</span>
+            <span className="progress-status">Skor: {totalScore} / {maxTotalScore} ({xp} XP)</span>
           </div>
-          <div className="progress-bar-bg" role="progressbar" aria-valuenow={totalScore} aria-valuemin={0} aria-valuemax={16}>
-            <div className="progress-bar-fill" style={{ width: `${Math.min((totalScore / 16) * 100, 100)}%` }} />
+          <div className="progress-bar-bg" role="progressbar" aria-valuenow={totalScore} aria-valuemin={0} aria-valuemax={maxTotalScore}>
+            <div className="progress-bar-fill" style={{ width: `${Math.min((totalScore / maxTotalScore) * 100, 100)}%` }} />
           </div>
         </div>
 

@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
+import { scoreAnswer } from "@/lib/scoring";
+import { getRubricKeywords } from "@/lib/rubricCache";
 import { CheckCircle2, Award, HelpCircle, ChevronDown, ChevronUp, MousePointer, Sparkles } from "lucide-react";
 import VoiceInput from "@/components/VoiceInput";
 import confetti from "canvas-confetti";
@@ -36,7 +38,7 @@ export default function EmbeddedTasksPanel({
   onClearChartSelection,
   onTabayyunTrigger,
 }: EmbeddedTasksPanelProps) {
-  const { taskResponses, submitTaskAnswer, currentLevel, totalScore, badges, sessionId } = useStatsLabStore();
+  const { taskResponses, submitTaskAnswer, currentLevel, totalScore, maxTotalScore, badges, sessionId, sessionToken } = useStatsLabStore();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [openClues, setOpenClues] = useState<Record<string, boolean>>({});
 
@@ -65,46 +67,43 @@ export default function EmbeddedTasksPanel({
       onTabayyunTrigger();
     }
 
-    // Automated Scoring Logic (Politomi 0, 1, 2)
-    let score = 1; // Default partial credit
-    if (
-      text.length > 15 &&
-      (text.toLowerCase().includes("nol") ||
-        text.toLowerCase().includes("tabayyun") ||
-        text.toLowerCase().includes("tawazun") ||
-        text.toLowerCase().includes("zakat") ||
-        text.toLowerCase().includes("tertinggi") ||
-        text.toLowerCase().includes("outlier"))
-    ) {
-      score = 2; // Full credit
-    }
+    // F1.2: Skoring dilakukan server-side; client hanya mengirim answerText + sessionToken.
+    const rubricKeywords = await getRubricKeywords(task.watsonLevel);
+    let finalScore = scoreAnswer(text, task.modelAnswer, rubricKeywords); // fallback untuk mode tamu (tanpa sesi DB)
+    let finalLevel = currentLevel;
 
-    if (selection && onClearChartSelection) onClearChartSelection();
-
-    // Save to Zustand
-    submitTaskAnswer(task.id, text, score);
-
-    // Save to PostgreSQL database if sessionId exists
-    if (sessionId) {
+    if (sessionId && sessionToken) {
       try {
-        await fetch("/api/task-responses", {
+        const res = await fetch("/api/task-responses", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             sessionId,
+            sessionToken,
             taskId: task.id,
             answerText: text,
-            score,
             interactionLog: { timestamp: new Date().toISOString(), inputType: task.inputType || "text" }
           })
         });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data) {
+            finalScore = json.data.score;
+            finalLevel = json.data.currentLevel;
+          }
+        }
       } catch (err) {
         console.error("Failed to sync task response to DB:", err);
       }
     }
 
+    if (selection && onClearChartSelection) onClearChartSelection();
+
+    // Save to Zustand (gunakan skor otoritatif dari server bila tersedia)
+    submitTaskAnswer(task.id, text, finalScore);
+
     // Trigger celebration confetti if Watson Level 6 reached
-    if (currentLevel >= 5 && score === 2) {
+    if (finalLevel >= 5 && finalScore === 2) {
       confetti({
         particleCount: 100,
         spread: 70,
@@ -135,7 +134,7 @@ export default function EmbeddedTasksPanel({
             </strong>
           </div>
           <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-            Skor Total: <strong>{totalScore} / 16</strong> | Badge: <strong>{badges.join(", ")}</strong>
+            Skor Total: <strong>{totalScore} / {maxTotalScore}</strong> | Badge: <strong>{badges.join(", ")}</strong>
           </span>
         </div>
       </div>

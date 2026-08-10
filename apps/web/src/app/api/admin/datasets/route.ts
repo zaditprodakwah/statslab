@@ -2,16 +2,14 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { isAdminAuthorized } from "@/lib/adminAuth";
+import { authorizeOrReject } from "@/lib/auth";
 import { DatasetSchema } from "@/lib/datasetSchema";
 
 export const dynamic = "force-dynamic";
 
-const unauthorized = () =>
-  NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
-
 export async function GET(req: Request) {
-  if (!isAdminAuthorized(req)) return unauthorized();
+  const reject = await authorizeOrReject(req, ["PENELITI", "ADMIN"]);
+  if (reject) return reject;
 
   try {
     const datasets = await prisma.dataset.findMany({
@@ -30,7 +28,8 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  if (!isAdminAuthorized(req)) return unauthorized();
+  const reject = await authorizeOrReject(req, ["PENELITI", "ADMIN"]);
+  if (reject) return reject;
 
   try {
     const body = await req.json();
