@@ -274,6 +274,65 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
               </div>
             </div>
 
+            {/* T6: Lencana eksperimen 6 Level Watson */}
+            <div
+              style={{
+                marginTop: "20px",
+                padding: "14px 18px",
+                backgroundColor: "#f8fafc",
+                borderRadius: "8px",
+                border: "1px solid #e2e8f0",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "0.95rem",
+                  color: "#475569",
+                  marginBottom: "10px",
+                  fontWeight: 600,
+                }}
+              >
+                Rekam Jejak Eksperimen (Watson-Callingham)
+              </p>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: "8px",
+                }}
+              >
+                {[1, 2, 3, 4, 5, 6].map((lvl) => {
+                  const earned = !!masteryByLevel[lvl];
+                  return (
+                    <div
+                      key={lvl}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                        padding: "6px 8px",
+                        borderRadius: "6px",
+                        backgroundColor: earned ? "#ecfdf5" : "#f1f5f9",
+                        border: `1px solid ${earned ? "#a7f3d0" : "#e2e8f0"}`,
+                        fontSize: "0.72rem",
+                        color: earned ? "#047857" : "#94a3b8",
+                        textAlign: "left",
+                      }}
+                    >
+                      {earned ? (
+                        <Check size={12} color="#059669" />
+                      ) : (
+                        <Minus size={12} color="#94a3b8" />
+                      )}
+                      <span style={{ lineHeight: 1.3 }}>
+                        L{lvl}: {LEVEL_LABELS[lvl]}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
             <div
               style={{
                 position: "absolute",

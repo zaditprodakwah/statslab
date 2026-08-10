@@ -108,16 +108,12 @@ export default function EmbeddedTasksPanel({
   const allDone = sortedTasks.length > 0 && !currentTask;
 
   const autoMatchedIndex = (task: Task): number | null => {
-    if (
-      !task.options?.chartClickAnswer ||
-      chartSelection?.taskId !== task.id
-    ) {
+    const answer = task.options?.chartClickAnswer;
+    if (!answer || chartSelection?.taskId !== task.id) {
       return null;
     }
-    const idx = task.options.choices.findIndex(
-      (c) => normalize(c) === normalize(task.options?.chartClickAnswer)
-    );
-    return idx >= 0 ? idx : null;
+    const idx = task.options?.choices.findIndex((c) => normalize(c) === normalize(answer));
+    return typeof idx === "number" && idx >= 0 ? idx : null;
   };
 
   const selectChoice = (taskId: string, index: number) => {

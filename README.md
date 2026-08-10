@@ -13,11 +13,17 @@
   <img src="https://img.shields.io/badge/License-MIT_%26_CC--BY_4.0-blue?style=for-the-badge" alt="License" />
 </p>
 
+<p align="center">
+  <a href="https://orcid.org/0000-0002-1594-9548"><img src="https://img.shields.io/badge/ORCID-0000--0002--1594--9548-A6CE39?style=flat-square&logo=orcid" alt="ORCID" /></a>
+  <a href="https://scholar.google.com/citations?user=CbR250MAAAAJ"><img src="https://img.shields.io/badge/Google_Scholar-Muhammad_Khoiruzzadittaqwa-4285F4?style=flat-square&logo=google-scholar" alt="Google Scholar" /></a>
+  <a href="https://independent.academia.edu/muhzadit"><img src="https://img.shields.io/badge/Academia.edu-muhzadit-212529?style=flat-square&logo=academia" alt="Academia.edu" /></a>
+</p>
+
 ---
 
 ## 📖 Tentang Proyek
 
-**StatsLab** adalah repositori R&D (*Research & Development*) EdTech *open source* berbasis keislaman pertama di Indonesia. Dikembangkan oleh **Muhammad Khoiruzzadittaqwa (muhzadit)** dari Program Studi **Pendidikan Matematika**, **Institut Al-Bahjah Cirebon** sebagai instrumen penelitian skripsi sekaligus infrastruktur terbuka (*Learning Analytics*) untuk komunitas peneliti, guru, dan pengembang teknologi pendidikan.
+**StatsLab** adalah repositori R&D (*Research & Development*) EdTech *open source* berbasis keislaman pertama di Indonesia. Dikembangkan oleh **Muhammad Khoiruzzadittaqwa (muhzadit)** dari Program Studi **Pendidikan Matematika**, **Institut Al-Bahjah Cirebon** ([ORCID](https://orcid.org/0000-0002-1594-9548) | [Google Scholar](https://scholar.google.com/citations?user=CbR250MAAAAJ) | [Academia.edu](https://independent.academia.edu/muhzadit)) sebagai instrumen penelitian skripsi sekaligus infrastruktur terbuka (*Learning Analytics*) untuk komunitas peneliti, guru, dan pengembang teknologi pendidikan.
 
 Proyek ini dirancang secara komprehensif mengintegrasikan prinsip kognitif kualitatif dengan analisis kuantitatif psikometri modern, mematuhi panduan kognitif **Cognitive Load Theory (CLT)** dan **Taste-Skill Design System** untuk menghadirkan antarmuka visualisasi data yang bersih (*clean UI*), interaktif, dan meminimalisasi beban kognitif ekstra (*extraneous load*) bagi siswa.
 

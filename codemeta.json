@@ -18,6 +18,7 @@
   "author": [
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-1594-9548",
       "givenName": "Muhammad",
       "familyName": "Khoiruzzadittaqwa",
       "alternateName": "muhzadit",
@@ -26,7 +27,12 @@
         "name": "Institut Al-Bahjah Cirebon",
         "department": "Pendidikan Matematika"
       },
-      "email": "zaditprodakwah@gmail.com"
+      "email": "muhzadit@gmail.com",
+      "sameAs": [
+        "https://orcid.org/0000-0002-1594-9548",
+        "https://scholar.google.com/citations?user=CbR250MAAAAJ",
+        "https://independent.academia.edu/muhzadit"
+      ]
     }
   ],
   "keywords": [
