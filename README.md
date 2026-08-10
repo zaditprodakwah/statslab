@@ -16,6 +16,7 @@
 
   <p align="center">
     <a href="https://statslabmedia.vercel.app"><strong>⚡ Jelajahi Live Demo</strong></a> •
+    <a href="https://staialbahjah.ac.id/">💖 <strong>Sponsored by Institut Al-Bahjah</strong></a> •
     <a href="https://github.com/zaditprodakwah/statslab/issues/new?labels=bug">🐛 Laporkan Bug</a> •
     <a href="https://github.com/zaditprodakwah/statslab/issues/new?labels=enhancement">✨ Usulkan Fitur</a> •
     <a href="#citation">🎓 Sitasi Penelitian</a>
