@@ -293,7 +293,7 @@ export default function AdminDatasetsPage() {
           </div>
         )}
 
-        <button
+        <button type="button"
           onClick={handleUploadJson}
           className="btn-premium flex-center"
           style={{ backgroundColor: "var(--color-amber-500)", padding: "10px 18px" }}
@@ -406,7 +406,7 @@ export default function AdminDatasetsPage() {
                       )}
 
                       <div style={{ display: "flex", gap: "10px", marginTop: "14px" }}>
-                        <button
+                        <button type="button"
                           onClick={() => startEdit(d)}
                           className="btn-premium flex-center"
                           style={{
@@ -417,7 +417,7 @@ export default function AdminDatasetsPage() {
                         >
                           <Pencil size={15} style={{ marginRight: "6px" }} /> Edit Dataset
                         </button>
-                        <button
+                        <button type="button"
                           onClick={() => deleteDataset(d)}
                           className="btn-premium flex-center"
                           style={{
@@ -449,7 +449,7 @@ export default function AdminDatasetsPage() {
                         >
                           ✏️ Edit Dataset
                         </h4>
-                        <button
+                        <button type="button"
                           onClick={() => setEditingId(null)}
                           className="btn-premium flex-center"
                           style={{
@@ -660,7 +660,7 @@ export default function AdminDatasetsPage() {
                                 />
                               </label>
                             </div>
-                            <button
+                            <button type="button"
                               onClick={() => removeTask(d, idx)}
                               className="btn-premium flex-center"
                               style={{
@@ -677,7 +677,7 @@ export default function AdminDatasetsPage() {
                       </div>
 
                       <div style={{ display: "flex", gap: "10px", marginTop: "6px" }}>
-                        <button
+                        <button type="button"
                           onClick={() => addTask(d)}
                           className="btn-premium flex-center"
                           style={{
@@ -688,7 +688,7 @@ export default function AdminDatasetsPage() {
                         >
                           <Plus size={15} style={{ marginRight: "6px" }} /> Tambah Soal
                         </button>
-                        <button
+                        <button type="button"
                           onClick={() => saveDataset(d)}
                           disabled={saving}
                           className="btn-premium btn-emerald flex-center"

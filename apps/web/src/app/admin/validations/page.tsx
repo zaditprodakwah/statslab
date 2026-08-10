@@ -348,7 +348,7 @@ export default function ValidationsPage() {
                     {v.feedback || "—"}
                   </td>
                   <td style={{ padding: "8px" }}>
-                    <button
+                    <button type="button"
                       onClick={() => handleDelete(v.id)}
                       className="btn-premium"
                       style={{

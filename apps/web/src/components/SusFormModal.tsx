@@ -225,7 +225,7 @@ export default function SusFormModal({
         <div
           style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "28px" }}
         >
-          <button
+          <button type="button"
             onClick={onClose}
             style={{
               padding: "10px 18px",
@@ -237,7 +237,7 @@ export default function SusFormModal({
           >
             Batal
           </button>
-          <button
+          <button type="button"
             onClick={handleSubmit}
             disabled={!isComplete || submitting}
             className="btn-premium"

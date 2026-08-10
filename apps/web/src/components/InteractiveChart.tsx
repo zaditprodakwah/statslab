@@ -295,7 +295,7 @@ export default function InteractiveChart({
             title="Chart Type Switcher — ubah tipe visualisasi"
           >
             {CHART_TYPES.map(({ key, label, icon: Icon }) => (
-              <button
+              <button type="button"
                 key={key}
                 onClick={() => changeChartType(key)}
                 className="control-btn"
@@ -347,7 +347,7 @@ export default function InteractiveChart({
             />
           </div>
 
-          <button
+          <button type="button"
             onClick={handleResetData}
             className="control-btn"
             style={{ padding: "6px" }}
@@ -358,7 +358,7 @@ export default function InteractiveChart({
           </button>
 
           {/* Collapse Toggle (Mobile) */}
-          <button
+          <button type="button"
             onClick={() => setCollapsed((c) => !c)}
             className="control-btn"
             style={{ padding: "6px", display: "inline-flex", alignItems: "center", gap: "4px" }}
@@ -393,7 +393,7 @@ export default function InteractiveChart({
 
       {/* Collapsed state: grafik menyusut jadi header ringkas (mobile-friendly) */}
       {isCollapsed ? (
-        <button
+        <button type="button"
           onClick={() => setCollapsed(false)}
           className="w-full"
           style={{
@@ -547,7 +547,7 @@ export default function InteractiveChart({
               verifikasi ulang apakah ada kesalahan input data.
             </p>
 
-            <button
+            <button type="button"
               onClick={confirmTabayyun}
               className="btn-premium btn-emerald w-full"
               style={{ padding: "10px" }}

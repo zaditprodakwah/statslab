@@ -154,7 +154,7 @@ export default function AdminUsersPage() {
             Setujui guru baru, ubah peran, aktifkan/nonaktifkan, atau reset kata sandi.
           </p>
         </div>
-        <button
+        <button type="button"
           onClick={fetchUsers}
           className="btn-premium flex-center"
           style={{ padding: "10px 16px", backgroundColor: "var(--color-emerald-600)" }}
@@ -195,7 +195,7 @@ export default function AdminUsersPage() {
                       {u.email}
                     </td>
                     <td style={{ padding: "10px 8px" }}>
-                      <button
+                      <button type="button"
                         onClick={() => cycleRole(u)}
                         disabled={busyId === u.id}
                         className="btn-premium flex-center"
@@ -224,7 +224,7 @@ export default function AdminUsersPage() {
                     <td style={{ padding: "10px 8px" }}>
                       <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                         {u.status === "PENDING" && (
-                          <button
+                          <button type="button"
                             onClick={() => approve(u)}
                             disabled={busyId === u.id}
                             className="btn-premium flex-center"
@@ -244,7 +244,7 @@ export default function AdminUsersPage() {
                             Setujui
                           </button>
                         )}
-                        <button
+                        <button type="button"
                           onClick={() => toggleSuspend(u)}
                           disabled={busyId === u.id}
                           className="btn-premium flex-center"
@@ -263,7 +263,7 @@ export default function AdminUsersPage() {
                           )}
                           {u.status === "SUSPENDED" ? "Aktifkan" : "Nonaktifkan"}
                         </button>
-                        <button
+                        <button type="button"
                           onClick={() => resetPassword(u)}
                           disabled={busyId === u.id}
                           className="btn-premium flex-center"

@@ -127,7 +127,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
         className="glass-panel"
         style={{ width: "100%", maxWidth: "800px", position: "relative", padding: "24px" }}
       >
-        <button
+        <button type="button"
           onClick={onClose}
           aria-label="Tutup Sertifikat"
           style={{
@@ -354,7 +354,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", gap: "16px" }}>
-          <button
+          <button type="button"
             onClick={handleDownload}
             disabled={downloading}
             className="btn-premium btn-emerald flex-center"
@@ -363,7 +363,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
             <Download size={20} style={{ marginRight: "8px" }} />
             {downloading ? "Mengunduh..." : "Unduh Sertifikat"}
           </button>
-          <button
+          <button type="button"
             onClick={handleShare}
             className="btn-premium btn-purple flex-center"
             style={{ padding: "12px 24px" }}

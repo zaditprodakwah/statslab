@@ -190,7 +190,7 @@ export default function GuruDashboardPage() {
           </p>
         </div>
         <div style={{ display: "flex", gap: "10px" }}>
-          <button
+          <button type="button"
             onClick={handleLogout}
             className="btn-premium"
             style={{
@@ -226,7 +226,7 @@ export default function GuruDashboardPage() {
         >
           <Users size={20} color="var(--color-emerald-700)" /> Kelas Saya
         </h2>
-        <button
+        <button type="button"
           onClick={() => setCreateOpen(!createOpen)}
           className="btn-premium btn-emerald flex-center"
           style={{ padding: "10px 16px" }}
@@ -298,7 +298,7 @@ export default function GuruDashboardPage() {
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                  <button
+                  <button type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       copyCode(c.code);

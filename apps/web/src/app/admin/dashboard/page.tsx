@@ -121,7 +121,7 @@ export default function AdminDashboardPage() {
           </p>
         </div>
 
-        <button
+        <button type="button"
           onClick={handleLogout}
           className="btn-premium"
           style={{
@@ -359,7 +359,7 @@ export default function AdminDashboardPage() {
         </p>
 
         <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-          <button
+          <button type="button"
             onClick={() => handleExport("rasch")}
             disabled={exporting !== null}
             className="btn-premium btn-emerald flex-center"
@@ -373,7 +373,7 @@ export default function AdminDashboardPage() {
             Ekspor Rasch PCM (.ctl Winsteps)
           </button>
 
-          <button
+          <button type="button"
             onClick={() => handleExport("cfa")}
             disabled={exporting !== null}
             className="btn-premium flex-center"

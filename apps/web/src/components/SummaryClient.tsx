@@ -149,7 +149,7 @@ export default function SummaryPage() {
 
         {/* Action Buttons */}
         <div style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
-          <button
+          <button type="button"
             onClick={() => setIsCertOpen(true)}
             className="btn-premium btn-emerald flex-center"
             style={{ padding: "12px 24px", fontSize: "1rem" }}
@@ -158,7 +158,7 @@ export default function SummaryPage() {
             Lihat & Unduh Sertifikat
           </button>
 
-          <button
+          <button type="button"
             onClick={() => setIsSusOpen(true)}
             className="btn-premium flex-center"
             style={{

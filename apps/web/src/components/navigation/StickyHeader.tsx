@@ -72,7 +72,7 @@ export default function StickyHeader() {
 
         {/* Module Switcher Dropdown */}
         <div style={{ position: "relative", marginRight: "auto", marginLeft: "16px" }}>
-          <button
+          <button type="button"
             id="module-switcher-btn"
             aria-haspopup="listbox"
             aria-expanded={moduleOpen}
@@ -187,7 +187,7 @@ export default function StickyHeader() {
 
         {/* Accessibility & Controls */}
         <div className="header-controls">
-          <button
+          <button type="button"
             onClick={toggleFontSize}
             className="control-btn"
             aria-label={`Ukuran Teks: ${fontSizeLevel === 0 ? "Normal" : fontSizeLevel === 1 ? "Besar" : "Sangat Besar"}`}
@@ -196,7 +196,7 @@ export default function StickyHeader() {
             <Type size={18} />
           </button>
 
-          <button
+          <button type="button"
             onClick={toggleProjectorMode}
             className="control-btn"
             aria-pressed={projectorMode}
@@ -212,7 +212,7 @@ export default function StickyHeader() {
               <span className="session-id">
                 👤 <strong>{studentName}</strong> ({schoolName || "Siswa"})
               </span>
-              <button
+              <button type="button"
                 onClick={() => window.location.reload()}
                 className="btn-logout"
                 aria-label="Keluar dan Ganti Sesi"

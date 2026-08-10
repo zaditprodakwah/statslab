@@ -350,7 +350,7 @@ export default function EmbeddedTasksPanel({
         {/* Clue / Petunjuk */}
         {task.clue && !locked && (
           <div style={{ marginBottom: "12px" }}>
-            <button
+            <button type="button"
               onClick={() => toggleClue(task.id)}
               style={{
                 background: "none",
@@ -544,7 +544,7 @@ export default function EmbeddedTasksPanel({
               }}
             />
             <VoiceInput onResult={(transcript) => setTextAnswers((prev) => ({ ...prev, [task.id]: `${prev[task.id] ?? ""} ${transcript}`.trim() }))} />
-            <button onClick={() => handleSubmitText(task)} className="btn-premium">
+            <button type="button" onClick={() => handleSubmitText(task)} className="btn-premium">
               Kirim Jawaban
             </button>
           </div>
@@ -677,7 +677,7 @@ export default function EmbeddedTasksPanel({
               Anda telah menyelesaikan seluruh tugas dengan penalaran kritis berprinsip Keislaman.
             </p>
           </div>
-          <button
+          <button type="button"
             onClick={() => onOpenCertificate && onOpenCertificate()}
             style={{
               padding: "10px 18px",
@@ -713,7 +713,7 @@ export default function EmbeddedTasksPanel({
           }}
         >
           <div className="glass-panel" style={{ width: "100%", maxWidth: "480px", padding: "24px", position: "relative" }}>
-            <button
+            <button type="button"
               onClick={() => setEduModal(null)}
               style={{
                 position: "absolute",
@@ -744,7 +744,7 @@ export default function EmbeddedTasksPanel({
             <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "16px", lineHeight: 1.6 }}>
               {eduModal.explanation}
             </p>
-            <button
+            <button type="button"
               onClick={() => setEduModal(null)}
               className="btn-premium btn-emerald w-full"
               style={{ padding: "10px", width: "100%" }}

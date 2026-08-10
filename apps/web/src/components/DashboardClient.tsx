@@ -212,7 +212,7 @@ export default function DashboardClient() {
             <Award size={18} /> Ringkasan Capaian & Sertifikat
           </Link>
 
-          <button
+          <button type="button"
             onClick={() => setIsSusOpen(true)}
             className="btn-premium"
             style={{
@@ -225,7 +225,7 @@ export default function DashboardClient() {
             <ClipboardCheck size={18} /> Evaluasi SUS (14 Butir)
           </button>
 
-          <button
+          <button type="button"
             onClick={() => setTourRun(true)}
             className="btn-premium"
             style={{
@@ -301,7 +301,7 @@ export default function DashboardClient() {
           )}
         </div>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-          <button
+          <button type="button"
             onClick={handleAmanahToggle}
             className="btn-premium"
             style={{
@@ -313,7 +313,7 @@ export default function DashboardClient() {
             {amanahZeroScale ? "✅ Skala Jujur Aktif" : "❌ Skala Terpotong"}
           </button>
 
-          <button
+          <button type="button"
             onClick={confirmTawazun}
             className="btn-premium"
             style={{
@@ -406,7 +406,7 @@ export default function DashboardClient() {
           Watson-Callingham.
         </p>
         {currentLevel >= 6 && (
-          <button
+          <button type="button"
             onClick={() => setIsCertOpen(true)}
             style={{
               marginTop: "16px",

@@ -276,7 +276,7 @@ export default function AdminRubricsPage() {
                     ))}
                   </div>
 
-                  <button
+                  <button type="button"
                     onClick={() => save(r)}
                     disabled={savingId === r.id}
                     className="btn-premium btn-emerald flex-center"

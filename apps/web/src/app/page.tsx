@@ -264,7 +264,7 @@ export default function HomePage() {
                   </div>
                 )}
 
-                <button
+                <button type="button"
                   onClick={handleStartSession}
                   disabled={loading}
                   className="btn-premium btn-emerald w-full flex-center"
@@ -337,7 +337,7 @@ export default function HomePage() {
                 Uji coba visualisasi grafik dan instrumen tugas tanpa pendaftaran identitas atau
                 penyimpanan database.
               </p>
-              <button
+              <button type="button"
                 onClick={handleStartSession}
                 className="btn-premium flex-center"
                 style={{

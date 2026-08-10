@@ -104,7 +104,7 @@ export default function AdminSessionsPage() {
           </p>
         </div>
 
-        <button
+        <button type="button"
           onClick={exportCsv}
           disabled={sessions.length === 0}
           className="btn-premium btn-emerald flex-center"

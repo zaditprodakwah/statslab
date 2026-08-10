@@ -69,7 +69,7 @@ export default function EthicalModal({ type, onClose }: EthicalModalProps) {
         }}
       >
         {/* Close */}
-        <button
+        <button type="button"
           onClick={onClose}
           aria-label="Tutup Modal"
           style={{
@@ -145,7 +145,7 @@ export default function EthicalModal({ type, onClose }: EthicalModalProps) {
         </p>
 
         {/* Confirm Button */}
-        <button
+        <button type="button"
           onClick={onClose}
           className="btn-premium w-full"
           style={{
