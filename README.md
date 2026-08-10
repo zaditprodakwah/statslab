@@ -166,10 +166,12 @@ graph TD
 
 ## 📈 Repository Pulse & Statistics
 
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=zaditprodakwah&show_icons=true&theme=radial&hide_border=true&title_color=059669&icon_color=059669" alt="StatsLab GitHub Stats" height="165" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=zaditprodakwah&layout=compact&theme=radial&hide_border=true&title_color=059669" alt="StatsLab Top Languages" height="165" />
-</div>
+<p align="center">
+  <img src="https://img.shields.io/github/last-commit/zaditprodakwah/statslab?style=for-the-badge&color=059669&label=Last%20Commit&logo=git&logoColor=white" alt="Last Commit" />
+  <img src="https://img.shields.io/github/commit-activity/m/zaditprodakwah/statslab?style=for-the-badge&color=059669&label=Monthly%20Commits&logo=github&logoColor=white" alt="Monthly Commits" />
+  <img src="https://img.shields.io/github/repo-size/zaditprodakwah/statslab?style=for-the-badge&color=059669&label=Repo%20Size&logo=github&logoColor=white" alt="Repo Size" />
+  <img src="https://img.shields.io/github/languages/top/zaditprodakwah/statslab?style=for-the-badge&color=059669&label=Primary%20Language&logo=typescript&logoColor=white" alt="Top Language" />
+</p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
