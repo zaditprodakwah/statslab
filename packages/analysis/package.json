@@ -1,5 +1,5 @@
 {
-  "name": "@statslab/analysis",
+  "name": "@zaditprodakwah/analysis",
   "version": "1.0.2",
   "description": "Rasch PCM and CFA analysis scripts and exporters for StatsLab",
   "main": "dist/exporter.js",

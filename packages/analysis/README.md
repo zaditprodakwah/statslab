@@ -1,4 +1,4 @@
-# @statslab/analysis
+# @zaditprodakwah/analysis
 
 Pustaka skrip psikometri dan eksportir data analitik untuk ekosistem **StatsLab R&D**. Paket ini menyediakan antarmuka untuk berinteraksi dengan algoritma validitas instrumen pendidikan terbuka (*Open Science*).
 
@@ -11,19 +11,19 @@ Pustaka skrip psikometri dan eksportir data analitik untuk ekosistem **StatsLab 
 ## Instalasi
 
 ```bash
-npm install @statslab/analysis
+npm install @zaditprodakwah/analysis
 ```
 
 ## Penggunaan Modul Eksportir
 
 ```typescript
-import { exportRaschMatrix } from '@statslab/analysis/src/exporter';
+import { exportRaschMatrix } from '@zaditprodakwah/analysis/src/exporter';
 
 // Mengekspor matriks data dan menyimpannya di file CSV
 await exportRaschMatrix(prismaClientInstance);
 ```
 
-*(Untuk skrip R, silakan eksekusi langsung dari *folder* `node_modules/@statslab/analysis/scripts/` menggunakan *environment* RStudio Anda).*
+*(Untuk skrip R, silakan eksekusi langsung dari *folder* `node_modules/@zaditprodakwah/analysis/scripts/` menggunakan *environment* RStudio Anda).*
 
 ## Tentang StatsLab
 StatsLab adalah repositori open-source berskala penelitian yang dikembangkan di **Institut Al-Bahjah Cirebon**. Untuk informasi lebih lanjut mengenai aplikasi utamanya, kunjungi repositori utama di [GitHub (zaditprodakwah/statslab)](https://github.com/zaditprodakwah/statslab).

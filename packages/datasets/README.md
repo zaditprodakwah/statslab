@@ -1,4 +1,4 @@
-# @statslab/datasets
+# @zaditprodakwah/datasets
 
 Kumpulan dataset edukasi bernuansa Islami dan instrumen penelitian untuk ekosistem **StatsLab R&D**. Paket ini digunakan untuk menggerakkan Dasbor Statistika Interaktif dengan metrik literasi data (Watson-Callingham Level 1-6).
 
@@ -11,7 +11,7 @@ Kumpulan dataset edukasi bernuansa Islami dan instrumen penelitian untuk ekosist
 ## Instalasi
 
 ```bash
-npm install @statslab/datasets
+npm install @zaditprodakwah/datasets
 ```
 
 ## Penggunaan (Node.js / Next.js)
@@ -20,7 +20,7 @@ Karena paket ini mengekspor berkas JSON mentah dan fungsi enumerasi, Anda dapat 
 
 ```javascript
 // Contoh: Melakukan import dataset mentah (pastikan bundler Anda mendukung resolusi JSON)
-import zakatData from '@statslab/datasets/zakat-infak.json';
+import zakatData from '@zaditprodakwah/datasets/zakat-infak.json';
 
 console.log(zakatData.title); 
 // Output: "Distribusi Zakat & Infak Masjid Raya"

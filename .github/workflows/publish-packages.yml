@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   publish:
@@ -19,22 +20,38 @@ jobs:
         with:
           node-version: "24.x"
           cache: "npm"
-          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Publish unpublished versions
+      - name: Publish to GitHub Packages
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > "$HOME/.npmrc"
           for pkg in packages/analysis packages/datasets; do
             name=$(node -p "require('./$pkg/package.json').name")
             ver=$(node -p "require('./$pkg/package.json').version")
-            if npm view "$name@$ver" >/dev/null 2>&1; then
-              echo "skip $name@$ver (sudah dipublish)"
+            if npm view "$name@$ver" --registry=https://npm.pkg.github.com >/dev/null 2>&1; then
+              echo "skip gh: $name@$ver"
             else
-              npm publish --workspace="$pkg"
+              npm publish --workspace="$pkg" --registry=https://npm.pkg.github.com
+            fi
+          done
+
+      - name: Publish to npmjs
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > "$HOME/.npmrc"
+          for pkg in packages/analysis packages/datasets; do
+            name=$(node -p "require('./$pkg/package.json').name")
+            ver=$(node -p "require('./$pkg/package.json').version")
+            if npm view "$name@$ver" --registry=https://registry.npmjs.org >/dev/null 2>&1; then
+              echo "skip npm: $name@$ver"
+            else
+              npm publish --workspace="$pkg" --registry=https://registry.npmjs.org
             fi
           done
