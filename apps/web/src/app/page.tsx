@@ -419,6 +419,42 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Modul Pembelajaran (link SEO ke halaman statis) */}
+        <div className="glass-panel" style={{ padding: "24px", marginBottom: "40px" }}>
+          <h2 style={{ fontSize: "1.3rem", marginBottom: "8px" }}>Modul Pembelajaran Dataset</h2>
+          <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "16px" }}>
+            Empat modul dataset terintegrasi nilai keislaman untuk asesmen literasi data
+            Watson-Callingham.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px" }}>
+            {[
+              { slug: "zakat-infak", label: "Distribusi Zakat & Infak", icon: "🤲" },
+              { slug: "perpus-madrasah", label: "Sirkulasi Perpustakaan", icon: "📚" },
+              { slug: "tajwid-juz-30", label: "Hukum Tajwid Juz 30", icon: "📖" },
+              { slug: "wakaf-produktif", label: "Perkembangan Wakaf Produktif", icon: "🏗️" },
+            ].map((m) => (
+              <Link
+                key={m.slug}
+                href={`/module/${m.slug}`}
+                className="glass-panel"
+                style={{
+                  textDecoration: "none",
+                  color: "var(--text-primary)",
+                  padding: "14px 16px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  fontWeight: 600,
+                  fontSize: "0.95rem",
+                  border: "1px solid var(--color-slate-200)",
+                }}
+              >
+                <span style={{ fontSize: "1.4rem" }}>{m.icon}</span> {m.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
         {/* Dynamic Leaderboard */}
         <Leaderboard />
       </div>

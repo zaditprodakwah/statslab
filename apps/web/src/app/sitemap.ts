@@ -1,5 +1,7 @@
 import { MetadataRoute } from "next";
 
+const MODULE_SLUGS = ["zakat-infak", "perpus-madrasah", "tajwid-juz-30", "wakaf-produktif"];
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://statslabmedia.vercel.app";
 
@@ -16,5 +18,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    ...MODULE_SLUGS.map(
+      (slug) =>
+        ({
+          url: `${baseUrl}/module/${slug}`,
+          lastModified: new Date(),
+          changeFrequency: "weekly" as const,
+          priority: 0.8,
+        }) as const
+    ),
   ];
 }
