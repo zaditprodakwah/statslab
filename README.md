@@ -30,6 +30,7 @@
     <a href="https://github.com/zaditprodakwah/statslab/issues"><img src="https://img.shields.io/github/issues/zaditprodakwah/statslab?style=for-the-badge&color=059669" alt="Issues" /></a>
     <a href="https://statslabmedia.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-Vercel_V2-059669?style=for-the-badge&logo=vercel" alt="Vercel Live" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT_%26_CC--BY_4.0-blue?style=for-the-badge" alt="License" /></a>
+    <a href="#releases-packages"><img src="https://img.shields.io/github/v/release/zaditprodakwah/statslab?style=for-the-badge&color=059669&label=RELEASE" alt="GitHub Release" /></a>
     <a href="https://www.npmjs.com/package/@statslab/datasets"><img src="https://img.shields.io/npm/v/@statslab/datasets?style=for-the-badge&color=CB3837&logo=npm" alt="NPM Datasets" /></a>
     <a href="https://www.npmjs.com/package/@statslab/analysis"><img src="https://img.shields.io/npm/v/@statslab/analysis?style=for-the-badge&color=CB3837&logo=npm" alt="NPM Analysis" /></a>
   </p>
@@ -140,13 +141,13 @@ graph TD
 
     subgraph Database_Layer["🗄 Database & Persistence"]
         Prisma["Prisma ORM v7"]
-        NeonDB[("Neon Serverless PostgreSQL")]
+        NeonDB[(Neon Serverless PostgreSQL)]
     end
 
     subgraph Open_Science_Layer["🔬 Pilar 3: Psychometrics & R Analytics"]
         R_Rasch["rasch-pcm.r (eRm / TAM / Winsteps .ctl)"]
         R_CFA["cfa-lavaan.r (lavaan)"]
-        Aiken["Aiken's V Expert Validity"]
+        Aiken["Aikens V Expert Validity"]
     end
 
     User --> UI
