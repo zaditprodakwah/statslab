@@ -1,15 +1,16 @@
 # StatsLab R Research Script — Confirmatory Factor Analysis (CFA) via lavaan
 # Requires: install.packages("lavaan")
 #
-# Input: CSV yang diekspor dari Admin Panel (/api/export/cfa),
-#        pola nama file: statslab-cfa-lisrel-*.csv
+# Input: CSV yang diekspor dari Admin Panel (/api/export/cfa?format=lavaan),
+#        pola nama file: statslab-cfa-lavaan-*.csv (default) atau
+#        statslab-cfa-lisrel-*.csv (format lawas, masih kompatibel)
 # Item diambil dinamis dari header kolom (item_1 ... item_N).
 
 library(lavaan)
 
 cat("=== StatsLab Confirmatory Factor Analysis (CFA) ===\n")
 
-data_file <- list.files(pattern = "^statslab-cfa-lisrel-.*\\.csv$", full.names = TRUE)
+data_file <- list.files(pattern = "^statslab-cfa-(lavaan|lisrel)-.*\\.csv$", full.names = TRUE)
 data_file <- data_file[order(data_file, decreasing = TRUE)][1]
 
 if (!is.na(data_file)) {

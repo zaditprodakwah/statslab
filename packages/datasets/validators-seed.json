@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "description": "Data awal validator pakar untuk Aiken's V. Admin dapat menambah/edit melalui /admin/validations.",
+  "validators": [
+    { "name": "Dr. A. Mulyadi, M.Pd.", "domain": "Statistika Pendidikan" },
+    { "name": "Ustadz Ahmad Fauzan, M.Pd.I.", "domain": "Integrasi Nilai Islam" },
+    { "name": "Dr. Siti Nurhaliza, M.Si.", "domain": "Psikometri & Asesmen" }
+  ]
+}

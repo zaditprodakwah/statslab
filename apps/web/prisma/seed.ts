@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import dotenv from "dotenv";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { hashPassword } from "../src/lib/password";
@@ -317,6 +317,27 @@ async function main() {
       },
     });
     console.log(`- Level ${r.watsonLevel} (${r.indicators.length} indikator, ${r.keywords.length} keyword)`);
+  }
+
+  // 4. Seed Validators (single source of truth: packages/datasets/validators-seed.json)
+  const validatorsFile = path.resolve(
+    import.meta.dirname ?? path.dirname(fileURLToPath(import.meta.url)),
+    "../../../packages/datasets/validators-seed.json"
+  );
+  if (existsSync(validatorsFile)) {
+    const { validators } = JSON.parse(readFileSync(validatorsFile, "utf8")) as {
+      validators: { name: string; domain: string }[];
+    };
+    console.log("✅ Validators seeded:");
+    for (const v of validators) {
+      const existing = await prisma.validator.findFirst({ where: { name: v.name } });
+      if (existing) {
+        await prisma.validator.update({ where: { id: existing.id }, data: { domain: v.domain } });
+      } else {
+        await prisma.validator.create({ data: { name: v.name, domain: v.domain } });
+        console.log(`- ${v.name} (${v.domain})`);
+      }
+    }
   }
 }
 

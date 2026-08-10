@@ -19,6 +19,14 @@ enum UserStatus {
   SUSPENDED
 }
 
+enum InputType {
+  text
+  number
+  choice
+  chart
+  voice
+}
+
 model User {
   id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email        String     @unique @db.VarChar(255)
@@ -89,7 +97,7 @@ model Task {
   prompt       String   @db.Text
   clue         String?  @db.Text
   modelAnswer  String?  @map("model_answer") @db.Text
-  inputType    String   @default("text") @map("input_type") @db.VarChar(50)
+  inputType    InputType @default(text) @map("input_type")
 
   dataset      Dataset  @relation(fields: [datasetId], references: [id])
   responses    TaskResponse[]
@@ -207,5 +215,6 @@ model ExpertValidation {
 
   validator    Validator @relation(fields: [validatorId], references: [id])
 
+  @@unique([validatorId, itemNumber])
   @@map("expert_validations")
 }

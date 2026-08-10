@@ -43,6 +43,23 @@ export default function SusFormModal({
     setAnswers((prev) => ({ ...prev, [questionIndex]: val }));
   };
 
+  /**
+   * SUS-Extended StatsLab (14 Butir) — instrumen adaptasi Brooke (1996).
+   *
+   * Komposisi:
+   *  - Item 1–10: SUS standar Brooke (1996), diterjemahkan ke Bahasa Indonesia
+   *  - Item 11–14: tambahan domain-spesifik Islamic EdTech:
+   *      Q11: Nilai Keislaman (Amanah/Tabayyun) memperjelas pemahaman
+   *      Q12: Visualisasi grafik tepercaya dan tidak menyesatkan
+   *      Q13: Responsivitas antarmuka di mobile/tablet
+   *      Q14: Kepuasan keseluruhan media
+   *
+   * Formula Adaptif: totalScore = ((oddSum + evenSum) / (14 × 4)) × 100
+   *  - oddSum  = Σ(score − 1) untuk item ganjil
+   *  - evenSum = Σ(5 − score) untuk item genap
+   * Adjective rating: Poor < 52 < Good < 72 < Excellent < 85 < Best Imaginable
+   * (Bangor, Kortum & Miller, 2009)
+   */
   const calculateSusScore = () => {
     let oddSum = 0;
     let evenSum = 0;

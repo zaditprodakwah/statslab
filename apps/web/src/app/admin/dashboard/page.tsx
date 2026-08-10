@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Users, Database, Download, LogOut, FileSpreadsheet, ShieldCheck, Loader2, BookOpenCheck, UserCog } from "lucide-react";
+import { Users, Database, Download, LogOut, FileSpreadsheet, ShieldCheck, Loader2, BookOpenCheck, UserCog, Calculator } from "lucide-react";
 import { downloadExport } from "@/lib/downloadExport";
 
 export default function AdminDashboardPage() {
@@ -164,6 +164,18 @@ export default function AdminDashboardPage() {
             </Link>
           </div>
         )}
+
+        <div className="glass-panel" style={{ padding: "24px" }}>
+          <h3 style={{ fontSize: "1.2rem", marginBottom: "8px", display: "flex", alignItems: "center", gap: "8px" }}>
+            <Calculator size={20} color="var(--color-amber-600)" /> Validasi Pakar (Aiken&apos;s V)
+          </h3>
+          <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: "16px" }}>
+            Rekam skor penilaian pakar per item dan lihat hasil Aiken&apos;s V otomatis (V ≥ 0.75 = valid).
+          </p>
+          <Link href="/admin/validations" className="btn-premium flex-center" style={{ textDecoration: "none", width: "100%", padding: "10px", backgroundColor: "var(--color-amber-500)" }}>
+            Buka Validasi Pakar
+          </Link>
+        </div>
       </div>
 
       {/* R&D Export Box */}
