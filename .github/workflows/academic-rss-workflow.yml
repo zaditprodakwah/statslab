@@ -18,6 +18,8 @@ jobs:
 
       - name: Pull Latest Academic Feeds (OJS, DSpace, InfoMath)
         uses: gautamkrishnar/blog-post-workflow@v1
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: "0"
         with:
           comment_tag_name: GLOBAL_RESEARCH_LIST
           max_post_count: 5
