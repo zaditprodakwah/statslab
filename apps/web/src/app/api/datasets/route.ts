@@ -16,6 +16,8 @@ export async function GET() {
             prompt: true,
             clue: true,
             inputType: true,
+            modelAnswer: true,
+            options: true,
           },
           orderBy: { taskNumber: "asc" },
         },

@@ -108,11 +108,13 @@ export default function EmbeddedTasksPanel({
   const allDone = sortedTasks.length > 0 && !currentTask;
 
   const autoMatchedIndex = (task: Task): number | null => {
-    const answer = task.options?.chartClickAnswer;
-    if (!answer || chartSelection?.taskId !== task.id) {
-      return null;
-    }
-    const idx = task.options?.choices.findIndex((c) => normalize(c) === normalize(answer));
+    if (!chartSelection || chartSelection.taskId !== task.id) return null;
+    // Cocokkan LABEL bar/titik yang benar-benar diklik ke salah satu pilihan (bukan kunci jawaban),
+    // agar "Klik & Klik" jujur: klik bar yang salah → pilihan salah ikut terpilih → umpan balik.
+    const clickedLabel = chartSelection.label.replace(/^\[Grafik\]\s*/, "").trim();
+    const idx = task.options?.choices.findIndex(
+      (c) => normalize(c) === normalize(clickedLabel)
+    );
     return typeof idx === "number" && idx >= 0 ? idx : null;
   };
 
@@ -391,7 +393,7 @@ export default function EmbeddedTasksPanel({
             style={{
               padding: "12px 14px",
               borderRadius: "var(--radius-md)",
-              backgroundColor: "var(--color-emerald-100)",
+              backgroundColor: "var(--color-emerald-50)",
               display: "flex",
               alignItems: "center",
               gap: "10px",

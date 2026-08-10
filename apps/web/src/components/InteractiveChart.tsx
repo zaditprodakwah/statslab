@@ -117,14 +117,18 @@ export default function InteractiveChart({
   };
 
   const handlePointClick = (payload: any) => {
-    const row = payload?.activePayload ? payload.activePayload[0]?.payload : payload;
-    const value = Number(row?.[primaryKey]);
+    // Beragam bentuk payload recharts (Bar/Line dot/activeDot/Pie): ekstraksi baris data asli.
+    const row = payload?.payload ?? payload?.activePayload?.[0]?.payload ?? payload;
+    const value = Number(row?.[primaryKey] ?? payload?.value);
+    const label = String(row?.[xAxisKey] ?? row?.name ?? payload?.name ?? "Titik Data");
+    const cleanPayload = { label, value: Number.isNaN(value) ? null : value, row: row ?? null };
+
     if (!Number.isNaN(value) && isOutlier(value)) {
-      setPendingClick({ payload, label: row?.[xAxisKey] ?? "Titik Data" });
+      setPendingClick({ payload: cleanPayload, label });
       setShowTabayyunModal(true);
       return;
     }
-    if (onChartClick) onChartClick(payload);
+    if (onChartClick) onChartClick(cleanPayload);
   };
 
   const confirmTabayyun = () => {
@@ -197,6 +201,10 @@ export default function InteractiveChart({
         stroke="#fff"
         strokeWidth={1.5}
         cursor="pointer"
+        onClick={(e) => {
+          e?.stopPropagation?.();
+          handlePointClick({ payload });
+        }}
       />
     );
   };
@@ -360,6 +368,27 @@ export default function InteractiveChart({
         </div>
       </div>
 
+      {/* Peringatan Amanah: sumbu Y terpotong (non-zero) — efek toggle harus terlihat jelas. */}
+      {!amanahZeroScale && (
+        <p
+          style={{
+            marginTop: "6px",
+            marginBottom: "12px",
+            fontSize: "0.85rem",
+            fontWeight: 600,
+            color: "#b91c1c",
+            backgroundColor: "rgba(220,38,38,0.08)",
+            border: "1px dashed #f87171",
+            padding: "8px 12px",
+            borderRadius: "var(--radius-md)",
+          }}
+        >
+          ⚠️ <strong>Skala Terpotong aktif:</strong> sumbu Y tidak dimulai dari nol sehingga
+          jarak antar batang tampak melebar dan berpotensi menyesatkan pembaca. Nyalakan kembali{" "}
+          <strong>Skala Jujur</strong> untuk perbandingan yang proporsional.
+        </p>
+      )}
+
       {/* Collapsed state: grafik menyusut jadi header ringkas (mobile-friendly) */}
       {isCollapsed ? (
         <button
@@ -461,9 +490,7 @@ export default function InteractiveChart({
                   animationDuration={800}
                   onClick={(payload: any) => {
                     handlePointClick({
-                      ...payload.payload,
-                      [xAxisKey]: payload.name,
-                      value: payload.value,
+                      payload: { [xAxisKey]: payload?.name, [primaryKey]: payload?.value },
                     });
                   }}
                   style={{ cursor: "pointer" }}

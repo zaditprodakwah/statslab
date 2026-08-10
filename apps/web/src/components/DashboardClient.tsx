@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
@@ -92,13 +91,21 @@ export default function DashboardClient() {
   }, [datasets, setAssessmentMeta]);
 
   const handleChartClick = useCallback(
-    (payload: any) => {
+    (click: unknown) => {
       if (!activePblTaskId) return;
 
-      const pointData = payload?.activePayload ? payload.activePayload[0]?.payload : payload;
-      const label = pointData ? JSON.stringify(pointData) : "Chart Element Clicked";
+      const obj = click as { label?: string } | null;
+      let label = obj?.label ?? "";
+      if (!label) {
+        try {
+          const serialized = JSON.stringify(click);
+          label = serialized && serialized.length < 80 ? serialized : "Titik Data";
+        } catch {
+          label = "Titik Data";
+        }
+      }
 
-      // Gesture only: catat titik yang dipilih, siswa tetap harus menekan "Kirim Jawaban"
+      // Gesture only: catat titik yang dipilih, siswa tetap harus menekan "Kirim Pilihan"
       setChartSelection({ taskId: activePblTaskId, label: `[Grafik] ${label}` });
       setActivePblTaskId(null);
     },
