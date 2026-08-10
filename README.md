@@ -267,8 +267,6 @@ STATSLAB/
 
 <!-- PUBLICATION_LIST:START -->
 - 📄 **[Efektivitas Model Pembelajaran Generatif: Pemahaman dan Keterlibatan Siswa dalam Pembelajaran Matematika](https://jurnal.staialbahjah.ac.id/index.php/abjme/article/view/152)** (2024) — *AB-JME: Al-Bahjah Journal of Mathematics Education, Vol. 2 No. 1*. DOI: [10.61553/abjme.v2i1.152](https://doi.org/10.61553/abjme.v2i1.152).
-- 📄 **[Pengembangan Media Pembelajaran Dasbor Statistik Interaktif Terintegrasi Nilai Keislaman]** (2026) — *Penelitian Tugas Akhir / Skripsi (Sedang Berjalan)*. Institut Al-Bahjah Cirebon.
-- 🔬 **[Implementasi Model Rasch (PCM) dan Aiken's V dalam Validasi Instrumen Literasi Data]** (2026) — *Working Paper*.
 <!-- PUBLICATION_LIST:END -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -283,8 +281,6 @@ STATSLAB/
 - [Analisis Kesulitan Siswa SMP dalam Menyelesaikan Soal Matematika Berbasis High Order Thinking Skills &lpar;HOTS&rpar;](https://jurnal.staialbahjah.ac.id/index.php/abjme/article/view/1181)
 - [Kesalahan dan Keyakinan Siswa terhadap Jawaban dalam Menyelesaikan Soal Cerita Operasi Bilangan Bulat: Analisis Newman–Watson Berbasis Think-Aloud](https://jurnal.staialbahjah.ac.id/index.php/abjme/article/view/1170)
 - [Pengembangan Multimedia Pembelajaran dengan Konteks Arsitektur Rumah Adat Sunda pada materi Kekongruenan dan Kesebangunan](https://jurnal.staialbahjah.ac.id/index.php/abjme/article/view/1144)
-- [Recognising UK Problem Gambling Signs And Support With Lucki Casino](https://intomath.org/post/recognising-uk-problem-gambling-signs-and-support-with-lucki-casino/)
-- [Bet Panda No Deposit Bonus For Canadian Players](https://intomath.org/post/bet-panda-no-deposit-bonus-for-canadian-players/)
 <!-- GLOBAL_RESEARCH_LIST:END -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
