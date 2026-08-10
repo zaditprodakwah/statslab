@@ -295,6 +295,11 @@ Jika Anda menggunakan perangkat lunak, dataset, atau skrip psikometri **StatsLab
 Terima kasih kepada seluruh kontributor yang telah membantu membangun ekosistem ini:
 
 <!-- CONTRIBUTORS-LIST:START -->
+<p align="center">
+  <a href="https://github.com/zaditprodakwah/statslab/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=zaditprodakwah/statslab" alt="Contributors" />
+  </a>
+</p>
 <!-- CONTRIBUTORS-LIST:END -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

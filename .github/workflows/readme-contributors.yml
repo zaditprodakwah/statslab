@@ -18,17 +18,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Update Contributors Image & List
-        uses: contrib-rocks/action@v1.0.1
+      - name: Update Contributors List
+        uses: stefanweck/action-contributors@v3
         with:
-          repo: zaditprodakwah/statslab
-          target: README.md
-          key: CONTRIBUTORS
-          max: 100
-
-      - name: Commit & Push Changes
-        uses: endbug/add-and-commit@v9
-        with:
-          default_author: github_actions
-          message: 'chore(auto): update contributors list in README.md [skip ci]'
-          add: 'README.md'
+          MY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

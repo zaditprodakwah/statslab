@@ -361,7 +361,7 @@ export default function InteractiveChart({
       </div>
 
       {/* Collapsed state: grafik menyusut jadi header ringkas (mobile-friendly) */}
-(removed)
+      {isCollapsed ? (
         <button
           onClick={() => setCollapsed(false)}
           className="w-full"
