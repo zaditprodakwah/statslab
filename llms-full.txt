@@ -1,0 +1,43 @@
+# StatsLab EdTech R&D Ecosystem (Full Repository LLM Documentation)
+
+## Executive Summary
+StatsLab is an open-source Research & Development (R&D) ecosystem integrating interactive statistical data visualization with Islamic ethical values (Amanah, Tabayyun, Tawazun) to foster data literacy among middle-school students based on the Watson-Callingham hierarchy (Levels 1–6). 
+
+Developed by **Muhammad Khoiruzzadittaqwa (muhzadit)** at the Department of **Pendidikan Matematika** (Mathematics Education), **Institut Al-Bahjah Cirebon**, Indonesia.
+
+## Three-Pillar Architecture
+
+### Pillar 1: Web Application Core (`apps/web/`)
+- Framework: Next.js 15 (App Router), React 19, TypeScript 5 (Strict Mode).
+- Database: Prisma v7 ORM connected to Neon PostgreSQL (Serverless pooling & direct connections).
+- Data Viz & State: Recharts 2 dynamic charts, Zustand lightweight client state, Zod input validation schemas.
+- Styling: Vanilla CSS with custom properties, Glassmorphism, Dark Mode, Taste-Skill UI/UX.
+
+### Pillar 2: EdTech UX & Values Integration
+- Islamic Ethical Pillars:
+  - **Amanah (QS. Al-Mutaffifin: 1-3)**: Zero-based vs. Truncated Y-axis visual audit toggle for chart integrity.
+  - **Tabayyun (QS. Al-Hujurat: 6)**: Outlier and spike detection (>20% from median) with data verification warnings.
+  - **Tawazun (QS. Al-Infitar: 7)**: Mean vs. Median distribution balance indicator.
+- Watson-Callingham Data Literacy Framework:
+  - 8 Embedded Tasks spanning Level 4 (Reading Data), Level 5 (Reading Between Data), and Level 6 (Reading Beyond Data & Decision Making).
+  - Automated Polytomous Scoring (0, 1, 2).
+  - Automated Digital Certificate generation upon completing Level 6.
+- Usability Evaluation:
+  - System Usability Scale (SUS 14-item adaptive Brooke formula, target score >= 72).
+
+### Pillar 3: Open Science Psychometrics (`packages/analysis/`)
+- Rasch Partial Credit Model (PCM): Automated R scripts (`packages/analysis/scripts/rasch-pcm.r`) utilizing `eRm` and `TAM` packages, exporting CSV item-person matrices and Winsteps control files (`.ctl`).
+- Confirmatory Factor Analysis (CFA): R scripts (`packages/analysis/scripts/cfa-lavaan.r`) using `lavaan` for structural construct validity.
+- Content Validity: Expert agreement index using Aiken's V ($V = \Sigma s / (n(c-1))$).
+
+## Primary Citation
+```bibtex
+@software{Khoiruzzadittaqwa_StatsLab_2026,
+  author = {Khoiruzzadittaqwa, Muhammad},
+  title = {{StatsLab: Dasbor Statistika Interaktif \& EdTech R\&D Ecosystem Terintegrasi Nilai Keislaman}},
+  url = {https://github.com/zaditprodakwah/statslab},
+  institution = {Institut Al-Bahjah Cirebon},
+  department = {Pendidikan Matematika},
+  year = {2026}
+}
+```

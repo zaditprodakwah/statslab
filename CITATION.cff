@@ -5,9 +5,10 @@ title: "StatsLab: Dasbor Statistika Interaktif & EdTech R&D Ecosystem Terintegra
 abstract: >-
   StatsLab adalah ekosistem R&D (Research & Development) EdTech terbuka berbasis keislaman pertama di Indonesia. Proyek ini mengintegrasikan dasbor visualisasi data statistika interaktif dengan nilai-nilai etika Keislaman (Amanah, Tabayyun, Tawazun) untuk memfasilitasi tingkat literasi data siswa berdasarkan hierarki Watson-Callingham (Level 1–6). Memadukan teknologi web modern (Next.js 15 App Router, Prisma v7, Neon PostgreSQL, Recharts, Zustand) dengan arsitektur instrumen Open Science yang mencakup model Rasch Partial Credit Model (PCM via R eRm/TAM & ekspor file kontrol Winsteps), Analisis Faktor Konfirmatori (CFA via lavaan), validitas isi pakar Aiken's V, dan kuesioner evaluasi kepraktisan adaptif System Usability Scale (SUS 14-butir).
 authors:
-  - family-names: "Zadit"
-    given-names: "Syakir"
-    affiliation: "STAI Al-Bahjah Cirebon"
+  - family-names: "Khoiruzzadittaqwa"
+    given-names: "Muhammad"
+    alias: "muhzadit"
+    affiliation: "Institut Al-Bahjah Cirebon"
     email: "zaditprodakwah@gmail.com"
 repository-code: "https://github.com/zaditprodakwah/statslab"
 url: "https://statslabmedia.vercel.app"
@@ -30,18 +31,20 @@ keywords:
   - "Open Science"
   - "System Usability Scale"
   - "Aiken's V"
-  - "STAI Al-Bahjah Cirebon"
+  - "Pendidikan Matematika"
+  - "Institut Al-Bahjah Cirebon"
   - "Next.js 15"
 preferred-citation:
   type: thesis
   title: "Pengembangan Media Pembelajaran Dasbor Statistik Interaktif Terintegrasi dengan Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa"
   authors:
-    - family-names: "Zadit"
-      given-names: "Syakir"
-      affiliation: "STAI Al-Bahjah Cirebon"
+    - family-names: "Khoiruzzadittaqwa"
+      given-names: "Muhammad"
+      alias: "muhzadit"
+      affiliation: "Institut Al-Bahjah Cirebon"
   institution:
-    name: "STAI Al-Bahjah Cirebon"
-  department: "Pendidikan Agama Islam / Manajemen Pendidikan Islam"
+    name: "Institut Al-Bahjah Cirebon"
+  department: "Pendidikan Matematika"
   year: 2026
   url: "https://statslabmedia.vercel.app"
   repository-code: "https://github.com/zaditprodakwah/statslab"
@@ -50,4 +53,5 @@ preferred-citation:
     - "Dasbor Statistik Interaktif"
     - "Nilai Keislaman"
     - "Model Rasch"
-    - "STAI Al-Bahjah Cirebon"
+    - "Pendidikan Matematika"
+    - "Institut Al-Bahjah Cirebon"

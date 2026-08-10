@@ -1,14 +1,23 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
-import { Download, Share2, X, Award } from "lucide-react";
+import { Download, Share2, X, Award, Check, Minus } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
 
 interface CertificateModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const LEVEL_LABELS: Record<number, string> = {
+  1: "Idiosyncratic (Klik Titik Data)",
+  2: "Informal (Tipe Grafik)",
+  3: "Inconsistent (Tabayyun Slider)",
+  4: "Non-critical (Amanah Scale)",
+  5: "Critical (Tawazun & Verifikasi)",
+  6: "Critical-Math (Keputusan Data)",
+};
 
 export default function CertificateModal({ isOpen, onClose }: CertificateModalProps) {
   const {
@@ -22,9 +31,21 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
     sessionToken,
     certificateId,
     setCertificateId,
+    taskResponses,
+    tasksMeta,
   } = useStatsLabStore();
   const certRef = useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = useState(false);
+
+  // T6: Lencana eksperimen per level — dimiliki jika ≥1 tugas level itu dijawab benar.
+  const masteryByLevel = useMemo(() => {
+    const m: Record<number, boolean> = {};
+    for (const tm of tasksMeta) {
+      const r = taskResponses[tm.id];
+      if (r && r.score > 0) m[tm.watsonLevel] = true;
+    }
+    return m;
+  }, [tasksMeta, taskResponses]);
 
   const today = new Date();
   const issuedDate = today.toLocaleDateString("id-ID", {
@@ -141,24 +162,24 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
           }}
         >
           {/* Certificate DOM to capture */}
-          <div
-            ref={certRef}
-            style={{
-              width: "700px",
-              height: "500px",
-              padding: "40px",
-              backgroundColor: "#fff",
-              border: "12px solid var(--color-emerald-700)",
-              borderRadius: "8px",
-              textAlign: "center",
-              position: "relative",
-              backgroundImage: "url('/pattern.svg')",
-              backgroundSize: "140px",
-              backgroundRepeat: "repeat",
-              color: "#1e293b",
-              fontFamily: "'Inter', sans-serif",
-            }}
-          >
+            <div
+              ref={certRef}
+              style={{
+                width: "700px",
+                height: "560px",
+                padding: "40px",
+                backgroundColor: "#fff",
+                border: "12px solid var(--color-emerald-700)",
+                borderRadius: "8px",
+                textAlign: "center",
+                position: "relative",
+                backgroundImage: "url('/pattern.svg')",
+                backgroundSize: "140px",
+                backgroundRepeat: "repeat",
+                color: "#1e293b",
+                fontFamily: "'Inter', sans-serif"
+              }}
+            >
             <div style={{ position: "absolute", top: "20px", left: "20px" }}>
               <Award size={48} color="var(--color-amber-500)" />
             </div>

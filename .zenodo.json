@@ -1,0 +1,32 @@
+{
+  "title": "StatsLab: Dasbor Statistika Interaktif & EdTech R&D Ecosystem Terintegrasi Nilai Keislaman",
+  "description": "StatsLab adalah ekosistem R&D EdTech terbuka berbasis keislaman pertama di Indonesia. Proyek ini mengintegrasikan dasbor visualisasi data statistika interaktif dengan nilai-nilai etika Keislaman (Amanah, Tabayyun, Tawazun) untuk memfasilitasi tingkat literasi data siswa berdasarkan hierarki Watson-Callingham (Level 1–6). Dikembangkan oleh Muhammad Khoiruzzadittaqwa (muhzadit) di Program Studi Pendidikan Matematika, Institut Al-Bahjah Cirebon.",
+  "upload_type": "software",
+  "creators": [
+    {
+      "name": "Khoiruzzadittaqwa, Muhammad",
+      "affiliation": "Institut Al-Bahjah Cirebon",
+      "orcid": ""
+    }
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": [
+    "EdTech",
+    "Data Literacy",
+    "Watson-Callingham Framework",
+    "Rasch Model",
+    "Partial Credit Model",
+    "Confirmatory Factor Analysis",
+    "lavaan",
+    "Islamic Values",
+    "Pendidikan Matematika",
+    "Institut Al-Bahjah Cirebon",
+    "Next.js 15"
+  ],
+  "communities": [
+    {
+      "identifier": "open-science"
+    }
+  ]
+}

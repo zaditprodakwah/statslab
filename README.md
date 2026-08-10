@@ -17,7 +17,7 @@
 
 ## 📖 Tentang Proyek
 
-**StatsLab** adalah repositori R&D (*Research & Development*) EdTech *open source* berbasis keislaman pertama di Indonesia. Dikembangkan sebagai instrumen penelitian skripsi sekaligus infrastruktur terbuka (*Learning Analytics*) untuk komunitas peneliti, guru, dan pengembang teknologi pendidikan di lingkungan **STAI Al-Bahjah Cirebon**.
+**StatsLab** adalah repositori R&D (*Research & Development*) EdTech *open source* berbasis keislaman pertama di Indonesia. Dikembangkan oleh **Muhammad Khoiruzzadittaqwa (muhzadit)** dari Program Studi **Pendidikan Matematika**, **Institut Al-Bahjah Cirebon** sebagai instrumen penelitian skripsi sekaligus infrastruktur terbuka (*Learning Analytics*) untuk komunitas peneliti, guru, dan pengembang teknologi pendidikan.
 
 Proyek ini dirancang secara komprehensif mengintegrasikan prinsip kognitif kualitatif dengan analisis kuantitatif psikometri modern, mematuhi panduan kognitif **Cognitive Load Theory (CLT)** dan **Taste-Skill Design System** untuk menghadirkan antarmuka visualisasi data yang bersih (*clean UI*), interaktif, dan meminimalisasi beban kognitif ekstra (*extraneous load*) bagi siswa.
 
@@ -155,7 +155,7 @@ File `vercel.json` pada akar proyek mengonfigurasi jalur build secara presisi:
 }
 ```
 
-Aplikasi live menyertakan metadata terstruktur **JSON-LD Schema Markup** (`SoftwareApplication` & `Organization`) yang secara eksplisit menghubungkan proyek ini dengan **STAI Al-Bahjah Cirebon** serta optimasi SEO/GEO/AEO (*llms.txt*, *robots.txt*, *sitemap.xml* dinamis).
+Aplikasi live menyertakan metadata terstruktur **JSON-LD Schema Markup** (`SoftwareApplication` & `Organization`) yang secara eksplisit menghubungkan proyek ini dengan **Institut Al-Bahjah Cirebon** serta optimasi SEO/GEO/AEO (*llms.txt*, *robots.txt*, *sitemap.xml* dinamis).
 
 ---
 
@@ -180,5 +180,5 @@ Detail lengkap dapat dibaca pada file **[LICENSE](LICENSE)**.
 ---
 
 <p align="center">
-  <strong>StatsLab R&D Ecosystem</strong> • STAI Al-Bahjah Cirebon
+  <strong>StatsLab R&D Ecosystem</strong> • Institut Al-Bahjah Cirebon
 </p>

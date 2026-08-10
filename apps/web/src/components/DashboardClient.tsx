@@ -9,6 +9,8 @@ import EthicalModal from "@/components/EthicalModal";
 import CertificateModal from "@/components/CertificateModal";
 import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Award } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
+import { isPrerequisiteLocked } from "@/lib/taskPrereq";
+import type { PrerequisiteKey, TaskOptions } from "@/lib/scoring";
 import Link from "next/link";
 
 interface DashboardTask {
@@ -19,6 +21,7 @@ interface DashboardTask {
   prompt: string;
   clue?: string;
   inputType?: string;
+  options?: TaskOptions | null;
 }
 
 interface DashboardDataset {
@@ -52,9 +55,12 @@ export default function DashboardClient() {
     activeDataset,
     toggleAmanahScale,
     amanahZeroScale,
+    tabayyunThreshold,
     tawazunConfirmed,
+    chartTypeUsed,
     confirmTawazun,
     setAssessmentMeta,
+    taskResponses,
   } = useStatsLabStore();
 
   // Fetch all datasets
@@ -117,6 +123,18 @@ export default function DashboardClient() {
   // Active dataset object
   const activeDs = datasets.find((d) => d.slug === activeDataset) ?? datasets[0];
   const activeTasks = activeDs?.tasks || [];
+
+  // T4: Gembok prasyarat — tentukan modul yang sedang "ditugaskan" untuk di-highlight (glow).
+  const moduleState = { amanahZeroScale, tabayyunThreshold, tawazunConfirmed, chartTypeUsed };
+  const pendingPrereqTask = activeTasks.find(
+    (t) =>
+      t.options?.prerequisite &&
+      !taskResponses[t.id] &&
+      isPrerequisiteLocked(t.options.prerequisite, moduleState)
+  );
+  const highlightKey: PrerequisiteKey | null = pendingPrereqTask?.options?.prerequisite ?? null;
+  const togglesHighlighted =
+    highlightKey === "amanahZeroScale" || highlightKey === "tawazunConfirmed";
 
   return (
     <main
@@ -214,15 +232,39 @@ export default function DashboardClient() {
           padding: "16px 20px",
           flexWrap: "wrap",
           gap: "12px",
+          border: togglesHighlighted ? "2px solid var(--color-amber-500)" : undefined,
+          boxShadow: togglesHighlighted
+            ? "0 0 0 4px rgba(245,158,11,0.15)"
+            : undefined,
+          transition: "box-shadow 0.3s ease, border-color 0.3s ease",
         }}
       >
         <div>
-          <strong style={{ fontSize: "0.95rem" }}>⚖️ Prinsip Amanah — Skala Sumbu Y</strong>
+          <strong style={{ fontSize: "0.95rem" }}>
+            {highlightKey === "amanahZeroScale"
+              ? "✨ Tugas aktif: nyalakan/matikan sakelar ini"
+              : "⚖️ Prinsip Amanah — Skala Sumbu Y"}
+          </strong>
           <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "2px" }}>
             {amanahZeroScale
               ? "Skala berbasis nol (Zero-based) — Jujur & Proporsional"
               : "⚠️ Skala Terpotong — Risiko Misleading"}
           </p>
+          {highlightKey === "tawazunConfirmed" && (
+            <p
+              style={{
+                marginTop: "6px",
+                fontSize: "0.8rem",
+                fontWeight: 600,
+                color: "var(--color-amber-700)",
+                backgroundColor: "var(--color-amber-50)",
+                padding: "6px 10px",
+                borderRadius: "var(--radius-md)",
+              }}
+            >
+              🎯 Klik "Tampilkan Mean vs Median" untuk membuka Tugas Tawazun.
+            </p>
+          )}
         </div>
         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           <button
@@ -279,6 +321,7 @@ export default function DashboardClient() {
             dataKeys={activeDs.chartConfig?.dataKeys || ["penghimpunan_miliar"]}
             data={activeDs.rawData}
             onChartClick={handleChartClick}
+            highlightKey={highlightKey}
           />
         ) : (
           <div
