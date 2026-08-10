@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/password";
 import type { Role } from "@prisma/client";
@@ -6,6 +7,12 @@ import type { Role } from "@prisma/client";
 export const dynamic = "force-dynamic";
 
 const SELF_REGISTERABLE_ROLES: Role[] = ["SISWA", "GURU"];
+
+const registerSchema = z.object({
+  name: z.string().trim().min(1, "Nama wajib diisi."),
+  email: z.string().trim().toLowerCase().email("Email tidak valid."),
+  password: z.string().min(8, "Kata sandi minimal 8 karakter."),
+});
 
 const userSelect = {
   id: true,
@@ -19,23 +26,16 @@ const userSelect = {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const name = typeof body.name === "string" ? body.name.trim() : "";
-    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
-    const password = typeof body.password === "string" ? body.password : "";
+
+    const parsed = registerSchema.safeParse(body);
+    if (!parsed.success) {
+      const message = parsed.error.issues[0]?.message ?? "Data tidak valid.";
+      return NextResponse.json({ success: false, message }, { status: 400 });
+    }
+
+    const { name, email, password } = parsed.data;
     const role = (body.role as Role) || "SISWA";
 
-    if (!name) {
-      return NextResponse.json({ success: false, message: "Nama wajib diisi." }, { status: 400 });
-    }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return NextResponse.json({ success: false, message: "Email tidak valid." }, { status: 400 });
-    }
-    if (password.length < 8) {
-      return NextResponse.json(
-        { success: false, message: "Kata sandi minimal 8 karakter." },
-        { status: 400 }
-      );
-    }
     if (!SELF_REGISTERABLE_ROLES.includes(role)) {
       return NextResponse.json(
         { success: false, message: "Peran tidak dapat didaftarkan sendiri." },

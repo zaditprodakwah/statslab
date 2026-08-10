@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { randomBytes } from "node:crypto";
+import { randomInt } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { authorize } from "@/lib/auth";
 
@@ -8,10 +8,9 @@ export const dynamic = "force-dynamic";
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 function generateCode(): string {
-  const bytes = randomBytes(6);
   let code = "";
-  for (const byte of bytes) {
-    code += CODE_CHARS[byte % CODE_CHARS.length];
+  for (let i = 0; i < 6; i++) {
+    code += CODE_CHARS[randomInt(CODE_CHARS.length)];
   }
   return code;
 }
