@@ -1,0 +1,24 @@
+name: Latest Academic Posts & Publications
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Berjalan otomatis setiap hari pukul 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme-with-blog:
+    name: Update README with latest blog/academic posts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Pull Latest Publications
+        uses: gautamkrishnar/blog-post-workflow@v1
+        with:
+          comment_tag_name: PUBLICATION_LIST
+          feed_list: "https://independent.academia.edu/muhzadit/Activity/feed.rss"
+          max_post_count: 5

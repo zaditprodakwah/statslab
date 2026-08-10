@@ -56,7 +56,9 @@
     <li><a href="#-repository-pulse--statistics">Repository Pulse & Statistics</a></li>
     <li><a href="#-struktur-folder-monorepo">Struktur Folder Monorepo</a></li>
     <li><a href="#-panduan-instalasi--pengembangan-lokal">Panduan Instalasi & Pengembangan Lokal</a></li>
+    <li><a href="#-publikasi--karya-ilmiah-terbaru">Publikasi & Karya Ilmiah Terbaru</a></li>
     <li><a href="#-sitasi-akademik--citation">Sitasi Akademik (Citation)</a></li>
+    <li><a href="#-kontributor-repositori">Kontributor Repositori</a></li>
     <li><a href="#-kontribusi--kode-etik">Kontribusi & Kode Etik</a></li>
     <li><a href="#-lisensi">Lisensi</a></li>
     <li><a href="#-peneliti-utama">Peneliti Utama</a></li>
@@ -258,6 +260,15 @@ STATSLAB/
 
 ---
 
+## 📚 Publikasi & Karya Ilmiah Terbaru
+
+<!-- PUBLICATION_LIST:START -->
+<!-- PUBLICATION_LIST:END -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
 ## 🎓 Sitasi Akademik (Citation)
 
 Jika Anda menggunakan perangkat lunak, dataset, atau skrip psikometri **StatsLab** dalam penelitian Anda, mohon sitasi repositori ini melalui tombol **"Cite this repository"** di bagian samping kanan repositori GitHub ini, atau gunakan format BibTeX berikut:
@@ -272,6 +283,17 @@ Jika Anda menggunakan perangkat lunak, dataset, atau skrip psikometri **StatsLab
   year = {2026}
 }
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## 👥 Kontributor Repositori
+
+Terima kasih kepada seluruh kontributor yang telah membantu membangun ekosistem ini:
+
+<!-- CONTRIBUTORS-LIST:START -->
+<!-- CONTRIBUTORS-LIST:END -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
