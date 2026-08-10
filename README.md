@@ -265,6 +265,8 @@ STATSLAB/
 ## 📚 Publikasi & Karya Ilmiah Terbaru
 
 <!-- PUBLICATION_LIST:START -->
+- 📄 **[Pengembangan Media Pembelajaran Dasbor Statistik Interaktif Terintegrasi Nilai Keislaman]** (2026) — *Penelitian Tugas Akhir / Skripsi (Sedang Berjalan)*. Institut Al-Bahjah Cirebon.
+- 🔬 **[Implementasi Model Rasch (PCM) dan Aiken's V dalam Validasi Instrumen Literasi Data]** (2026) — *Working Paper*.
 <!-- PUBLICATION_LIST:END -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
