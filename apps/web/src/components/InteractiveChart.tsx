@@ -353,15 +353,15 @@ export default function InteractiveChart({
             onClick={() => setCollapsed((c) => !c)}
             className="control-btn"
             style={{ padding: "6px", display: "inline-flex", alignItems: "center", gap: "4px" }}
-            title={collapsed ? "Perluas Grafik" : "Ciutkan Grafik"}
+            title={isCollapsed ? "Perluas Grafik" : "Ciutkan Grafik"}
           >
-            {collapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+            {isCollapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
           </button>
         </div>
       </div>
 
       {/* Collapsed state: grafik menyusut jadi header ringkas (mobile-friendly) */}
-      {collapsed ? (
+(removed)
         <button
           onClick={() => setCollapsed(false)}
           className="w-full"
