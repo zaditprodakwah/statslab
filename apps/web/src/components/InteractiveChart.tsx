@@ -352,6 +352,7 @@ export default function InteractiveChart({
             className="control-btn"
             style={{ padding: "6px" }}
             title="Reset Data ke Semula"
+            aria-label="Reset Data ke Semula"
           >
             <RefreshCw size={16} />
           </button>
@@ -362,6 +363,7 @@ export default function InteractiveChart({
             className="control-btn"
             style={{ padding: "6px", display: "inline-flex", alignItems: "center", gap: "4px" }}
             title={isCollapsed ? "Perluas Grafik" : "Ciutkan Grafik"}
+            aria-label={isCollapsed ? "Perluas Grafik" : "Ciutkan Grafik"}
           >
             {isCollapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
           </button>

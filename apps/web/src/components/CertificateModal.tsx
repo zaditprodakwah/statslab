@@ -129,6 +129,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
       >
         <button
           onClick={onClose}
+          aria-label="Tutup Sertifikat"
           style={{
             position: "absolute",
             top: "16px",
