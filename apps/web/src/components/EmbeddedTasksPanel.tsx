@@ -150,6 +150,27 @@ export default function EmbeddedTasksPanel({
       onTabayyunTrigger();
     }
 
+    // --- TELEMETRY WIRING ---
+    if (sessionId) {
+      fetch("/api/telemetry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          taskId: task.id,
+          timeSpentMs: useStatsLabStore.getState().sessionStartedAt
+            ? Date.now() - useStatsLabStore.getState().sessionStartedAt!
+            : 0,
+          attempts: 1,
+          answerHistory: [choiceText],
+          scrollDepth: typeof window !== "undefined"
+            ? Math.round((window.scrollY / document.body.scrollHeight) * 100)
+            : 0,
+        }),
+      }).catch(console.error);
+    }
+    // ------------------------
+
     let finalScore = 2;
     let finalLevel = currentLevel;
 
@@ -202,6 +223,27 @@ export default function EmbeddedTasksPanel({
     const rubricKeywords = await getRubricKeywords(task.watsonLevel);
     let finalScore = scoreAnswer(text, task.modelAnswer, rubricKeywords);
     let finalLevel = currentLevel;
+
+    // --- TELEMETRY WIRING ---
+    if (sessionId) {
+      fetch("/api/telemetry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          taskId: task.id,
+          timeSpentMs: useStatsLabStore.getState().sessionStartedAt
+            ? Date.now() - useStatsLabStore.getState().sessionStartedAt!
+            : 0,
+          attempts: 1,
+          answerHistory: [text],
+          scrollDepth: typeof window !== "undefined"
+            ? Math.round((window.scrollY / document.body.scrollHeight) * 100)
+            : 0,
+        }),
+      }).catch(console.error);
+    }
+    // ------------------------
 
     if (sessionId && sessionToken) {
       try {
