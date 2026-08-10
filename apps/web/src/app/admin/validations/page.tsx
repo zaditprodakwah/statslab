@@ -158,7 +158,7 @@ export default function ValidationsPage() {
           display: "inline-flex",
           alignItems: "center",
           gap: "6px",
-          color: "var(--color-emerald-700)",
+          color: "var(--accent-primary)",
           textDecoration: "none",
           fontWeight: 600,
           marginBottom: "16px",

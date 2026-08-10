@@ -147,7 +147,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
             textAlign: "center",
             marginBottom: "24px",
             fontSize: "1.8rem",
-            color: "var(--color-emerald-700)",
+            color: "var(--accent-primary)",
           }}
         >
           🎉 Selamat, {studentName || "Siswa"}! Sertifikat Anda Siap
@@ -168,7 +168,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
                 width: "700px",
                 height: "560px",
                 padding: "40px",
-                backgroundColor: "#fff",
+                backgroundColor: "var(--bg-surface)",
                 border: "12px solid var(--color-emerald-700)",
                 borderRadius: "8px",
                 textAlign: "center",
@@ -176,7 +176,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
                 backgroundImage: "url('/pattern.svg')",
                 backgroundSize: "140px",
                 backgroundRepeat: "repeat",
-                color: "#1e293b",
+                color: "var(--text-primary)",
                 fontFamily: "'Inter', sans-serif"
               }}
             >
@@ -187,7 +187,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
             <h1
               style={{
                 fontSize: "2.5rem",
-                color: "var(--color-emerald-800)",
+                color: "var(--accent-primary)",
                 marginTop: "20px",
                 marginBottom: "8px",
                 textTransform: "uppercase",
@@ -196,14 +196,14 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
             >
               Sertifikat Penghargaan
             </h1>
-            <p style={{ fontSize: "1.2rem", color: "#64748b", marginBottom: "40px" }}>
+            <p style={{ fontSize: "1.2rem", color: "var(--text-secondary)", marginBottom: "40px" }}>
               Diberikan dengan bangga kepada
             </p>
 
             <h2
               style={{
                 fontSize: "3rem",
-                color: "#0f172a",
+                color: "var(--text-primary)",
                 marginBottom: "16px",
                 borderBottom: "2px solid var(--color-emerald-500)",
                 display: "inline-block",
@@ -213,9 +213,9 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
               {studentName || "Nama Siswa"}
             </h2>
 
-            <p style={{ fontSize: "1.4rem", color: "#475569", marginBottom: "40px" }}>
+            <p style={{ fontSize: "1.4rem", color: "var(--text-secondary)", marginBottom: "40px" }}>
               dari{" "}
-              <strong style={{ color: "var(--color-emerald-700)" }}>
+              <strong style={{ color: "var(--accent-primary)" }}>
                 {schoolName || "Instansi"}
               </strong>
             </p>
@@ -245,21 +245,21 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
               }}
             >
               <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>
+                <p style={{ fontSize: "1rem", color: "var(--text-secondary)", marginBottom: "8px" }}>
                   Skor Total
                 </p>
                 <p
                   style={{
                     fontSize: "1.5rem",
                     fontWeight: "bold",
-                    color: "var(--color-emerald-700)",
+                    color: "var(--accent-primary)",
                   }}
                 >
                   {totalScore} / {maxTotalScore}
                 </p>
               </div>
               <div style={{ textAlign: "center" }}>
-                <p style={{ fontSize: "1rem", color: "#64748b", marginBottom: "8px" }}>
+                <p style={{ fontSize: "1rem", color: "var(--text-secondary)", marginBottom: "8px" }}>
                   Experience Points
                 </p>
                 <p
@@ -279,7 +279,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
               style={{
                 marginTop: "20px",
                 padding: "14px 18px",
-                backgroundColor: "#f8fafc",
+                backgroundColor: "var(--bg-primary)",
                 borderRadius: "8px",
                 border: "1px solid #e2e8f0",
               }}
@@ -287,7 +287,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
               <p
                 style={{
                   fontSize: "0.95rem",
-                  color: "#475569",
+                  color: "var(--text-secondary)",
                   marginBottom: "10px",
                   fontWeight: 600,
                 }}
@@ -343,7 +343,7 @@ export default function CertificateModal({ isOpen, onClose }: CertificateModalPr
                 justifyContent: "space-between",
                 padding: "0 40px",
                 fontSize: "0.8rem",
-                color: "#64748b",
+                color: "var(--text-secondary)",
               }}
             >
               <span>No. Sertifikat: {certificateNo}</span>

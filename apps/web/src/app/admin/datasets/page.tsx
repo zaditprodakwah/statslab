@@ -217,7 +217,7 @@ export default function AdminDatasetsPage() {
             display: "inline-flex",
             alignItems: "center",
             gap: "6px",
-            color: "var(--color-emerald-700)",
+            color: "var(--accent-primary)",
             textDecoration: "none",
             fontWeight: 600,
           }}
@@ -282,6 +282,8 @@ export default function AdminDatasetsPage() {
             fontFamily: "monospace",
             fontSize: "0.85rem",
             marginBottom: "12px",
+            backgroundColor: "var(--bg-surface)",
+            color: "var(--text-primary)",
           }}
         />
 
@@ -311,7 +313,7 @@ export default function AdminDatasetsPage() {
             gap: "8px",
           }}
         >
-          <Database size={18} color="var(--color-emerald-700)" /> Dataset Terpasang (
+          <Database size={18} color="var(--accent-primary)" /> Dataset Terpasang (
           {datasets.length})
         </h3>
 
@@ -345,13 +347,13 @@ export default function AdminDatasetsPage() {
                           marginBottom: "8px",
                         }}
                       >
-                        <span
-                          style={{
-                            fontWeight: 600,
-                            fontSize: "1rem",
-                            color: "var(--color-emerald-700)",
-                          }}
-                        >
+                          <span
+                            style={{
+                              fontWeight: 600,
+                              fontSize: "1rem",
+                              color: "var(--accent-primary)",
+                            }}
+                          >
                           {d.title} ({d.category})
                         </span>
                         <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
@@ -441,7 +443,7 @@ export default function AdminDatasetsPage() {
                         <h4
                           style={{
                             margin: 0,
-                            color: "var(--color-emerald-700)",
+                            color: "var(--accent-primary)",
                             fontSize: "1.05rem",
                           }}
                         >
@@ -726,7 +728,8 @@ const inputStyle: React.CSSProperties = {
   borderRadius: "var(--radius-md)",
   border: "1px solid var(--color-slate-200)",
   fontSize: "0.85rem",
-  backgroundColor: "#fff",
+  backgroundColor: "var(--bg-surface)",
+  color: "var(--text-primary)",
 };
 
 const smallLabel: React.CSSProperties = {

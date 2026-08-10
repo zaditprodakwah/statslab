@@ -108,7 +108,7 @@ export default function AdminRubricsPage() {
             display: "inline-flex",
             alignItems: "center",
             gap: "6px",
-            color: "var(--color-emerald-700)",
+            color: "var(--accent-primary)",
             textDecoration: "none",
             fontWeight: 600,
           }}
@@ -157,7 +157,7 @@ export default function AdminRubricsPage() {
             gap: "8px",
           }}
         >
-          <BookOpenCheck size={18} color="var(--color-emerald-700)" /> Rubrik per Level (
+          <BookOpenCheck size={18} color="var(--accent-primary)" /> Rubrik per Level (
           {rubrics.length})
         </h3>
 
@@ -191,7 +191,7 @@ export default function AdminRubricsPage() {
                     }}
                   >
                     <h4
-                      style={{ margin: 0, color: "var(--color-emerald-700)", fontSize: "1.1rem" }}
+                      style={{ margin: 0, color: "var(--accent-primary)", fontSize: "1.1rem" }}
                     >
                       Level Watson-Callingham {r.watsonLevel}{" "}
                       <span
@@ -306,7 +306,8 @@ const textareaStyle: React.CSSProperties = {
   border: "1px solid var(--color-slate-200)",
   fontSize: "0.85rem",
   fontFamily: "inherit",
-  backgroundColor: "#fff",
+  backgroundColor: "var(--bg-surface)",
+  color: "var(--text-primary)",
 };
 
 const smallLabel: React.CSSProperties = {

@@ -107,7 +107,7 @@ export default function HomePage() {
               gap: "8px",
               padding: "6px 14px",
               borderRadius: "var(--radius-full)",
-              backgroundColor: "var(--color-emerald-50)",
+              backgroundColor: "color-mix(in srgb, var(--accent-primary) 12%, transparent)",
               color: "var(--accent-primary)",
               fontSize: "0.875rem",
               fontWeight: 600,
@@ -119,7 +119,7 @@ export default function HomePage() {
 
           <h1
             className="hero-title"
-            style={{ fontSize: "2.5rem", marginBottom: "16px", color: "var(--color-emerald-700)" }}
+            style={{ fontSize: "2.5rem", marginBottom: "16px", color: "var(--accent-primary)" }}
           >
             StatsLab: Dasbor Statistika Interaktif
           </h1>

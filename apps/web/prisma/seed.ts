@@ -128,7 +128,7 @@ async function main() {
   // 2. Seed 16 Tasks (Pilihan Ganda Berskenario — Click & Click, Watson-Callingham Level 1-6)
   // Silsilah: setiap soal mengikat modul spesifik (chart click, amanah toggle, tabayyun threshold, tawazun).
   // options: { choices: string[], correctIndex, explanation, chartClickAnswer?, prerequisite? }
-  const tasksData = [
+  const tasksData: any[] = [
     // ===== ZAKAT-INFAK (4 soal) =====
     {
       datasetId: datasetIds["zakat-infak"],

@@ -71,7 +71,7 @@ export default function LoginPage() {
             alignItems: "center",
             gap: "8px",
             marginBottom: "8px",
-            color: "var(--color-emerald-700)",
+            color: "var(--accent-primary)",
           }}
         >
           <ShieldCheck size={22} />
@@ -134,8 +134,8 @@ export default function LoginPage() {
               style={{
                 padding: "10px 12px",
                 borderRadius: "var(--radius-md)",
-                backgroundColor: "#fee2e2",
-                color: "#b91c1c",
+                backgroundColor: "color-mix(in srgb, var(--color-red-600) 12%, transparent)",
+                color: "var(--color-red-600)",
                 fontSize: "0.85rem",
                 fontWeight: 600,
               }}
@@ -159,6 +159,48 @@ export default function LoginPage() {
           </button>
         </form>
 
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: "16px",
+            flexWrap: "wrap",
+            gap: "8px",
+            fontSize: "0.9rem",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() =>
+              setErrorMsg(
+                "Fitur Lupa Password akan segera tersedia (membutuhkan infrastruktur email). Hubungi admin sekolah Anda."
+              )
+            }
+            style={{
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
+              color: "var(--text-secondary)",
+              fontWeight: 600,
+              fontSize: "0.9rem",
+            }}
+          >
+            Lupa Password?
+          </button>
+          <Link
+            href="/register"
+            style={{
+              color: "var(--accent-primary)",
+              textDecoration: "none",
+              fontWeight: 700,
+            }}
+          >
+            Daftar Akun
+          </Link>
+        </div>
+
         <Link
           href="/"
           style={{
@@ -166,7 +208,7 @@ export default function LoginPage() {
             alignItems: "center",
             gap: "6px",
             marginTop: "20px",
-            color: "var(--color-emerald-700)",
+            color: "var(--accent-primary)",
             textDecoration: "none",
             fontWeight: 600,
             fontSize: "0.9rem",
