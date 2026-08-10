@@ -2,11 +2,11 @@
   "name": "@statslab/analysis",
   "version": "1.0.1",
   "description": "Rasch PCM and CFA analysis scripts and exporters for StatsLab",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/exporter.js",
+  "types": "dist/exporter.d.ts",
   "scripts": {
     "build": "tsc",
-    "export-data": "ts-node src/exporter.ts"
+    "export-data": "npm run build && node dist/exporter.js"
   },
   "license": "MIT",
   "dependencies": {
