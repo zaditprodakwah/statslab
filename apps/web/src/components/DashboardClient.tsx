@@ -262,7 +262,7 @@ export default function DashboardClient() {
                 borderRadius: "var(--radius-md)",
               }}
             >
-              🎯 Klik "Tampilkan Mean vs Median" untuk membuka Tugas Tawazun.
+              🎯 Klik “Tampilkan Mean vs Median” untuk membuka Tugas Tawazun.
             </p>
           )}
         </div>
