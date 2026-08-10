@@ -57,7 +57,8 @@
     <li><a href="#-struktur-folder-monorepo">Struktur Folder Monorepo</a></li>
     <li><a href="#-panduan-instalasi--pengembangan-lokal">Panduan Instalasi & Pengembangan Lokal</a></li>
     <li><a href="#-publikasi--karya-ilmiah-terbaru">Publikasi & Karya Ilmiah Terbaru</a></li>
-    <li><a href="#citation">Sitasi Akademik (Citation)</a></li>
+    <li><a href="#citation">🎓 Sitasi Akademik (Citation)</a> — <a href="https://github.com/zaditprodakwah/statslab/blob/main/CITATION.cff">📄 <code>CITATION.cff</code></a></li>
+    <li><a href="#releases-packages">📦 Releases & Packages</a></li>
     <li><a href="#-kontributor-repositori">Kontributor Repositori</a></li>
     <li><a href="#-kontribusi--kode-etik">Kontribusi & Kode Etik</a></li>
     <li><a href="#-lisensi">Lisensi</a></li>
@@ -285,6 +286,19 @@ STATSLAB/
 - [Recognising UK Problem Gambling Signs And Support With Lucki Casino](https://intomath.org/post/recognising-uk-problem-gambling-signs-and-support-with-lucki-casino/)
 - [Bet Panda No Deposit Bonus For Canadian Players](https://intomath.org/post/bet-panda-no-deposit-bonus-for-canadian-players/)
 <!-- GLOBAL_RESEARCH_LIST:END -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+<a id="releases-packages"></a>
+## 📦 Releases & Packages
+
+Repositori ini memanfaatkan ekosistem rilis standar industri dan akademik untuk mendistribusikan kode, dataset, dan skrip secara terbuka:
+
+1. **GitHub Releases:** Versi stabil (*stable versions*) dari keseluruhan repositori dipublikasikan melalui tab [Releases](https://github.com/zaditprodakwah/statslab/releases). Anda dapat mengunduh *source code* (ZIP/Tarball) untuk dipelajari atau digunakan ulang secara luring.
+2. **Zenodo DOI:** Setiap rilis besar yang kami publikasikan di GitHub akan secara otomatis diarsipkan ke [Zenodo](https://zenodo.org) via *GitHub Actions workflow* (`release-zenodo.yml`) untuk menjamin preservasi data akademik jangka panjang (berstatus DOI permanen).
+3. **NPM Packages:** Komponen spesifik dari arsitektur monorepo (seperti modul di `packages/analysis` atau `packages/datasets`) dikonfigurasi untuk dapat diterbitkan sebagai paket NPM *open-source*, sehingga pengembang lain dapat meng-`install` dependensi edukasi/psikometri secara parsial.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
