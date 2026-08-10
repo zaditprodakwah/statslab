@@ -37,6 +37,31 @@ interface RubricSeed {
   criteria: Record<string, string>;
 }
 
+type SeedTaskInputType = "text" | "number" | "choice" | "chart" | "voice";
+
+interface SeedTask {
+  datasetId: string;
+  taskNumber: number;
+  watsonLevel: number;
+  indicator: string;
+  prompt: string;
+  clue?: string;
+  modelAnswer?: string;
+  inputType: SeedTaskInputType;
+  options?: {
+    choices: string[];
+    correctIndex: number;
+    explanation?: string;
+    chartClickAnswer?: string;
+    prerequisite?:
+      | "amanahZeroScale"
+      | "tawazunConfirmed"
+      | "tabayyunThreshold"
+      | "chartType"
+      | null;
+  };
+}
+
 const datasetsDir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../../packages/datasets"
@@ -128,7 +153,7 @@ async function main() {
   // 2. Seed 16 Tasks (Pilihan Ganda Berskenario — Click & Click, Watson-Callingham Level 1-6)
   // Silsilah: setiap soal mengikat modul spesifik (chart click, amanah toggle, tabayyun threshold, tawazun).
   // options: { choices: string[], correctIndex, explanation, chartClickAnswer?, prerequisite? }
-  const tasksData: any[] = [
+  const tasksData: SeedTask[] = [
     // ===== ZAKAT-INFAK (4 soal) =====
     {
       datasetId: datasetIds["zakat-infak"],
