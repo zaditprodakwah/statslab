@@ -19,6 +19,10 @@
   <a href="https://independent.academia.edu/muhzadit"><img src="https://img.shields.io/badge/Academia.edu-muhzadit-212529?style=flat-square&logo=academia" alt="Academia.edu" /></a>
 </p>
 
+<p align="center">
+  <img src="apps/web/public/social-preview.png" alt="StatsLab Interactive Dashboard Banner" width="100%" />
+</p>
+
 ---
 
 ## 📖 Tentang Proyek
@@ -82,7 +86,7 @@ STATSLAB/
 ├── apps/
 │   └── web/                         # Next.js 15 Web Application
 │       ├── prisma/                  # Schema Prisma v7 & script Database Seeding
-│       ├── public/                  # Static Assets, llms.txt, robots.txt, sitemap.xml
+│       ├── public/                  # Static Assets, llms.txt, robots.txt, sitemap.xml, social-preview.png
 │       └── src/
 │           ├── app/                 # App Router (Pages, API Routes /api/sessions, /api/task-resp, dll)
 │           ├── components/          # Reusable UI & Chart Components

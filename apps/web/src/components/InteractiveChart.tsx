@@ -84,23 +84,23 @@ export default function InteractiveChart({
     setChartTypeUsed(next);
   };
 
+  // Modul chart (tabayyun/chartType) sedang ditugaskan → tampil glow + selalu terbuka.
+  const chartHighlighted = highlightKey === "tabayyunThreshold" || highlightKey === "chartType";
+
   // Mobile Collapsible: default menyusut di HP (lebar ≤ 640px), kecuali modul sedang ditugaskan.
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mq = window.matchMedia("(max-width: 640px)");
     const apply = () => {
-      if (!highlightKey) setCollapsed(mq.matches);
+      if (!chartHighlighted) setCollapsed(mq.matches);
     };
     apply();
     mq.addEventListener?.("change", apply);
     return () => mq.removeEventListener?.("change", apply);
-  }, [highlightKey]);
-
-  // Modul chart (tabayyun/chartType) sedang ditugaskan → pastikan grafik terbuka + diberi instruksi.
-  const chartHighlighted = highlightKey === "tabayyunThreshold" || highlightKey === "chartType";
-  useEffect(() => {
-    if (chartHighlighted) setCollapsed(false);
   }, [chartHighlighted]);
+
+  // Efek visual: saat modul ditugaskan, grafik selalu terbuka meski `collapsed` masih true.
+  const isCollapsed = collapsed && !chartHighlighted;
 
   const primaryKey = dataKeys[0];
   const stats = useMemo(() => {
