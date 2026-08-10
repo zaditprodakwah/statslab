@@ -8,7 +8,13 @@ const GURU_AND_ADMIN: Role[] = ["GURU", "ADMIN"];
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_PER_WINDOW = 10;
-const RATE_LIMITED_POST_PATHS = ["/api/sessions", "/api/sus", "/api/task-responses"];
+const RATE_LIMITED_POST_PATHS = [
+  "/api/sessions",
+  "/api/sus",
+  "/api/task-responses",
+  "/api/auth/register",
+  "/api/auth/login",
+];
 
 const ipBuckets = new Map<string, { count: number; resetAt: number }>();
 
@@ -96,6 +102,7 @@ export const config = {
     "/api/admin/:path*",
     "/guru/:path*",
     "/api/guru/:path*",
+    "/api/auth/:path*",
     "/api/sessions/:path*",
     "/api/sus/:path*",
     "/api/task-responses/:path*",

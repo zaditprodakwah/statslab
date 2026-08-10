@@ -1,7 +1,7 @@
-export const WATSON_BASE_LEVEL = 3;
-export const WATSON_MIN_TASK_LEVEL = 4;
+export const WATSON_BASE_LEVEL = 1;
+export const WATSON_MIN_TASK_LEVEL = 1;
 export const WATSON_MAX_TASK_LEVEL = 6;
-export const WATSON_LEVELS = [WATSON_MIN_TASK_LEVEL, 5, WATSON_MAX_TASK_LEVEL] as const;
+export const WATSON_LEVELS = [1, 2, 3, 4, 5, 6] as const;
 export type WatsonTaskLevel = (typeof WATSON_LEVELS)[number];
 
 export const SCORE_SCALE = {

@@ -3,10 +3,11 @@
 import React, { useEffect, useState, useCallback } from "react";
 import InteractiveChart from "@/components/InteractiveChart";
 import EmbeddedTasksPanel from "@/components/EmbeddedTasksPanel";
+import OnboardingTour from "@/components/OnboardingTour";
 import SusFormModal from "@/components/SusFormModal";
 import EthicalModal from "@/components/EthicalModal";
 import CertificateModal from "@/components/CertificateModal";
-import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Award } from "lucide-react";
+import { BookOpen, BarChart2, ShieldCheck, ClipboardCheck, Award, HelpCircle } from "lucide-react";
 import { useStatsLabStore } from "@/store/useStatsLabStore";
 import { isPrerequisiteLocked } from "@/lib/taskPrereq";
 import type { PrerequisiteKey, TaskOptions } from "@/lib/scoring";
@@ -46,6 +47,7 @@ export default function DashboardClient() {
     null
   );
   const [ethicalModal, setEthicalModal] = useState<"tabayyun" | "amanah" | null>(null);
+  const [tourRun, setTourRun] = useState(false);
 
   const {
     currentLevel,
@@ -78,8 +80,26 @@ export default function DashboardClient() {
     fetchDatasets();
   }, []);
 
-  // Auto-start tour for first-time visitors
-  // (OnboardingTour dihapus; langsung masuk ke konten agar fokus pada tugas asesmen)
+  // Auto-start onboarding tour for first-time visitors (spec: First-Time Tour, bisa dilewati/re-run).
+  useEffect(() => {
+    if (loading) return;
+    const done = typeof window !== "undefined" && window.localStorage.getItem("statslab_onboarding_done");
+    if (!done) {
+      const t = setTimeout(() => setTourRun(true), 800);
+      return () => clearTimeout(t);
+    }
+  }, [loading]);
+
+  const finishTour = useCallback(() => {
+    setTourRun(false);
+    try {
+      window.localStorage.setItem("statslab_onboarding_done", "1");
+    } catch {
+      // localStorage tidak tersedia (private mode) — abaikan
+    }
+  }, []);
+
+  // Assessment metadata (derived from active dataset tasks)
   useEffect(() => {
     const tasks = (datasets || []).flatMap((d) => d.tasks || []);
     if (tasks.length === 0) return;
@@ -203,6 +223,20 @@ export default function DashboardClient() {
             }}
           >
             <ClipboardCheck size={18} /> Evaluasi SUS (14 Butir)
+          </button>
+
+          <button
+            onClick={() => setTourRun(true)}
+            className="btn-premium"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              backgroundColor: "var(--color-emerald-700)",
+            }}
+            title="Tampilkan Tur Panduan Interaktif lagi"
+          >
+            <HelpCircle size={18} /> Tur Panduan
           </button>
         </div>
 
@@ -401,6 +435,9 @@ export default function DashboardClient() {
         sessionToken={sessionToken}
       />
       <CertificateModal isOpen={isCertOpen} onClose={() => setIsCertOpen(false)} />
+
+      {/* Onboarding / Tooltip Guidelines (First-Time Tour, re-run via "Tur Panduan") */}
+      <OnboardingTour run={tourRun} onFinish={finishTour} />
     </main>
   );
 }
