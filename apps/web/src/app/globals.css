@@ -656,3 +656,30 @@ body.projector-mode a {
 .pulse-red {
   animation: pulseRed 1.5s infinite;
 }
+
+/* === RESPONSIVE TYPOGRAPHY === */
+.hero-title {
+  font-size: 1.75rem;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 750px;
+  margin: 0 auto 20px;
+  padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+  .hero-subtitle {
+    font-size: 1.1rem;
+    padding: 0;
+  }
+}

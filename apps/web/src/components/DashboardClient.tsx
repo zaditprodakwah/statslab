@@ -162,17 +162,10 @@ export default function DashboardClient() {
         >
           <ShieldCheck size={18} /> Media Pembelajaran R&D Terintegrasi Nilai Keislaman
         </div>
-        <h1 style={{ fontSize: "2.5rem", marginBottom: "12px", color: "var(--text-primary)" }}>
+        <h1 className="hero-title">
           StatsLab — Dasbor Statistika Interaktif
         </h1>
-        <p
-          style={{
-            fontSize: "1.1rem",
-            color: "var(--text-secondary)",
-            maxWidth: "750px",
-            margin: "0 auto 20px",
-          }}
-        >
+        <p className="hero-subtitle">
           Memfasilitasi Literasi Data Siswa melalui Eksplorasi Visualisasi Interaktif, Analisis
           Outlier Tabayyun, dan Audit Skala Amanah.
         </p>
