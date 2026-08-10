@@ -2,12 +2,11 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import type { Role } from "@prisma/client";
 import { AUTH_COOKIE_NAME, verifySessionToken } from "@/lib/authToken";
+import { isRateLimited } from "@/lib/rateLimit";
 
 const ADMIN_AND_PENELITI: Role[] = ["PENELITI", "ADMIN"];
 const GURU_AND_ADMIN: Role[] = ["GURU", "ADMIN"];
 
-const RATE_LIMIT_WINDOW_MS = 60_000;
-const RATE_LIMIT_MAX_PER_WINDOW = 10;
 const RATE_LIMITED_POST_PATHS = [
   "/api/sessions",
   "/api/sus",
@@ -16,30 +15,21 @@ const RATE_LIMITED_POST_PATHS = [
   "/api/auth/login",
 ];
 
-const ipBuckets = new Map<string, { count: number; resetAt: number }>();
-
-function isRateLimited(request: NextRequest): boolean {
-  const ip =
+function clientIp(request: NextRequest): string {
+  return (
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     request.headers.get("x-real-ip") ||
-    "unknown";
-  const now = Date.now();
-  const bucket = ipBuckets.get(ip);
-  if (!bucket || bucket.resetAt < now) {
-    ipBuckets.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return false;
-  }
-  bucket.count += 1;
-  return bucket.count > RATE_LIMIT_MAX_PER_WINDOW;
+    "unknown"
+  );
 }
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
     request.method === "POST" &&
     RATE_LIMITED_POST_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`)) &&
-    isRateLimited(request)
+    (await isRateLimited(clientIp(request)))
   ) {
     return NextResponse.json(
       { success: false, message: "Terlalu banyak permintaan. Coba lagi sebentar lagi." },

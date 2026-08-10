@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "description": "Rubrik skoring tugas Watson-Callingham Level 4-6 dengan integrasi nilai Islam (Amanah, Tabayyun, Tawazun).",
+  "description": "Rubrik skoring tugas Watson-Callingham Level 1-6 dengan integrasi nilai Islam (Amanah, Tabayyun, Tawazun).",
   "scoreScale": {
     "min": 0,
     "max": 2,
@@ -15,6 +15,55 @@
     "6": 5
   },
   "rubrics": [
+    {
+      "watsonLevel": 1,
+      "indicators": [
+        "Idiosyncratic — Klik Titik Data",
+        "Idiosyncratic — Klik Irisan Pie",
+        "Idiosyncratic — Klik Titik Tertinggi"
+      ],
+      "keywords": [
+        "klik", "batang", "titik", "irisan", "pie", "tertinggi", "terbesar",
+        "terkecil", "terendah", "nilai", "angka", "provinsi", "zakat",
+        "infak", "wakaf", "perpus", "tajwid", "bulan", "tahun"
+      ],
+      "criteria": {
+        "2": "Membaca nilai/kategori secara tepat dari elemen grafik yang diklik (batang, irisan, atau titik) dengan menyebut angka atau identitas yang benar.",
+        "1": "Menyebut kategori/nilai yang relevan namun kurang tepat atau tidak lengkap.",
+        "0": "Tidak menjawab atau jawaban tidak berkaitan dengan titik yang dipilih."
+      }
+    },
+    {
+      "watsonLevel": 2,
+      "indicators": ["Informal — Identifikasi Pola Tren"],
+      "keywords": [
+        "pola", "tren", "naik", "turun", "fluktuasi", "variasi", "beraturan",
+        "tidak beraturan", "tipe", "bar", "line", "pie", "grafik", "perubahan",
+        "kecenderungan", "konsisten"
+      ],
+      "criteria": {
+        "2": "Mengidentifikasi pola atau tipe grafik dengan tepat dan didukung data/kecenderungan yang terlihat pada visualisasi.",
+        "1": "Menyebut pola/tren secara umum namun dangkal atau tanpa contoh data.",
+        "0": "Tidak menjawab atau hanya mengulang judul grafik tanpa analisis pola."
+      }
+    },
+    {
+      "watsonLevel": 3,
+      "indicators": [
+        "Tabayyun — Saring Data Ekstrem",
+        "Tabayyun — Verifikasi Outlier"
+      ],
+      "keywords": [
+        "tabayyun", "outlier", "ekstrem", "ambang", "slider", "threshold",
+        "verifikasi", "saring", "rata-rata", "mean", "jauh", "sumber",
+        "periksa", "ulang", "valid", "data"
+      ],
+      "criteria": {
+        "2": "Mengenali nilai ekstrem/outlier relatif terhadap ambang dan melakukan verifikasi (tabayyun) terhadap sumber/kebenaran data dengan alasan.",
+        "1": "Menyebut adanya nilai ekstrem namun tanpa langkah verifikasi atau alasan yang memadai.",
+        "0": "Tidak menjawab atau tidak mengaitkan dengan prinsip tabayyun."
+      }
+    },
     {
       "watsonLevel": 4,
       "indicators": ["Reading Data", "Reading Between Data"],

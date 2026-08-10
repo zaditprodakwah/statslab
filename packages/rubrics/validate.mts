@@ -14,7 +14,7 @@ const RubricsSchema = z.object({
   levelThresholds: z.record(z.number().int()),
   rubrics: z.array(
     z.object({
-      watsonLevel: z.number().int().min(4).max(6),
+      watsonLevel: z.number().int().min(1).max(6),
       indicators: z.array(z.string().min(1)),
       keywords: z.array(z.string().min(1)),
       criteria: z.record(z.string().min(1)),
