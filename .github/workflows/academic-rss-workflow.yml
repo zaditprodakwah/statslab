@@ -23,4 +23,4 @@ jobs:
         with:
           comment_tag_name: GLOBAL_RESEARCH_LIST
           max_post_count: 5
-          feed_list: "https://jurnal.staialbahjah.ac.id/index.php/abjme/gateway/plugin/WebFeedGatewayPlugin/rss2,https://j-cup.org/index.php/cendekia/gateway/plugin/WebFeedGatewayPlugin/rss2,https://www.kalamatika.matematika-uhamka.com/index.php/kmk/gateway/plugin/WebFeedGatewayPlugin/rss2,https://intomath.org/feed/,https://repository.uisu.ac.id/feed/rss_2.0/123456789/47"
+          feed_list: "https://jurnal.staialbahjah.ac.id/index.php/abjme/gateway/plugin/WebFeedGatewayPlugin/rss2,https://j-cup.org/index.php/cendekia/gateway/plugin/WebFeedGatewayPlugin/rss2,https://www.kalamatika.matematika-uhamka.com/index.php/kmk/gateway/plugin/WebFeedGatewayPlugin/rss2,https://repository.uisu.ac.id/feed/rss_2.0/123456789/47"
