@@ -18,7 +18,7 @@
     <a href="https://statslabmedia.vercel.app"><strong>⚡ Jelajahi Live Demo</strong></a> •
     <a href="https://github.com/zaditprodakwah/statslab/issues/new?labels=bug">🐛 Laporkan Bug</a> •
     <a href="https://github.com/zaditprodakwah/statslab/issues/new?labels=enhancement">✨ Usulkan Fitur</a> •
-    <a href="#-sitasi-akademik--citation">🎓 Sitasi Penelitian</a>
+    <a href="#citation">🎓 Sitasi Penelitian</a>
   </p>
 
   <!-- SHIELDS.IO BADGES -->
