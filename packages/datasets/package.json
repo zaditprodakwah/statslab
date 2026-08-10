@@ -1,0 +1,7 @@
+{
+  "name": "@statslab/datasets",
+  "version": "1.0.0",
+  "description": "Educational datasets for StatsLab R&D Ecosystem",
+  "main": "index.js",
+  "license": "MIT"
+}

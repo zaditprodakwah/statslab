@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import { readFileSync, existsSync } from "fs";
-import path from "path";
+import * as path from "path";
 import { fileURLToPath } from "url";
 import { hashPassword } from "../src/lib/password";
 
@@ -24,8 +24,8 @@ interface DatasetSeed {
   category: string;
   islamicValue: string;
   description?: string;
-  chartConfig?: unknown;
-  rawData: unknown[];
+  chartConfig?: any;
+  rawData: any;
 }
 
 interface RubricSeed {
