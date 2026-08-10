@@ -274,6 +274,17 @@ STATSLAB/
 
 ---
 
+## 🌍 Jurnal & Riset Pendidikan Matematika Terkini
+
+*Daftar artikel akademik terbaru yang ditarik secara otomatis dari jurnal OJS, Repositori DSpace, dan portal edukasi matematika global.*
+
+<!-- GLOBAL_RESEARCH_LIST:START -->
+<!-- GLOBAL_RESEARCH_LIST:END -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
 ## 🎓 Sitasi Akademik (Citation)
 
 Jika Anda menggunakan perangkat lunak, dataset, atau skrip psikometri **StatsLab** dalam penelitian Anda, mohon sitasi repositori ini melalui tombol **"Cite this repository"** di bagian samping kanan repositori GitHub ini, atau gunakan format BibTeX berikut:
