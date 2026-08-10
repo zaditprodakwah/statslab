@@ -265,6 +265,7 @@ STATSLAB/
 ## 📚 Publikasi & Karya Ilmiah Terbaru
 
 <!-- PUBLICATION_LIST:START -->
+- 📄 **[Efektivitas Model Pembelajaran Generatif: Pemahaman dan Keterlibatan Siswa dalam Pembelajaran Matematika](https://jurnal.staialbahjah.ac.id/index.php/abjme/article/view/152)** (2024) — *AB-JME: Al-Bahjah Journal of Mathematics Education, Vol. 2 No. 1*. DOI: [10.61553/abjme.v2i1.152](https://doi.org/10.61553/abjme.v2i1.152).
 - 📄 **[Pengembangan Media Pembelajaran Dasbor Statistik Interaktif Terintegrasi Nilai Keislaman]** (2026) — *Penelitian Tugas Akhir / Skripsi (Sedang Berjalan)*. Institut Al-Bahjah Cirebon.
 - 🔬 **[Implementasi Model Rasch (PCM) dan Aiken's V dalam Validasi Instrumen Literasi Data]** (2026) — *Working Paper*.
 <!-- PUBLICATION_LIST:END -->
