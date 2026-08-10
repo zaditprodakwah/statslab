@@ -9,6 +9,11 @@ build/
 *.log
 .vercel
 
+# AI coding-agent skill tooling (Prisma agent-skills) — lokal saja, tidak untuk repo
+apps/web/.agents/
+apps/web/.claude/
+apps/web/.windsurf/
+
 # Exclude internal documentation & AI agent configuration folders
 docs/
 .agents/
