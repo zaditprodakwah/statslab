@@ -12,7 +12,7 @@ import {
   Cell,
   CartesianGrid
 } from 'recharts';
-import { BarChart3, PieChart as PieIcon, Layers, TrendingUp, CheckCircle2, Star } from 'lucide-react';
+import { BarChart3, PieChart as Star } from 'lucide-react';
 import { ValidationItem } from '@/lib/research/types';
 
 interface LikertDistributionChartProps {

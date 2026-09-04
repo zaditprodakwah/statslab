@@ -7,9 +7,7 @@ import {
   ChevronUp, 
   Keyboard, 
   GraduationCap, 
-  UserCheck, 
-  Lightbulb,
-  Sparkles
+  UserCheck
 } from 'lucide-react';
 
 export default function GuideSection() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, Download, CheckCircle2, Award, ShieldCheck, BookOpen } from 'lucide-react';
+import { Download, CheckCircle2, Award, ShieldCheck, BookOpen } from 'lucide-react';
 
 interface DownloadItem {
   title: string;

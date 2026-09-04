@@ -10,10 +10,7 @@ import {
   Sliders, 
   Bookmark, 
   BookA, 
-  ArrowRight,
-  Sparkles,
-  BarChart3,
-  HelpCircle
+  ArrowRight
 } from 'lucide-react';
 import { TabType } from '@/lib/research/types';
 import { TASKS_DATA, VALIDATION_DOMAINS, SUS_ITEMS, REFERENCES_DATA, GLOSSARY_DATA } from '@/lib/research/data';

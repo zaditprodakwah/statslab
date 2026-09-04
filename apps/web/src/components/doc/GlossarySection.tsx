@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BookA, Search, Filter, BookOpen } from 'lucide-react';
+import { BookA, Search } from 'lucide-react';
 import { GLOSSARY_DATA } from '@/lib/research/data';
 
 export default function GlossarySection() {

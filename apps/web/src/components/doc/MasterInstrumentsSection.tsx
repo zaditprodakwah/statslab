@@ -5,31 +5,18 @@ import {
   FileSpreadsheet, 
   CheckCircle2, 
   AlertCircle, 
-  Copy, 
   Printer, 
   RotateCcw, 
-  Plus, 
-  Trash2, 
-  Edit3, 
-  Save, 
-  Filter, 
   Download, 
   Check, 
-  Eye, 
-  BookOpen, 
   GraduationCap, 
-  HelpCircle,
-  Sliders,
-  Calculator,
   Sparkles,
   Search,
-  ExternalLink,
   Info,
   FileCheck
 } from 'lucide-react';
 import { VALIDATION_DOMAINS, SUS_ITEMS, TASKS_DATA } from '@/lib/research/data';
-import { ValidationItem, SUSItem, TaskData, ItemStatus } from '@/lib/research/types';
-import MathFormula from './MathFormula';
+import { ValidationItem, SUSItem, TaskData } from '@/lib/research/types';
 import PrintableValidationSheetModal from './PrintableValidationSheetModal';
 
 export default function MasterInstrumentsSection() {
@@ -58,9 +45,8 @@ export default function MasterInstrumentsSection() {
   );
 
   // Modal / Editing states
-  const [editingItemId, setEditingItemId] = useState<string | number | null>(null);
   const [copiedType, setCopiedType] = useState<string | null>(null);
-  const [showPrintModal, setShowPrintModal] = useState(false);
+  
 
   // Compute Aiken's V helper
   const computeV = (item: ValidationItem) => {
@@ -257,7 +243,7 @@ export default function MasterInstrumentsSection() {
     // Tabel 3.6
     text += '\n5. TABEL 3.6: RUBRIK PENSKORAN POLITOMI 8 TUGAS LITERASI DATA (T1 - T8)\n';
     text += '------------------------------------------------------------------------\n';
-    filteredTasks.forEach((it, idx) => {
+    filteredTasks.forEach((it) => {
       text += `TUGAS ${it.id}: ${it.title} [${it.watsonLevel}] [${it.gaisePhase}]\n`;
       text += `Konteks: ${it.context}\n`;
       text += `Nilai Keislaman: ${it.islamicValue} (${it.islamicPrinciple})\n`;

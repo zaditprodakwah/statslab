@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Save, CheckCircle2, Loader2 } from 'lucide-react';
+import { CheckCircle2, Loader2 } from 'lucide-react';
 
 interface AutoSaveToastProps {
   status: 'idle' | 'saving' | 'saved';

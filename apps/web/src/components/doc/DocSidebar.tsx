@@ -8,16 +8,13 @@ import {
   ListCheck, 
   Calculator, 
   Sliders, 
-  Layers, 
   Bookmark, 
   HelpCircle, 
   Search, 
   X, 
   Building2, 
-  Sparkles,
   BookA,
-  BarChart3,
-  CheckCircle2
+  BarChart3
 } from 'lucide-react';
 import { TabType } from '@/lib/research/types';
 

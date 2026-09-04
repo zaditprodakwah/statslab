@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Printer, 
-  Download, 
   Copy, 
   Check, 
   X, 
@@ -86,7 +85,7 @@ export default function PrintableValidationSheetModal({
     return '........................ 2026';
   });
 
-  const [city, setCity] = useState(() => {
+  const [city] = useState(() => {
     if (typeof window !== 'undefined') {
       try {
         const saved = localStorage.getItem('skripsi_validation_sheet_meta');
@@ -223,55 +222,7 @@ export default function PrintableValidationSheetModal({
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const handleDownloadTxt = () => {
-    let text = `================================================================================\n`;
-    text += `${domainConfig.title}\n`;
-    text += `Media Pembelajaran Dasbor Statistika Interaktif Terintegrasi Nilai Keislaman\n`;
-    text += `Program Studi Tadris Matematika - STAI Al-Bahjah Cirebon\n`;
-    text += `Acuan Proposal: ${domainConfig.tableCode} (Skala Likert 1-5)\n`;
-    text += `================================================================================\n\n`;
-    text += `Nama Validator     : ${validatorName || '...........................................................'}\n`;
-    text += `NIP / NIDN         : ${validatorNip || '...........................................................'}\n`;
-    text += `Instansi / Prodi   : ${validatorInstansi || '...........................................................'}\n`;
-    text += `Bidang Kepakaran   : [X] ${domainConfig.expertRole}\n`;
-    text += `Tanggal Penilaian  : ${assessmentDate || '...........................................................'}\n\n`;
-    text += `PETUNJUK PENGISIAN:\n`;
-    text += `Berikan tanda centang (✓) pada kolom skala penilaian (1 sampai 5) yang paling sesuai:\n`;
-    text += `1 = Sangat Tidak Sesuai (STS)    4 = Sesuai (S)\n`;
-    text += `2 = Tidak Sesuai (TS)            5 = Sangat Sesuai (SS)\n`;
-    text += `3 = Kurang Sesuai (KS)\n\n`;
-    text += `--------------------------------------------------------------------------------\n`;
-    text += `No | Aspek / Indikator & Butir Pernyataan                  | 1 | 2 | 3 | 4 | 5 | Catatan\n`;
-    text += `--------------------------------------------------------------------------------\n`;
-    
-    items.forEach((item, idx) => {
-      const num = String(idx + 1).padStart(2, '0');
-      text += `${num} | [${item.id}] ${item.indicator}: ${item.statement}\n`;
-      text += `   |                                                      |   |   |   |   |   | \n`;
-    });
-    
-    text += `--------------------------------------------------------------------------------\n\n`;
-    text += `KOMENTAR / SARAN PERBAIKAN UMUM:\n`;
-    text += `................................................................................\n`;
-    text += `................................................................................\n\n`;
-    text += `KESIMPULAN KELAYAKAN:\n`;
-    text += `[ ] Layak digunakan tanpa revisi\n`;
-    text += `[ ] Layak digunakan dengan revisi sesuai saran\n`;
-    text += `[ ] Tidak layak digunakan / perlu revisi total\n\n`;
-    text += `                                                    ${city}, ${assessmentDate}\n`;
-    text += `                                                    Validator,\n\n\n\n`;
-    text += `                                                    ( ${validatorName || '..........................'} )\n`;
-
-    const blob = new Blob([text], { type: 'text/plain;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `lembar-validasi-${domain}-siap-cetak.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
+  
 
   return (
     <div 

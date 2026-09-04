@@ -7,12 +7,10 @@ import {
   Calculator, 
   Layers, 
   ShieldCheck, 
-  Sparkles, 
   CheckCircle2, 
   BookOpen, 
   Target, 
   Cpu, 
-  Users, 
   Sliders, 
   Compass,
   ArrowRight

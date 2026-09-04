@@ -5,24 +5,17 @@ import confetti from 'canvas-confetti';
 import { 
   CheckCircle2, 
   AlertCircle, 
-  HelpCircle, 
   ChevronDown, 
   ChevronUp, 
-  ArrowRight, 
-  RotateCcw, 
   Users, 
-  TrendingUp, 
   Sliders, 
-  Layers, 
   Sparkles,
   Info,
   Scale,
   Eye,
-  Check,
   X
 } from 'lucide-react';
 import { TASKS_DATA } from '@/lib/research/data';
-import MathFormula from './MathFormula';
 
 interface TaskStudioSectionProps {
   initialTaskIndex?: number;

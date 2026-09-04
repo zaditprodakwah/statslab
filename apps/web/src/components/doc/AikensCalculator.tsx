@@ -2,18 +2,13 @@
 
 import React, { useState, useMemo } from 'react';
 import { 
-  Calculator, 
-  Sparkles, 
   CheckCircle2, 
-  AlertCircle, 
   ArrowRight, 
   Copy, 
   Check, 
   BookOpen, 
   MessageSquare, 
-  HelpCircle,
   Sliders,
-  RotateCcw,
   Zap
 } from 'lucide-react';
 import MathFormula from './MathFormula';
@@ -25,14 +20,13 @@ interface AikensCalculatorProps {
   onApplyScore?: (itemId: string, r1: number, r2: number, r3: number) => void;
 }
 
-export default function AikensCalculator({ items, domainName, onApplyScore }: AikensCalculatorProps) {
+export default function AikensCalculator({ items, onApplyScore }: AikensCalculatorProps) {
   const [selectedItemId, setSelectedItemId] = useState<string>(items[0]?.id || '');
   const [raterCount, setRaterCount] = useState<number>(3);
   const [scaleCategory, setScaleCategory] = useState<number>(5);
   
   // Custom scores for up to 7 raters
   const [raterScores, setRaterScores] = useState<number[]>([5, 5, 4]);
-  const [customIndicator, setCustomIndicator] = useState<string>('');
   const [copied, setCopied] = useState(false);
 
   // Sync selected item

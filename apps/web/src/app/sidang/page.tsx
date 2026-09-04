@@ -15,7 +15,6 @@ import {
   RotateCcw,
   Grid,
   Sparkles,
-  HelpCircle,
   Award
 } from 'lucide-react';
 
@@ -296,6 +295,14 @@ export default function SidangPresentationPage() {
     return `${mins.toString().padStart(2, '0')}:${remainderSecs.toString().padStart(2, '0')}`;
   };
 
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
+    } else {
+      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
+    }
+  };
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -321,13 +328,7 @@ export default function SidangPresentationPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [totalSlides]);
 
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
-    } else {
-      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
-    }
-  };
+
 
   return (
     <div ref={containerRef} className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between font-sans select-none overflow-hidden">

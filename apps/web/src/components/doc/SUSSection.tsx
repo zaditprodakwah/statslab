@@ -3,25 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Sliders, 
-  Sparkles, 
-  RotateCcw, 
-  CheckCircle2, 
-  AlertCircle, 
-  HelpCircle,
-  ThumbsUp,
-  Award,
-  Layers,
-  Copy,
   Download,
   Check,
-  Info,
   Printer,
-  FileDown,
-  Save
+  FileDown
 } from 'lucide-react';
 import { SUS_ITEMS } from '@/lib/research/data';
 import { SUSItem } from '@/lib/research/types';
-import MathFormula from './MathFormula';
 import { exportSUSPdf } from '@/lib/research/pdfExport';
 import AutoSaveToast from './AutoSaveToast';
 

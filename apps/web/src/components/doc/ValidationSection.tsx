@@ -6,9 +6,7 @@ import {
   CheckCircle2, 
   AlertCircle, 
   Download, 
-  Copy, 
   RotateCcw, 
-  Layers, 
   Info,
   Check,
   Printer,
@@ -16,7 +14,6 @@ import {
   FileDown,
   Eye,
   CheckSquare,
-  Sparkles,
   Save
 } from 'lucide-react';
 import { VALIDATION_DOMAINS } from '@/lib/research/data';

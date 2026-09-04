@@ -6,11 +6,7 @@ import {
   ListCheck, 
   Calculator, 
   Sliders, 
-  Menu,
-  Bookmark,
-  BarChart3,
-  BookA,
-  HelpCircle
+  Menu
 } from 'lucide-react';
 import { TabType } from '@/lib/research/types';
 

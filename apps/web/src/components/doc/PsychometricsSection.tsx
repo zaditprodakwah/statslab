@@ -5,10 +5,7 @@ import {
   BarChart3, 
   Layers, 
   ShieldCheck, 
-  CheckCircle2, 
-  Info,
-  TrendingUp,
-  Cpu
+  Info
 } from 'lucide-react';
 import { PSYCHOMETRICS_DATA } from '@/lib/research/data';
 import MathFormula from './MathFormula';

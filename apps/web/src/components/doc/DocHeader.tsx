@@ -6,10 +6,7 @@ import {
   Search, 
   Sun, 
   Moon, 
-  BookOpen, 
-  FileText, 
   Printer, 
-  Sparkles,
   ChevronRight,
   GraduationCap
 } from 'lucide-react';

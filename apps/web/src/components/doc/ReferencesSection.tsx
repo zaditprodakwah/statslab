@@ -5,10 +5,7 @@ import {
   Bookmark, 
   Search, 
   Copy, 
-  Check, 
-  ExternalLink,
-  BookOpen,
-  Filter
+  Check
 } from 'lucide-react';
 import { REFERENCES_DATA } from '@/lib/research/data';
 import { ReferenceItem } from '@/lib/research/types';

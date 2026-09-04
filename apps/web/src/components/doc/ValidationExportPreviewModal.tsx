@@ -6,15 +6,8 @@ import {
   FileDown, 
   Download, 
   Printer, 
-  CheckCircle2, 
-  AlertCircle, 
-  Check, 
   FileText,
-  Building,
-  GraduationCap,
-  Calendar,
-  Layers,
-  UserCheck
+  Layers
 } from 'lucide-react';
 import { ValidationItem } from '@/lib/research/types';
 import { getFormattedDate } from '@/lib/research/pdfExport';
