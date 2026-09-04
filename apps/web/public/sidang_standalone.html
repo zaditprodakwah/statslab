@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentasi Sidang Proposal Skripsi - Muhammad Khoiruzzadittaqwa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0f1d;
+      --bg-secondary: #111827;
+      --bg-card: #1e293b;
+      --text-primary: #f8fafc;
+      --text-muted: #94a3b8;
+      --teal-primary: #0f766e;
+      --teal-bright: #2dd4bf;
+      --teal-glow: rgba(45, 212, 191, 0.15);
+      --gold-primary: #d97706;
+      --gold-bright: #fbbf24;
+      --gold-glow: rgba(251, 191, 36, 0.15);
+      --border-color: #334155;
+      --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-heading: 'Merriweather', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      user-select: none;
+    }
+
+    /* Top Navigation & Controls */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: rgba(10, 15, 29, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--teal-bright);
+    }
+
+    .brand svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--teal-bright);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .timer-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--gold-bright);
+    }
+
+    .timer-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.75rem;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .timer-btn:hover {
+      color: var(--text-primary);
+      background: var(--border-color);
+    }
+
+    .control-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .control-btn:hover {
+      background: var(--teal-primary);
+      border-color: var(--teal-bright);
+    }
+
+    .control-btn.active {
+      background: var(--teal-primary);
+      border-color: var(--teal-bright);
+      color: #fff;
+    }
+
+    /* Progress Bar */
+    .progress-bar-container {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--bg-secondary);
+      z-index: 100;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal-bright), var(--gold-bright));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Main Slide Container */
+    main {
+      position: absolute;
+      top: 60px;
+      bottom: 60px;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .slide {
+      position: absolute;
+      width: 90%;
+      max-width: 1100px;
+      height: 85%;
+      max-height: 680px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 40px 50px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px) scale(0.98);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Slide Content Typography */
+    .slide-tag {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--teal-bright);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--teal-primary);
+    }
+
+    .slide-body {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: #cbd5e1;
+      flex-grow: 1;
+    }
+
+    .slide-body p {
+      margin-bottom: 16px;
+    }
+
+    .slide-body ul {
+      margin-left: 24px;
+      margin-bottom: 20px;
+    }
+
+    .slide-body li {
+      margin-bottom: 10px;
+    }
+
+    .slide-body strong {
+      color: var(--teal-bright);
+    }
+
+    /* Card Highlights */
+    .highlight-card {
+      background: var(--teal-glow);
+      border-left: 4px solid var(--teal-bright);
+      padding: 16px 20px;
+      border-radius: 0 10px 10px 0;
+      margin: 16px 0;
+      font-size: 0.95rem;
+    }
+
+    .gold-card {
+      background: var(--gold-glow);
+      border-left: 4px solid var(--gold-bright);
+      padding: 16px 20px;
+      border-radius: 0 10px 10px 0;
+      margin: 16px 0;
+      font-size: 0.95rem;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 16px 0;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 16px 0;
+    }
+
+    .card-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 0.9rem;
+    }
+
+    .card-item h4 {
+      color: var(--gold-bright);
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    /* Tables */
+    table.slide-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 0.9rem;
+    }
+
+    table.slide-table th {
+      background: var(--teal-primary);
+      color: #fff;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    table.slide-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-card);
+    }
+
+    /* Title Slide Specific */
+    .title-slide {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .title-slide h1 {
+      font-family: var(--font-heading);
+      font-size: 2.1rem;
+      color: var(--teal-bright);
+      margin-bottom: 16px;
+      line-height: 1.35;
+    }
+
+    .title-badge {
+      background: var(--gold-glow);
+      border: 1px solid var(--gold-bright);
+      color: var(--gold-bright);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 6px 18px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
+    }
+
+    .author-meta {
+      font-size: 1rem;
+      color: #94a3b8;
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+
+    .author-meta strong {
+      color: #fff;
+    }
+
+    /* Footer / Bottom Navigation */
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(10, 15, 29, 0.95);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .slide-counter {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .nav-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--teal-primary);
+      border-color: var(--teal-bright);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Speaker Notes Drawer */
+    .speaker-notes-drawer {
+      position: fixed;
+      bottom: 60px;
+      left: 0;
+      right: 0;
+      height: 220px;
+      background: #020617;
+      border-top: 2px solid var(--teal-primary);
+      padding: 20px 30px;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 90;
+      box-shadow: 0 -10px 25px rgba(0,0,0,0.5);
+    }
+
+    .speaker-notes-drawer.open {
+      transform: translateY(0);
+    }
+
+    .speaker-notes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .speaker-notes-header h3 {
+      font-size: 0.95rem;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .notes-content {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    .notes-content strong {
+      color: var(--teal-bright);
+    }
+
+    /* Modal / Slide Navigator */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .grid-modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 950px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 30px;
+    }
+
+    .grid-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .grid-modal-header h2 {
+      font-size: 1.3rem;
+      color: var(--teal-bright);
+    }
+
+    .slide-grid-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .grid-thumb {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .grid-thumb:hover, .grid-thumb.active {
+      border-color: var(--teal-bright);
+      transform: translateY(-2px);
+      background: var(--teal-glow);
+    }
+
+    .grid-thumb-num {
+      font-size: 0.75rem;
+      color: var(--gold-bright);
+      font-family: var(--font-mono);
+      margin-bottom: 4px;
+    }
+
+    .grid-thumb-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    /* Keyboard Shortcuts Modal */
+    .shortcuts-help {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      gap: 16px;
+    }
+
+    .key {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--gold-bright);
+      font-family: var(--font-mono);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+      <span>TADRIS MATEMATIKA — INSTITUT AL-BAHJAH CIREBON</span>
+    </div>
+    <div class="controls">
+      <div class="timer-badge">
+        <span>⏱️</span>
+        <span id="timer-display">00:00</span>
+        <button class="timer-btn" id="timer-toggle-btn" title="Start/Pause Timer">▶</button>
+        <button class="timer-btn" id="timer-reset-btn" title="Reset Timer">↺</button>
+      </div>
+      <button class="control-btn" id="grid-modal-btn" title="Lihat Seluruh Slide (O)">
+        <span>📑</span> Daftar Slide
+      </button>
+      <button class="control-btn" id="notes-toggle-btn" title="Catatan Pembicara (N / P)">
+        <span>🎙️</span> Notes
+      </button>
+      <button class="control-btn" id="fullscreen-btn" title="Layar Penuh (F)">
+        <span>⛶</span> Fullscreen
+      </button>
+    </div>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <!-- Main Slide Arena -->
+  <main>
+
+    <!-- Slide 1: Cover / Judul -->
+    <div class="slide title-slide active" data-slide="1" data-notes="Bismillah, Assalamu'alaikum Wr. Wb. Yang terhormat Bapak/Ibu Dosen Pembimbing dan Penguji. Terima kasih atas kesempatan yang diberikan. Pada kesempatan ini saya akan memaparkan proposal skripsi saya yang berjudul Pengembangan Media Pembelajaran Dasbor Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa.">
+      <div class="title-badge">SEMINAR PROPOSAL SKRIPSI</div>
+      <h1>Pengembangan Media Pembelajaran Dasbor Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa</h1>
+      <p style="color: var(--gold-bright); font-size: 1.1rem; font-weight: 500; margin-bottom: 20px;">
+        Prototipe-1 Media Pembelajaran Mandiri Teruji Validitas Teoretis dan Kepraktisan
+      </p>
+      <div class="author-meta">
+        <p>Disusun oleh: <strong>Muhammad Khoiruzzadittaqwa</strong> (NIM. 2220020002)</p>
+        <p>Program Studi Tadris Matematika — Institut Al-Bahjah Cirebon</p>
+        <p style="margin-top: 10px; font-size: 0.9rem; color: #64748b;">Dosen Pembimbing I: [Nama Dospem 1, Gelar] | Dosen Pembimbing II: [Nama Dospem 2, Gelar]</p>
+      </div>
+    </div>
+
+    <!-- Slide 2: Latar Belakang & Urgensi -->
+    <div class="slide" data-slide="2" data-notes="Urgensi penelitian ini berangkat dari hasil PISA 2022 di mana Indonesia berada pada skor 366. Yang memprihatinkan, kelemahan terbesar siswa ada pada domain ketidakpastian dan data. Pada Kurikulum Merdeka Fase D (SMP/MTs), fokus belajar telah beralih dari sekadar hitung manual ke interpretasi kritis. Namun di MTs dan pesantren Cirebon, pembelajaran masih terjebak pada hafalan rumus mekanistik di buku cetak.">
+      <div class="slide-tag">BAB I: PENDAHULUAN</div>
+      <h2 class="slide-title">Latar Belakang & Urgensi Masalah</h2>
+      <div class="slide-body">
+        <ul>
+          <li><strong>Krisis Literasi Data Nasional (PISA 2022):</strong> Indonesia mencatat skor matematika 366 poin, dengan kelemahan paling menonjol pada domain <em>Uncertainty and Data</em> (penalaran ketidakpastian dan representasi informasi statistik).</li>
+          <li><strong>Pergeseran Paradigma Kurikulum Merdeka (Fase D SMP/MTs):</strong> Tuntutan capaian pembelajaran beralih dari keterampilan hitung mekanik manual (<em>computing skills</em>) menuju analisis data kontekstual, interpretasi sebaran, dan verifikasi etis.</li>
+          <li><strong>Kondisi Riil di Madrasah & Pesantren Cirebon:</strong> Pembelajaran statistika masih didominasi pengerjaan rumus di kertas secara abstrak tanpa penghayatan terhadap fenomena data nyata dan belum menyentuh dimensi nilai spiritual-etika santri.</li>
+        </ul>
+        <div class="highlight-card">
+          <strong>Identifikasi Kunci:</strong> Siswa sering kali mampu menghitung nilai rata-rata (mean), namun gagal mengidentifikasi manipulasi sumbu grafik, tidak peka terhadap data pencilan (outlier), serta rentan termakan disinformasi di ruang publik.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Distingsi Konseptual -->
+    <div class="slide" data-slide="3" data-notes="Menjawab masukan kritis dari Bapak Kaprodi mengenai batasan literasi data vs statistika: Di sini kami mendudukkan secara tegas bahwa literasi statistika adalah fondasi matematis (Gal 2002), sedangkan literasi data adalah payung penyelidikan kritis dan etis yang lebih luas (Gómez 2025). Jadi literasi statistika menjadi instrumen, dan literasi data menjadi muara kompetensinya.">
+      <div class="slide-tag">KERANGKA KONSEPTUAL</div>
+      <h2 class="slide-title">Distingsi Konseptual: Literasi Statistika vs Literasi Data</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-item" style="border-top: 4px solid var(--teal-bright);">
+            <h4>Literasi Statistika (Instrumen Fondasional)</h4>
+            <p><strong>Fokus:</strong> Penguasaan konsep matematis dasar statistika.</p>
+            <ul>
+              <li>Kalkulasi ukuran pemusatan (mean, median, modus).</li>
+              <li>Pemahaman rentang dan sebaran data (jangkauan, kuartil).</li>
+              <li>Pembacaan literal tabel frekuensi dan diagram batang/garis.</li>
+              <li><em>Rujukan Teoretis:</em> <strong>Gal (2002)</strong> & <strong>Garfield (2002)</strong>.</li>
+            </ul>
+          </div>
+          <div class="card-item" style="border-top: 4px solid var(--gold-bright);">
+            <h4>Literasi Data (Penyelidikan Kritis & Etis)</h4>
+            <p><strong>Fokus:</strong> Evaluasi keabsahan data & pengambilan keputusan.</p>
+            <ul>
+              <li>Mendeteksi bias visual (pemotongan sumbu / skala manipulatif).</li>
+              <li>Verifikasi integritas metodologi pengumpulan data.</li>
+              <li>Penalaran kontekstual di tengah ketidakpastian informasi.</li>
+              <li><em>Rujukan Teoretis:</em> <strong>Gómez (2025)</strong> & <strong>Wolff (2016)</strong>.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="gold-card">
+          <strong>Kedudukan dalam Riset:</strong> Siswa menggunakan instrumen <em>literasi statistika</em> untuk mengolah angka, guna membangun kapasitas <em>literasi data</em> dalam membedakan kebenaran vs fabrikasi secara etis (Tabayyun).
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Mengapa Dasbor Interaktif -->
+    <div class="slide" data-slide="4" data-notes="Mengapa harus dasbor web interaktif dan bukan media lain? Buku cetak memicu split-attention effect menurut Sweller, di mana siswa harus membagi perhatian antara teks, rumus, dan grafik. Video/PPT bersifat pasif menurut Mayer. Software Excel/GeoGebra memiliki kurva belajar rumus yang rumit dan membebani memori kerja siswa (Ben-Zvi). Dasbor interaktif menyajikan antarmuka satu layar dengan feedback visual seketika via slider tanpa beban coding.">
+      <div class="slide-tag">JUSTIFIKASI DIDAKTIS PRODUK</div>
+      <h2 class="slide-title">Mengapa Dasbor Interaktif? (Komparasi Ilmiah)</h2>
+      <div class="slide-body">
+        <table class="slide-table">
+          <thead>
+            <tr>
+              <th>Alternatif Media</th>
+              <th>Kelemahan Didaktis Berdasarkan Teori Kognitif</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Buku Teks / LKPD Cetak</strong></td>
+              <td>Memicu <em>split-attention effect</em> (Sweller, 2011); perhatian siswa terpecah bolak-balik antara instruksi soal, rumus, dan grafik statis.</td>
+            </tr>
+            <tr>
+              <td><strong>Video / Presentasi PPT</strong></td>
+              <td>Bersifat pasif dan searah (Mayer, 2009); siswa tidak dapat memanipulasi parameter secara mandiri untuk menguji hipotesis.</td>
+            </tr>
+            <tr>
+              <td><strong>Software Spreadsheet / GeoGebra</strong></td>
+              <td>Sintaks sel yang rumit menimbulkan <em>extraneous cognitive load</em> (Ben-Zvi, 2000); energi siswa habis mempelajari software, bukan esensi data.</td>
+            </tr>
+            <tr>
+              <td style="color: var(--teal-bright);"><strong>Dasbor Web Interaktif</strong></td>
+              <td style="color: #fff;"><strong>Solusi Terpadu:</strong> Tampilan satu layar (clean interface), slider manipulasi seketika, tooltip intuitif, tanpa perlu instalasi atau belajar sintaks software.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slide 5: Internalisasi Nilai Islam -->
+    <div class="slide" data-slide="5" data-notes="Integrasi nilai Islam dalam media ini bukan cocoklogi atau label semata, melainkan integrasi substantif. Kami mengadopsi dua nilai moral fundamental: Tabayyun berlandaskan QS. Al-Hujurat ayat 6 untuk melatih verifikasi kritis atas data manipulatif, dan Amanah berlandaskan QS. Al-Muthaffifin ayat 1 sampai 3 tentang integritas dan akurasi pengukuran tanpa kecurangan.">
+      <div class="slide-tag">SUBSTANSI INTEGRASI KEISLAMAN</div>
+      <h2 class="slide-title">Internalisasi Nilai Islam Kontekstual (Anti-Cocoklogi)</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-item">
+            <h4>1. Nilai Tabayyun (Verifikasi Kritis)</h4>
+            <p><strong>Landasan Al-Qur'an:</strong> QS. Al-Hujurat [49]: 6</p>
+            <p style="font-style: italic; color: #94a3b8; font-size: 0.85rem; margin: 6px 0;">
+              "...Jika datang kepadamu orang fasik membawa suatu berita, maka telitilah kebenarannya..."
+            </p>
+            <p><strong>Operasionalisasi Matematis:</strong> Melatih siswa bersikap kritis terhadap grafik yang dipotong sumbunya (truncated graph), mengecek metodologi sampel, dan tidak terburu-buru menyimpulkan tren data.</p>
+          </div>
+          <div class="card-item">
+            <h4>2. Nilai Amanah (Integritas Pengukuran)</h4>
+            <p><strong>Landasan Al-Qur'an:</strong> QS. Al-Muthaffifin [83]: 1–3</p>
+            <p style="font-style: italic; color: #94a3b8; font-size: 0.85rem; margin: 6px 0;">
+              "...Celakalah bagi orang-orang yang curang, yaitu apabila menerima takaran dari orang lain mereka minta dipenuhi, dan apabila menakar/menimbang untuk orang lain mereka mengurangi..."
+            </p>
+            <p><strong>Operasionalisasi Matematis:</strong> Menanamkan etika kejujuran penyajian data, keharusan menjaga presisi rentang skala, serta pantangan memanipulasi informasi demi keuntungan sepihak.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Empat Paket Dataset -->
+    <div class="slide" data-slide="6" data-notes="Media ini menyajikan 4 paket dataset sosiomatematika nyata dari ekosistem madrasah dan pesantren: Zakat Infak, Wakaf Produktif, Karakteristik Tajwid Al-Qur'an Juz 30, dan Sirkulasi Perpustakaan Madrasah. Khusus dataset 4, visualisasi boxplot disajikan secara didaktis tanpa menuntut siswa Fase D menghitung rumus pagar yang rumit.">
+      <div class="slide-tag">KONTEN MEDIA PEMBELAJARAN</div>
+      <h2 class="slide-title">Empat Paket Dataset Sosiomatematika Madrasah</h2>
+      <div class="slide-body">
+        <div class="grid-4">
+          <div class="card-item">
+            <h4 style="color: var(--teal-bright);">Dataset 1</h4>
+            <p><strong>Penyaluran Zakat & Infak Madrasah</strong></p>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 6px;">Visual: Bar Chart & Donut Chart per asnaf zakat. Menanamkan akuntabilitas sosial.</p>
+          </div>
+          <div class="card-item">
+            <h4 style="color: var(--teal-bright);">Dataset 2</h4>
+            <p><strong>Valuasi & Hasil Wakaf Produktif</strong></p>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 6px;">Visual: Line Chart tren multi-tahun. Menanamkan kemandirian ekonomi pesantren.</p>
+          </div>
+          <div class="card-item">
+            <h4 style="color: var(--teal-bright);">Dataset 3</h4>
+            <p><strong>Fonetik Tajwid Al-Qur'an Juz 30</strong></p>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 6px;">Visual: Histogram sebaran Ikhfa, Idgham, Iqlab. Menunjukkan simetri dan keteraturan qira'at.</p>
+          </div>
+          <div class="card-item">
+            <h4 style="color: var(--teal-bright);">Dataset 4</h4>
+            <p><strong>Sirkulasi Perpustakaan Madrasah</strong></p>
+            <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 6px;">Visual: Boxplot adaptif interaktif (five-number summary). Menumbuhkan etika cinta ilmu.</p>
+          </div>
+        </div>
+        <div class="highlight-card" style="margin-top: 20px;">
+          <strong>Desain Didaktis Khusus (Fase D):</strong> Fitur Boxplot pada Dataset 4 dioperasikan secara dinamis melalui slider kode warna (Min, Q1, Median, Q3, Max) dengan hover tooltip, sehingga siswa memahami sebaran data sejati tanpa beban rumus pagar di luar kurikulum SMP/MTs.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Rumusan Masalah & Tujuan -->
+    <div class="slide" data-slide="7" data-notes="Rumusan masalah dan tujuan diselaraskan 100% pada 3 sasaran utama: Pertama, menghasilkan wujud Prototipe-1 media dasbor interaktif. Kedua, menguji kelayakan teoretis validitas isi oleh 9 rater ahli dengan Aiken's V minimal 0.78. Ketiga, menguji kepraktisan antarmuka oleh guru matematika mitra dengan skor SUS di atas 70.">
+      <div class="slide-tag">FOKUS PENELITIAN</div>
+      <h2 class="slide-title">Rumusan Masalah & Tujuan Penelitian</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-item">
+            <h4 style="color: var(--gold-bright);">Rumusan Masalah</h4>
+            <ol style="margin-left: 20px; font-size: 0.9rem;">
+              <li style="margin-bottom: 12px;">Bagaimana wujud rancang bangun <strong>Prototipe-1</strong> media dasbor statistika interaktif terintegrasi nilai keislaman untuk memfasilitasi literasi data siswa?</li>
+              <li style="margin-bottom: 12px;">Bagaimana derajat <strong>kelayakan teoretis (validitas isi)</strong> media berdasarkan penilaian 9 rater ahli dengan formula indeks Aiken's V?</li>
+              <li style="margin-bottom: 12px;">Bagaimana tingkat <strong>kepraktisan antarmuka</strong> media berdasarkan evaluasi guru matematika mitra menggunakan System Usability Scale (SUS)?</li>
+            </ol>
+          </div>
+          <div class="card-item">
+            <h4 style="color: var(--teal-bright);">Tujuan Penelitian</h4>
+            <ol style="margin-left: 20px; font-size: 0.9rem;">
+              <li style="margin-bottom: 12px;">Menghasilkan wujud fisik/digital <strong>Prototipe-1</strong> media pembelajaran dasbor interaktif yang siap divalidasi.</li>
+              <li style="margin-bottom: 12px;">Menganalisis derajat validitas isi media berbasis koefisien Aiken's V dengan ambang batas kelayakan teoretis (V ≥ 0,78).</li>
+              <li style="margin-bottom: 12px;">Menganalisis tingkat kepraktisan media berbasis skor SUS pada kategori "Acceptable" (skor > 70).</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Spesifikasi Produk (Subbab 1.7) -->
+    <div class="slide" data-slide="8" data-notes="Sesuai pedoman penulisan tugas akhir, pada Subbab 1.7 kami merinci spesifikasi teknis dan pedagogis Prototipe-1: Tata letak web terpadu satu layar, responsivitas slider parameter, 8 tugas penalaran tersemat berjenjang Watson-Callingham dengan rubrik penskoran politomi PCM, serta tab refleksi nilai keislaman.">
+      <div class="slide-tag">SPESIFIKASI PRODUK (SUBBAB 1.7)</div>
+      <h2 class="slide-title">Spesifikasi Prototipe-1 Media Pembelajaran</h2>
+      <div class="slide-body">
+        <ul>
+          <li><strong>Arsitektur Antarmuka (UI/UX):</strong> Berbasis web responsif dengan tata letak satu layar terpadu (<em>single-screen clean interface</em>) guna mengeliminasi pemecahan perhatian visual.</li>
+          <li><strong>Interaktivitas Visual:</strong> Dilengkapi slider dinamis untuk manipulasi parameter pemusatan/sebaran data seketika dan hover tooltip informasi detail tanpa reload halaman.</li>
+          <li><strong>Paket Data Terintegrasi:</strong> Menanamkan 4 modul dataset sosiomatematika madrasah (Zakat, Wakaf, Tajwid Juz 30, dan Perpustakaan).</li>
+          <li><strong>Instrumen Evaluasi Tersemat (Embedded Tasks):</strong> Memuat 8 butir tugas penalaran data (T1–T8) berjenjang Watson-Callingham dengan rubrik penskoran politomi (0–2) berbasis Partial Credit Model (PCM).</li>
+          <li><strong>Kesesuaian Pedoman Tugas Akhir:</strong> Terfokus pada wujud Prototipe-1 yang teruji secara teoretis dan siap dihilirisasi ke tahap uji efektivitas lanjutan pasca-skripsi.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Slide 9: Kajian Pustaka & Sintesis Indikator -->
+    <div class="slide" data-slide="9" data-notes="Terkait catatan Kaprodi tentang pemilihan indikator: Kami membandingkan 3 model besar, yaitu Gal 2002, Garfield 2002, dan Watson-Callingham 2003. Kami memilih Hierarki Watson-Callingham karena memiliki 6 jenjang penalaran kognitif yang paling operasional untuk siswa Fase D. Selain itu, kami mengadopsi rubrik penskoran politomi PCM dari Tesis Aini (Ulfah 2020) untuk menilai gradasi pemikiran parsial siswa.">
+      <div class="slide-tag">BAB II: KAJIAN PUSTAKA</div>
+      <h2 class="slide-title">Sintesis Indikator & Adopsi Model Rasch PCM</h2>
+      <div class="slide-body">
+        <table class="slide-table">
+          <thead>
+            <tr>
+              <th>Model Teoretis</th>
+              <th>Cakupan Indikator</th>
+              <th>Analisis Relevansi & Keputusan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Iddo Gal (2002)</strong></td>
+              <td>Knowledge elements (literasi, matematis) & Dispositional elements (kritis, sikap).</td>
+              <td>Terlalu makro dan berorientasi pada warga negara dewasa umum.</td>
+            </tr>
+            <tr>
+              <td><strong>Garfield (2002)</strong></td>
+              <td>Statistical reasoning model (representasi, sebaran, probabilitas).</td>
+              <td>Kuat pada penalaran kalkulatif, namun kurang peka pada nilai konteks keislaman.</td>
+            </tr>
+            <tr>
+              <td style="color: var(--teal-bright);"><strong>Watson & Callingham (2003)</strong></td>
+              <td style="color: #fff;"><strong>Hierarki 6 Tingkat Kognitif</strong> (Idiosyncratic, Informal, Inconsistent, Consistent Non-Critical, Early Critical, Critical Mathematical).</td>
+              <td style="color: var(--gold-bright);"><strong>DIPILIH:</strong> Paling terstruktur mengukur eskalasi penalaran siswa Fase D secara bertingkat.</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="gold-card">
+          <strong>Adopsi Metodologi Tesis Aini (Ulfah, 2020):</strong> Menerapkan rubrik penskoran politomi bergradasi (skor 0, 1, 2) berbasis Partial Credit Model (PCM) pada 8 tugas tersemat, sehingga penalaran parsial siswa terdiagnosis secara objektif.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Kerangka Berpikir -->
+    <div class="slide" data-slide="10" data-notes="Kerangka berpikir penelitian ini menghubungkan masalah rendahnya literasi data di madrasah dengan solusi media dasbor terintegrasi nilai keislaman. Landasan teoretis ditopang oleh CLT Sweller, teori perkembangan kognitif Piaget, serta nilai Tabayyun dan Amanah. Luarannya adalah Prototipe-1 yang teruji secara validitas ahli dan kepraktisan guru mitra.">
+      <div class="slide-tag">ALUR KONSEPTUAL</div>
+      <h2 class="slide-title">Kerangka Berpikir Pengembangan</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-item">
+            <h4>Kondisi Awal & Masalah</h4>
+            <ul>
+              <li>Skor PISA rendah pada domain data.</li>
+              <li>Statistika disajikan mekanistik di kertas.</li>
+              <li>Ketiadaan media integrasi nilai Islam kontekstual.</li>
+            </ul>
+            <h4 style="margin-top: 16px;">Landasan Teoretis Pengembang</h4>
+            <ul>
+              <li>Cognitive Load Theory (Sweller, 2011).</li>
+              <li>Transisi Operasional Konkret-Formal (Piaget, 1972).</li>
+              <li>Prinsip Tabayyun (QS. 49:6) & Amanah (QS. 83:1-3).</li>
+            </ul>
+          </div>
+          <div class="card-item" style="border: 2px solid var(--teal-bright);">
+            <h4>Solusi: Prototipe-1 Dasbor Interaktif</h4>
+            <ul>
+              <li>Antarmuka web satu layar (clean interface).</li>
+              <li>4 modul dataset sosiomatematika madrasah.</li>
+              <li>8 embedded tasks penalaran data politomi PCM.</li>
+            </ul>
+            <h4 style="margin-top: 16px; color: var(--gold-bright);">Evaluasi Teoretis Non-Kelas</h4>
+            <ul>
+              <li><strong>Validitas Isi:</strong> 9 Rater Ahli (Aiken's V ≥ 0,78).</li>
+              <li><strong>Kepraktisan:</strong> Guru Matematika Mitra (SUS > 70).</li>
+              <li><em>Luaran:</em> Prototipe-1 terstandar siap uji coba lanjutan.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Desain & Prosedur Penelitian -->
+    <div class="slide" data-slide="11" data-notes="Mengenai metodologi: Dosen pembimbing mengarahkan penggunaan model Borg & Gall tersesuai seperti pada Tesis Aini, sementara Kaprodi menyarankan model 4D. Kami menjembatani kedua pandangan ini: secara prosedural kami menggunakan 3 tahapan awal Borg & Gall, yang secara konseptual terbukti isomorfis atau setara fungsinya dengan tahap Define, Design, dan Develop pada model 4D Thiagarajan.">
+      <div class="slide-tag">BAB III: METODOLOGI PENELITIAN</div>
+      <h2 class="slide-title">Desain Penelitian: Borg & Gall Tersesuai & 4D</h2>
+      <div class="slide-body">
+        <p>Penelitian ini menggunakan metode <strong>Research and Development (R&D)</strong> yang mengadaptasi 3 langkah awal <strong>Borg dan Gall (1983)</strong> sebagaimana diterapkan pada Tesis Aini (Ulfah, 2020), yang secara fungsional setara (<em>isomorphic</em>) dengan model <strong>4D (Thiagarajan et al., 1974)</strong>:</p>
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="card-item">
+            <h4>Prosedur Borg & Gall Tersesuai</h4>
+            <ol style="margin-left: 20px; font-size: 0.9rem;">
+              <li><strong>Langkah 1: Research and Information Collecting</strong><br>Studi literatur, analisis kurikulum, & penelaahan nilai Islam.</li>
+              <li><strong>Langkah 2: Planning</strong><br>Penyusunan cetak biru dasbor, seleksi dataset, & kisi-kisi asesmen.</li>
+              <li><strong>Langkah 3: Develop Preliminary Form of Product</strong><br>Pembuatan Prototipe-1 & validasi ahli/guru mitra.</li>
+            </ol>
+          </div>
+          <div class="card-item">
+            <h4>Kesetaraan Model 4D Thiagarajan</h4>
+            <ol style="margin-left: 20px; font-size: 0.9rem;">
+              <li><strong>Fase 1: Define (Pendefinisian)</strong><br>Analisis kebutuhan kognitif siswa Fase D & kurikulum madrasah.</li>
+              <li><strong>Fase 2: Design (Perancangan)</strong><br>Perancangan media antarmuka satu layar & instrumen PCM.</li>
+              <li><strong>Fase 3: Develop (Pengembangan)</strong><br>Pengembangan fisik prototipe & evaluasi kelayakan teoretis.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="highlight-card" style="margin-top: 14px;">
+          <strong>Ketegasan Prosedural:</strong> Langkah uji coba lapangan skala luas (Field Testing) dan diseminasi sengaja ditiadakan demi menjaga integritas data tanpa manipulasi subjek kelas.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Matriks Prosedur Pengembangan (Tabel 3.1) -->
+    <div class="slide" data-slide="12" data-notes="Berikut adalah matriks operasional prosedur pengembangan pada Tabel 3.1 proposal kami: Tahap Pendahuluan menghasilkan naskah kajian teoretis, Tahap Perencanaan menghasilkan cetak biru media dan instrumen, dan Tahap Pengembangan menghasilkan Prototipe-1 yang teruji valid dan praktis.">
+      <div class="slide-tag">MATRIKS METODOLOGI (TABEL 3.1)</div>
+      <h2 class="slide-title">Tahapan Operasional Pengembangan Produk</h2>
+      <div class="slide-body">
+        <table class="slide-table">
+          <thead>
+            <tr>
+              <th>Makro-Tahapan</th>
+              <th>Langkah Borg & Gall / 4D</th>
+              <th>Aktivitas Operasional</th>
+              <th>Luaran Terukur</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Tahap Pendahuluan</strong></td>
+              <td>Langkah 1: <em>Research & Collecting</em> / <strong>Define</strong></td>
+              <td>Kajian literatur PISA, telaah Kurikulum Merdeka Fase D, studi beban kognitif (CLT), dan inventarisasi ayat Al-Qur'an.</td>
+              <td>Naskah kerangka teoretis & matriks kesenjangan kurikulum madrasah.</td>
+            </tr>
+            <tr>
+              <td><strong>Tahap Perencanaan</strong></td>
+              <td>Langkah 2: <em>Planning</em> / <strong>Design</strong></td>
+              <td>Perancangan storyboard antarmuka satu layar, seleksi 4 dataset madrasah, dan konstruksi 8 embedded tasks PCM.</td>
+              <td>Dokumen cetak biru media dasbor & kisi-kisi instrumen evaluasi.</td>
+            </tr>
+            <tr>
+              <td><strong>Tahap Pengembangan</strong></td>
+              <td>Langkah 3: <em>Develop Preliminary Form</em> / <strong>Develop</strong></td>
+              <td>Realisasi prototipe digital, pengujian validitas isi oleh 9 rater ahli, dan uji kepraktisan antarmuka guru mitra.</td>
+              <td>Prototipe-1 dasbor interaktif teruji valid (V ≥ 0,78) & praktis (SUS > 70).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slide 13: Subjek Penelitian Non-Kelas -->
+    <div class="slide" data-slide="13" data-notes="Subjek evaluasi proposal ini secara tegas tidak melibatkan uji coba kelas pada siswa. Kami menepis segala residu data fiktif 125 siswa. Subjek difokuskan secara murni pada 9 Rater Ahli independen yang terbagi ke dalam 3 rumpun: 3 ahli materi, 3 ahli media, dan 3 ahli nilai keislaman, serta Guru Matematika Mitra MTs untuk uji kepraktisan SUS.">
+      <div class="slide-tag">SUBJEK EVALUASI PENELITIAN</div>
+      <h2 class="slide-title">Subjek Penelitian Non-Kelas (9 Rater & Guru Mitra)</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-item" style="border-top: 4px solid var(--teal-bright);">
+            <h4>9 Rater Ahli Independen (Uji Validitas Isi)</h4>
+            <p>Terbagi seimbang ke dalam 3 rumpun kepakaran (Aiken, 1985):</p>
+            <ul>
+              <li><strong>3 Ahli Materi Matematika:</strong> Dosen/Pakar pendidikan matematika yang menilai keabsahan konsep statistik & rubrik tugas T1–T8.</li>
+              <li><strong>3 Ahli Media Pembelajaran:</strong> Pakar teknologi pendidikan/UI-UX yang menilai ergonomi visual & kelancaran slider interaktif.</li>
+              <li><strong>3 Ahli Integrasi Keislaman:</strong> Pakar studi Islam/Tadris yang menilai ketepatan tafsir dalil & etika penyajian data.</li>
+            </ul>
+          </div>
+          <div class="card-item" style="border-top: 4px solid var(--gold-bright);">
+            <h4>Guru Matematika Mitra (Uji Kepraktisan)</h4>
+            <p>Praktisi pengajar matematika di tingkat MTs / SMP Pesantren Cirebon:</p>
+            <ul>
+              <li>Mengoperasikan secara langsung Prototipe-1 dasbor interaktif.</li>
+              <li>Mengevaluasi kemudahan navigasi dan keterbacaan data.</li>
+              <li>Mengisi kuesioner System Usability Scale (SUS) adaptif 14 butir.</li>
+              <li>Memberikan catatan kualitatif untuk penyempurnaan media.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <strong>Integritas Metodologi:</strong> Bebas 100% dari residu "125 siswa" dan bebas klaim uji coba kelas prematur. Evaluasi difokuskan murni pada kelayakan teoretis produk awal.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Instrumen Penelitian -->
+    <div class="slide" data-slide="14" data-notes="Instrumen pengumpulan data mencakup 4 set: Lembar validasi materi matematika (10 butir), lembar validasi media (10 butir), lembar validasi integrasi nilai Islam (10 butir), serta kuesioner System Usability Scale adaptif 14 butir untuk guru mitra, yang menggabungkan 10 butir standar Brooke dan 4 butir adaptif nilai keislaman.">
+      <div class="slide-tag">PENGUMPULAN DATA</div>
+      <h2 class="slide-title">Kisi-Kisi Instrumen Pengumpulan Data</h2>
+      <div class="slide-body">
+        <table class="slide-table">
+          <thead>
+            <tr>
+              <th>Nama Instrumen</th>
+              <th>Sasaran Penilai</th>
+              <th>Jumlah Butir & Skala</th>
+              <th>Indikator Kunci yang Diukur</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Lembar Validasi Materi</strong></td>
+              <td>3 Rater Ahli Materi</td>
+              <td>10 Butir (Skala 1–5)</td>
+              <td>Ketepatan konsep data, kesesuaian Kurikulum Fase D, objektivitas rubrik penskoran politomi PCM.</td>
+            </tr>
+            <tr>
+              <td><strong>Lembar Validasi Media</strong></td>
+              <td>3 Rater Ahli Media</td>
+              <td>10 Butir (Skala 1–5)</td>
+              <td>Kejelasan visual grafik, responsivitas slider, ergonomi satu layar (reduksi split-attention).</td>
+            </tr>
+            <tr>
+              <td><strong>Lembar Validasi Nilai Islam</strong></td>
+              <td>3 Rater Ahli Nilai Islam</td>
+              <td>10 Butir (Skala 1–5)</td>
+              <td>Keotentikan konteks dalil (QS. 49:6 & 83:1-3), nilai Tabayyun & Amanah, non-pseudosains.</td>
+            </tr>
+            <tr>
+              <td><strong>Kuesioner SUS Adaptif</strong></td>
+              <td>Guru Matematika Mitra</td>
+              <td>14 Butir (Skala 1–5)</td>
+              <td>10 butir standar Brooke (1996) + 4 butir adaptif kemudahan membaca konteks data keislaman.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slide 15: Teknik Analisis Data -->
+    <div class="slide" data-slide="15" data-notes="Teknik analisis data menggunakan dua standar psikometrik baku: Koefisien Aiken's V untuk validitas isi dari 9 rater ahli dengan syarat V minimal 0.78, dan skor System Usability Scale untuk kepraktisan antarmuka oleh guru mitra dengan rumus konversi standar Bangor, di mana skor di atas 70 masuk kategori Acceptable atau praktis.">
+      <div class="slide-tag">ANALISIS DATA</div>
+      <h2 class="slide-title">Teknik Analisis Data: Aiken's V & Skor SUS</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-item">
+            <h4>1. Analisis Validitas Isi (Aiken's V)</h4>
+            <div class="highlight-card" style="font-family: var(--font-mono); text-align: center;">
+              V = Σ s / [n(c - 1)],  dengan s = r - l₀
+            </div>
+            <ul style="font-size: 0.85rem;">
+              <li>$r$ = skor pilihan validator (skala 1–5)</li>
+              <li>$l_0$ = skor terendah (1); $c$ = jumlah kategori (5)</li>
+              <li>$n$ = jumlah rater per rumpun kepakaran ($n = 3$)</li>
+              <li><strong>Kriteria Kevalidan:</strong> Butir instrumen dan media dinyatakan valid secara teoretis apabila <strong>V ≥ 0,78</strong> (Aiken, 1985).</li>
+            </ul>
+          </div>
+          <div class="card-item">
+            <h4>2. Analisis Kepraktisan Antarmuka (SUS)</h4>
+            <div class="gold-card" style="font-family: var(--font-mono); text-align: center;">
+              Skor SUS = (100 / 56) × Σ (Skor Terbobot)
+            </div>
+            <ul style="font-size: 0.85rem;">
+              <li>Butir Ganjil (positif): Skor rater dikurangi 1 ($x - 1$)</li>
+              <li>Butir Genap (negatif): 5 dikurangi skor rater ($5 - x$)</li>
+              <li>Faktor pengali $\frac{100}{56}$ menstandardisasi total skor skala 0–100.</li>
+              <li><strong>Kriteria Kepraktisan:</strong> Media dinyatakan praktis apabila skor rerata berada pada kategori <strong>"Acceptable" (Skor > 70)</strong> [Bangor et al., 2008].</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16: Ringkasan Kontribusi & Jadwal -->
+    <div class="slide" data-slide="16" data-notes="Sebagai ringkasan, penelitian ini berkontribusi nyata bagi pendidikan madrasah dan pesantren di Cirebon. Naskah proposal telah siap 100%, dan kami juga telah menyiapkan manuskrip artikel jurnal yang siap disubmit ke Jurnal Cendekia terakreditasi SINTA 3 sebagai luaran akademik tugas akhir.">
+      <div class="slide-tag">KESIMPULAN & TINDAK LANJUT</div>
+      <h2 class="slide-title">Kesiapan Naskah, Target Publikasi & Jadwal</h2>
+      <div class="slide-body">
+        <div class="grid-2">
+          <div class="card-item">
+            <h4>Status Kelengkapan Dokumen</h4>
+            <ul>
+              <li><strong>Proposal Skripsi Lengkap:</strong> Bebas residu fiktif, selaras pedoman tugas akhir Institut Al-Bahjah, 357 paragraf dengan 14 tabel APA.</li>
+              <li><strong>Manuskrip Artikel Jurnal:</strong> Disusun siap submit dengan standar akreditasi nasional SINTA 3 / SINTA 4 (Jurnal Cendekia).</li>
+              <li><strong>Submission Kit:</strong> Cover Letter resmi & Blind Review Manuscript (.docx) siap unggah di OJS.</li>
+            </ul>
+          </div>
+          <div class="card-item">
+            <h4>Target Jadwal Pelaksanaan</h4>
+            <ul>
+              <li><strong>Bulan 1:</strong> Finalisasi koding Prototipe-1 Dasbor Web Interaktif (HTML/CSS/JS).</li>
+              <li><strong>Bulan 2:</strong> Pengisian lembar validasi oleh 9 Rater Ahli & analisis koefisien Aiken's V.</li>
+              <li><strong>Bulan 3:</strong> Evaluasi antarmuka oleh Guru Mitra MTs (SUS) & revisi produk akhir.</li>
+              <li><strong>Bulan 4:</strong> Ujian Sidang Skripsi (Munaqasyah) & penyerahan naskah jurnal.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: Penutup -->
+    <div class="slide title-slide" data-slide="17" data-notes="Demikian pemaparan proposal skripsi saya. Saya menyadari sepenuhnya bahwa proposal ini masih memerlukan banyak penyempurnaan, oleh karena itu kritik, masukan konstruktif, dan bimbingan dari Bapak/Ibu dosen sangat saya harapkan. Jazakumullahu khairan katsiran, Wassalamu'alaikum Wr. Wb.">
+      <div class="title-badge" style="background: var(--teal-glow); border-color: var(--teal-bright); color: var(--teal-bright);">
+        SESI TANYA JAWAB & DISKUSI
+      </div>
+      <h1 style="font-size: 2.3rem; margin-bottom: 20px;">Jazakumullahu Khairan Katsiran</h1>
+      <p style="color: var(--gold-bright); font-size: 1.2rem; font-weight: 500; margin-bottom: 24px;">
+        Terima kasih atas perhatian Bapak/Ibu Dosen Pembimbing dan Dewan Penguji
+      </p>
+      <div class="author-meta" style="font-size: 0.95rem;">
+        <p><strong>Muhammad Khoiruzzadittaqwa</strong> (NIM. 2220020002)</p>
+        <p>Program Studi Tadris Matematika — Institut Al-Bahjah Cirebon</p>
+        <p style="margin-top: 15px; color: #64748b;"><em>Mohon arahan dan masukan konstruktif untuk penyempurnaan penelitian ini.</em></p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Speaker Notes Drawer -->
+  <div class="speaker-notes-drawer" id="notes-drawer">
+    <div class="speaker-notes-header">
+      <h3>🎙️ Catatan Pembicara (Speaker Notes) — Slide <span id="notes-slide-num">1</span></h3>
+      <div class="shortcuts-help">
+        <span>Tutup: <span class="key">N</span> / <span class="key">P</span></span>
+      </div>
+    </div>
+    <div class="notes-content" id="notes-content-text">
+      Bismillah, Assalamu'alaikum Wr. Wb. Yang terhormat Bapak/Ibu Dosen Pembimbing dan Penguji...
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="slide-counter">
+      Slide <span id="current-slide-num" style="color: var(--teal-bright); font-weight: 700;">1</span> / <span id="total-slides-num">17</span>
+    </div>
+    <div class="shortcuts-help" style="display: none;" id="desktop-shortcuts">
+      <span>Navigasi: <span class="key">←</span> <span class="key">→</span> <span class="key">Space</span></span>
+      <span>Notes: <span class="key">N</span></span>
+      <span>Fullscreen: <span class="key">F</span></span>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn" id="prev-btn" disabled>
+        <span>◀</span> Sebelumnya
+      </button>
+      <button class="nav-btn" id="next-btn">
+        Selanjutnya <span>▶</span>
+      </button>
+    </div>
+  </footer>
+
+  <!-- Slide Grid Modal (O) -->
+  <div class="modal-overlay" id="grid-modal">
+    <div class="grid-modal">
+      <div class="grid-modal-header">
+        <h2>Daftar Seluruh Slide Presentasi</h2>
+        <button class="timer-btn" id="close-modal-btn" style="font-size: 1.2rem; color: #fff;">✕</button>
+      </div>
+      <div class="slide-grid-items" id="grid-items-container">
+        <!-- Will be populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State
+    let currentSlide = 1;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let timerSeconds = 0;
+    let timerInterval = null;
+    let isTimerRunning = false;
+
+    // DOM Elements
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const currentSlideNum = document.getElementById('current-slide-num');
+    const totalSlidesNum = document.getElementById('total-slides-num');
+    const progressBar = document.getElementById('progress-bar');
+    const notesDrawer = document.getElementById('notes-drawer');
+    const notesToggleBtn = document.getElementById('notes-toggle-btn');
+    const notesSlideNum = document.getElementById('notes-slide-num');
+    const notesContentText = document.getElementById('notes-content-text');
+    const timerDisplay = document.getElementById('timer-display');
+    const timerToggleBtn = document.getElementById('timer-toggle-btn');
+    const timerResetBtn = document.getElementById('timer-reset-btn');
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const gridModalBtn = document.getElementById('grid-modal-btn');
+    const gridModal = document.getElementById('grid-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const gridItemsContainer = document.getElementById('grid-items-container');
+
+    // Init
+    totalSlidesNum.textContent = totalSlides;
+    buildSlideGrid();
+    updateSlideView();
+
+    // Navigation function
+    function goToSlide(slideNumber) {
+      if (slideNumber < 1 || slideNumber > totalSlides) return;
+      
+      slides[currentSlide - 1].classList.remove('active');
+      currentSlide = slideNumber;
+      slides[currentSlide - 1].classList.add('active');
+      
+      updateSlideView();
+    }
+
+    function updateSlideView() {
+      // Buttons state
+      prevBtn.disabled = currentSlide === 1;
+      nextBtn.disabled = currentSlide === totalSlides;
+      
+      // Numbers & Progress
+      currentSlideNum.textContent = currentSlide;
+      const progressPercent = ((currentSlide - 1) / (totalSlides - 1)) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Update Speaker Notes
+      const activeSlideElem = slides[currentSlide - 1];
+      notesSlideNum.textContent = currentSlide;
+      notesContentText.innerHTML = activeSlideElem.getAttribute('data-notes') || 'Tidak ada catatan pembicara untuk slide ini.';
+
+      // Update Active Grid Item
+      document.querySelectorAll('.grid-thumb').forEach((thumb, idx) => {
+        if (idx + 1 === currentSlide) {
+          thumb.classList.add('active');
+        } else {
+          thumb.classList.remove('active');
+        }
+      });
+    }
+
+    // Build Grid Modal Thumbnails
+    function buildSlideGrid() {
+      gridItemsContainer.innerHTML = '';
+      slides.forEach((slide, idx) => {
+        const titleElem = slide.querySelector('.slide-title') || slide.querySelector('h1');
+        const titleText = titleElem ? titleElem.innerText.replace(/[\n\r]+/g, ' ') : `Slide ${idx + 1}`;
+        
+        const thumb = document.createElement('div');
+        thumb.className = `grid-thumb ${idx === 0 ? 'active' : ''}`;
+        thumb.innerHTML = `
+          <div class="grid-thumb-num">Slide ${idx + 1}</div>
+          <div class="grid-thumb-title">${titleText.length > 50 ? titleText.substring(0, 50) + '...' : titleText}</div>
+        `;
+        thumb.addEventListener('click', () => {
+          goToSlide(idx + 1);
+          gridModal.classList.remove('open');
+        });
+        gridItemsContainer.appendChild(thumb);
+      });
+    }
+
+    // Event Listeners for Nav
+    prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+
+    // Keyboard controls
+    window.addEventListener('keydown', (e) => {
+      // Disable shortcuts when modal is open except Escape
+      if (gridModal.classList.contains('open')) {
+        if (e.key === 'Escape') gridModal.classList.remove('open');
+        return;
+      }
+
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'Backspace' || e.key === 'PageUp') {
+        e.preventDefault();
+        goToSlide(currentSlide - 1);
+      } else if (e.key === 'n' || e.key === 'N' || e.key === 'p' || e.key === 'P') {
+        toggleNotes();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      } else if (e.key === 'o' || e.key === 'O') {
+        gridModal.classList.toggle('open');
+      } else if (e.key === 't' || e.key === 'T') {
+        toggleTimer();
+      }
+    });
+
+    // Notes toggle
+    function toggleNotes() {
+      notesDrawer.classList.toggle('open');
+      notesToggleBtn.classList.toggle('active');
+    }
+    notesToggleBtn.addEventListener('click', toggleNotes);
+
+    // Fullscreen toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          alert(`Error attempting to enable full-screen mode: ${err.message}`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    }
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+    // Grid modal toggle
+    gridModalBtn.addEventListener('click', () => gridModal.classList.add('open'));
+    closeModalBtn.addEventListener('click', () => gridModal.classList.remove('open'));
+    gridModal.addEventListener('click', (e) => {
+      if (e.target === gridModal) gridModal.classList.remove('open');
+    });
+
+    // Timer Logic
+    function formatTime(totalSeconds) {
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function toggleTimer() {
+      if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        timerToggleBtn.textContent = '▶';
+        timerToggleBtn.style.color = 'var(--text-muted)';
+      } else {
+        timerInterval = setInterval(() => {
+          timerSeconds++;
+          timerDisplay.textContent = formatTime(timerSeconds);
+          
+          // Color warning at 15 min and 20 min
+          if (timerSeconds >= 1200) { // 20 min
+            timerDisplay.style.color = '#ef4444';
+          } else if (timerSeconds >= 900) { // 15 min
+            timerDisplay.style.color = '#f59e0b';
+          }
+        }, 1000);
+        isTimerRunning = true;
+        timerToggleBtn.textContent = '⏸';
+        timerToggleBtn.style.color = 'var(--teal-bright)';
+      }
+    }
+
+    timerToggleBtn.addEventListener('click', toggleTimer);
+    timerResetBtn.addEventListener('click', () => {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      timerSeconds = 0;
+      timerDisplay.textContent = '00:00';
+      timerDisplay.style.color = 'var(--gold-bright)';
+      timerToggleBtn.textContent = '▶';
+    });
+
+    // Show desktop shortcuts if screen is wide enough
+    if (window.innerWidth > 900) {
+      document.getElementById('desktop-shortcuts').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>

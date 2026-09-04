@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useStatsLabStore, DatasetSlug } from "@/store/useStatsLabStore";
-import { LogOut, Type, Eye, ShieldCheck, ChevronDown, Check } from "lucide-react";
+import { LogOut, Type, Eye, ShieldCheck, ChevronDown, Check, FileText, Presentation } from "lucide-react";
 
 const MODULES: { slug: DatasetSlug; label: string; emoji: string }[] = [
   { slug: "zakat-infak", label: "Distribusi Zakat & Infak", emoji: "🕌" },
@@ -187,6 +187,26 @@ export default function StickyHeader() {
 
         {/* Accessibility & Controls */}
         <div className="header-controls">
+          <Link
+            href="/doc"
+            className="control-btn"
+            title="Portal Instrumen & Riset Skripsi (/doc)"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none', color: 'inherit', padding: '4px 8px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-slate-200)' }}
+          >
+            <FileText size={15} style={{ color: 'var(--color-emerald-700)' }} />
+            <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Riset/Doc</span>
+          </Link>
+
+          <Link
+            href="/sidang"
+            className="control-btn"
+            title="Salindia Sidang Proposal Skripsi (/sidang)"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none', color: 'inherit', padding: '4px 8px', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-slate-200)', backgroundColor: 'var(--color-amber-50)' }}
+          >
+            <Presentation size={15} style={{ color: 'var(--color-amber-700)' }} />
+            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-amber-900)' }}>Sidang</span>
+          </Link>
+
           <button type="button"
             onClick={toggleFontSize}
             className="control-btn"
