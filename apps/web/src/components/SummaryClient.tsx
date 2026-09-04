@@ -77,7 +77,7 @@ export default function SummaryPage() {
           🎉 Selamat, {studentName || "Siswa"}!
         </h1>
         <p style={{ fontSize: "1.1rem", color: "var(--text-secondary)", marginBottom: "24px" }}>
-          Anda telah menyelesaikan Modul Literasi Data Terintegrasi Nilai Keislaman (
+          Kamu baru saja menguasai literasi data berbasis nilai Islam di 
           {schoolName || "Instansi"}).
         </p>
 
@@ -148,11 +148,11 @@ export default function SummaryPage() {
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap", maxWidth: "540px", margin: "0 auto" }}>
           <button type="button"
             onClick={() => setIsCertOpen(true)}
             className="btn-premium btn-emerald flex-center"
-            style={{ padding: "12px 24px", fontSize: "1rem" }}
+            style={{ padding: "12px 24px", fontSize: "1rem", flex: "1", justifyContent: "center" }}
           >
             <Award size={20} style={{ marginRight: "8px" }} />
             Lihat & Unduh Sertifikat
@@ -164,13 +164,15 @@ export default function SummaryPage() {
             style={{
               padding: "12px 24px",
               fontSize: "1rem",
+              flex: "1",
+              justifyContent: "center",
               backgroundColor: "var(--color-amber-500)",
             }}
           >
             <ClipboardCheck size={20} style={{ marginRight: "8px" }} />
             {susSubmitted
               ? `Skor SUS: ${susSubmitted} / 100`
-              : "Isi Kuesioner Evaluasi SUS (14 Butir)"}
+              : "Bagikan Pengalamanmu"}
           </button>
         </div>
       </div>

@@ -99,7 +99,16 @@ export default function HomePage() {
     <div className="landing-container" style={{ paddingBottom: "64px" }}>
       <div className="landing-content" style={{ maxWidth: "900px", margin: "0 auto" }}>
         {/* Hero Section */}
-        <div className="hero-section text-center" style={{ padding: "40px 0" }}>
+        <div
+          className="hero-section text-center"
+          style={{
+            padding: "56px 24px 48px",
+            background:
+              "linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 6%, transparent) 0%, transparent 50%, color-mix(in srgb, var(--color-amber-500) 5%, transparent) 100%)",
+            borderRadius: "var(--radius-xl)",
+            marginBottom: "8px",
+          }}
+        >
           <div
             style={{
               display: "inline-flex",
@@ -109,27 +118,40 @@ export default function HomePage() {
               borderRadius: "var(--radius-full)",
               backgroundColor: "color-mix(in srgb, var(--accent-primary) 12%, transparent)",
               color: "var(--accent-primary)",
-              fontSize: "0.875rem",
+              fontSize: "0.78rem",
               fontWeight: 600,
               marginBottom: "16px",
             }}
           >
-            <ShieldCheck size={18} /> R&D Ekosistem Literasi Data STAI Al-Bahjah Cirebon
+            <ShieldCheck size={13} /> R&D STAI Al-Bahjah Cirebon
           </div>
 
           <h1
             className="hero-title"
-            style={{ fontSize: "2.5rem", marginBottom: "16px", color: "var(--accent-primary)" }}
+            style={{
+              fontSize: "clamp(1.9rem, 5vw, 3.2rem)",
+              fontWeight: 800,
+              marginBottom: "16px",
+              color: "var(--accent-primary)",
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+            }}
           >
             StatsLab: Dasbor Statistika Interaktif
           </h1>
           <p
             className="hero-subtitle"
-            style={{ fontSize: "1.15rem", color: "var(--text-secondary)", lineHeight: 1.6 }}
+            style={{
+              fontSize: "1.05rem",
+              color: "var(--text-secondary)",
+              lineHeight: 1.7,
+              maxWidth: "580px",
+              margin: "0 auto",
+            }}
           >
-            Mengembangkan kemampuan literasi data tingkat lanjut (Watson-Callingham) melalui
-            eksplorasi visual interaktif, berlandaskan prinsip islami <strong>Tabayyun</strong>,{" "}
-            <strong>Amanah</strong>, dan <strong>Tawazun</strong>.
+            Eksplorasi data nyata berbasis nilai Islam — literasi data tingkat lanjut dengan
+            prinsip <strong>Tabayyun</strong>, <strong>Amanah</strong>, dan{" "}
+            <strong>Tawazun</strong>.
           </p>
         </div>
 
@@ -198,8 +220,8 @@ export default function HomePage() {
             >
               <Eye size={24} />
             </div>
-            <h4 className="role-title">Eksplorasi Bebas</h4>
-            <p className="role-description">Uji Coba Dasbor Langsung Tanpa Menyimpan Data Sesi</p>
+            <h4 className="role-title">Coba Tanpa Login</h4>
+            <p className="role-description">Eksplorasi grafik & visualisasi tanpa menyimpan data</p>
           </div>
         </div>
 
@@ -208,7 +230,7 @@ export default function HomePage() {
           {activeRole === "student" && (
             <div>
               <h3 style={{ fontSize: "1.3rem", marginBottom: "8px", textAlign: "center" }}>
-                Masuk Sesi Pembelajaran Siswa
+                Mulai Belajarmu
               </h3>
               <p
                 style={{
@@ -218,7 +240,7 @@ export default function HomePage() {
                   fontSize: "0.9rem",
                 }}
               >
-                Masukkan nama, asal sekolah, dan kelas Anda untuk memulai asesmen.
+                Eksplorasi data nyata — cukup masukkan nama dan sekolahmu.
               </p>
 
               <div
@@ -330,12 +352,11 @@ export default function HomePage() {
 
           {activeRole === "guest" && (
             <div style={{ textAlign: "center" }}>
-              <h3 style={{ fontSize: "1.3rem", marginBottom: "8px" }}>Mode Eksplorasi Bebas</h3>
+              <h3 style={{ fontSize: "1.3rem", marginBottom: "8px" }}>Coba Tanpa Login</h3>
               <p
                 style={{ color: "var(--text-secondary)", marginBottom: "20px", fontSize: "0.9rem" }}
               >
-                Uji coba visualisasi grafik dan instrumen tugas tanpa pendaftaran identitas atau
-                penyimpanan database.
+                Eksplorasi grafik, visualisasi, dan instrumen tugas tanpa perlu mendaftar.
               </p>
               <button type="button"
                 onClick={handleStartSession}
@@ -346,7 +367,7 @@ export default function HomePage() {
                   backgroundColor: "var(--color-amber-500)",
                 }}
               >
-                Langsung Masuk Dasbor (Tamu)
+                Langsung Masuk Dasbor →
               </button>
             </div>
           )}
@@ -426,7 +447,7 @@ export default function HomePage() {
             Empat modul dataset terintegrasi nilai keislaman untuk asesmen literasi data
             Watson-Callingham.
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "12px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "12px" }}>
             {[
               { slug: "zakat-infak", label: "Distribusi Zakat & Infak", icon: "🤲" },
               { slug: "perpus-madrasah", label: "Sirkulasi Perpustakaan", icon: "📚" },
