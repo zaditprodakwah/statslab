@@ -35,7 +35,6 @@ export default function AikensCalculator({ items, onApplyScore }: AikensCalculat
     const target = items.find(it => it.id === id);
     if (target) {
       setRaterScores([target.r1, target.r2, target.r3]);
-      setCustomIndicator(target.indicator);
     }
   };
 
