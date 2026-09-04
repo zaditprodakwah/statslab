@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   /* Vanilla CSS Design Tokens - Anti AI Slop (Educational/Islamic Theme) */
   --color-slate-50: #f8fafc;
