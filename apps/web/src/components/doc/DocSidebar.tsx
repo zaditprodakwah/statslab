@@ -176,7 +176,7 @@ export default function Sidebar({
                 <span>Uji Aiken&apos;s V Lab</span>
               </div>
               <span className="px-1.5 py-0.5 text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded font-mono font-bold">
-                27 Item
+                30 Butir
               </span>
             </button>
 
@@ -196,7 +196,7 @@ export default function Sidebar({
                 <span>SUS Usability Tester</span>
               </div>
               <span className="px-1.5 py-0.5 text-[10px] bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 rounded font-mono font-bold">
-                14 Item
+                15 Butir
               </span>
             </button>
 
