@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { TabType } from '@/lib/research/types';
 import DocHeader from '@/components/doc/DocHeader';
 import DocSidebar from '@/components/doc/DocSidebar';
@@ -17,7 +16,6 @@ import GuideSection from '@/components/doc/GuideSection';
 import MasterInstrumentsSection from '@/components/doc/MasterInstrumentsSection';
 import DownloadsSection from '@/components/doc/DownloadsSection';
 import DocMobileNav from '@/components/doc/DocMobileNav';
-import { ArrowLeft, Presentation, ShieldCheck } from 'lucide-react';
 
 export default function DocHomePage() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
@@ -85,45 +83,20 @@ export default function DocHomePage() {
   return (
     <div className={`min-h-screen bg-slate-50 dark:bg-[#0b0f19] text-slate-800 dark:text-slate-200 flex flex-col md:flex-row transition-colors duration-200 ${getFontSizeClass()}`}>
       
-      {/* Top Banner for Quick Navigation */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-emerald-950 text-emerald-100 text-xs py-1.5 px-4 flex items-center justify-between border-b border-emerald-800/60 shadow-xs">
-        <div className="flex items-center gap-2">
-          <ShieldCheck size={14} className="text-emerald-400" />
-          <span className="font-semibold tracking-wide">StatsLab Research Suite</span>
-          <span className="hidden sm:inline text-emerald-400">• Portal Instrumen & Evaluasi Skripsi</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="flex items-center gap-1 text-emerald-300 hover:text-white transition-colors text-[11px] font-medium bg-emerald-900/80 px-2 py-0.5 rounded border border-emerald-700/50"
-          >
-            <ArrowLeft size={12} /> Dasbor Siswa
-          </Link>
-          <Link
-            href="/sidang"
-            className="flex items-center gap-1 text-amber-300 hover:text-white transition-colors text-[11px] font-medium bg-amber-950/80 px-2 py-0.5 rounded border border-amber-700/50"
-          >
-            <Presentation size={12} /> Salindia Sidang (17 Slide)
-          </Link>
-        </div>
-      </div>
-
       {/* Sidebar */}
-      <div className="pt-8 md:pt-0">
-        <DocSidebar
-          activeTab={activeTab}
-          onSelectTab={tab => {
-            setActiveTab(tab);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          isOpen={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          onOpenSearch={() => setSearchOpen(true)}
-        />
-      </div>
+      <DocSidebar
+        activeTab={activeTab}
+        onSelectTab={tab => {
+          setActiveTab(tab);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        onOpenSearch={() => setSearchOpen(true)}
+      />
 
       {/* Main Workspace Area */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden pt-7 md:pt-0">
+      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
         
         {/* Sticky Header */}
         <DocHeader
