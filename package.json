@@ -19,7 +19,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "next": "16.3.0-canary.32",
+    "next": "16.3.3",
     "tsx": "^4.23.11"
   },
   "overrides": {
