@@ -16,9 +16,9 @@ export const metadata: Metadata = {
   title: "StatsLab | Dasbor Statistika Islami",
   description:
     "Media Pembelajaran Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://statslabmedia.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://dstatistika.pages.dev"),
   authors: [{ name: "Muhammad Khoiruzzadittaqwa" }],
-  publisher: "STAI Al-Bahjah",
+  publisher: "Institut Al-Bahjah Cirebon",
   robots: {
     index: true,
     follow: true,
@@ -60,7 +60,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://statslabmedia.vercel.app").replace(
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://dstatistika.pages.dev").replace(
     /\/$/,
     ""
   );

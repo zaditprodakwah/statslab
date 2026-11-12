@@ -30,8 +30,8 @@ const DOWNLOAD_ITEMS: DownloadItem[] = [
     size: '246 KB',
     type: 'DOCX (Microsoft Word)',
     category: 'Publikasi',
-    description: 'Format 2 kolom Times New Roman 10pt sesuai pedoman Author Guidelines Jurnal Cendekia (SINTA 3/4). Rumus murni OMML <m:oMath> tanpa gambar MathType.',
-    verifiedNotes: '3 Penulis: Muhammad Khoiruzzadittaqwa, Dosen Pembimbing 1, Dosen Pembimbing 2.'
+    description: 'Format 2 kolom Times New Roman 10pt sesuai pedoman Author Guidelines Circle: Jurnal Pendidikan Matematika (SINTA 4, Submission #16323). Rumus murni OMML <m:oMath> tanpa gambar MathType.',
+    verifiedNotes: '3 Penulis: Muhammad Khoiruzzadittaqwa, Sidik Nurasa, Susilawati.'
   },
   {
     title: 'Manuskrip Artikel Blind Review (Anonymized OJS)',
@@ -41,7 +41,7 @@ const DOWNLOAD_ITEMS: DownloadItem[] = [
     type: 'DOCX (Microsoft Word)',
     category: 'Publikasi',
     description: 'Naskah teranonimkan untuk kepatuhan etika telaah sejawat ganda (Double-Blind Peer Review OJS). Identitas penulis dan instansi disamarkan secara sistematis.',
-    verifiedNotes: 'Siap unggah ke portal OJS Jurnal Cendekia: Jurnal Pendidikan Matematika.'
+    verifiedNotes: 'Telah terunggah resmi ke portal OJS Circle: Jurnal Pendidikan Matematika (Submission #16323).'
   },
   {
     title: 'Bundel Lengkap Lampiran Instrumen Penelitian',

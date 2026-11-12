@@ -74,7 +74,7 @@
 
 ## 📖 Tentang Proyek
 
-**StatsLab** adalah repositori R&D (*Research & Development*) EdTech *open source* berbasis keislaman pertama di Indonesia. Proyek ini dirancang dan dikembangkan oleh **Muhammad Khoiruzzadittaqwa (muhzadit)** dari Program Studi **Pendidikan Matematika**, **Institut Al-Bahjah Cirebon**.
+**StatsLab** adalah repositori R&D (*Research & Development*) EdTech *open source* berbasis keislaman pertama di Indonesia. Proyek ini dirancang dan dikembangkan oleh **Muhammad Khoiruzzadittaqwa (muhzadit)** dari Program Studi **Tadris Matematika (Pendidikan Matematika)**, **Institut Al-Bahjah Cirebon**.
 
 StatsLab menggabungkan visualisasi data interaktif Next.js 15 dengan integrasi nilai-nilai etika Keislaman (*Amanah*, *Tabayyun*, *Tawazun*), asesmen literasi data Watson-Callingham (Level 1–6), instrumen kepraktisan adaptif System Usability Scale (SUS 14-butir), serta pustaka analisis psikometri terbuka (Rasch PCM & CFA R scripts).
 
@@ -366,16 +366,32 @@ Informasi selengkapnya dapat dibaca pada berkas **[LICENSE](LICENSE)**.
 
 ---
 
-## 📬 Peneliti Utama
+## 📬 Peneliti Utama & Majelis Akademik
 
 **Muhammad Khoiruzzadittaqwa (muhzadit)**  
-Program Studi Pendidikan Matematika — **Institut Al-Bahjah Cirebon**
+Program Studi Tadris Matematika (Pendidikan Matematika) — **Institut Al-Bahjah Cirebon**
 
 - **Email**: `muhzadit@gmail.com`
 - **GitHub**: [@zaditprodakwah](https://github.com/zaditprodakwah)
 - **ORCID**: [0000-0002-1594-9548](https://orcid.org/0000-0002-1594-9548)
 - **Google Scholar**: [Muhammad Khoiruzzadittaqwa](https://scholar.google.com/citations?user=CbR250MAAAAJ)
 - **Academia.edu**: [muhzadit](https://independent.academia.edu/muhzadit)
+
+### 👥 Majelis Dewan Pembimbing & Penguji Sidang Munaqasyah
+- **Dosen Pembimbing I / Ketua Sidang:** Sidik Nurasa, S.Pd., M.Pd. (NUPTK: 1948773674130372)
+- **Dosen Pembimbing II:** Susilawati, S.Pd., M.Pd.
+- **Dosen Penguji Utama / Ketua Program Studi:** Ana Khofifahturizqi, S.Pd., M.Mat.
+
+### 📚 Rekam Jejak Publikasi Ilmiah SINTA
+1. **IJMME (Terakreditasi Nasional SINTA 2):**  
+   *The Effectiveness of Project-Based Learning and Problem-Based Learning in Improving Student Achievement and Involvement in Learning Mathematics*  
+   Vol. 2, No. 2, Juni 2024. DOI: [10.56855/ijmme.v2i2.931](https://doi.org/10.56855/ijmme.v2i2.931)
+2. **ABJME (Terakreditasi Nasional SINTA 3):**  
+   *Efektivitas Model Pembelajaran Generatif Terhadap Kemampuan Pemecahan Masalah Matematika Siswa*  
+   Vol. 2, No. 1, Maret 2024. DOI: [10.61553/abjme.v2i1.152](https://doi.org/10.61553/abjme.v2i1.152)
+3. **Circle: Jurnal Pendidikan Matematika (Terakreditasi Nasional SINTA 4 - Karya Tugas Akhir):**  
+   *Pengembangan Dasbor Statistika Interaktif Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa SMP*  
+   Submission ID: #16323, November 2026.
 
 <p align="center">
   <strong>StatsLab R&D Ecosystem</strong> • Institut Al-Bahjah Cirebon

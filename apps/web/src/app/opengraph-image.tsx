@@ -46,7 +46,7 @@ export default async function Image() {
             StatsLab V2
           </div>
           <span style={{ fontSize: "18px", opacity: 0.8, color: "#a7f3d0" }}>
-            Institut Al-Bahjah Cirebon • Pendidikan Matematika
+            Institut Al-Bahjah Cirebon • Tadris Matematika
           </span>
         </div>
 
@@ -91,7 +91,7 @@ export default async function Image() {
             <span>Peneliti: Muhammad Khoiruzzadittaqwa (muhzadit)</span>
           </div>
           <div style={{ fontSize: "18px", color: "#34d399", fontWeight: 600 }}>
-            statslabmedia.vercel.app
+            dstatistika.pages.dev
           </div>
         </div>
       </div>

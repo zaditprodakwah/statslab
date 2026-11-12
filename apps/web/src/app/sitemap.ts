@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 const MODULE_SLUGS = ["zakat-infak", "perpus-madrasah", "tajwid-juz-30", "wakaf-produktif"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://statslabmedia.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dstatistika.pages.dev";
 
   return [
     {

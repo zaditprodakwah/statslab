@@ -1,9 +1,9 @@
 {
   "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
   "@type": "SoftwareSourceCode",
-  "name": "StatsLab: Dasbor Statistika Interaktif & EdTech R&D Ecosystem",
+  "name": "StatsLab DSI: Dasbor Statistika Interaktif & EdTech R&D Ecosystem",
   "identifier": "statslab",
-  "description": "Media Pembelajaran Statistika Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa berbasis Next.js 15, Rasch Model PCM, dan CFA.",
+  "description": "Media Pembelajaran Statistika Terintegrasi Nilai Keislaman untuk Memfasilitasi Literasi Data Siswa SMP Fase D berbasis React, TypeScript, Model 4D, Aiken's V, dan SUS.",
   "codeRepository": "https://github.com/zaditprodakwah/statslab",
   "issueTracker": "https://github.com/zaditprodakwah/statslab/issues",
   "license": "https://spdx.org/licenses/MIT",
@@ -14,7 +14,7 @@
     "R",
     "CSS"
   ],
-  "runtimePlatform": "Node.js 24.x",
+  "runtimePlatform": "Cloudflare Pages & Node.js",
   "author": [
     {
       "@type": "Person",
@@ -25,7 +25,7 @@
       "affiliation": {
         "@type": "Organization",
         "name": "Institut Al-Bahjah Cirebon",
-        "department": "Pendidikan Matematika"
+        "department": "Tadris Matematika"
       },
       "email": "muhzadit@gmail.com",
       "sameAs": [
@@ -39,9 +39,9 @@
     "EdTech",
     "Data Literacy",
     "Watson-Callingham",
-    "Rasch Model",
-    "CFA Lavaan",
-    "Pendidikan Matematika",
+    "Aiken's V",
+    "System Usability Scale",
+    "Tadris Matematika",
     "Institut Al-Bahjah Cirebon"
   ]
 }

@@ -233,12 +233,12 @@ const SLIDES_DATA: Slide[] = [
       { title: "Kelengkapan Berkas Submit OJS", desc: "Telah disiapkan Cover Letter bilingual, Surat Pernyataan Orisinalitas, dan Naskah Blind Review." },
       { title: "Kepengarangan (3 Penulis)", desc: "1: Muhammad Khoiruzzadittaqwa, 2: Dosen Pembimbing 1, 3: Dosen Pembimbing 2." }
     ],
-    stat: { value: "SINTA 3/4", label: "Target Jurnal", sublabel: "Jurnal Cendekia: Jurnal Pendidikan Matematika" },
-    speakerNote: "Sebagai luaran wajib/tambahan, naskah artikel jurnal SINTA 3/4 telah selesai ditulis lengkap dengan paket blind review untuk OJS."
+    stat: { value: "SINTA 4", label: "Target Jurnal", sublabel: "Circle: Jurnal Pendidikan Matematika (#16323)" },
+    speakerNote: "Sebagai luaran wajib tugas akhir jalur artikel, naskah telah disubmit resmi ke Circle: Jurnal Pendidikan Matematika (Submission ID #16323)."
   },
   {
     id: 16,
-    badge: "Kesimpulan Proposal",
+    badge: "Kesimpulan Tugas Akhir",
     title: "Kesimpulan & Harapan Kebermanfaatan Riset",
     subtitle: "Menghadirkan Media Pembelajaran Matematika yang Bermutu, Modern, dan Berakhlak",
     bullets: [
@@ -246,8 +246,8 @@ const SLIDES_DATA: Slide[] = [
       { title: "Instrumen Teruji & Terukur", desc: "Fondasi evaluasi kokoh berstandar psikometri Aiken's V dan model Rasch PCM." },
       { title: "Dukungan Ekosistem Terpadu", desc: "Dasbor pembelajaran siswa, portal evaluator, dan salindia sidang terintegrasi dalam satu sistem terpadu." }
     ],
-    stat: { value: "Bismillah", label: "Kesiapan Riset", sublabel: "Siap Melangkah ke Tahap Develop" },
-    speakerNote: "Sebagai kesimpulan, proposal ini telah siap secara teoretis, metodologis, instrumen, dan teknis aplikasi. Kami memohon arahan, bimbingan, dan masukan dari Dewan Penguji."
+    stat: { value: "Alhamdulillah", label: "Kesiapan Riset", sublabel: "Tahap Develop & Disseminate Tuntas" },
+    speakerNote: "Sebagai kesimpulan, media ini telah teruji sangat valid dan praktis. Kami memohon arahan, bimbingan, dan masukan dari Dewan Penguji."
   },
   {
     id: 17,
@@ -256,11 +256,11 @@ const SLIDES_DATA: Slide[] = [
     subtitle: "Kami Siap Mendengar Tanggapan, Arahan, dan Diskusi dari Dewan Penguji",
     bullets: [
       { title: "Peneliti", desc: "Muhammad Khoiruzzadittaqwa (NIM: 2220020002)" },
-      { title: "Tautan Produk & Instrumen", desc: "statslabmedia.vercel.app / Rute /doc" },
+      { title: "Tautan Produk & Instrumen", desc: "dstatistika.pages.dev / Rute /doc" },
       { title: "Dokumen Master", desc: "Tersedia di Pusat Unduhan Berkas Skripsi" }
     ],
-    stat: { value: "Alhamdulillah", label: "Sidang Proposal", sublabel: "Institut Al-Bahjah Cirebon" },
-    speakerNote: "Demikian pemaparan proposal skripsi saya. Waktu selanjutnya saya kembalikan kepada Ketua Sidang. Wassalamu'alaikum warahmatullahi wabarakatuh."
+    stat: { value: "Alhamdulillah", label: "Sidang Munaqasyah", sublabel: "Institut Al-Bahjah Cirebon" },
+    speakerNote: "Demikian pemaparan hasil tugas akhir saya. Waktu selanjutnya saya kembalikan kepada Ketua Sidang. Wassalamu'alaikum warahmatullahi wabarakatuh."
   }
 ];
 
