@@ -30,3 +30,4 @@ Repository artefak dan data empiris penelitian tugas akhir sarjana (S1):
 
 ## Lisensi & Etika Data
 Data ini disediakan untuk keperluan replikasi ilmiah, verifikasi akademik sidang munaqasyah, dan riset pengembangan pendidikan matematika di bawah lisensi **Creative Commons Attribution 4.0 International (CC-BY 4.0)**.
+
