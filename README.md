@@ -2,7 +2,7 @@
 
 <!-- HERO / HEADER SECTION -->
 <div align="center">
-  <a href="https://statslabmedia.vercel.app">
+  <a href="https://dstatistika.pages.dev">
     <img src="apps/web/public/logo.png" alt="StatsLab Logo" width="140" height="140" />
   </a>
 
@@ -15,7 +15,7 @@
   </p>
 
   <p align="center">
-    <a href="https://statslabmedia.vercel.app"><strong>⚡ Jelajahi Live Demo</strong></a> •
+    <a href="https://dstatistika.pages.dev"><strong>⚡ Jelajahi Live Demo</strong></a> •
     <a href="https://staialbahjah.ac.id/">💖 <strong>Sponsored by Institut Al-Bahjah</strong></a> •
     <a href="https://github.com/zaditprodakwah/statslab/issues/new?labels=bug">🐛 Laporkan Bug</a> •
     <a href="https://github.com/zaditprodakwah/statslab/issues/new?labels=enhancement">✨ Usulkan Fitur</a> •
@@ -28,7 +28,7 @@
     <a href="https://github.com/zaditprodakwah/statslab/network/members"><img src="https://img.shields.io/github/forks/zaditprodakwah/statslab?style=for-the-badge&color=059669" alt="Forks" /></a>
     <a href="https://github.com/zaditprodakwah/statslab/stargazers"><img src="https://img.shields.io/github/stars/zaditprodakwah/statslab?style=for-the-badge&color=059669" alt="Stargazers" /></a>
     <a href="https://github.com/zaditprodakwah/statslab/issues"><img src="https://img.shields.io/github/issues/zaditprodakwah/statslab?style=for-the-badge&color=059669" alt="Issues" /></a>
-    <a href="https://statslabmedia.vercel.app"><img src="https://img.shields.io/badge/Live_Demo-Vercel_V2-059669?style=for-the-badge&logo=vercel" alt="Vercel Live" /></a>
+    <a href="https://dstatistika.pages.dev"><img src="https://img.shields.io/badge/Live_Demo-Vercel_V2-059669?style=for-the-badge&logo=vercel" alt="Vercel Live" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT_%26_CC--BY_4.0-blue?style=for-the-badge" alt="License" /></a>
     <a href="#releases-packages"><img src="https://img.shields.io/github/v/release/zaditprodakwah/statslab?style=for-the-badge&color=059669&label=RELEASE" alt="GitHub Release" /></a>
     <a href="https://github.com/zaditprodakwah/statslab/pkgs/npm/datasets"><img src="https://img.shields.io/github/v/release/zaditprodakwah/statslab?style=for-the-badge&color=CB3837&logo=npm" alt="NPM Datasets" /></a>
