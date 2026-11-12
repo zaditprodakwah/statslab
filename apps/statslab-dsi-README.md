@@ -5,7 +5,7 @@
 > **Status:** Teruji Empiris, Sangat Valid (Aiken's $V = 0.85, p < 0.05$) dan Praktis (SUS $= 68.0$, Marginal High / Acceptable)  
 > **Akses Laboratorium Daring:** [https://dstatistika.pages.dev/](https://dstatistika.pages.dev/)  
 > **Repositori Resmi GitHub:** [https://github.com/zaditprodakwah/statslab](https://github.com/zaditprodakwah/statslab)  
-> **Pangkalan Data Terbuka (Kaggle):** [https://www.kaggle.com/datasets/muhzadit/statslab-dsi-empirical-data](https://www.kaggle.com/datasets/muhzadit/statslab-dsi-empirical-data)  
+> **Pangkalan Data Terbuka (Kaggle DOI):** [10.34740/kaggle/dsv/22047486](https://doi.org/10.34740/kaggle/dsv/22047486) ([Kaggle Dataset Page](https://www.kaggle.com/datasets/muhzadit/statslab-dsi-empirical-data))  
 
 ---
 

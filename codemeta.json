@@ -31,10 +31,12 @@
       "sameAs": [
         "https://orcid.org/0000-0002-1594-9548",
         "https://scholar.google.com/citations?user=CbR250MAAAAJ",
-        "https://independent.academia.edu/muhzadit"
+        "https://independent.academia.edu/muhzadit",
+        "https://www.kaggle.com/muhzadit"
       ]
     }
   ],
+  "identifier": "https://doi.org/10.34740/kaggle/dsv/22047486",
   "keywords": [
     "EdTech",
     "Data Literacy",

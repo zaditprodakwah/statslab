@@ -13,6 +13,10 @@ authors:
     email: "muhzadit@gmail.com"
 repository-code: "https://github.com/zaditprodakwah/statslab"
 url: "https://dstatistika.pages.dev"
+identifiers:
+  - type: doi
+    value: "10.34740/kaggle/dsv/22047486"
+    description: "Kaggle Dataset DOI for StatsLab DSI Empirical Research Data"
 license: "MIT"
 license-url: "https://github.com/zaditprodakwah/statslab/blob/main/LICENSE"
 version: "1.0.0"

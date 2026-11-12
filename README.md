@@ -28,7 +28,8 @@
     <a href="https://github.com/zaditprodakwah/statslab/network/members"><img src="https://img.shields.io/github/forks/zaditprodakwah/statslab?style=for-the-badge&color=059669" alt="Forks" /></a>
     <a href="https://github.com/zaditprodakwah/statslab/stargazers"><img src="https://img.shields.io/github/stars/zaditprodakwah/statslab?style=for-the-badge&color=059669" alt="Stargazers" /></a>
     <a href="https://github.com/zaditprodakwah/statslab/issues"><img src="https://img.shields.io/github/issues/zaditprodakwah/statslab?style=for-the-badge&color=059669" alt="Issues" /></a>
-    <a href="https://dstatistika.pages.dev"><img src="https://img.shields.io/badge/Live_Demo-Vercel_V2-059669?style=for-the-badge&logo=vercel" alt="Vercel Live" /></a>
+    <a href="https://dstatistika.pages.dev"><img src="https://img.shields.io/badge/Live_Demo-Cloudflare_Pages-059669?style=for-the-badge&logo=cloudflare" alt="Cloudflare Live" /></a>
+    <a href="https://doi.org/10.34740/kaggle/dsv/22047486"><img src="https://img.shields.io/badge/Kaggle_DOI-10.34740%2Fkaggle%2Fdsv%2F22047486-20BEFF?style=for-the-badge&logo=kaggle" alt="Kaggle Dataset DOI" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT_%26_CC--BY_4.0-blue?style=for-the-badge" alt="License" /></a>
     <a href="#releases-packages"><img src="https://img.shields.io/github/v/release/zaditprodakwah/statslab?style=for-the-badge&color=059669&label=RELEASE" alt="GitHub Release" /></a>
     <a href="https://github.com/zaditprodakwah/statslab/pkgs/npm/datasets"><img src="https://img.shields.io/github/v/release/zaditprodakwah/statslab?style=for-the-badge&color=CB3837&logo=npm" alt="NPM Datasets" /></a>
@@ -40,6 +41,7 @@
     <a href="https://orcid.org/0000-0002-1594-9548"><img src="https://img.shields.io/badge/ORCID-0000--0002--1594--9548-A6CE39?style=flat-square&logo=orcid" alt="ORCID" /></a>
     <a href="https://scholar.google.com/citations?user=CbR250MAAAAJ"><img src="https://img.shields.io/badge/Google_Scholar-Muhammad_Khoiruzzadittaqwa-4285F4?style=flat-square&logo=google-scholar" alt="Google Scholar" /></a>
     <a href="https://independent.academia.edu/muhzadit"><img src="https://img.shields.io/badge/Academia.edu-muhzadit-212529?style=flat-square&logo=academia" alt="Academia.edu" /></a>
+    <a href="https://www.kaggle.com/muhzadit"><img src="https://img.shields.io/badge/Kaggle-muhzadit-20BEFF?style=flat-square&logo=kaggle" alt="Kaggle" /></a>
   </p>
 
   <!-- HERO BANNER VISUAL -->

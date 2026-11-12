@@ -25,5 +25,12 @@
     {
       "identifier": "open-science"
     }
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.34740/kaggle/dsv/22047486",
+      "relation": "isSupplementedBy",
+      "resource_type": "dataset"
+    }
   ]
 }

@@ -3,7 +3,7 @@
 > **StatsLab DSI** is an Islamic-based Open Source EdTech R&D ecosystem in Indonesia, developed by **Muhammad Khoiruzzadittaqwa (muhzadit)** from **Tadris Matematika, Institut Al-Bahjah Cirebon**.
 > **Repository:** https://github.com/zaditprodakwah/statslab  
 > **Production Web Application:** https://dstatistika.pages.dev/  
-> **Open Science Empirical Dataset (Kaggle):** https://www.kaggle.com/datasets/muhzadit/statslab-dsi-empirical-data  
+> **Open Science Empirical Dataset (Kaggle DOI):** https://doi.org/10.34740/kaggle/dsv/22047486 (Kaggle: https://www.kaggle.com/datasets/muhzadit/statslab-dsi-empirical-data)  
 
 ## Author & Academic Profiles
 - **Principal Investigator:** Muhammad Khoiruzzadittaqwa (muhzadit)

@@ -7,7 +7,7 @@ Developed by **Muhammad Khoiruzzadittaqwa (muhzadit)** at the Department of **Ta
 
 - **Production URL:** https://dstatistika.pages.dev/
 - **Repository URL:** https://github.com/zaditprodakwah/statslab
-- **Kaggle Dataset:** https://www.kaggle.com/datasets/muhzadit/statslab-dsi-empirical-data
+- **Kaggle Empirical Dataset (DOI):** https://doi.org/10.34740/kaggle/dsv/22047486 (Kaggle: https://www.kaggle.com/datasets/muhzadit/statslab-dsi-empirical-data)
 
 ## Academic Advisory & Defense Board
 - **Advisor I / Defense Board Chair:** Sidik Nurasa, S.Pd., M.Pd. (NUPTK: 1948773674130372)
