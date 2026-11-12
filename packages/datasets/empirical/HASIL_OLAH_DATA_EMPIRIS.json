@@ -1,0 +1,1170 @@
+{
+  "siswa": {
+    "n_responden": 31,
+    "kelas": "VIII-B",
+    "sekolah": "SMPN 46 Bandung",
+    "mean_sus": 67.74,
+    "std_sus": 11.22,
+    "median_sus": 70.0,
+    "min_sus": 37.5,
+    "max_sus": 92.5,
+    "cronbach_alpha_sus10": 0.7405,
+    "cronbach_alpha_full14": 0.8127,
+    "adjective_rating": "Marginal High (Mendekati Good)",
+    "grade_scale": "C",
+    "acceptability": "Marginal",
+    "sus_item_means_raw": [
+      3.84,
+      2.74,
+      3.74,
+      2.06,
+      4.03,
+      2.39,
+      4.19,
+      2.58,
+      3.45,
+      2.39
+    ],
+    "extra_items": {
+      "q11_sosiomatematika_mean": 3.65,
+      "q11_percentage": 72.9,
+      "q12_tabayyun_amanah_mean": 4.1,
+      "q12_percentage": 81.94,
+      "q13_keterbacaan_teknis_mean": 4.13,
+      "q13_percentage": 82.58,
+      "q14_soal_watson_mean": 3.87,
+      "q14_percentage": 77.42
+    },
+    "student_records": [
+      {
+        "id": 1,
+        "nama": "Dhafin azka budiman",
+        "kelas": "8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 75.0,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "grafik dan letak tombol atau susunan menu teratur dan mudah ditemukan"
+      },
+      {
+        "id": 2,
+        "nama": "Afiqa R. P",
+        "kelas": "VIII-B",
+        "sekolah": "SMPN 46 Bandung",
+        "raw_ratings": [
+          4,
+          3,
+          3,
+          2,
+          3,
+          4,
+          5,
+          3,
+          4,
+          2
+        ],
+        "sus_score": 62.5,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 3
+        },
+        "saran": "Grafiknya aga susah untuk di geser"
+      },
+      {
+        "id": 3,
+        "nama": "Shagezza pradypta",
+        "kelas": "8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 75.0,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "Hebat"
+      },
+      {
+        "id": 4,
+        "nama": "Fauzan",
+        "kelas": "8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          5,
+          4,
+          5,
+          2,
+          5,
+          2,
+          5,
+          3,
+          4,
+          4
+        ],
+        "sus_score": 72.5,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 5,
+          "q13_keterbacaan_teknis": 5,
+          "q14_soal_watson": 5
+        },
+        "saran": "Media ini sangat bagus dan saya menjadi lebih berhati-hati saat menjawab soal-soal berikut"
+      },
+      {
+        "id": 5,
+        "nama": "Azka Aufa Maleka",
+        "kelas": "8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          3,
+          5,
+          3,
+          3,
+          5,
+          3,
+          3,
+          3,
+          2,
+          4
+        ],
+        "sus_score": 45.0,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "Menurutku pembelajaran media ini lumayan rumit,ga terlalu mudah di pahami"
+      },
+      {
+        "id": 6,
+        "nama": "Revan J",
+        "kelas": "Vlll-B",
+        "sekolah": "SMP46BDG",
+        "raw_ratings": [
+          5,
+          3,
+          5,
+          3,
+          5,
+          5,
+          5,
+          1,
+          4,
+          3
+        ],
+        "sus_score": 72.5,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 5,
+          "q13_keterbacaan_teknis": 5,
+          "q14_soal_watson": 4
+        },
+        "saran": "media ini sangat bagus enak di baca dan mudah untuk di pelajari oleh siswa dan siswi"
+      },
+      {
+        "id": 7,
+        "nama": "Ganendra kenzi.m.s",
+        "kelas": "VIIIB",
+        "sekolah": "SMPN 46 BANDOENG",
+        "raw_ratings": [
+          3,
+          3,
+          3,
+          2,
+          4,
+          3,
+          3,
+          2,
+          3,
+          3
+        ],
+        "sus_score": 57.5,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 3
+        },
+        "saran": "Kesan: Sangat membantu, praktis, dan tidak membosankan. Belajar statistik jadi terasa lebih mudah lewat visualisasi langsung.\n\nSaran: Akses masuk ke medianya dibuat lebih ringan lagi agar tidak memakan banyak kuota atau loading lama saat koneksi internet kurang stabil."
+      },
+      {
+        "id": 8,
+        "nama": "Ade satria octaviana",
+        "kelas": "8B",
+        "sekolah": "Smpn 46 bandung",
+        "raw_ratings": [
+          4,
+          3,
+          4,
+          3,
+          5,
+          1,
+          5,
+          3,
+          2,
+          2
+        ],
+        "sus_score": 70.0,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 3,
+          "q14_soal_watson": 4
+        },
+        "saran": "Grafik ini mudah untuk di pakai dan juga bisa membantu segala untuk bisa lebih memehami"
+      },
+      {
+        "id": 9,
+        "nama": "Nadhifa Khanza S",
+        "kelas": "8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          3,
+          2,
+          5,
+          2,
+          3,
+          4,
+          3,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 65.0,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 3,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "Grafiknya mudah digeser, tetapi gambarny terlalu pinggir dan terlalu berdekatan informasi/ tabelnya, grafik nya terlihat jelas dan pilihan warnanya tepat."
+      },
+      {
+        "id": 10,
+        "nama": "Aliya Janetta Khoirunissa",
+        "kelas": "VIII-B/8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "sus_score": 50.0,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 3,
+          "q13_keterbacaan_teknis": 3,
+          "q14_soal_watson": 3
+        },
+        "saran": "keren wadeded uhUyy, banyakin lagi kayak gini, seru soalnya"
+      },
+      {
+        "id": 11,
+        "nama": "Raisya",
+        "kelas": "8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          3,
+          4,
+          3,
+          3,
+          3,
+          4,
+          3,
+          4,
+          2,
+          4
+        ],
+        "sus_score": 37.5,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 3,
+          "q13_keterbacaan_teknis": 3,
+          "q14_soal_watson": 3
+        },
+        "saran": "Grafik nya agak mudah di geser tapi soal dan informasinya lumayan rumit dan terlalu kecil jadi layar nya harus di zoom banget"
+      },
+      {
+        "id": 12,
+        "nama": "Bintang Adelia Putri",
+        "kelas": "VIII-B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          3,
+          3,
+          4,
+          4,
+          3,
+          4,
+          3,
+          3,
+          3
+        ],
+        "sus_score": 55.0,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "aga bingung tapi saya suka dengan grafiknya"
+      },
+      {
+        "id": 13,
+        "nama": "Deden Setiawan",
+        "kelas": "8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 75.0,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "Menambahkan fitur \"Reset\" atau \"Kembalikan ke Awal\" dengan satu klik agar pengguna bisa mengulang simulasi dari data dasar tanpa harus menggeser grafiknya satu per satu secara manual.\n• Menyediakan opsi input angka secara manual di samping fitur geser, untuk pengguna yang ingin menguji angka spesifik dengan lebih akurat."
+      },
+      {
+        "id": 14,
+        "nama": "M.Adi Chandra",
+        "kelas": "8B",
+        "sekolah": "SMPN 46 Bandung",
+        "raw_ratings": [
+          4,
+          1,
+          4,
+          1,
+          5,
+          1,
+          4,
+          1,
+          5,
+          1
+        ],
+        "sus_score": 92.5,
+        "extra_items": {
+          "q11_sosiomatematika": 5,
+          "q12_tabayyun_amanah": 5,
+          "q13_keterbacaan_teknis": 5,
+          "q14_soal_watson": 5
+        },
+        "saran": "Grafik nya seru dan mudah dipahami dan digunakan"
+      },
+      {
+        "id": 15,
+        "nama": "Wildan Rizki Alfian",
+        "kelas": "8B",
+        "sekolah": "SMP 46 BANDUNG",
+        "raw_ratings": [
+          3,
+          2,
+          4,
+          2,
+          3,
+          3,
+          3,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 65.0,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "Media pembelajaran ini menarik dan mudah dipahami"
+      },
+      {
+        "id": 16,
+        "nama": "GALIH SURYA FIRMANSAH",
+        "kelas": "VIII-B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          3,
+          3,
+          2,
+          4,
+          3,
+          5,
+          3,
+          3,
+          5
+        ],
+        "sus_score": 57.5,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 3,
+          "q14_soal_watson": 4
+        },
+        "saran": "saya sangat senang mengerjakan latihan soal interaktif ini"
+      },
+      {
+        "id": 17,
+        "nama": "N",
+        "kelas": "Vlll-B",
+        "sekolah": "SMPN 46 BDG",
+        "raw_ratings": [
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 75.0,
+        "extra_items": {
+          "q11_sosiomatematika": 2,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "lebih paham perbedaan"
+      },
+      {
+        "id": 18,
+        "nama": "Safa",
+        "kelas": "VIII-B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          3,
+          4,
+          1,
+          4,
+          2,
+          4,
+          1,
+          4,
+          2
+        ],
+        "sus_score": 77.5,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 5,
+          "q13_keterbacaan_teknis": 5,
+          "q14_soal_watson": 5
+        },
+        "saran": "pas awal melihat grafiknya agak rumit tapi pas liat soalnya jadi mudah. Jdi kita tinggal liat data yang di tanya soalnya"
+      },
+      {
+        "id": 19,
+        "nama": "Rival a",
+        "kelas": "8B",
+        "sekolah": "SMP",
+        "raw_ratings": [
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          5,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 77.5,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 5,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "Saran: Mungkin ditambah penjelasan singkat tentang Tabayyun dan Amanah di setiap langkah, agar selain paham statistiknya, kita juga terbiasa memeriksa kebenaran data sebelum menghitung"
+      },
+      {
+        "id": 20,
+        "nama": "MUHAMAD RIZKI",
+        "kelas": "8B",
+        "sekolah": "SMP",
+        "raw_ratings": [
+          5,
+          2,
+          4,
+          3,
+          5,
+          2,
+          5,
+          4,
+          4,
+          1
+        ],
+        "sus_score": 77.5,
+        "extra_items": {
+          "q11_sosiomatematika": 2,
+          "q12_tabayyun_amanah": 3,
+          "q13_keterbacaan_teknis": 5,
+          "q14_soal_watson": 1
+        },
+        "saran": "perbaikan"
+      },
+      {
+        "id": 21,
+        "nama": "M.Fadhil",
+        "kelas": "VIII-B",
+        "sekolah": "SMP",
+        "raw_ratings": [
+          3,
+          3,
+          2,
+          1,
+          4,
+          2,
+          5,
+          3,
+          2,
+          2
+        ],
+        "sus_score": 62.5,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 5,
+          "q14_soal_watson": 2
+        },
+        "saran": ""
+      },
+      {
+        "id": 22,
+        "nama": "ARIFIN S.H",
+        "kelas": "VIIIB/8B",
+        "sekolah": "SMP",
+        "raw_ratings": [
+          3,
+          2,
+          3,
+          1,
+          4,
+          2,
+          5,
+          2,
+          2,
+          2
+        ],
+        "sus_score": 70.0,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 5,
+          "q14_soal_watson": 4
+        },
+        "saran": "grafiknya okee mudah dipahami mantap"
+      },
+      {
+        "id": 23,
+        "nama": "Muhammad Wafa Athahilah Nufashil",
+        "kelas": "VIII-B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          4,
+          4,
+          2,
+          5,
+          2,
+          5,
+          4,
+          4,
+          3
+        ],
+        "sus_score": 67.5,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "sangan seru"
+      },
+      {
+        "id": 24,
+        "nama": "Suci Fitriani Ramdan",
+        "kelas": "VII-B",
+        "sekolah": "SMPN 46 Bandung",
+        "raw_ratings": [
+          4,
+          1,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 77.5,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "mudah di geser dan bisa lebih cepat faham"
+      },
+      {
+        "id": 25,
+        "nama": "Salma H.K",
+        "kelas": "Vlll-B",
+        "sekolah": "Smpn 46 Bandung",
+        "raw_ratings": [
+          4,
+          5,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 67.5,
+        "extra_items": {
+          "q11_sosiomatematika": 5,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 5
+        },
+        "saran": "grafik nya mudah di geser dan gampang dipahami"
+      },
+      {
+        "id": 26,
+        "nama": "Keyla adzra rihaadatul aisy",
+        "kelas": "VIII-B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          3,
+          4,
+          1,
+          4,
+          1,
+          5,
+          4,
+          4,
+          1
+        ],
+        "sus_score": 77.5,
+        "extra_items": {
+          "q11_sosiomatematika": 5,
+          "q12_tabayyun_amanah": 5,
+          "q13_keterbacaan_teknis": 5,
+          "q14_soal_watson": 4
+        },
+        "saran": "grafiknya mudah di geser dan cepat paham perbedaannya"
+      },
+      {
+        "id": 27,
+        "nama": "Asyfa N. A",
+        "kelas": "8B",
+        "sekolah": "SMP NEGERI 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2
+        ],
+        "sus_score": 75.0,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "grafik nyarmbuat saya paham"
+      },
+      {
+        "id": 28,
+        "nama": "Cintiya nur wahyu",
+        "kelas": "Vlll-B/8B",
+        "sekolah": "SMPN 46 kota BANDUNG",
+        "raw_ratings": [
+          4,
+          3,
+          4,
+          2,
+          3,
+          2,
+          4,
+          2,
+          2,
+          3
+        ],
+        "sus_score": 62.5,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 4
+        },
+        "saran": "Grafiknya mudah di geser dan lancar media tulisnya aga sedikit rumit tapi bisa di pahami"
+      },
+      {
+        "id": 29,
+        "nama": "Faizia Khairunnisa",
+        "kelas": "VIII-B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          3,
+          4,
+          1,
+          4,
+          1,
+          5,
+          4,
+          4,
+          1
+        ],
+        "sus_score": 77.5,
+        "extra_items": {
+          "q11_sosiomatematika": 5,
+          "q12_tabayyun_amanah": 5,
+          "q13_keterbacaan_teknis": 5,
+          "q14_soal_watson": 4
+        },
+        "saran": "grafiknya mudah digeser,gampang dipahami"
+      },
+      {
+        "id": 30,
+        "nama": "Devira A. K.",
+        "kelas": "VIII-B/8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          3,
+          4,
+          2,
+          4,
+          2,
+          4,
+          4,
+          4,
+          2
+        ],
+        "sus_score": 67.5,
+        "extra_items": {
+          "q11_sosiomatematika": 4,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 4,
+          "q14_soal_watson": 5
+        },
+        "saran": "Kesan saya saat ini sedikit canggung dan bingung karena tiba tiba mengerjakan soal ini"
+      },
+      {
+        "id": 31,
+        "nama": "Anindya Dzahab Nuralifa",
+        "kelas": "8B",
+        "sekolah": "SMPN 46 BANDUNG",
+        "raw_ratings": [
+          4,
+          2,
+          3,
+          2,
+          4,
+          3,
+          4,
+          3,
+          2,
+          3
+        ],
+        "sus_score": 60.0,
+        "extra_items": {
+          "q11_sosiomatematika": 3,
+          "q12_tabayyun_amanah": 4,
+          "q13_keterbacaan_teknis": 3,
+          "q14_soal_watson": 4
+        },
+        "saran": "Saya sedikit bingung karena baru pertama mengisi soal seperti ini dan menurut saya media ini bagus karena bisa melatih berpikir kritis"
+      }
+    ]
+  },
+  "validator_materi_1": {
+    "nama": "Sidik Nurasa, S.Pd., M.Pd.",
+    "nip": "1948773674130372",
+    "instansi": "Pendidikan Matematika / Institut Al-Bahjah Cirebon",
+    "peran": "Dosen Pembimbing I / Validator Ahli Materi 1",
+    "n_butir": 10,
+    "ratings": [
+      5,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      5,
+      4
+    ],
+    "mean_rating": 4.6,
+    "aiken_v": 0.9,
+    "persentase_kelayakan": 92.0,
+    "kategori": "Sangat Layak / Sangat Valid",
+    "catatan": "Secara konseptual materi statistika sangat baik dan selaras Kurikulum Merdeka Fase D. Disarankan menambahkan satuan metrik atau rupiah secara eksplisit pada label slider penggeser data agar siswa semakin teliti membaca skala data.",
+    "rekomendasi": "Layak / Praktis untuk digunakan dengan revisi kecil sesuai catatan"
+  },
+  "validator_materi_2": {
+    "nama": "Validator Ahli Materi 2",
+    "nip": "-",
+    "instansi": "Pendidikan Matematika",
+    "peran": "Validator Ahli Materi 2",
+    "n_butir": 10,
+    "ratings": [
+      4,
+      4,
+      5,
+      4,
+      4,
+      4,
+      5,
+      4,
+      4,
+      4
+    ],
+    "mean_rating": 4.2,
+    "aiken_v": 0.8,
+    "persentase_kelayakan": 84.0,
+    "kategori": "Sangat Layak / Sangat Valid",
+    "catatan": "Gradasi soal Watson-Callingham Level 1-4 tersusun rapi. Rubrik penilaian politomi skor 0, 1, dan 2 operasional dan adil dalam mendiagnosis penalaran siswa.",
+    "rekomendasi": "Layak / Praktis untuk digunakan dengan revisi kecil sesuai catatan"
+  },
+  "validator_media": {
+    "nama": "Asep Saepudin, S.T.",
+    "nip": "197508242022211002",
+    "instansi": "Informatika",
+    "n_butir": 11,
+    "ratings": [
+      4,
+      5,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "mean_rating": 4.09,
+    "aiken_v": 0.7727,
+    "persentase_kelayakan": 81.82,
+    "kategori": "Cukup Layak",
+    "catatan": "Responsif, fitur dan visual lebih di tingkatkan lebih baik lagi",
+    "rekomendasi": "Sangat Layak digunakan tanpa revisi"
+  },
+  "validator_media_sidik": {
+    "nama": "Sidik Nurasa, S.Pd., M.Pd.",
+    "nip": "1948773674130372",
+    "instansi": "Pendidikan Matematika / Institut Al-Bahjah Cirebon",
+    "n_butir": 11,
+    "ratings": [
+      5,
+      5,
+      5,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      4,
+      4
+    ],
+    "mean_rating": 4.64,
+    "aiken_v": 0.9091,
+    "persentase_kelayakan": 92.73,
+    "kategori": "Sangat Layak / Sangat Valid",
+    "catatan": "Antarmuka panel tunggal sangat ergonomis dan responsif diakses lewat peramban. Sakelar 'Skala Jujur' disarankan dipertegas kontras warnanya agar siswa langsung melihat perbedaan antara grafik jujur dengan grafik yang terpotong.",
+    "rekomendasi": "Layak / Praktis untuk digunakan dengan revisi kecil sesuai catatan"
+  },
+  "validator_etika": {
+    "nama": "MUHAMMAD KHOIRUL ABROR",
+    "niy": "20150801296",
+    "instansi": "MA AL-HIKAMUSAALAFIYYAH",
+    "n_butir": 14,
+    "ratings": [
+      5,
+      1,
+      5,
+      5,
+      5,
+      1,
+      5,
+      3,
+      5,
+      1,
+      5,
+      5,
+      5,
+      5
+    ],
+    "mean_rating": 4.0,
+    "aiken_v": 0.75,
+    "persentase_kelayakan": 80.0,
+    "kategori": "Cukup Layak",
+    "catatan": "Media StatsLab DSI sudah mendukung tujuan pembelajaran, tetapi keterkaitan antara fitur media dan capaian pembelajaran perlu diperjelas."
+  },
+  "guru": {
+    "n_responden": 4,
+    "guru_records": [
+      {
+        "id": 1,
+        "nama": "Sylvia Rachman, S.Pd",
+        "nip": "-",
+        "sekolah": "SMPN 46 Bandung",
+        "lokasi": "Jawa Barat (Bandung)",
+        "ratings_14": [
+          5,
+          2,
+          5,
+          1,
+          5,
+          2,
+          5,
+          2,
+          5,
+          1,
+          4,
+          5,
+          5,
+          4
+        ],
+        "total_skor": 51,
+        "persentase_kepraktisan": 72.86,
+        "sus_10_score": 92.5,
+        "kategori": "Praktis",
+        "catatan": "-"
+      },
+      {
+        "id": 2,
+        "nama": "Farida Kusmajati S",
+        "nip": "197203302008012004",
+        "sekolah": "SMPN 46",
+        "lokasi": "Jawa Barat (Bandung)",
+        "ratings_14": [
+          4,
+          3,
+          4,
+          2,
+          4,
+          4,
+          4,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5
+        ],
+        "total_skor": 53,
+        "persentase_kepraktisan": 75.71,
+        "sus_10_score": 60.0,
+        "kategori": "Praktis",
+        "catatan": "-"
+      },
+      {
+        "id": 3,
+        "nama": "Bayu Ginanjar",
+        "nip": "-",
+        "sekolah": "SMPN 46",
+        "lokasi": "Jawa Barat (Bandung)",
+        "ratings_14": [
+          5,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "total_skor": 63,
+        "persentase_kepraktisan": 90.0,
+        "sus_10_score": 52.5,
+        "kategori": "Sangat Praktis",
+        "catatan": "media pembelajaran sangat dibutuhkan untuk mendukung kegiatan pembelajaran dikelas."
+      },
+      {
+        "id": 4,
+        "nama": "Indra Devi S.Pd",
+        "nip": "-",
+        "sekolah": "ALBAHJA MUARA BASUNG PINGGIR KAB. BENGKALIS",
+        "lokasi": "Riau (Muara Basung)",
+        "ratings_14": [
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          2,
+          4,
+          5,
+          5,
+          4
+        ],
+        "total_skor": 48,
+        "persentase_kepraktisan": 68.57,
+        "sus_10_score": 75.0,
+        "kategori": "Praktis",
+        "catatan": "Media praktis digunakan untuk memperagakan perbedaan kepekaan mean dan median terhadap nilai ekstrem di kelas VIII"
+      }
+    ],
+    "mean_persentase_kepraktisan": 76.78,
+    "mean_sus_10": 70.0,
+    "kategori_umum": "Praktis",
+    "item_means_14": [
+      4.5,
+      2.75,
+      4.25,
+      2.25,
+      4.25,
+      3.0,
+      4.25,
+      2.75,
+      4.5,
+      3.0,
+      4.25,
+      4.75,
+      4.75,
+      4.5
+    ],
+    "triangulasi_wilayah": {
+      "bandung": {
+        "n": 3,
+        "guru": [
+          "Sylvia Rachman, S.Pd",
+          "Farida Kusmajati S",
+          "Bayu Ginanjar"
+        ],
+        "mean_pct": 79.52
+      },
+      "riau": {
+        "n": 1,
+        "guru": [
+          "Indra Devi S.Pd"
+        ],
+        "mean_pct": 68.57
+      }
+    }
+  },
+  "validity": {
+    "materi": {
+      "mean": 4.4,
+      "aiken_v": 0.85,
+      "n_validators": 2
+    },
+    "media": {
+      "mean": 4.37,
+      "aiken_v": 0.8409,
+      "n_validators": 2
+    },
+    "etika": {
+      "mean": 4.0,
+      "aiken_v": 0.75,
+      "n_validators": 1
+    },
+    "combined": {
+      "mean": 4.26,
+      "aiken_v": 0.8136,
+      "n_validators": 3
+    }
+  },
+  "practicality": {
+    "teachers": {
+      "n": 4,
+      "practicality_pct": 76.78,
+      "sus_mean": 70.0
+    },
+    "students": {
+      "n": 31,
+      "practicality_pct": 80.16,
+      "sus_mean": 67.74
+    },
+    "group_average": {
+      "practicality_pct": 78.47,
+      "sus_mean": 68.87
+    },
+    "weighted_individual": {
+      "practicality_pct": 79.77,
+      "sus_mean": 68.0
+    }
+  }
+}

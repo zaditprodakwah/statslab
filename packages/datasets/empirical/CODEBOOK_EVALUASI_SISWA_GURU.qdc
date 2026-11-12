@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="urn:QDA-XML:project:1.0" name="StatsLab DSI - Evaluasi Empiris Media Pembelajaran">
+  <Description>Buku kode kualitatif standar REFI-QDA untuk pengodean respon terbuka 31 siswa SMPN 46 Bandung dan 4 guru mitra.</Description>
+  <CodeBook>
+    <Codes>
+      <Code id="THEME_UX_VISUAL" name="Interaktivitas Visual &amp; Kemudahan Antarmuka" isCodable="true" color="#2B6CB0">
+        <Description>Respons mengenai kepraktisan slider, kemudahan menggeser grafik, tampilan satu layar, dan keterbacaan antarmuka.</Description>
+        <Code id="UX_SLIDER_EASE" name="Kelancaran &amp; Kemudahan Slider" isCodable="true" color="#3182CE">
+          <Description>Pengguna merasa slider mudah dijalankan dan grafik responsif mengikuti pergerakan.</Description>
+        </Code>
+        <Code id="UX_LAYOUT_CLEAN" name="Kerapian Tata Letak Satu Layar" isCodable="true" color="#4299E1">
+          <Description>Tata letak grafik, tabel data, dan tombol tersusun rapi serta enak dilihat.</Description>
+        </Code>
+      </Code>
+      <Code id="THEME_COGNITIVE_LITERACY" name="Pembentukan Skema Kognitif &amp; Literasi Data" isCodable="true" color="#2C7A7B">
+        <Description>Respons mengenai pemahaman konsep perbedaan mean dan median, sikap teliti (Tabayyun), jujur (Amanah), serta nalar kritis.</Description>
+        <Code id="COG_CONCEPT_SCHEMA" name="Pemahaman Perbedaan Mean dan Median" isCodable="true" color="#319795">
+          <Description>Siswa mampu memahami mengapa rata-rata tertarik pencilan sedangkan median kokoh.</Description>
+        </Code>
+        <Code id="COG_TABAYYUN_AMANAH" name="Internalisasi Karakter Tabayyun &amp; Nalar Kritis" isCodable="true" color="#38B2AC">
+          <Description>Melatih kehati-hatian memeriksa kebenaran data dan berpikir kritis dalam membaca grafik.</Description>
+        </Code>
+      </Code>
+      <Code id="THEME_TECH_FRICTION" name="Friksi Teknis &amp; Aspirasi Penyempurnaan Media" isCodable="true" color="#DD6B20">
+        <Description>Catatan kendala teknis perangkat, beban kuota, rasa canggung awal, serta usulan fitur baru.</Description>
+        <Code id="TECH_RESET_FEATURE" name="Usulan Fitur Tombol Reset &amp; Input Manual" isCodable="true" color="#E53E3E">
+          <Description>Aspirasi tombol kembali ke awal dan opsi mengetik angka secara presisi.</Description>
+        </Code>
+        <Code id="TECH_SCREEN_QUOTA" name="Optimalisasi Beban Kuota &amp; Penyesuaian Ukuran Layar HP" isCodable="true" color="#ED8936">
+          <Description>Kebutuhan peringan akses internet serta penyesuaian jarak teks pada layar ponsel kecil.</Description>
+        </Code>
+        <Code id="TECH_INITIAL_FRICTION" name="Adaptasi Awal &amp; Rasa Canggung Pengguna Baru" isCodable="true" color="#ECC94B">
+          <Description>Perasaan bingung atau canggung saat pertama kali mencoba menggeser angka pada grafik.</Description>
+        </Code>
+      </Code>
+    </Codes>
+  </CodeBook>
+</Project>
